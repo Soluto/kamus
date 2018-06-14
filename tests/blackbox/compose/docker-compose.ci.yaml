@@ -1,0 +1,4 @@
+version: '3'
+services:
+  api:
+    image: $IMAGE_TAG

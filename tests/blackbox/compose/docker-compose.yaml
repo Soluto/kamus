@@ -1,0 +1,12 @@
+version: '3'
+services:
+  api:
+
+  black-box:
+    build:
+      context: ../../../.
+      dockerfile: ./tests/blackbox/Dockerfile
+    environment:
+      - API_URL=http://api:9999
+      - TEAMCITY_PROJECT_NAME=api
+      - PROXY_URL=http://zap:8090

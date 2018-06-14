@@ -1,0 +1,4 @@
+{
+  "ZAPhttp://api/api/v1/isAliveStorable and Cacheable Content": "ignore",
+  "ZAPhttp://api/api/v1/isAliveX-Content-Type-Options Header MissingX-Content-Type-Options": "ignore"
+}
