@@ -9,7 +9,7 @@ RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/8ed92e8cab83cfe
 RUN chmod +x wait-for-it.sh
 
 RUN dotnet restore ./Hamuste.sln
-RUN dotnet build api.sln -c Release
+RUN dotnet build Hamuste.sln -c Release
 
 RUN chmod +x ./scripts/run_test.sh
 ENTRYPOINT ["./scripts/run_test.sh"]
