@@ -8,7 +8,7 @@ RUN  apt-get update \
 RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/8ed92e8cab83cfed76ff012ed4a36cef74b28096/wait-for-it.sh
 RUN chmod +x wait-for-it.sh
 
-RUN dotnet restore ./api.sln
+RUN dotnet restore ./Hamuste.sln
 RUN dotnet build api.sln -c Release
 
 RUN chmod +x ./scripts/run_test.sh
