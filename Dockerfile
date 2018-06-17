@@ -12,7 +12,9 @@ RUN dotnet publish -c Release -o out -r linux-x64
 
 # Build runtime image
 FROM microsoft/dotnet:2.0-runtime-deps
-WORKDIR /app
+RUN useradd -d /home/dotnet -ms /bin/bash dotnet
+USER dotnet
+WORKDIR /home/ubuntu/app
 ENV ASPNETCORE_URLS=http://+:9999
 COPY --from=build-env /app/out ./
 ENTRYPOINT ["./Hamuste"]
