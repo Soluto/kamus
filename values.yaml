@@ -30,4 +30,4 @@ volumeMounts:
 volumes:
   - name: secrets-volume
     secret:
-      secretName: example-secrets
+      secretName: hamuste-secrets
