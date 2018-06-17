@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 
 namespace Hamuste.Controllers
@@ -19,15 +20,21 @@ namespace Hamuste.Controllers
         private readonly IKubernetes mKubernetes;
         private readonly IKeyVaultClient mKeyVaultClient;
         private readonly IAuthorizationService mAuthorizationService;
+        private readonly string mKeyVaultName;
+        private readonly string mKeyType;
         
         public EncryptController(
             IKubernetes kubernetes, 
             IKeyVaultClient keyVaultClient,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            IConfiguration configuration)
         {
             mKubernetes = kubernetes;
             mKeyVaultClient = keyVaultClient;
             mAuthorizationService = authorizationService;
+            mKeyVaultName = configuration["KeyVault:Name"];
+            mKeyType = configuration["KeyVault:KeyType"];
+
         }
 
         [HttpPost]
@@ -48,13 +55,13 @@ namespace Hamuste.Controllers
                 return StatusCode(500);
             }
 
-            var keyId = $"https://k8spoc.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
+            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
 
             try
             {
                 var key = await mKeyVaultClient.GetKeyAsync(keyId);
             }catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound){
-                await mKeyVaultClient.CreateKeyAsync("https://k8spoc.vault.azure.net", serviceAccount.Metadata.Uid, "RSA", 2048);
+                await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", serviceAccount.Metadata.Uid, mKeyType, 2048);
             }
             var encryptionResult = await mKeyVaultClient.EncryptAsync(keyId, "RSA-OAEP", Encoding.UTF8.GetBytes(body.Data));
 

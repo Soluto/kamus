@@ -31,7 +31,15 @@ namespace Hamuste
 
             services.AddSingleton<IKubernetes>(s =>
             {
-                var config = new KubernetesClientConfiguration { Host = "http://127.0.0.1:8001" };
+                KubernetesClientConfiguration config;
+                if (!string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"]))
+                {
+                    config = new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
+                }
+                else {
+                    config = KubernetesClientConfiguration.InClusterConfig();
+                }
+
                 return new Kubernetes(config);
                 //return new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
             });

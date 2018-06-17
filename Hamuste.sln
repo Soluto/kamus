@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "blackbox", "tests\blackbox\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit", "tests\unit\unit.csproj", "{3F737829-7340-49FA-893D-4845C5F882AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamusteApi", "src\Hamuste.csproj", "{A12BBF7B-19E2-43CD-B230-DC6D4CABAAC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hamuste", "src\Hamuste.csproj", "{A12BBF7B-19E2-43CD-B230-DC6D4CABAAC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
