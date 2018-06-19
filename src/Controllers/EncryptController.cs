@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using Hamuste.Models;
 using k8s;
 using k8s.Models;
@@ -73,32 +74,22 @@ namespace Hamuste.Controllers
         [Authorize(AuthenticationSchemes = "kubernetes")]
         public async Task<ActionResult> Decrypt([FromBody]DecryptRequest body)
         {
-            V1ServiceAccount serviceAccount;
+            var serviceAccountId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
 
-            try
-            {
-                serviceAccount = await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
-            }
-            catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return BadRequest();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
-
-            var authorizatioResult = await mAuthorizationService.AuthorizeAsync(User, serviceAccount.Metadata.Uid, "KubernetesPolicy");
-
-            if (!authorizatioResult.Succeeded) {
+            if (string.IsNullOrEmpty(serviceAccountId)){
                 return StatusCode(403);
             }
 
-            var keyId = $"https://k8spoc.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
+            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccountId}";
+            try
+            {
+                var encryptionResult = await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
 
-            var encryptionResult = await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
-
-            return Content(Encoding.UTF8.GetString(encryptionResult.Result));
+                return Content(Encoding.UTF8.GetString(encryptionResult.Result));
+            } catch (KeyVaultErrorException e) {
+                Console.WriteLine(e);
+                return StatusCode(400);
+            }
         }
     }
 }
