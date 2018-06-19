@@ -81,6 +81,9 @@ namespace Hamuste
                 app.UseDeveloperExceptionPage ();
                 appsettingsPath = "appsettings.Development.json";
             }
+            else {
+                app.UseExceptionMiddleware();
+            }
 
             var builder = new ConfigurationBuilder ()
                 .SetBasePath (env.ContentRootPath)
