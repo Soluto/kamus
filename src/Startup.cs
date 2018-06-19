@@ -77,6 +77,8 @@ namespace Hamuste
         public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
             string appsettingsPath = "appsettings.json";
 
+            Console.WriteLine("Look at me, I'm a beautiful creature!");
+
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
                 appsettingsPath = "appsettings.Development.json";
