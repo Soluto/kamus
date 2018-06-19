@@ -95,7 +95,6 @@ namespace Hamuste
 
             Log.Logger = new LoggerConfiguration ()
                 .ReadFrom.Configuration (Configuration)
-                .WriteTo.Console (new JsonFormatter ())
                 .CreateLogger ();
 
 
