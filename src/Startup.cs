@@ -31,18 +31,24 @@ namespace Hamuste
 
             services.AddSingleton<IKubernetes>(s =>
             {
-                Console.WriteLine("Adding prometheus");
-                KubernetesClientConfiguration config;
-                if (!string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"]))
+                Console.WriteLine("Adding Kubernetes");
+                try
                 {
-                    config = new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
-                }
-                else {
-                    config = KubernetesClientConfiguration.InClusterConfig();
-                }
+                    KubernetesClientConfiguration config;
+                    if (!string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"]))
+                    {
+                        config = new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
+                    }
+                    else
+                    {
+                        config = KubernetesClientConfiguration.InClusterConfig();
+                    }
 
-                return new Kubernetes(config);
-                //return new Kubernetes(KubernetesClientConfiguration.InClusterConfig());
+                    return new Kubernetes(config);
+                }catch (Exception e){
+                    Console.WriteLine($"Oh no! {e}");
+                    throw e;
+                }
             });
 
             services.AddSingleton<IKeyVaultClient>(s =>
