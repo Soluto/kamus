@@ -12,6 +12,7 @@ using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
+using Microsoft.Extensions.Logging;
 
 namespace Hamuste.Controllers
 {
@@ -23,19 +24,21 @@ namespace Hamuste.Controllers
         private readonly IAuthorizationService mAuthorizationService;
         private readonly string mKeyVaultName;
         private readonly string mKeyType;
+        private readonly ILogger<EncryptController> mLogger;
         
         public EncryptController(
             IKubernetes kubernetes, 
             IKeyVaultClient keyVaultClient,
             IAuthorizationService authorizationService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<EncryptController> logger)
         {
             mKubernetes = kubernetes;
             mKeyVaultClient = keyVaultClient;
             mAuthorizationService = authorizationService;
             mKeyVaultName = configuration["KeyVault:Name"];
             mKeyType = configuration["KeyVault:KeyType"];
-
+            mLogger = logger;
         }
 
         [HttpPost]
@@ -50,10 +53,6 @@ namespace Hamuste.Controllers
             }
             catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound) {
                 return BadRequest();
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
             }
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
