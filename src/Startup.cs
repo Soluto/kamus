@@ -26,6 +26,7 @@ namespace Hamuste
                  
             if (await Task.WhenAny(k8sTask, Task.Delay(TimeSpan.FromSeconds(1), cancellationToken)) == k8sTask)
             {
+                Console.WriteLine("k8s request completed");
                 // Task completed within timeout.
                 // Consider that the task may have faulted or been canceled.
                 // We re-await the task so that any exceptions/cancellation is rethrown.
@@ -33,6 +34,7 @@ namespace Hamuste
             }
             else
             {
+                Console.WriteLine("k8s request completed with timeout");
                 throw new Exception("Timeout while waiting for k8s");
             }
         }
