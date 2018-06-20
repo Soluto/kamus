@@ -22,6 +22,7 @@ namespace Hamuste
         {
             try
             {
+                Console.WriteLine($"ExceptionMiddeleware: {httpContext.Request.Path}");
                 await mNext.Invoke(httpContext);
             } catch (Exception e) {
                 mLogger.LogError($"Unhandled exception while processing request: {e}");

@@ -31,6 +31,7 @@ namespace Hamuste
 
             services.AddSingleton<IKubernetes>(s =>
             {
+                Console.WriteLine("Adding prometheus");
                 KubernetesClientConfiguration config;
                 if (!string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"]))
                 {
@@ -60,6 +61,7 @@ namespace Hamuste
 
         public async Task<string> GetToken(string authority, string resource, string scope)
         {
+            Console.WriteLine("Requesting a token!");
             var clientId = Configuration["ActiveDirectory:ClientId"];
             var clientSecret = Configuration["ActiveDirectory:ClientSecret"];
             
