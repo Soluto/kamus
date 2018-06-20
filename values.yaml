@@ -31,3 +31,8 @@ volumes:
   - name: secrets-volume
     secret:
       secretName: hamuste-secrets
+
+role:
+  apiGroups: ['""']
+  resources: ['"serviceaccount"']
+  verbs: ['"get"', '"list"']
