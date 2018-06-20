@@ -10,11 +10,35 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Serilog;
-using Serilog.Formatting.Json;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
 
 namespace Hamuste
 {
+    public class Blah : DelegatingHandler 
+    {
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Console.WriteLine($"Sending k8s request {request.RequestUri}");
+
+            var k8sTask = base.SendAsync(request, cancellationToken);
+                 
+            if (await Task.WhenAny(k8sTask, Task.Delay(TimeSpan.FromSeconds(1), cancellationToken)) == k8sTask)
+            {
+                // Task completed within timeout.
+                // Consider that the task may have faulted or been canceled.
+                // We re-await the task so that any exceptions/cancellation is rethrown.
+                return await k8sTask;
+            }
+            else
+            {
+                throw new Exception("Timeout while waiting for k8s");
+            }
+        }
+
+    }
+
     public class Startup {
         public Startup () { }
 
@@ -44,7 +68,9 @@ namespace Hamuste
                         config = KubernetesClientConfiguration.InClusterConfig();
                     }
 
-                    return new Kubernetes(config);
+
+
+                    return new Kubernetes(config, new Blah());
                 }catch (Exception e){
                     Console.WriteLine($"Oh no! {e}");
                     throw e;
