@@ -46,14 +46,22 @@ namespace Hamuste.Controllers
         public async Task<ActionResult> Encrypt([FromBody]EncryptRequest body)
         {
             V1ServiceAccount serviceAccount;
-            
+
             try
             {
                 serviceAccount = await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
             }
-            catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound) {
+            catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 return BadRequest();
             }
+            catch (HttpOperationException e)
+            {
+                Console.WriteLine($"Error: content - {e.Response.Content}");
+                Console.WriteLine($"Error: reason - {e.Response.ReasonPhrase}");
+
+                throw;
+			}
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
 
