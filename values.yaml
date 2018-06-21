@@ -23,9 +23,3 @@ service:
 image:
   version: 1.0
   pullPolicy: IfNotPresent
-
-
-role:
-  apiGroups: ['""']
-  resources: ['"serviceaccount"']
-  verbs: ['"get", "list"']
