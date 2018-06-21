@@ -70,13 +70,21 @@ func main() {
 func decrypt(encodedData string)(string){
 
 	fmt.Println(encodedData)
-	f1, _ := os.Open("/var/run/secrets/kubernetes.io/serviceaccount/token")
+	f1, err := os.Open("/var/run/secrets/kubernetes.io/serviceaccount/token")
+
+	if err != nil {
+		panic(err)
+	}
 
     // Use bufio.NewReader to get a Reader.
     // ... Then use ioutil.ReadAll to read the entire content.
     reader1 := bufio.NewReader(f1)
-		token, _ := ioutil.ReadAll(reader1)
+		token, err := ioutil.ReadAll(reader1)
 		
+		if err != nil {
+			panic(err)
+		}
+
 		decryptRequest := &DecryptRequest{EncryptedData: encodedData}
 
 		b := new(bytes.Buffer)
@@ -84,7 +92,18 @@ func decrypt(encodedData string)(string){
 
 		client := &http.Client{}
 
-		req, err := http.NewRequest("POST", "http://hamuste.team-dev-ops.svc.cluster.local/api/v1/decrypt", b)
+		hamusteUrl := os.Getenv("HAMUSTE_URL")
+
+		if (hamusteUrl == "") {
+			hamusteUrl = "http://hamuste.team-dev-ops.svc.cluster.local/"
+		}
+
+		req, err := http.NewRequest("POST", hamusteUrl + "api/v1/decrypt", b)
+		
+		if err != nil {
+			panic(err)
+		}
+
 		req.Header.Add("Content-Type", "application/json")
 		req.Header.Add("Authorization", "Bearer " + string(token))
 
