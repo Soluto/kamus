@@ -42,7 +42,27 @@ namespace Hamuste
     }
 
     public class Startup {
-        public Startup () { }
+        
+        public Startup(IHostingEnvironment env)
+        {
+            string appsettingsPath = "appsettings.json";
+
+            if (env.IsDevelopment())
+            {
+                appsettingsPath = "appsettings.Development.json";
+            }
+
+            Console.WriteLine($"Root: {env.ContentRootPath}");
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile(appsettingsPath, optional: true, reloadOnChange: true)
+                .AddJsonFile("secrets/appsettings.secrets.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+        }
+
 
         public IConfiguration Configuration;
 
@@ -113,27 +133,15 @@ namespace Hamuste
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
-            string appsettingsPath = "appsettings.json";
 
-            Console.WriteLine("Look at me, I'm a beautiful creature!");
-
-            if (env.IsDevelopment ()) {
-                app.UseDeveloperExceptionPage ();
-                appsettingsPath = "appsettings.Development.json";
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
-            else {
+            else
+            {
                 app.UseExceptionMiddleware();
             }
-
-            Console.WriteLine($"Root: {env.ContentRootPath}");
-
-            var builder = new ConfigurationBuilder ()
-                .SetBasePath (env.ContentRootPath)
-                .AddJsonFile (appsettingsPath, optional : true, reloadOnChange : true)
-                .AddJsonFile ("secrets/appsettings.secrets.json", optional: true)
-                .AddEnvironmentVariables ();
-
-            Configuration = builder.Build ();
 
             var config = string.Join(Environment.NewLine, Configuration.AsEnumerable().Where(i => !i.Key.ToLower().Contains("secret")).Select(i => $"{i.Key} => {i.Value}"));
 
