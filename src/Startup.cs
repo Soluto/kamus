@@ -123,10 +123,12 @@ namespace Hamuste
                 app.UseExceptionMiddleware();
             }
 
+            Console.WriteLine($"Root: {env.ContentRootPath}");
+
             var builder = new ConfigurationBuilder ()
                 .SetBasePath (env.ContentRootPath)
                 .AddJsonFile (appsettingsPath, optional : true, reloadOnChange : true)
-                .AddJsonFile ("secrets/appsettings.secrets.json", optional : true)
+                .AddJsonFile ("secrets/appsettings.secrets.json")
                 .AddEnvironmentVariables ();
 
             Configuration = builder.Build ();
