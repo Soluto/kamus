@@ -1,5 +1,5 @@
 // Most of the code is based on this SO answer: https://stackoverflow.com/a/29382205/4792970
-package decryptor
+package main
 
 import (
 		"encoding/json"
