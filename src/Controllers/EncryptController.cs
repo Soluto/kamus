@@ -36,6 +36,9 @@ namespace Hamuste.Controllers
             mKubernetes = kubernetes;
             mKeyVaultClient = keyVaultClient;
             mAuthorizationService = authorizationService;
+            var config = string.Join(Environment.NewLine, configuration.AsEnumerable().Where(i => !i.Key.ToLower().Contains("secret")).Select(i => $"{i.Key} => {i.Value}"));
+
+            Console.WriteLine($"Configuration on controller: {Environment.NewLine} {config}");
             mKeyVaultName = configuration["KeyVault:Name"];
             mKeyType = configuration["KeyVault:KeyType"];
             mLogger = logger;
