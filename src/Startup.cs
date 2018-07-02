@@ -128,10 +128,14 @@ namespace Hamuste
             var builder = new ConfigurationBuilder ()
                 .SetBasePath (env.ContentRootPath)
                 .AddJsonFile (appsettingsPath, optional : true, reloadOnChange : true)
-                .AddJsonFile ("secrets/appsettings.secrets.json")
+                .AddJsonFile ("secrets/appsettings.secrets.json", optional: true)
                 .AddEnvironmentVariables ();
 
             Configuration = builder.Build ();
+
+            var config = string.Join(Environment.NewLine, Configuration.AsEnumerable().Where(i => !i.Key.ToLower().Contains("secret")).Select(i => $"{i.Key} => {i.Value}"));
+
+            Console.WriteLine($"Configuration: {Environment.NewLine} {config}");
 
             Log.Logger = new LoggerConfiguration ()
                 .ReadFrom.Configuration (Configuration)
