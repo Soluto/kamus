@@ -65,7 +65,7 @@ namespace Hamuste.Controllers
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
 
-            mLogger.LogInformation($"keyId: {keyId}");
+            Console.WriteLine($"KeyId: {keyId}");
 
             try
             {
