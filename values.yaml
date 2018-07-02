@@ -23,3 +23,11 @@ service:
 image:
   version: 1.0
   pullPolicy: IfNotPresent
+
+volumeMounts:
+  - name: secrets-volume
+    mountPath: /home/dotnet/app/secrets
+volumes:
+  - name: secrets-volume
+    secret:
+      secretName: hamuste-secret 
