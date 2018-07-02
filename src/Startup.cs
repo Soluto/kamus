@@ -91,6 +91,8 @@ namespace Hamuste
                     context => context.Resource as string == context.User.Claims.FirstOrDefault(claim => claim.Type == "sub").Value)
                );
             });
+
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         public async Task<string> GetToken(string authority, string resource, string scope)
