@@ -4,5 +4,8 @@ metadata:
   name: hamuste
 rules:
 - apiGroups: [""]
-  resources: ["serviceaccount"]
+  resources: ["serviceaccounts"]
   verbs: ["get"]
+- apiGroups: ["authentication.k8s.io"]
+  resources: ["tokenreviews"]
+  verbs: ["create"]
