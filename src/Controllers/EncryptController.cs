@@ -72,7 +72,7 @@ namespace Hamuste.Controllers
 			}
 
             var id = $"{body.NamesapceName}:{body.SerivceAccountName}";
-            var hash = WebEncoders.Base64UrlEncode(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id)));
+            var hash = ComputeKeyId(id);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
 
@@ -101,7 +101,7 @@ namespace Hamuste.Controllers
             }
 
             var id = serviceAccountUserName.Replace(ServiceAccountUsernamePrefix, "");
-            var hash = WebEncoders.Base64UrlEncode(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id)));
+            var hash = ComputeKeyId(id);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
             try
@@ -113,6 +113,15 @@ namespace Hamuste.Controllers
                 Console.WriteLine(e);
                 return StatusCode(400);
             }
+        }
+
+        private string ComputeKeyId(string serviceUserName)
+        {
+            return 
+                WebEncoders.Base64UrlEncode(
+                    SHA256.Create().ComputeHash(
+                        Encoding.UTF8.GetBytes(serviceUserName)))
+                           .Replace("_", "-");
         }
     }
 }
