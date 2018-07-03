@@ -13,6 +13,8 @@ using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Rest;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Hamuste.Controllers
 {
@@ -25,6 +27,9 @@ namespace Hamuste.Controllers
         private readonly string mKeyVaultName;
         private readonly string mKeyType;
         private readonly ILogger<EncryptController> mLogger;
+
+        //see: https://github.com/kubernetes/kubernetes/blob/d5803e596fc8aba17aa8c74a96aff9c73bb0f1da/staging/src/k8s.io/apiserver/pkg/authentication/serviceaccount/util.go#L27
+        private const string ServiceAccountUsernamePrefix = "system:serviceaccount:";
         
         public EncryptController(
             IKubernetes kubernetes, 
@@ -66,7 +71,10 @@ namespace Hamuste.Controllers
                 throw;
 			}
 
-            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccount.Metadata.Uid}";
+            var id = $"{body.NamesapceName}:{body.SerivceAccountName}";
+            var hash = WebEncoders.Base64UrlEncode(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id)));
+
+            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
 
             Console.WriteLine($"KeyId: {keyId}");
 
@@ -74,7 +82,7 @@ namespace Hamuste.Controllers
             {
                 var key = await mKeyVaultClient.GetKeyAsync(keyId);
             }catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound){
-                await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", serviceAccount.Metadata.Uid, mKeyType, 2048);
+                await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", hash, mKeyType, 2048);
             }
             var encryptionResult = await mKeyVaultClient.EncryptAsync(keyId, "RSA-OAEP", Encoding.UTF8.GetBytes(body.Data));
 
@@ -86,13 +94,16 @@ namespace Hamuste.Controllers
         [Authorize(AuthenticationSchemes = "kubernetes")]
         public async Task<ActionResult> Decrypt([FromBody]DecryptRequest body)
         {
-            var serviceAccountId = User.Claims.FirstOrDefault(claim => claim.Type == "sub")?.Value;
+            var serviceAccountUserName = User.Claims.FirstOrDefault(claim => claim.Type == "name")?.Value;
 
-            if (string.IsNullOrEmpty(serviceAccountId)){
+            if (string.IsNullOrEmpty(serviceAccountUserName) || !serviceAccountUserName.StartsWith(ServiceAccountUsernamePrefix, StringComparison.InvariantCulture)){
                 return StatusCode(403);
             }
 
-            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{serviceAccountId}";
+            var id = serviceAccountUserName.Replace(ServiceAccountUsernamePrefix, "");
+            var hash = WebEncoders.Base64UrlEncode(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(id)));
+
+            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
             try
             {
                 var encryptionResult = await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
