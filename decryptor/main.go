@@ -121,8 +121,6 @@ func decrypt(encodedData string)(string){
 			os.Exit(1)
 		}
 
-		fmt.Println(string(body))
-
 		return string(body)
 }
 
@@ -134,7 +132,6 @@ func parseMap(aMap map[string]interface{}) {
         case []interface{}:
             parseArray(val.([]interface{}))
         default:
-						fmt.Println(key, ":", concreteVal)
 
 						switch concreteVal.(type) {
 						case string:
@@ -142,7 +139,6 @@ func parseMap(aMap map[string]interface{}) {
 								aMap[key] = decrypt(strings.Split(concreteVal.(string), ":")[1])
 							}
 						default:
-							fmt.Println("Not a string!")
 						}
 
 						
