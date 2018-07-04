@@ -24,7 +24,7 @@ namespace Hamuste
             {
                 await mNext.Invoke(httpContext);
             } catch (Exception e) {
-                mLogger.LogError($"Unhandled exception while processing request: {e}");
+                mLogger.LogError(e, $"Unhandled exception while processing request");
                 httpContext.Response.StatusCode = 500;
                 await httpContext.Response.WriteAsync("server failed to handle response");
             }
