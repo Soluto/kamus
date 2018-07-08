@@ -85,6 +85,10 @@ namespace Hamuste.Controllers
             }
             catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
             {
+                mAuditLogger.Information(
+                    "KeyVault key was not found for Namespace {ns} and ServiceAccountName {sa}, creating new one.",
+                    body.NamesapceName, body.SerivceAccountName);
+                
                 await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", hash, mKeyType, 2048);
             }
 
@@ -122,6 +126,10 @@ namespace Hamuste.Controllers
                 var encryptionResult =
                     await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
 
+                mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccountName: {sa}", 
+                    Request.HttpContext.Connection.RemoteIpAddress,
+                    id);
+                return Content(Convert.ToBase64String(encryptionResult.Result));
                 return Content(Encoding.UTF8.GetString(encryptionResult.Result));
             }
             catch (KeyVaultErrorException e)
