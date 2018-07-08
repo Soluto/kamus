@@ -1,5 +1,5 @@
 #The name of the team (the same you used to create the namespace)
-team: team-dev-ops
+team: team-devops
 #The name of the API
 nameOverride: hamuste
 useAirbag: false
