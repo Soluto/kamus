@@ -55,11 +55,9 @@ namespace Hamuste.Controllers
         [Route("api/v1/encrypt")]
         public async Task<ActionResult> Encrypt([FromBody]EncryptRequest body)
         {
-            V1ServiceAccount serviceAccount;
-
             try
             {
-                serviceAccount = await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
+                await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
                 mAuditLogger.Information("Encryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}", 
                     Request.HttpContext.Connection.RemoteIpAddress,
                     body.SerivceAccountName);
