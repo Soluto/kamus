@@ -127,7 +127,6 @@ namespace Hamuste.Controllers
                 mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccountName: {sa}", 
                     Request.HttpContext.Connection.RemoteIpAddress,
                     id);
-                return Content(Convert.ToBase64String(encryptionResult.Result));
                 return Content(Encoding.UTF8.GetString(encryptionResult.Result));
             }
             catch (KeyVaultErrorException e)
