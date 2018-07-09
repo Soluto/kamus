@@ -15,12 +15,12 @@ namespace Hamuste
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-               /* .UseMetrics(options => { 
+                .UseMetrics(options => { 
                     options.EndpointOptions = endpointsOptions => {
                         endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
                     };
                 })
-                */
+                
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .Build();
