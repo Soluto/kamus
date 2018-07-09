@@ -47,7 +47,7 @@ namespace Hamuste
             services.AddMvc (options => options.AddMetricsResourceFilter ());
 
             services.AddSwaggerGen (swagger => {
-                swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "CoreWebApi Swagger" });
+                swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Hamuste Swagger" });
             });
 
             services.AddSingleton<IKubernetes>(s =>
@@ -104,10 +104,6 @@ namespace Hamuste
             {
                 app.UseExceptionMiddleware();
             }
-
-            var config = string.Join(Environment.NewLine, Configuration.AsEnumerable().Where(i => !i.Key.ToLower().Contains("secret")).Select(i => $"{i.Key} => {i.Value}"));
-
-            Console.WriteLine($"Configuration: {Environment.NewLine} {config}");
 
             Log.Logger = new LoggerConfiguration ()
                 .ReadFrom.Configuration (Configuration)

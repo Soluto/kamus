@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0-preview1" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="2.0.0-preview1" />
-    <PackageReference Include="ILLink.Tasks" Version="0.1.4-preview-981901" />
     <PackageReference Include="KubernetesClient" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.1" />
