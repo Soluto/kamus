@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: hamuse
-  namespace: team-dev-ops
+  namespace: team-devops
 roleRef:
   kind: ClusterRole #this must be Role or ClusterRole
   name: hamuste

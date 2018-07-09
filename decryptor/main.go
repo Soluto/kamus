@@ -95,7 +95,7 @@ func decrypt(encodedData string)(string){
 		hamusteUrl := os.Getenv("HAMUSTE_URL")
 
 		if (hamusteUrl == "") {
-			hamusteUrl = "http://hamuste.team-dev-ops.svc.cluster.local/"
+			hamusteUrl = "http://hamuste.team-devops.svc.cluster.local/"
 		}
 
 		req, err := http.NewRequest("POST", hamusteUrl + "api/v1/decrypt", b)
