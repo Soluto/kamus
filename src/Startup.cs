@@ -13,6 +13,7 @@ using Serilog;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using Microsoft.AspNetCore.Http;
 
 namespace Hamuste
 {
@@ -75,6 +76,8 @@ namespace Hamuste
             });
 
             services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         public async Task<string> GetToken(string authority, string resource, string scope)
