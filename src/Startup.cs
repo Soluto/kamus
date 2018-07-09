@@ -16,31 +16,6 @@ using System.Threading;
 
 namespace Hamuste
 {
-    public class Blah : DelegatingHandler 
-    {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            Console.WriteLine($"Sending k8s request {request.RequestUri}");
-
-            var k8sTask = base.SendAsync(request, cancellationToken);
-                 
-            if (await Task.WhenAny(k8sTask, Task.Delay(TimeSpan.FromSeconds(1), cancellationToken)) == k8sTask)
-            {
-                Console.WriteLine("k8s request completed");
-                // Task completed within timeout.
-                // Consider that the task may have faulted or been canceled.
-                // We re-await the task so that any exceptions/cancellation is rethrown.
-                return await k8sTask;
-            }
-            else
-            {
-                Console.WriteLine("k8s request completed with timeout");
-                throw new Exception("Timeout while waiting for k8s");
-            }
-        }
-
-    }
-
     public class Startup {
         
         public Startup(IHostingEnvironment env)
@@ -77,26 +52,13 @@ namespace Hamuste
 
             services.AddSingleton<IKubernetes>(s =>
             {
-                Console.WriteLine("Adding Kubernetes");
-                try
-                {
-                    KubernetesClientConfiguration config;
-                    if (!string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"]))
-                    {
-                        config = new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
-                    }
-                    else
-                    {
-                        config = KubernetesClientConfiguration.InClusterConfig();
-                    }
+                KubernetesClientConfiguration config;
+                config = string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"])
+                    ? KubernetesClientConfiguration.InClusterConfig()
+                    : new KubernetesClientConfiguration {Host = Configuration["Kubernetes:ProxyUrl"]};
 
 
-
-                    return new Kubernetes(config, new Blah());
-                }catch (Exception e){
-                    Console.WriteLine($"Oh no! {e}");
-                    throw e;
-                }
+                return new Kubernetes(config);
             });
 
             services.AddSingleton<IKeyVaultClient>(s =>
@@ -154,7 +116,7 @@ namespace Hamuste
 
             app.UseSwagger ();
             app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "My First Swagger");
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Hamuste Swagger");
             });
 
             app.UseAuthentication();

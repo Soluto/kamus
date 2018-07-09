@@ -1,15 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Models\" />
     <Folder Include="KubernetesAuthentication\" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0-preview1" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="2.0.0-preview1" />
@@ -27,9 +24,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.19.6" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.1" />
   </ItemGroup>
-
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
-
 </Project>
