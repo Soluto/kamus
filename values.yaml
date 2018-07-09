@@ -19,6 +19,8 @@ config:
 service:
   internalPort: 9999
   isAlivePath: /api/v1/isAlive
+  annotations:
+    prometheus.io/scrape: "false"
 
 image:
   version: 1.0
