@@ -9,7 +9,7 @@ spec:
       containers:
       - name: smoke-tests
         image: acreastus.azurecr.io/hamuste-smoke-tests:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotExist
         env:
         - name: SERVICE_ACCOUNT
           value: default
