@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hamuste-smoke-test
+  namespace: team-devops
+spec:
+  template:
+    spec:
+      containers:
+      - name: smoke-tests
+        image: acreastus.azurecr.io/hamuste-smoke-tests:latest
+        imagePullPolicy: Never
+        env:
+        - name: SERVICE_ACCOUNT
+          value: default
+        - name: NAMESPACE
+          value: team-devops
+      restartPolicy: Never
+  backoffLimit: 1
