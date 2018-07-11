@@ -2,7 +2,7 @@
 
 set -e
 
-kubectl delete -f job.yaml
+kubectl delete -f job.yaml --ignore-not-found=true
 kubectl apply -f job.yaml
 
 COUNTER=0
