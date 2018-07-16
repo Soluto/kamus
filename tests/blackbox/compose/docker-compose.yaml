@@ -7,7 +7,7 @@ services:
       context: ../../../.
       dockerfile: ./tests/blackbox/Dockerfile
     environment:
-      - API_URL=http://api:9999
+      - API_URL=http://api:9999/
       - TEAMCITY_PROJECT_NAME=api
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
