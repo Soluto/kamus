@@ -1,6 +1,8 @@
 version: '3'
 services:
   api:
+    environment:
+      - Kubernetes:ProxyUrl=http://wiremock:8080
 
   black-box:
     build:
