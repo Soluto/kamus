@@ -1,14 +1,22 @@
+using Microsoft.Extensions.Configuration;
+
 namespace blackbox.utils
 {
     public static class ConfigurationProvider
     {
-        static ConfigurationProvider() {
-            if (System.Environment.GetEnvironmentVariable("API_URL") != null) {
-                ServiceUrl = System.Environment.GetEnvironmentVariable("API_URL");
-            } else {
-                ServiceUrl = "http://localhost:9999";
-            }
+        public static IConfiguration Configuration
+        {
+            get;
+            set;
         }
-        public static string ServiceUrl { get; set; }
+        
+        static ConfigurationProvider()
+        {
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables()
+                .Build();
+        }
+
     }
 }

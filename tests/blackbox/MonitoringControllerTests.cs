@@ -11,12 +11,5 @@ namespace blackbox
             mHttpClientProvider = new HttpClientProvider ();
 
         }
-
-        [Fact]
-        public async Task Get_IsAlive () {
-            var httpClient = mHttpClientProvider.Provide ();
-            var result = await (await httpClient.GetAsync (ConfigurationProvider.ServiceUrl + "/api/v1/isAlive")).Content.ReadAsStringAsync ();
-            Assert.True (Boolean.Parse (result));
-        }
     }
 }
