@@ -5,7 +5,7 @@ set -e
 
 function run_tests()
 {
-  dotnet test ./tests/blackbox/blackbox.csproj
+  dotnet test ./blackbox.csproj
 }
 
 if [ -z "$PROXY_URL" ]

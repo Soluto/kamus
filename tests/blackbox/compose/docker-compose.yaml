@@ -10,7 +10,7 @@ services:
     environment:
       - API_URL=http://api:9999/
       - TEAMCITY_PROJECT_NAME=api
- #     - PROXY_URL=http://zap:8090
+      - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
   
   wiremock:
