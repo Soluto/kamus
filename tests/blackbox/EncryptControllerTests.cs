@@ -82,10 +82,10 @@ namespace blackbox
                 return res.AccessToken;
             });
 
-            var keys = await client.GetKeysAsync("https://k8poc.vault.azure.net");
+            var keys = await client.GetKeysAsync("https://k8spoc.vault.azure.net");
 
             foreach(var key in keys){
-                await client.DeleteKeyAsync("https://k8poc.vault.azure.net", key.Kid);
+                await client.DeleteKeyAsync("https://k8spoc.vault.azure.net", key.Kid);
             }
             
             var httpClient = mHttpClientProvider.Provide();
