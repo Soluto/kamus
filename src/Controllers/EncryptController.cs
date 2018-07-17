@@ -55,18 +55,20 @@ namespace Hamuste.Controllers
         [Route("api/v1/encrypt")]
         public async Task<ActionResult> Encrypt([FromBody]EncryptRequest body)
         {
+            mAuditLogger.Information("Encryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}, Namespace: {namespace}",
+                    Request.HttpContext.Connection.RemoteIpAddress,
+                    body.SerivceAccountName,
+                    body.NamesapceName);
+            
             try
             {
                 await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
-                mAuditLogger.Information("Encryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}", 
-                    Request.HttpContext.Connection.RemoteIpAddress,
-                    body.SerivceAccountName);
             }
             catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
             {
-                mLogger.Warning(e, "Encryption request failed, SourceIP: {sourceIp}, ServiceAccount: {sa}", 
-                    Request.HttpContext.Connection.RemoteIpAddress,
-                    body.SerivceAccountName);                
+                mLogger.Warning(e, "Service account {serviceAccount} not  found in namespace {namespace}", 
+                    body.SerivceAccountName,
+                    body.NamesapceName);                
                 return BadRequest();
             }
 
@@ -75,16 +77,14 @@ namespace Hamuste.Controllers
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
 
-            Console.WriteLine($"KeyId: {keyId}");
-
             try
             {
                 await mKeyVaultClient.GetKeyAsync(keyId);
             }
             catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
             {
-                mAuditLogger.Information(
-                    "KeyVault key was not found for Namespace {ns} and ServiceAccountName {sa}, creating new one.",
+                mLogger.Information(
+                    "KeyVault key was not found for Namespace {namesapce} and ServiceAccountName {serviceAccount}, creating new one.",
                     body.NamesapceName, body.SerivceAccountName);
                 
                 await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", hash, mKeyType, 2048);
@@ -92,9 +92,11 @@ namespace Hamuste.Controllers
 
             var encryptionResult = await mKeyVaultClient.EncryptAsync(keyId, "RSA-OAEP", Encoding.UTF8.GetBytes(body.Data));
 
-            mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {sa}", 
+            mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}", 
                 Request.HttpContext.Connection.RemoteIpAddress,
-                body.SerivceAccountName);
+                body.SerivceAccountName,
+                body.NamesapceName);
+            
             return Content(Convert.ToBase64String(encryptionResult.Result));
         }
 
@@ -111,11 +113,13 @@ namespace Hamuste.Controllers
                 return StatusCode(403);
             }
 
-            mAuditLogger.Information("Decryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}",
+            var id = serviceAccountUserName.Replace(ServiceAccountUsernamePrefix, "");
+
+            mAuditLogger.Information("Decryption request started, SourceIP: {sourceIp}, ServiceAccount User Name: {id}",
                 Request.HttpContext.Connection.RemoteIpAddress,
                 serviceAccountUserName);
 
-            var id = serviceAccountUserName.Replace(ServiceAccountUsernamePrefix, "");
+
             var hash = ComputeKeyId(id);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
@@ -124,7 +128,7 @@ namespace Hamuste.Controllers
                 var encryptionResult =
                     await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
 
-                mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccountName: {sa}", 
+                mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccount user Name: {sa}", 
                     Request.HttpContext.Connection.RemoteIpAddress,
                     id);
                 return Content(Encoding.UTF8.GetString(encryptionResult.Result));
