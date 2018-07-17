@@ -74,11 +74,12 @@ namespace blackbox
             var clientSecret = ConfigurationProvider.Configuration["ClientSecret"];
 
 
-            var client = new KeyVaultClient((authority, resource, scope) =>
+            var client = new KeyVaultClient(async (authority, resource, scope) =>
             {
                 var authContext = new AuthenticationContext(authority);
-                ClientCredential clientCred = new ClientCredential(clientId, clientSecret);
-                AuthenticationResult result = await authContext.AcquireTokenAsync(resource, clientCred);
+                var clientCred = new ClientCredential(clientId, clientSecret);
+                var res = await authContext.AcquireTokenAsync(resource, clientCred);
+                return res.AccessToken;
             });
 
             var keys = await client.GetKeysAsync("https://k8poc.vault.azure.net");
