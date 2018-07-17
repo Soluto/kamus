@@ -110,6 +110,10 @@ namespace Hamuste.Controllers
             if (string.IsNullOrEmpty(serviceAccountUserName) ||
                 !serviceAccountUserName.StartsWith(ServiceAccountUsernamePrefix, StringComparison.InvariantCulture))
             {
+                mAuditLogger.Information("Unauthorized decrypt request, SourceIP: {sourceIp}, ServiceAccount User Name: {id}",
+                    Request.HttpContext.Connection.RemoteIpAddress,
+                    serviceAccountUserName);
+                
                 return StatusCode(403);
             }
 
@@ -117,8 +121,7 @@ namespace Hamuste.Controllers
 
             mAuditLogger.Information("Decryption request started, SourceIP: {sourceIp}, ServiceAccount User Name: {id}",
                 Request.HttpContext.Connection.RemoteIpAddress,
-                serviceAccountUserName);
-
+                id);
 
             var hash = ComputeKeyId(id);
 
@@ -135,7 +138,7 @@ namespace Hamuste.Controllers
             }
             catch (KeyVaultErrorException e)
             {
-                mLogger.Warning(e, "Decryption request failed, SourceIP: {sourceIp}, ServiceAccount: {sa}",
+                mLogger.Warning(e, "Decryption request failed, ServiceAccount: {sa}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     serviceAccountUserName);
                 return StatusCode(400);
