@@ -85,7 +85,7 @@ namespace blackbox
             var keys = await client.GetKeysAsync("https://k8spoc.vault.azure.net");
 
             foreach(var key in keys){
-                await client.DeleteKeyAsync("https://k8spoc.vault.azure.net", key.Kid);
+                await client.DeleteKeyAsync(key.Identifier.Vault, key.Identifier.Name);
             }
             
             var httpClient = mHttpClientProvider.Provide();
