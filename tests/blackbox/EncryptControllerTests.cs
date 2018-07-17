@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using Xunit;
 using System.Net.Http.Headers;
 using System.Net;
+using Microsoft.Azure.KeyVault;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace blackbox
 {
@@ -66,6 +68,78 @@ namespace blackbox
         }
 
         [Fact]
+        public async Task Encrypt_KeyDoesNotExist_CreateIt()
+        {
+            var clientId = ConfigurationProvider.Configuration["ClientId"];
+            var clientSecret = ConfigurationProvider.Configuration["ClientSecret"];
+
+
+            var client = new KeyVaultClient((authority, resource, scope) =>
+            {
+                var authContext = new AuthenticationContext(authority);
+                ClientCredential clientCred = new ClientCredential(clientId, clientSecret);
+                AuthenticationResult result = await authContext.AcquireTokenAsync(resource, clientCred);
+            });
+
+            var keys = await client.GetKeysAsync("https://k8poc.vault.azure.net");
+
+            foreach(var key in keys){
+                await client.DeleteKeyAsync("https://k8poc.vault.azure.net", key.Kid);
+            }
+            
+            var httpClient = mHttpClientProvider.Provide();
+            var data = "test";
+
+            var request = new EncryptRequest
+            {
+                SerivceAccountName = "default",
+                NamesapceName = "default",
+                Data = data
+            };
+
+            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            result.EnsureSuccessStatusCode();
+        }
+
+
+        [Fact]
+        public async Task Encrypt_SANotExist_ReturnBadRequest()
+        {
+            var httpClient = mHttpClientProvider.Provide();
+            var data = "test";
+
+            var request = new EncryptRequest
+            {
+                SerivceAccountName = "not-exist",
+                NamesapceName = "namespace",
+                Data = data
+            };
+
+            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task Encrypt_NamespaceNotExist_ReturnBadRequest()
+        {
+            var httpClient = mHttpClientProvider.Provide();
+            var data = "test";
+
+            var request = new EncryptRequest
+            {
+                SerivceAccountName = "default",
+                NamesapceName = "not-exist",
+                Data = data
+            };
+
+            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Fact]
         public async Task TestFullFlow()
         {
             var httpClient = mHttpClientProvider.Provide();
@@ -76,7 +150,7 @@ namespace blackbox
                 SerivceAccountName = "default",
                 NamesapceName = "default",
                 Data = data
-        };
+           };
 
             var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
 
