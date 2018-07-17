@@ -46,9 +46,7 @@ func main() {
 		if err != nil {
 			fmt.Println("error:", err)
 		}
-
-		os.Stdout.Write(b)
-
+		
 		file, err := os.OpenFile(
         os.Args[2],
         os.O_WRONLY|os.O_TRUNC|os.O_CREATE,
