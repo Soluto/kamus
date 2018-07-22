@@ -10,4 +10,4 @@ then
 fi
 
 docker-compose -f tests/blackbox/compose/docker-compose.yaml -f tests/blackbox/compose/$api_file -f tests/blackbox/compose/docker-compose.security.yaml pull --parallel
-docker-compose -f tests/blackbox/compose/docker-compose.yaml -f tests/blackbox/compose/$api_file -f tests/blackbox/compose/docker-compose.security.yaml run --rm glue bash /app/run_glue.sh http://api blackbox /output/glue.json
+docker-compose -f tests/blackbox/compose/docker-compose.yaml -f tests/blackbox/compose/$api_file -f tests/blackbox/compose/docker-compose.security.yaml run --rm glue bash -x /app/run_glue.sh http://api blackbox /output/glue.json
