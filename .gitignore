@@ -36,3 +36,5 @@ msbuild.wrn
 zap/
 .idea/
 job/
+
+glue/

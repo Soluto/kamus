@@ -2,18 +2,6 @@ version: '3'
 services:
   zap:
     image: soluto/zap-ci:1531823009782
-    user: root
-    volumes:
-      - ./zap/session:/home/zap/.ZAP/session/:rw
-  glue:
-    image: soluto/glue-ci:1519813874483
-    environment:
-      - ZAP_HOST=http://zap
-      - ZAP_PORT=8090
-      - PROXY_URL=http://zap:8090
-    volumes:
-      - ./glue:/output
-    command: tail -f /dev/null
-    depends_on:
-      - zap
-      - api
+    logging:
+      driver:
+        none
