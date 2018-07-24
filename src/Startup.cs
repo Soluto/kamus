@@ -11,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Serilog;
 using System.Linq;
-using System.Net.Http;
-using System.Threading;
 using Microsoft.AspNetCore.Http;
 
 namespace Hamuste
@@ -45,7 +43,7 @@ namespace Hamuste
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
 
-            services.AddMvc (options => options.AddMetricsResourceFilter ());
+            services.AddMvc().AddMetrics();
 
             services.AddSwaggerGen (swagger => {
                 swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Hamuste Swagger" });
@@ -67,7 +65,7 @@ namespace Hamuste
                 return new KeyVaultClient(GetToken);
             });
 
-            services.AddScheme<KubernetesAuthenticationOptions, KubernetesAuthenticationHandler>("kubernetes", null);
+            services.AddAuthentication().AddScheme<KubernetesAuthenticationOptions, KubernetesAuthenticationHandler>("kubernetes", null);
 
             services.AddAuthorization(options => {
                 options.AddPolicy("KubernetesPolicy", policyBuilder => policyBuilder.RequireAssertion(

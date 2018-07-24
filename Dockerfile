@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0.5-2.1.4 AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build-env
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY  ./src ./
 RUN dotnet publish -c Release -o ./obj/Docker/publish
 
 # Build runtime image
-FROM microsoft/aspnetcore:2.0.8 as release
+FROM microsoft/dotnet:2.1-aspnetcore-runtime as release
 RUN groupadd -r dotnet && useradd --no-log-init -r -g dotnet -d /home/dotnet -ms /bin/bash dotnet
 USER dotnet
 WORKDIR /home/dotnet/app
