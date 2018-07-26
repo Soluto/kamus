@@ -37,4 +37,5 @@ zap/
 .idea/
 job/
 
-glue/
+**/report.json
+**/report.json
