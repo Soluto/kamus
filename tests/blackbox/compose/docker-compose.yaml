@@ -13,7 +13,7 @@ services:
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
     volumes:
-      - ./zap/report:/reports
+      - ../../../glue:/reports
   
   wiremock:
     build:
