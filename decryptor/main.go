@@ -2,14 +2,14 @@
 package main
 
 import (
-		"encoding/json"
-		"fmt" 
-		"bufio"
-		"os"  
-		"io/ioutil"
-		"net/http"
-		"bytes"
-		"strings"
+	"bufio"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"strings"
 )
 
 type DecryptRequest struct {
@@ -17,55 +17,56 @@ type DecryptRequest struct {
 }
 
 func main() {
-		if (len(os.Args) < 3){
-			fmt.Println("Usage: decryptor <source-file> <target-file>")
-			os.Exit(1)
-		}
+	fmt.Println("Decryptor version 1.0")
+	if len(os.Args) < 3 {
+		fmt.Println("Usage: decryptor <source-file> <target-file>")
+		os.Exit(1)
+	}
 
-		fmt.Println("Decryptor starting")
+	fmt.Println("Decryptor starting")
 
-    // Creating the maps for JSON
-    m := map[string]interface{}{}
+	// Creating the maps for JSON
+	m := map[string]interface{}{}
 
-		f, _ := os.Open(os.Args[1])
+	f, _ := os.Open(os.Args[1])
 
-    // Use bufio.NewReader to get a Reader.
-    // ... Then use ioutil.ReadAll to read the entire content.
-    reader := bufio.NewReader(f)
-    content, _ := ioutil.ReadAll(reader)
+	// Use bufio.NewReader to get a Reader.
+	// ... Then use ioutil.ReadAll to read the entire content.
+	reader := bufio.NewReader(f)
+	content, _ := ioutil.ReadAll(reader)
 
-    // Parsing/Unmarshalling JSON encoding/json
-    err := json.Unmarshal([]byte(content), &m)
+	// Parsing/Unmarshalling JSON encoding/json
+	err := json.Unmarshal([]byte(content), &m)
 
-    if err != nil {
-        panic(err)
-    }
-		parseMap(m)
+	if err != nil {
+		panic(err)
+	}
+	parseMap(m)
 
-		b, err := json.Marshal(m)
-		if err != nil {
-			fmt.Println("error:", err)
-		}
-		
-		file, err := os.OpenFile(
-        os.Args[2],
-        os.O_WRONLY|os.O_TRUNC|os.O_CREATE,
-        0666,
-    )
-    if err != nil {
-			panic(err)
-    }
-    defer file.Close()
+	b, err := json.Marshal(m)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
 
-    _, err = file.Write(b)
-    if err != nil {
-			panic(err)
-    }
-		
-		fmt.Println("Decryptor run completed successfully")
+	file, err := os.OpenFile(
+		os.Args[2],
+		os.O_WRONLY|os.O_TRUNC|os.O_CREATE,
+		0666,
+	)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	_, err = file.Write(b)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Decryptor run completed successfully")
 }
 
-func decrypt(encodedData string)(string){
+func decrypt(encodedData string) string {
 
 	fmt.Println(encodedData)
 	f1, err := os.Open("/var/run/secrets/kubernetes.io/serviceaccount/token")
@@ -74,88 +75,87 @@ func decrypt(encodedData string)(string){
 		panic(err)
 	}
 
-    // Use bufio.NewReader to get a Reader.
-    // ... Then use ioutil.ReadAll to read the entire content.
-    reader1 := bufio.NewReader(f1)
-		token, err := ioutil.ReadAll(reader1)
-		
-		if err != nil {
-			panic(err)
-		}
+	// Use bufio.NewReader to get a Reader.
+	// ... Then use ioutil.ReadAll to read the entire content.
+	reader1 := bufio.NewReader(f1)
+	token, err := ioutil.ReadAll(reader1)
 
-		decryptRequest := &DecryptRequest{EncryptedData: encodedData}
+	if err != nil {
+		panic(err)
+	}
 
-		b := new(bytes.Buffer)
-		json.NewEncoder(b).Encode(decryptRequest)
+	decryptRequest := &DecryptRequest{EncryptedData: encodedData}
 
-		client := &http.Client{}
+	b := new(bytes.Buffer)
+	json.NewEncoder(b).Encode(decryptRequest)
 
-		hamusteUrl := os.Getenv("HAMUSTE_URL")
+	client := &http.Client{}
 
-		if (hamusteUrl == "") {
-			hamusteUrl = "http://hamuste.team-devops.svc.cluster.local/"
-		}
+	hamusteUrl := os.Getenv("HAMUSTE_URL")
 
-		req, err := http.NewRequest("POST", hamusteUrl + "api/v1/decrypt", b)
-		
-		if err != nil {
-			panic(err)
-		}
+	if hamusteUrl == "" {
+		hamusteUrl = "http://hamuste.team-devops.svc.cluster.local/"
+	}
 
-		req.Header.Add("Content-Type", "application/json")
-		req.Header.Add("Authorization", "Bearer " + string(token))
+	req, err := http.NewRequest("POST", hamusteUrl+"api/v1/decrypt", b)
 
-		res, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
 
-		if err != nil {
-			panic(err)
-		}
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Bearer "+string(token))
 
-		defer res.Body.Close()
-		body, err := ioutil.ReadAll(res.Body)
+	res, err := client.Do(req)
 
-		if (res.StatusCode > 299) {
-			fmt.Println("Response from Hamuste does not indicate success: " + res.Status)
-			os.Exit(1)
-		}
+	if err != nil {
+		panic(err)
+	}
 
-		return string(body)
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+
+	if res.StatusCode > 299 {
+		fmt.Println("Response from Hamuste does not indicate success: " + res.Status)
+		os.Exit(1)
+	}
+
+	return string(body)
 }
 
 func parseMap(aMap map[string]interface{}) {
-    for key, val := range aMap {
-        switch concreteVal := val.(type) {
-        case map[string]interface{}:
-            parseMap(val.(map[string]interface{}))
-        case []interface{}:
-            parseArray(val.([]interface{}))
-        default:
+	for key, val := range aMap {
+		switch concreteVal := val.(type) {
+		case map[string]interface{}:
+			parseMap(val.(map[string]interface{}))
+		case []interface{}:
+			parseArray(val.([]interface{}))
+		default:
 
-						switch concreteVal.(type) {
-						case string:
-							if (strings.Index(concreteVal.(string), "secure:") == 0) {
-								aMap[key] = decrypt(strings.Split(concreteVal.(string), ":")[1])
-							}
-						default:
-						}
+			switch concreteVal.(type) {
+			case string:
+				if strings.Index(concreteVal.(string), "secure:") == 0 {
+					aMap[key] = decrypt(strings.Split(concreteVal.(string), ":")[1])
+				}
+			default:
+			}
 
-						
-        }
-    }
+		}
+	}
 }
 
 func parseArray(anArray []interface{}) {
-    for i, val := range anArray {
-        switch concreteVal := val.(type) {
-        case map[string]interface{}:
-            fmt.Println("Index:", i)
-            parseMap(val.(map[string]interface{}))
-        case []interface{}:
-            fmt.Println("Index:", i)
-            parseArray(val.([]interface{}))
-        default:
-            fmt.Println("Index", i, ":", concreteVal)
+	for i, val := range anArray {
+		switch concreteVal := val.(type) {
+		case map[string]interface{}:
+			fmt.Println("Index:", i)
+			parseMap(val.(map[string]interface{}))
+		case []interface{}:
+			fmt.Println("Index:", i)
+			parseArray(val.([]interface{}))
+		default:
+			fmt.Println("Index", i, ":", concreteVal)
 
-        }
-    }
+		}
+	}
 }
