@@ -16,8 +16,15 @@ type DecryptRequest struct {
 	EncryptedData string `json:"data"`
 }
 
+var (
+	version        = "SetByCI"
+	buildTimestamp = "SetByCI"
+)
+
 func main() {
-	fmt.Println("Decryptor version 1.0")
+	fmt.Println("Decryptor version", version)
+	fmt.Println("Built on", buildTimestamp)
+
 	if len(os.Args) < 3 {
 		fmt.Println("Usage: decryptor <source-file> <target-file>")
 		os.Exit(1)
