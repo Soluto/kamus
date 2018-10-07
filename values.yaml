@@ -13,8 +13,6 @@ ingress:
     - hamuste-primary.mysoluto.com
     #Used to directly reference secondary cluster
     - hamuste-secondary.mysoluto.com
-  annotations:
-    - nginx.ingress.kubernetes.io/limit-rpm: 10
 #optional environment variables
 config:
   #Key: Value
