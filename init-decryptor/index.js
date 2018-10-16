@@ -12,15 +12,13 @@ program
     .option('-d, --decrypted-file [path]', 'Decrypted JSON path')
     .parse(process.argv);
 
-let getEncryptedFiles = async () => {
+const getEncryptedFiles = async () => {
   return await readfiles(program.encryptedFolder, function (err, filename, contents) {
     if (err) throw err;
-    console.log('File ' + filename + ':');
-    console.log(contents);
   });
 }
 
-let getkamusUrl = () => {
+const getKamusUrl = () => {
     let url = process.env.KAMUS_URL;
     if (!url) {
         throw new Error("Missing KAMUS_URL env var");
@@ -28,11 +26,11 @@ let getkamusUrl = () => {
     return url;
 }
 
-let getBarerToken = async () => {
+const getBarerToken = async () => {
     return await readFile("/var/run/secrets/kubernetes.io/serviceaccount/token");
 }
 
-let decryptFile = async (httpClient, filePath) => {
+const decryptFile = async (httpClient, filePath) => {
     var encryptedContent = await readFile(filePath);
     const response = await httpClient.post('/api/v1/decrypt', encryptedContent);
 
@@ -40,7 +38,7 @@ let decryptFile = async (httpClient, filePath) => {
 
 async function run() {
     let files = await getEncryptedFiles();
-    let kamusUrl = getkamusUrl();
+    let kamusUrl = getKamusUrl();
     let token = await getBarerToken();
 
     const httpClient = axios.create({
@@ -60,4 +58,4 @@ async function run() {
     console.log("Decrypted: " + secrets.keys())
 }
 
-run()
+run();
