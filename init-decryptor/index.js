@@ -2,7 +2,7 @@ let program = require('commander');
 const readfiles = require('node-readfiles');
 const fs = require('fs');
 const util = require('util');
-const readFile = util.promisify(fs.readFile);
+const readFileAsync = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 const axios = require('axios');
 
@@ -27,13 +27,14 @@ const getKamusUrl = () => {
 }
 
 const getBarerToken = async () => {
-    return await readFile("/var/run/secrets/kubernetes.io/serviceaccount/token");
+    return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
 }
 
 const decryptFile = async (httpClient, filePath) => {
-    var encryptedContent = await readFile(filePath);
-    const response = await httpClient.post('/api/v1/decrypt', encryptedContent);
-
+    var encryptedContent = await readFileAsync(program.encryptedFolder + '/' + filePath, "utf8");
+    console.log('encrypted content', encryptedContent);
+    const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
+    return response.data;
 }
 
 async function run() {
@@ -49,13 +50,14 @@ async function run() {
 
     let secrets = {};
 
-    files.forEach(file => {
-        secrets[file] = decryptFile(httpClient, file);
-    });
-
-    await writeFile(program.decryptedFile, JSON.parse(secrets));
+    for (let file of files)
+    {
+        secrets[file] = await decryptFile(httpClient, file);
+    }
     
-    console.log("Decrypted: " + secrets.keys())
+    await writeFile(program.decryptedFile, JSON.stringify(secrets));
+    
+    console.log("Decrypted: " + Object.keys(secrets))
 }
 
 run();
