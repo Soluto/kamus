@@ -8,7 +8,7 @@ const axios = require('axios');
 
 program
     .version('0.1.0')
-    .option('-e, --encrypted-folder [path]', 'Encrypt data folder path')
+    .option('-e, --encrypted-folder [path]', 'Encrypted files folder path')
     .option('-d, --decrypted-file [path]', 'Decrypted JSON path')
     .parse(process.argv);
 
