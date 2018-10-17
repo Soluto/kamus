@@ -4,7 +4,7 @@ set -e
 
 echo "starting wiremock"
 
-# docker-compose up -d --build wiremock
+docker-compose up -d --build wiremock
 
 docker-compose build decryptor
 
