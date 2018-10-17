@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+  decryptor:
+    build:
+      context: ../
+    environment:
+      - KAMUS_URL=http://wiremock:8080/
+    volumes:
+      - "${PWD}:/files"
+      - "${PWD}:/var/run/secrets/kubernetes.io/serviceaccount"
+      - "${PWD}/encrypted:/encrypted"
+
+    command: ["node","index.js", "-e", "/encrypted", "-d", "/files/out.json"]
+  
+  wiremock:
+    build:
+      context: Wiremock
+  
