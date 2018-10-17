@@ -43,7 +43,7 @@ async function run() {
 
     const httpClient = axios.create({
         baseURL: kamusUrl,
-        timeout: 1000,
+        timeout: 10000,
         headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     });
 
