@@ -32,7 +32,6 @@ const getBarerToken = async () => {
 
 const decryptFile = async (httpClient, filePath) => {
     var encryptedContent = await readFileAsync(program.encryptedFolder + '/' + filePath, "utf8");
-    console.log('encrypted content', encryptedContent);
     const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
     return response.data;
 }
