@@ -139,8 +139,10 @@ namespace Hamuste.ADCredentialsGenerator
                 var encryptedValue = await response.Content.ReadAsStringAsync();
 
                 Console.WriteLine("Encryption succeed, generation done");
-                Console.WriteLine($"secure:{encryptedValue}");
-            }catch (Exception e){
+                Console.WriteLine(encryptedValue);
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine("Failed to generat credentials");
                 Console.WriteLine(e);
                 return 1;
