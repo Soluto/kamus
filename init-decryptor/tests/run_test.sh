@@ -10,8 +10,10 @@ docker-compose build decryptor
 
 echo "running decryptor"
 
-docker-compose run decryptor
+OUTPUT_FORMAT=json docker-compose run decryptor
 
 echo "comparing files"
 
 diff -q out.json expected.json
+
+OUTPUT_FORMAT=cfg docker-compose run decryptor

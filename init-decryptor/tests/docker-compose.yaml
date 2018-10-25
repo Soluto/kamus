@@ -11,7 +11,7 @@ services:
       - "${PWD}:/var/run/secrets/kubernetes.io/serviceaccount"
       - "${PWD}/encrypted:/encrypted"
 
-    command: ["node","index.js", "-e", "/encrypted", "-d", "/files/out.json"]
+    command: ["node","index.js", "-e", "/encrypted", "-d", "/files/out.json", "-f", "${OUTPUT_FORMAT}"]
   
   wiremock:
     build:
