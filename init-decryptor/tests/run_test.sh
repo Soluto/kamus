@@ -8,7 +8,7 @@ docker-compose up -d --build wiremock
 
 docker-compose build decryptor
 
-echo "running decryptor - cfg format"
+echo "running decryptor - json format"
 
 OUTPUT_FORMAT=json docker-compose run decryptor
 
