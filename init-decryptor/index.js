@@ -8,8 +8,9 @@ const axios = require('axios');
 
 program
     .version('0.1.0')
-    .option('-e, --encrypted-folder [path]', 'Encrypted files folder path')
-    .option('-d, --decrypted-file [path]', 'Decrypted JSON path')
+    .option('-e, --encrypted-folder <path>', 'Encrypted files folder path')
+    .option('-d, --decrypted-file <path>', 'Decrypted JSON path')
+    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg', /^(json|cfg)$/i, 'json')
     .parse(process.argv);
 
 const getEncryptedFiles = async () => {
@@ -36,7 +37,18 @@ const decryptFile = async (httpClient, filePath) => {
     return response.data;
 }
 
-async function run() {
+const serializeToCfgFormat = (secrets) => {
+  var output = "";
+  Object.keys(secrets).forEach(key => {
+    output += `${key}=${secrets[key]}\n`
+  });
+
+  return output;
+}
+
+async function innerRun() {
+
+    console.log(program.outputFormat);
     let files = await getEncryptedFiles();
     let kamusUrl = getKamusUrl();
     let token = await getBarerToken();
@@ -53,10 +65,30 @@ async function run() {
     {
         secrets[file] = await decryptFile(httpClient, file);
     }
+
+    console.log(`Writing output format using ${program.outputFormat} format`);
+
+    switch(program.outputFormat){
+      case "json":
+        await writeFile(program.decryptedFile, JSON.stringify(secrets));
+        break;
+      case "cfg":
+        await writeFile(program.decryptedFile, serializeToCfgFormat(secrets));
+        break;
+    }
     
-    await writeFile(program.decryptedFile, JSON.stringify(secrets));
+    
     
     console.log("Decrypted: " + Object.keys(secrets))
+}
+
+async function run() {
+  try {
+    await innerRun();
+  }catch (e) {
+    console.error("Failed to run init container: " + e);
+    process.exit(1);
+  }
 }
 
 run();

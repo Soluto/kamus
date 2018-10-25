@@ -8,10 +8,18 @@ docker-compose up -d --build wiremock
 
 docker-compose build decryptor
 
-echo "running decryptor"
+echo "running decryptor - json format"
 
-docker-compose run decryptor
+OUTPUT_FORMAT=json docker-compose run decryptor
 
 echo "comparing files"
 
 diff -q out.json expected.json
+
+echo "running decryptor - cfg format"
+
+OUTPUT_FORMAT=cfg docker-compose run decryptor
+
+echo "comparing files"
+
+diff -q out.json expected.cfg
