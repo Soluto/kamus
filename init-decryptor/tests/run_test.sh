@@ -16,4 +16,10 @@ echo "comparing files"
 
 diff -q out.json expected.json
 
-OUTPUT_FORMAT=cfg docker-compose run decryptor
+echo "running decryptor"
+
+OUTPUT_FORMAT=json docker-compose run decryptor
+
+echo "comparing files"
+
+diff -q out.json expected.json
