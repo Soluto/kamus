@@ -13,6 +13,9 @@ using Serilog;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Hamuste.KeyManagment;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 
 namespace Hamuste
 {
@@ -59,11 +62,19 @@ namespace Hamuste
                 return new Kubernetes(config);
             });
 
+            services.AddDataProtection();
+
             services.AddSingleton<IKeyManagment>(s => {
                 var provider = Configuration.GetValue<string>("KeyManagment:Provider");
                 if (provider == "AzureKeyVault"){
                     return new AzureKeyVaultKeyManagment(s.GetService<IKeyVaultClient>(), Configuration);
-                } else {
+                } 
+                else if (provider == "AESKey")
+                {
+                    var key = Configuration.GetValue<string>("KeyManagment:AES:Key");
+                    return new AESKeyManagment(key, s.GetService<IDataProtectionProvider>());
+                }
+                else {
                     throw new InvalidOperationException($"Unsupported provider type: {provider}");
                 }
             });
