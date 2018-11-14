@@ -17,6 +17,7 @@ using Hamuste.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Serilog;
+using Hamuste.KeyManagment;
 
 namespace Hamuste.Controllers
 {
@@ -24,11 +25,9 @@ namespace Hamuste.Controllers
     public class EncryptController : Controller
     {
         private readonly IKubernetes mKubernetes;
-        private readonly IKeyVaultClient mKeyVaultClient;
         private readonly IAuthorizationService mAuthorizationService;
         private readonly IHttpContextAccessor mHttpContextAccessor;
-        private readonly string mKeyVaultName;
-        private readonly string mKeyType;
+        private readonly IKeyManagment mKeyManagment;
         private readonly ILogger mAuditLogger = Log.ForContext<EncryptController>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<EncryptController>();
 
@@ -37,18 +36,14 @@ namespace Hamuste.Controllers
         
         public EncryptController(
             IKubernetes kubernetes, 
-            IKeyVaultClient keyVaultClient,
             IAuthorizationService authorizationService,
             IHttpContextAccessor httpContextAccessor,
-            IConfiguration configuration)
+            IKeyManagment keyManagment)
         {
             mKubernetes = kubernetes;
-            mKeyVaultClient = keyVaultClient;
             mAuthorizationService = authorizationService;
             mHttpContextAccessor = httpContextAccessor;
-            
-            mKeyVaultName = configuration["KeyVault:Name"];
-            mKeyType = configuration["KeyVault:KeyType"];
+            mKeyManagment = keyManagment;
         }
 
         [HttpPost]
@@ -71,33 +66,15 @@ namespace Hamuste.Controllers
                     body.NamesapceName);                
                 return BadRequest();
             }
-
-            var id = $"{body.NamesapceName}:{body.SerivceAccountName}";
-            var hash = ComputeKeyId(id);
-
-            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
-
-            try
-            {
-                await mKeyVaultClient.GetKeyAsync(keyId);
-            }
-            catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
-            {
-                mLogger.Information(
-                    "KeyVault key was not found for Namespace {namesapce} and ServiceAccountName {serviceAccount}, creating new one.",
-                    body.NamesapceName, body.SerivceAccountName);
-                
-                await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", hash, mKeyType, 2048);
-            }
-
-            var encryptionResult = await mKeyVaultClient.EncryptAsync(keyId, "RSA-OAEP", Encoding.UTF8.GetBytes(body.Data));
+            
+            var encryptedData = await mKeyManagment.Encrypt(body.Data, $"{body.NamesapceName}:{body.SerivceAccountName}");
 
             mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}", 
                 Request.HttpContext.Connection.RemoteIpAddress,
                 body.SerivceAccountName,
                 body.NamesapceName);
             
-            return Content(Convert.ToBase64String(encryptionResult.Result));
+            return Content(encryptedData);
         }
 
         [HttpPost]
@@ -123,20 +100,16 @@ namespace Hamuste.Controllers
                 Request.HttpContext.Connection.RemoteIpAddress,
                 id);
 
-            var hash = ComputeKeyId(id);
-
-            var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
-            try
+            try 
             {
-                var encryptionResult =
-                    await mKeyVaultClient.DecryptAsync(keyId, "RSA-OAEP", Convert.FromBase64String(body.EncryptedData));
+                var data = await mKeyManagment.Decrypt(body.EncryptedData, id);
 
                 mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccount user Name: {sa}", 
                     Request.HttpContext.Connection.RemoteIpAddress,
                     id);
-                return Content(Encoding.UTF8.GetString(encryptionResult.Result));
+                return Content(data);
             }
-            catch (KeyVaultErrorException e)
+            catch (DecryptionFailureException e)
             {
                 mLogger.Warning(e, "Decryption request failed, ServiceAccount: {sa}",
                     Request.HttpContext.Connection.RemoteIpAddress,
@@ -145,13 +118,6 @@ namespace Hamuste.Controllers
             }
         }
 
-        private string ComputeKeyId(string serviceUserName)
-        {
-            return 
-                WebEncoders.Base64UrlEncode(
-                    SHA256.Create().ComputeHash(
-                        Encoding.UTF8.GetBytes(serviceUserName)))
-                           .Replace("_", "-");
-        }
+        
     }
 }

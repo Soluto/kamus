@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Serilog;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Hamuste.KeyManagment;
 
 namespace Hamuste
 {
@@ -55,15 +56,19 @@ namespace Hamuste
                 config = string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"])
                     ? KubernetesClientConfiguration.InClusterConfig()
                     : new KubernetesClientConfiguration {Host = Configuration["Kubernetes:ProxyUrl"]};
-
-
                 return new Kubernetes(config);
             });
 
-            services.AddSingleton<IKeyVaultClient>(s =>
-            {
-                return new KeyVaultClient(GetToken);
+            services.AddSingleton<IKeyManagment>(s => {
+                var provider = Configuration.GetValue<string>("KeyManagment:Provider");
+                if (provider == "AzureKeyVault"){
+                    return new AzureKeyVaultKeyManagment(s.GetService<IKeyVaultClient>(), Configuration);
+                } else {
+                    throw new InvalidOperationException($"Unsupported provider type: {provider}");
+                }
             });
+
+            services.AddSingleton<IKeyVaultClient>(_ => new KeyVaultClient(GetToken));
 
             services.AddAuthentication().AddScheme<KubernetesAuthenticationOptions, KubernetesAuthenticationHandler>("kubernetes", null);
 
@@ -80,7 +85,6 @@ namespace Hamuste
 
         public async Task<string> GetToken(string authority, string resource, string scope)
         {
-            Console.WriteLine("Requesting a token!");
             var clientId = Configuration["ActiveDirectory:ClientId"];
             var clientSecret = Configuration["ActiveDirectory:ClientSecret"];
             
