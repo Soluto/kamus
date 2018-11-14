@@ -11,7 +11,7 @@ Before encrypting a secret, you will need a Kubernetes service account.
 The service account is used to authenticate your application in production. 
 Only applications tha tare running with this service account, will be able to decrypt the secret.
 After create the service account, use the following HTTP request to encrypt your secret:
-
+```
 POST /api/v1/encrypt HTTP/1.1
 Host: <Kamus Server URL>
 Content-Type: application/json
@@ -21,6 +21,7 @@ Cache-Control: no-cache
 	"service-account": "<name of service account>",
 	"namespace": "<name of your namespace>"
 }
+```
 
 Than, use the decryptor init container to decrypt the secret in production.
 
