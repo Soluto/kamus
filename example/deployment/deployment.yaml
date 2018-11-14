@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kamus-example
+  labels:
+    app: kamus-example
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kamus-example
+    spec:
+      serviceAccountName: kamus-example-sa
+      automountServiceAccountToken: true
+      initContainers:
+        - name: "kamus-init"
+          image: "<>"
+          env:
+            - name: KAMUS_URL
+              value: http://hamuste.team-devops.svc.cluster.local/ 
+          volumeMounts:
+          - name: encrypted-secrets
+            mountPath: /encrypted-secrets
+          - name: decrypted-secrets
+            mountPath: /decrypted-secrets
+        args: ["-e","/encrypted-secrets","-d","/decrypted-secrets/{{ .Values.decryptedJsonFileName }}"]
+      containers:
+        - name: app
+          image: {{ .Values.image.repository }}/{{ default .Values.nameOverride .Values.image.name }}:{{ .Values.image.version }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: decrypted-secrets
+            mountPath: /secrets
+      volumes:
+        - name: encrypted-secrets
+          configMap: 
+            name: encrypted-secrets-cm
+        - name: decrypted-secrets
+          emptyDir:
+            medium: Memory

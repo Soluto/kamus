@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: encrypted-secrets-cm
+data:
+  key: <encrypted>
+  key2: <encrypted>
