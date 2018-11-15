@@ -22,4 +22,4 @@ OUTPUT_FORMAT=cfg docker-compose run decryptor
 
 echo "comparing files"
 
-diff -q out.json expected.cfg
+diff -q out.cfg expected.cfg
