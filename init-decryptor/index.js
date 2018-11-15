@@ -42,6 +42,8 @@ const serializeToCfgFormat = (secrets) => {
   Object.keys(secrets).forEach(key => {
     output += `${key}=${secrets[key]}\n`
   });
+  
+  output = output.substring(0, output.lastIndexOf('\n'));
 
   return output;
 }
