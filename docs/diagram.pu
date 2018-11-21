@@ -1,0 +1,28 @@
+@startuml
+
+actor User 
+participant Pod
+participant KamusApi
+participant KubernetesApi
+participant KMS
+
+== Encryption ==
+
+autonumber
+User -> Kamus: Encrypt - data, namespace, service account
+Kamus -> KubernetesApi: Get Service Account - namespace, service account
+KubernetesApi -> Kamus: Service Account details
+Kamus -> Kms: Encrypt - data, namespace, service account
+Kms -> Kamus: Enrypted data
+Kamsu -> User: Enrypted data
+
+== Decryption ==
+autonumber 1
+Pod -> Kamus: Decrypt - data, service account token
+Kamus -> KubernetesApi: TokenReview - token
+KubernetesApi -> Kamus: service account, namespace
+KamusApi -> Kms: Decrypt - data, service account, namespace
+Kms -> KamusApi: Decrypted data
+KamusApi -> Pod: Decrypted data
+
+@enduml
