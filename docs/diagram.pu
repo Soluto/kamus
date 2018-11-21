@@ -2,7 +2,7 @@
 
 actor User 
 participant Pod
-participant KamusApi
+participant Kamus
 participant KubernetesApi
 participant KMS
 
@@ -14,7 +14,7 @@ Kamus -> KubernetesApi: Get Service Account - namespace, service account
 KubernetesApi -> Kamus: Service Account details
 Kamus -> Kms: Encrypt - data, namespace, service account
 Kms -> Kamus: Enrypted data
-Kamsu -> User: Enrypted data
+Kamus -> User: Enrypted data
 
 == Decryption ==
 autonumber 1
@@ -22,7 +22,7 @@ Pod -> Kamus: Decrypt - data, service account token
 Kamus -> KubernetesApi: TokenReview - token
 KubernetesApi -> Kamus: service account, namespace
 KamusApi -> Kms: Decrypt - data, service account, namespace
-Kms -> KamusApi: Decrypted data
-KamusApi -> Pod: Decrypted data
+Kms -> Kamus: Decrypted data
+Kamus -> Pod: Decrypted data
 
 @enduml
