@@ -21,7 +21,7 @@ autonumber 1
 Pod -> Kamus: Decrypt - data, service account token
 Kamus -> KubernetesApi: TokenReview - token
 KubernetesApi -> Kamus: service account, namespace
-KamusApi -> Kms: Decrypt - data, service account, namespace
+Kamus -> Kms: Decrypt - data, service account, namespace
 Kms -> Kamus: Decrypted data
 Kamus -> Pod: Decrypted data
 
