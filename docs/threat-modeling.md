@@ -1,3 +1,3 @@
 # Kamus Threat Modeling
 
-![alt text][diagram.png]
+![alt text](./diagram.png)
