@@ -1,22 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0-preview1" />
-    <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="2.0.0-preview1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Hamuste.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MonitoringControllerTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KeyManagment\" />
   </ItemGroup>
 </Project>

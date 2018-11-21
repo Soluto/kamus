@@ -62,8 +62,6 @@ namespace Hamuste
                 return new Kubernetes(config);
             });
 
-            services.AddDataProtection();
-
             services.AddSingleton<IKeyManagment>(s => {
                 var provider = Configuration.GetValue<string>("KeyManagment:Provider");
                 if (provider == "AzureKeyVault"){
@@ -72,7 +70,7 @@ namespace Hamuste
                 else if (provider == "AESKey")
                 {
                     var key = Configuration.GetValue<string>("KeyManagment:AES:Key");
-                    return new AESKeyManagment(key, s.GetService<IDataProtectionProvider>());
+                    return new SymmetricKeyManagment(key);
                 }
                 else {
                     throw new InvalidOperationException($"Unsupported provider type: {provider}");
