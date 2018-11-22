@@ -8,20 +8,25 @@ using Xunit;
 
 namespace integration
 {
-    public class EnvelopeDecoratorIntegration
+    public class EnvelopeDecoratorIntegrationTests
     {
-        private readonly IKeyManagement mDecorator;
+        private IKeyManagement mDecorator;
         private readonly IConfiguration mConfiguration;
         
-        public EnvelopeDecoratorIntegration()
+        public EnvelopeDecoratorIntegrationTests()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
+            InitializeFields();
+        }
+
+        private void InitializeFields()
+        {
             var keyVaultClient = new KeyVaultClient(AuthenticationCallback);
             var keyVaultManagement = new AzureKeyVaultKeyManagement(keyVaultClient, mConfiguration);
             var envelopeKeyManagement = new SymmetricKeyManagement();
-            mDecorator = new EnvelopeDecorator(keyVaultManagement, envelopeKeyManagement, 15);
+            mDecorator = new EnvelopeEncryptionDecorator(keyVaultManagement, envelopeKeyManagement, 15);        
         }
-        
+
         [Fact]
         public async Task DataIsLessThenMaximumConfiguration_NoEnvelope()
         {
@@ -36,6 +41,8 @@ namespace integration
             var encryptedData = await mDecorator.Encrypt(randomString, "a-service-account");
             Assert.Contains("env$", encryptedData);
 
+            InitializeFields(); // reset the key management services to simulate new call to decrypt
+                
             var decryptedString = await mDecorator.Decrypt(encryptedData, "a-service-account");
             
             Assert.Equal(randomString, decryptedString);

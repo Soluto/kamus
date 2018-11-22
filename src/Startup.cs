@@ -68,7 +68,7 @@ namespace Hamuste
                 switch (provider)
                 {
                     case "AzureKeyVault":
-                        return new EnvelopeDecorator(
+                        return new EnvelopeEncryptionDecorator(
                             new AzureKeyVaultKeyManagement(s.GetService<IKeyVaultClient>(), Configuration), 
                             new SymmetricKeyManagement(),
                             Configuration.GetValue<int>("KeyManagement:KeyVault:MaximumDataLength"));
