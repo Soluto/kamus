@@ -3,18 +3,34 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal;
+using Microsoft.Extensions.Configuration;
 
 namespace Hamuste.KeyManagment
 {
     public class SymmetricKeyManagment : IKeyManagment
     {
-        private byte[] mKey;
+        private readonly byte[] mKey;
+        private readonly int mMaximumDataLength;
 
-        public SymmetricKeyManagment(string key)
+        public SymmetricKeyManagment(IConfiguration configuration, string key = null)
         {
+            if (key == null)
+            {
+                var rnd = RandomNumberGenerator.Create();
+                var keyBuffer = new byte[50];
+                rnd.GetBytes(keyBuffer);
+                mKey = keyBuffer;
+            }
             mKey = Convert.FromBase64String(key);
+            
+            if (!int.TryParse(configuration["KeyVault:KeyLength"], out mMaximumDataLength))
+            {
+                mMaximumDataLength = int.MaxValue;
+            }
+            
         }
-        public Task<string> Decrypt(string encryptedData, string serviceAccountId)
+        public Task<string> Decrypt(string encryptedData, string serviceAccountId = null)
         {
             var splitted = encryptedData.Split(":");
             if (splitted.Length != 2) {
@@ -41,6 +57,11 @@ namespace Hamuste.KeyManagment
             }
 
             return Task.FromResult(Encoding.UTF8.GetString(result));
+        }
+
+        public int GetMaximumDataLength()
+        {
+            return mMaximumDataLength;
         }
 
         public Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
@@ -73,6 +94,11 @@ namespace Hamuste.KeyManagment
             var byteArray = new byte[size];
             provider.GetBytes(byteArray);
             return byteArray;
+        }
+
+        public string GetEncryptionKey()
+        {
+            return Convert.ToBase64String(mKey);
         }
     }
 }

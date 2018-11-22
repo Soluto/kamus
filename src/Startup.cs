@@ -41,8 +41,7 @@ namespace Hamuste
             Configuration = builder.Build();
         }
 
-
-        public IConfiguration Configuration;
+        private IConfiguration Configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
@@ -62,18 +61,18 @@ namespace Hamuste
                 return new Kubernetes(config);
             });
 
-            services.AddSingleton<IKeyManagment>(s => {
+            services.AddSingleton<IKeyManagment>(s =>
+            {
                 var provider = Configuration.GetValue<string>("KeyManagment:Provider");
-                if (provider == "AzureKeyVault"){
-                    return new AzureKeyVaultKeyManagment(s.GetService<IKeyVaultClient>(), Configuration);
-                } 
-                else if (provider == "AESKey")
+                switch (provider)
                 {
-                    var key = Configuration.GetValue<string>("KeyManagment:AES:Key");
-                    return new SymmetricKeyManagment(key);
-                }
-                else {
-                    throw new InvalidOperationException($"Unsupported provider type: {provider}");
+                    case "AzureKeyVault":
+                        return new AzureKeyVaultKeyManagment(s.GetService<IKeyVaultClient>(), Configuration);
+                    case "AESKey":
+                        var key = Configuration.GetValue<string>("KeyManagment:AES:Key");
+                        return new SymmetricKeyManagment(s.GetRequiredService<IConfiguration>(), key);
+                    default:
+                        throw new InvalidOperationException($"Unsupported provider type: {provider}");
                 }
             });
 
@@ -92,14 +91,14 @@ namespace Hamuste
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
-        public async Task<string> GetToken(string authority, string resource, string scope)
+        private async Task<string> GetToken(string authority, string resource, string scope)
         {
             var clientId = Configuration["ActiveDirectory:ClientId"];
             var clientSecret = Configuration["ActiveDirectory:ClientSecret"];
             
             var authContext = new AuthenticationContext(authority);
-            ClientCredential clientCred = new ClientCredential(clientId, clientSecret);
-            AuthenticationResult result = await authContext.AcquireTokenAsync(resource, clientCred);
+            var clientCred = new ClientCredential(clientId, clientSecret);
+            var result = await authContext.AcquireTokenAsync(resource, clientCred);
 
             if (result == null)
                 throw new InvalidOperationException("Failed to obtain the JWT token");

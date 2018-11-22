@@ -30,6 +30,7 @@ namespace Hamuste.Controllers
         private readonly IKeyManagment mKeyManagment;
         private readonly ILogger mAuditLogger = Log.ForContext<EncryptController>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<EncryptController>();
+        private readonly IConfiguration mConfiguration;
 
         //see: https://github.com/kubernetes/kubernetes/blob/d5803e596fc8aba17aa8c74a96aff9c73bb0f1da/staging/src/k8s.io/apiserver/pkg/authentication/serviceaccount/util.go#L27
         private const string ServiceAccountUsernamePrefix = "system:serviceaccount:";
@@ -38,12 +39,14 @@ namespace Hamuste.Controllers
             IKubernetes kubernetes, 
             IAuthorizationService authorizationService,
             IHttpContextAccessor httpContextAccessor,
-            IKeyManagment keyManagment)
+            IKeyManagment keyManagment,
+            IConfiguration configuration)
         {
             mKubernetes = kubernetes;
             mAuthorizationService = authorizationService;
             mHttpContextAccessor = httpContextAccessor;
             mKeyManagment = keyManagment;
+            mConfiguration = configuration;
         }
 
         [HttpPost]
@@ -66,8 +69,20 @@ namespace Hamuste.Controllers
                     body.NamesapceName);                
                 return BadRequest();
             }
-            
-            var encryptedData = await mKeyManagment.Encrypt(body.Data, $"{body.NamesapceName}:{body.SerivceAccountName}");
+
+            string encryptedData;
+            if (body.Data.Length > mKeyManagment.GetMaximumDataLength()) // support envelope encryption
+            {
+                var skm = new SymmetricKeyManagment(mConfiguration);
+                encryptedData = "env$";
+                encryptedData += await mKeyManagment.Encrypt(skm.GetEncryptionKey(),
+                    $"{body.NamesapceName}:{body.SerivceAccountName}");
+                encryptedData += "$" + await skm.Encrypt(body.Data, body.SerivceAccountName);
+            }
+            else
+            {
+                encryptedData = await mKeyManagment.Encrypt(body.Data, $"{body.NamesapceName}:{body.SerivceAccountName}");
+            }
 
             mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}", 
                 Request.HttpContext.Connection.RemoteIpAddress,
@@ -100,14 +115,26 @@ namespace Hamuste.Controllers
                 Request.HttpContext.Connection.RemoteIpAddress,
                 id);
 
-            try 
+            try
             {
-                var data = await mKeyManagment.Decrypt(body.EncryptedData, id);
+                string decryptedData;
+                
+                if (body.EncryptedData.Contains("$")) // support envelope encryption
+                {
+                    var encryptedEcnryptionKey = body.EncryptedData.Split("$")[1];
+                    var encryptedData = body.EncryptedData.Split("$")[2];
+                    
+                    var encryptionKey = await mKeyManagment.Decrypt(encryptedEcnryptionKey, id);
+                    decryptedData = await new SymmetricKeyManagment(mConfiguration, encryptionKey).Decrypt(encryptedData);
+
+                }
+                decryptedData = await mKeyManagment.Decrypt(body.EncryptedData, id);
 
                 mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccount user Name: {sa}", 
                     Request.HttpContext.Connection.RemoteIpAddress,
                     id);
-                return Content(data);
+                
+                return Content(decryptedData);
             }
             catch (DecryptionFailureException e)
             {

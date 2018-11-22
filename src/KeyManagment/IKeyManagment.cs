@@ -7,6 +7,7 @@ namespace Hamuste.KeyManagment
     {
         Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true);
         Task<string> Decrypt(string encryptedData, string serviceAccountId);
+        int GetMaximumDataLength();
     }
 
     public class DecryptionFailureException : Exception

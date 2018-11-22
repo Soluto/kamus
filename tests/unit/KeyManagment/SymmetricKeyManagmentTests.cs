@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace Hamuste.KeyManagment
@@ -11,7 +12,7 @@ namespace Hamuste.KeyManagment
         public async Task Get_ReturnsCorrectValues()
         {
             var key = Convert.ToBase64String(GetRandomData(32));
-            var kms = new SymmetricKeyManagment(key);
+            var kms = new SymmetricKeyManagment(new ConfigurationBuilder().Build(), key);
             var expected = "hello";
             var encrypted = await kms.Encrypt(expected, "sa");
             var decrypted = await kms.Decrypt(encrypted, "sa");

@@ -17,6 +17,7 @@ namespace Hamuste.KeyManagment
         private readonly string mKeyVaultName;
         private readonly string mKeyType;
         private readonly short mKeyLength;
+        private readonly int mMaximumDataLength;
         private readonly ILogger mLogger = Log.ForContext<AzureKeyVaultKeyManagment>();
 
         public AzureKeyVaultKeyManagment(IKeyVaultClient keyVaultClient,
@@ -27,13 +28,21 @@ namespace Hamuste.KeyManagment
             mKeyVaultName = configuration["KeyVault:Name"];
             mKeyType = configuration["KeyVault:KeyType"];
 
-            if (!Int16.TryParse(configuration["KeyVault:KeyLength"], out mKeyLength)){
+            if (!short.TryParse(configuration["KeyVault:KeyLength"], out mKeyLength))
+            {
                 throw new Exception($"Expected key lenght int, got {configuration["KeyVault:KeyLength"]}");
+            }
+            
+            if (!int.TryParse(configuration["KeyVault:KeyLength"], out mMaximumDataLength))
+            {
+                mMaximumDataLength = int.MaxValue;
             }
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
+            if (serviceAccountId == null) throw new Exception("serviceAccountId cannot be null");
+            
             var hash = ComputeKeyId(serviceAccountId);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
@@ -48,6 +57,11 @@ namespace Hamuste.KeyManagment
             {
                 throw new DecryptionFailureException("KeyVault decription failed", e);
             }
+        }
+
+        public int GetMaximumDataLength()
+        {
+            return mMaximumDataLength;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
