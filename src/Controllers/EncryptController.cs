@@ -119,7 +119,7 @@ namespace Hamuste.Controllers
             {
                 string decryptedData;
                 
-                if (body.EncryptedData.Contains("$")) // support envelope encryption
+                if (body.EncryptedData.Contains("env$")) // support envelope encryption
                 {
                     var encryptedEcnryptionKey = body.EncryptedData.Split("$")[1];
                     var encryptedData = body.EncryptedData.Split("$")[2];
