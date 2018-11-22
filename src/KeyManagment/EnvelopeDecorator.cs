@@ -31,7 +31,7 @@ namespace Hamuste.KeyManagment
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            if (!encryptedData.StartsWith("env:"))
+            if (!encryptedData.StartsWith("env$"))
                 return await mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId);
             
             var encryptedKey = encryptedData.Split("$")[1];
