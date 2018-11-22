@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Hamuste.KeyManagment;
 using Xunit;
 
-namespace Hamuste.KeyManagment
+namespace unit.KeyManagment
 {
-    public class SymmetricKeyManagmentTests
+    public class SymmetricKeyManagementTests
     {
         [Fact]
         public async Task Get_ReturnsCorrectValues()
         {
             var key = Convert.ToBase64String(GetRandomData(32));
-            var kms = new SymmetricKeyManagment(key);
+            var kms = new SymmetricKeyManagement(key);
             var expected = "hello";
             var encrypted = await kms.Encrypt(expected, "sa");
             var decrypted = await kms.Decrypt(encrypted, "sa");

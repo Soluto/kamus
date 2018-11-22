@@ -6,14 +6,26 @@ using System.Threading.Tasks;
 
 namespace Hamuste.KeyManagment
 {
-    public class SymmetricKeyManagment : IKeyManagment
+    public class SymmetricKeyManagement : IDynamicKeyManagmenet
     {
         private byte[] mKey;
 
-        public SymmetricKeyManagment(string key)
+        public SymmetricKeyManagement(string key = null)
         {
-            mKey = Convert.FromBase64String(key);
+            if (key == null)
+            {
+                // TODO: Log warn key dynamic
+                var aes = new AesManaged();
+                aes.GenerateKey();
+                mKey = aes.Key;
+                aes.Dispose();
+            }
+            else
+            {
+                mKey = Convert.FromBase64String(key);
+            }
         }
+        
         public Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
             var splitted = encryptedData.Split(":");
@@ -73,6 +85,16 @@ namespace Hamuste.KeyManagment
             var byteArray = new byte[size];
             provider.GetBytes(byteArray);
             return byteArray;
+        }
+
+        public void SetEncryptionKey(string key)
+        {
+            mKey = Convert.FromBase64String(key);
+        }
+
+        public string GetEncryptionKey()
+        {
+            return Convert.ToBase64String(mKey);
         }
     }
 }

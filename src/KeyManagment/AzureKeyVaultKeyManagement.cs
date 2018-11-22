@@ -11,23 +11,23 @@ using Serilog;
 
 namespace Hamuste.KeyManagment 
 {
-    public class AzureKeyVaultKeyManagment : IKeyManagment
+    public class AzureKeyVaultKeyManagement : IKeyManagement
     {
         private readonly IKeyVaultClient mKeyVaultClient;
         private readonly string mKeyVaultName;
         private readonly string mKeyType;
         private readonly short mKeyLength;
-        private readonly ILogger mLogger = Log.ForContext<AzureKeyVaultKeyManagment>();
+        private readonly ILogger mLogger = Log.ForContext<AzureKeyVaultKeyManagement>();
 
-        public AzureKeyVaultKeyManagment(IKeyVaultClient keyVaultClient,
+        public AzureKeyVaultKeyManagement(IKeyVaultClient keyVaultClient,
             IConfiguration configuration)
         {
             mKeyVaultClient = keyVaultClient;
 
-            mKeyVaultName = configuration["KeyVault:Name"];
-            mKeyType = configuration["KeyVault:KeyType"];
+            mKeyVaultName = configuration["KeyManagement:KeyVault:Name"];
+            mKeyType = configuration["KeyManagement:KeyVault:KeyType"];
 
-            if (!Int16.TryParse(configuration["KeyVault:KeyLength"], out mKeyLength)){
+            if (!Int16.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
                 throw new Exception($"Expected key lenght int, got {configuration["KeyVault:KeyLength"]}");
             }
         }
