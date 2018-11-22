@@ -13,14 +13,22 @@ namespace integration
 {
     public class AzureKeyVaultIntegration
     {
-        private readonly IKeyManagement mAzureKeyManagement;
-        private readonly IKeyVaultClient mKeyVaultClient;
+        private IKeyManagement mAzureKeyManagement;
+        private IKeyVaultClient mKeyVaultClient;
         private readonly IConfiguration mConfiguration;
         private readonly string mKeyVaultName = "k8spoc";
         public AzureKeyVaultIntegration()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
-            mKeyVaultClient = new KeyVaultClient(AuthenticationCallback);
+            InitializeKeyManagement();
+        }
+
+        private void InitializeKeyManagement()
+        {
+            var clientId = mConfiguration.GetValue<string>("ActiveDirectory:ClientId");
+            var clientSecret = mConfiguration.GetValue<string>("ActiveDirectory:ClientSecret");
+            mKeyVaultClient = new KeyVaultClient(((authority, resource, scope) => 
+                Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope)));
             mAzureKeyManagement = new AzureKeyVaultKeyManagement(mKeyVaultClient, mConfiguration);
         }
         
@@ -53,27 +61,11 @@ namespace integration
 
             var encryptedData = await mAzureKeyManagement.Encrypt(data, serviceAccountId);
 
-            var token = "valid-token";
+            InitializeKeyManagement();
 
             var decryptedData = await mAzureKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
             Assert.Equal(data, decryptedData);
-        }
-
-
-        private async Task<string> AuthenticationCallback(string authority, string resource, string scope)
-        {
-            var clientId = mConfiguration.GetValue<string>("ActiveDirectory:ClientId");
-            var clientSecret = mConfiguration.GetValue<string>("ActiveDirectory:ClientSecret");
-            
-            var authContext = new AuthenticationContext(authority);
-            var clientCred = new ClientCredential(clientId, clientSecret);
-            var result = await authContext.AcquireTokenAsync(resource, clientCred);
-
-            if (result == null)
-                throw new InvalidOperationException("Failed to obtain the JWT token");
-
-            return result.AccessToken;
         }
         
         private string ComputeKeyId(string serviceUserName)
