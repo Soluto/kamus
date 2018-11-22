@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Hamuste.KeyManagment
 {
@@ -10,11 +11,14 @@ namespace Hamuste.KeyManagment
     {
         private byte[] mKey;
 
+        private readonly ILogger mLogger = Log.ForContext<SymmetricKeyManagement>();
+
+        
         public SymmetricKeyManagement(string key = null)
         {
             if (key == null)
             {
-                // TODO: Log warn key dynamic
+                mLogger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
                 var aes = new AesManaged();
                 aes.GenerateKey();
                 mKey = aes.Key;
