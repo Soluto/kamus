@@ -19,10 +19,11 @@ namespace Hamuste.KeyManagment
             if (key == null)
             {
                 mLogger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
-                var aes = new AesManaged();
-                aes.GenerateKey();
-                mKey = aes.Key;
-                aes.Dispose();
+                using (var aes = new AesManaged())
+                {
+                    aes.GenerateKey();
+                    mKey = aes.Key;
+                }
             }
             else
             {

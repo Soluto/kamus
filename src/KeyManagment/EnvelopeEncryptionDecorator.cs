@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Hamuste.KeyManagment
 {
@@ -8,6 +9,7 @@ namespace Hamuste.KeyManagment
         private readonly IKeyManagement mMasterKeyManagement;
         private readonly IDynamicKeyManagmenet mDataKeyManagement;
         private readonly int mMaximumDataLength;
+        private readonly ILogger mLogger = Log.ForContext<EnvelopeEncryptionDecorator>();
 
         public EnvelopeEncryptionDecorator(IKeyManagement masterKeyManagement, IDynamicKeyManagmenet dataKeyManagement, int maximumDataLength)
         {
@@ -24,6 +26,7 @@ namespace Hamuste.KeyManagment
                 return await mMasterKeyManagement.Encrypt(data, serviceAccountId, createKeyIfMissing);
             }
 
+            mLogger.Information($"Envelope encryption is starting, data to encrypt was {data.Length} characters");
             var encryptedData = await mDataKeyManagement.Encrypt(data, serviceAccountId, createKeyIfMissing);
             var encryptedKey = await mMasterKeyManagement.Encrypt(mDataKeyManagement.GetEncryptionKey(), serviceAccountId, createKeyIfMissing);
             return "env" + "$" + encryptedKey + "$" + encryptedData;
@@ -38,6 +41,7 @@ namespace Hamuste.KeyManagment
             if (!match.Success)
                 return await mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
+            mLogger.Information("Found envelope encrypted value, decrypting...");
             var encryptedKey = match.Groups[2].Value;
             var extractedEncryptedData = match.Groups[3].Value;
 
