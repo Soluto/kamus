@@ -41,7 +41,7 @@ namespace Hamuste.KeyManagment
             if (!match.Success)
                 return await mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
-            mLogger.Information("Found envelope encrypted value, decrypting...");
+            mLogger.Information("Encrypted data mactched envelope encryption pattern");
             var encryptedKey = match.Groups[2].Value;
             var extractedEncryptedData = match.Groups[3].Value;
 
