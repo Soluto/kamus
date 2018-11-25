@@ -1,10 +1,12 @@
 using System;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Hamuste.KeyManagment;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Xunit;
@@ -35,21 +37,25 @@ namespace integration
         [Fact]
         public async Task Encrypt_KeyDoesNotExist_CreateIt()
         {
-            var keys = await mKeyVaultClient.GetKeysAsync("https://k8spoc.vault.azure.net");
-
-            foreach (var key in keys)
-            {
-                await mKeyVaultClient.DeleteKeyAsync(key.Identifier.Vault, key.Identifier.Name);
-            }
-
             var data = "test";
-            var serviceAccountId = "default:default:";
+            var serviceAccountId = "default:" + Guid.NewGuid();
             
             await mAzureKeyManagement.Encrypt(data, serviceAccountId);
             
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{ComputeKeyId(serviceAccountId)}";
 
-            await mKeyVaultClient.GetKeyAsync(keyId);
+            try
+            {
+                await mKeyVaultClient.GetKeyAsync(keyId);
+            }
+            catch (KeyVaultErrorException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new Exception("New key was not created in the key vault");
+            }
+            finally // clean up
+            {
+                await mKeyVaultClient.DeleteKeyAsync("https://k8spoc.vault.azure.net", ComputeKeyId(serviceAccountId));
+            }
         }
 
 
