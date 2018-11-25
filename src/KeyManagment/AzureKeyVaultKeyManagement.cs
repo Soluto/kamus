@@ -28,7 +28,7 @@ namespace Hamuste.KeyManagment
             mKeyType = configuration["KeyManagement:KeyVault:KeyType"];
 
             if (!Int16.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
-                throw new Exception($"Expected key lenght int, got {configuration["KeyVault:KeyLength"]}");
+                throw new Exception($"Expected key lenght int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
             }
         }
 
