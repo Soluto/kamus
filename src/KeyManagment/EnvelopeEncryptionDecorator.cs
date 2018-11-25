@@ -26,7 +26,7 @@ namespace Hamuste.KeyManagment
                 return await mMasterKeyManagement.Encrypt(data, serviceAccountId, createKeyIfMissing);
             }
 
-            mLogger.Information($"Envelope encryption is starting, data to encrypt was {data.Length} characters");
+            mLogger.Information($"Encryption data too length, using envelope encryption");
             var encryptedData = await mDataKeyManagement.Encrypt(data, serviceAccountId, createKeyIfMissing);
             var encryptedKey = await mMasterKeyManagement.Encrypt(mDataKeyManagement.GetEncryptionKey(), serviceAccountId, createKeyIfMissing);
             return "env" + "$" + encryptedKey + "$" + encryptedData;
