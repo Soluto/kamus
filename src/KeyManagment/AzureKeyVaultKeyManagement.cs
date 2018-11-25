@@ -47,7 +47,7 @@ namespace Hamuste.KeyManagment
             }
             catch (KeyVaultErrorException e)
             {
-                throw new DecryptionFailureException("KeyVault decription failed", e);
+                throw new DecryptionFailureException("KeyVault decryption failed", e);
             }
         }
 
