@@ -31,8 +31,6 @@ namespace Hamuste.KeyManagment
             if (!short.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
                 throw new Exception($"Expected key length int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
             }
-            
-            mLogger.Information($"AzureKeyVaultKeyManagement Initialized.\n VaultName: ${mKeyVaultName} \n KeyType:${mKeyType}");
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
