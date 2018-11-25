@@ -3,17 +3,34 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Hamuste.KeyManagment
 {
-    public class SymmetricKeyManagment : IKeyManagment
+    public class SymmetricKeyManagement : IDynamicKeyManagmenet
     {
         private byte[] mKey;
 
-        public SymmetricKeyManagment(string key)
+        private readonly ILogger mLogger = Log.ForContext<SymmetricKeyManagement>();
+
+        
+        public SymmetricKeyManagement(string key = null)
         {
-            mKey = Convert.FromBase64String(key);
+            if (key == null)
+            {
+                mLogger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
+                using (var aes = new AesManaged())
+                {
+                    aes.GenerateKey();
+                    mKey = aes.Key;
+                }
+            }
+            else
+            {
+                mKey = Convert.FromBase64String(key);
+            }
         }
+        
         public Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
             var splitted = encryptedData.Split(":");
@@ -73,6 +90,16 @@ namespace Hamuste.KeyManagment
             var byteArray = new byte[size];
             provider.GetBytes(byteArray);
             return byteArray;
+        }
+
+        public void SetEncryptionKey(string key)
+        {
+            mKey = Convert.FromBase64String(key);
+        }
+
+        public string GetEncryptionKey()
+        {
+            return Convert.ToBase64String(mKey);
         }
     }
 }
