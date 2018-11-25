@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.X9;
 using Serilog;
 
 namespace Hamuste.KeyManagment 
@@ -30,6 +31,8 @@ namespace Hamuste.KeyManagment
             if (!Int16.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
                 throw new Exception($"Expected key lenght int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
             }
+            
+            mLogger.Information($"AzureKeyVaultKeyManagement Initialized.\n VaultName: ${mKeyVaultName} \n KeyType:${mKeyType}");
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
