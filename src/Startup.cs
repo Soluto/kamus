@@ -74,6 +74,10 @@ namespace Hamuste
                             Configuration.GetValue<int>("KeyManagement:KeyVault:MaximumDataLength"));
                     case "AESKey":
                         var key = Configuration.GetValue<string>("KeyManagement:AES:Key");
+                        if (string.IsNullOrEmpty(key))
+                        {
+                            Log.ForContext<Startup>().Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
+                        }
                         return new SymmetricKeyManagement(key);
                     default:
                         throw new InvalidOperationException($"Unsupported provider type: {provider}");

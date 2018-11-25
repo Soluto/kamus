@@ -28,8 +28,8 @@ namespace Hamuste.KeyManagment
             mKeyVaultName = configuration["KeyManagement:KeyVault:Name"];
             mKeyType = configuration["KeyManagement:KeyVault:KeyType"];
 
-            if (!Int16.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
-                throw new Exception($"Expected key lenght int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
+            if (!short.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
+                throw new Exception($"Expected key length int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
             }
             
             mLogger.Information($"AzureKeyVaultKeyManagement Initialized.\n VaultName: ${mKeyVaultName} \n KeyType:${mKeyType}");
