@@ -3,7 +3,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Hamuste.KeyManagment;
+using Hamuste.KeyManagement;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;

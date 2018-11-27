@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Rest;
 using Hamuste.Extensions;
-using Hamuste.KeyManagment;
+using Hamuste.KeyManagement;
 using Serilog;
 
 namespace Hamuste.Controllers

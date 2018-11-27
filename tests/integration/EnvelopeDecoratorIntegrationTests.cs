@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Hamuste.KeyManagment;
+using Hamuste.KeyManagement;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;

@@ -7,10 +7,9 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Asn1.X9;
 using Serilog;
 
-namespace Hamuste.KeyManagment 
+namespace Hamuste.KeyManagement 
 {
     public class AzureKeyVaultKeyManagement : IKeyManagement
     {

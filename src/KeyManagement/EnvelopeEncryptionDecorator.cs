@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Serilog;
 
-namespace Hamuste.KeyManagment
+namespace Hamuste.KeyManagement
 {
     public class EnvelopeEncryptionDecorator : IKeyManagement
     {
