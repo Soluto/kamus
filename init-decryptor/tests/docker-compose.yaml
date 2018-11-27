@@ -7,11 +7,11 @@ services:
     environment:
       - KAMUS_URL=http://wiremock:8080/
     volumes:
-      - "${PWD}:/files"
+      - "${PWD}/output:/files"
       - "${PWD}:/var/run/secrets/kubernetes.io/serviceaccount"
       - "${PWD}/encrypted:/encrypted"
 
-    command: ["node","index.js", "-e", "/encrypted", "-d", "/files/out.${OUTPUT_FORMAT}", "-f", "${OUTPUT_FORMAT}"]
+    command: ["node","index.js", "-e", "/encrypted", "-d", "/files/", "-n", "out.${OUTPUT_FORMAT}", "-f", "${OUTPUT_FORMAT}"]
   
   wiremock:
     build:
