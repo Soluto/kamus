@@ -10,9 +10,6 @@ namespace Hamuste.KeyManagement
     public class SymmetricKeyManagement : IDynamicKeyManagmenet
     {
         private byte[] mKey;
-
-        private readonly ILogger mLogger = Log.ForContext<SymmetricKeyManagement>();
-
         
         public SymmetricKeyManagement(string key = null)
         {
