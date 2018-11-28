@@ -1,0 +1,12 @@
+{
+  "name": "kamus-docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "featurebook": "^0.0.32"
+  },
+  "scripts": {
+    "feature-book": "featurebook html features/"
+  }
+}
