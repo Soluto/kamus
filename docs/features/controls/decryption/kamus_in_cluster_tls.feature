@@ -1,5 +1,6 @@
 # Id: KAMUS-C-D-4
-# Status: Confirmed
+# Status: Denied
+#   - Risk is low, not worth the effort
 # Components:
 #   - Secrets decryption
 # Mitigates:

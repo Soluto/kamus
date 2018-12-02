@@ -17,3 +17,9 @@ Feature: Use a policy to control pod's service account
     And a service account B is used by another pod B
     When the user try mount service account B to pod A
     Then the operation denied
+
+  Scenario: Using Kubernetes addmission controller
+    Given a pod A
+    And a service account B is used by another pod B
+    When the user try mount service account B to pod A
+    Then the operation denied

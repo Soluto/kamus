@@ -12,8 +12,8 @@ autonumber
 User -> Kamus: Encrypt - data, namespace, service account
 Kamus -> KubernetesApi: Get Service Account - namespace, service account
 KubernetesApi -> Kamus: Service Account details
-Kamus -> Kms: Encrypt - data, namespace, service account
-Kms -> Kamus: Enrypted data
+Kamus -> KMS: Encrypt - data, namespace, service account
+KMS -> Kamus: Enrypted data
 Kamus -> User: Enrypted data
 
 == Decryption ==
@@ -21,8 +21,8 @@ autonumber 1
 Pod -> Kamus: Decrypt - data, service account token
 Kamus -> KubernetesApi: TokenReview - token
 KubernetesApi -> Kamus: service account, namespace
-Kamus -> Kms: Decrypt - data, service account, namespace
-Kms -> Kamus: Decrypted data
+Kamus -> KMS: Decrypt - data, service account, namespace
+KMS -> Kamus: Decrypted data
 Kamus -> Pod: Decrypted data
 
 @enduml

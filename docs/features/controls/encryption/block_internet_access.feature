@@ -23,3 +23,8 @@ Feature: Block anonymous internet access to Kamus
     Given an authenticated user (using Kubernetes user token?)
     When the user try to encrypt a secret
     Then the user is allowed to perform the request
+  
+  Scenario: IP filtering
+    Given an authenticated user (using Kubernetes user token?)
+    When the user try to encrypt a secret
+    Then the user is allowed to perform the request only from a white-listed IPs

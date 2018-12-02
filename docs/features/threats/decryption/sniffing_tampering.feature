@@ -3,7 +3,7 @@
 # Components:
 #   - Secret decryption
 # STRIDE:
-#   - Tampering
+#   - Spoofing
 #   - Information Disclosure 
 # References:
 #   - https://en.wikipedia.org/wiki/Man-in-the-middle_attack
@@ -16,7 +16,7 @@ Feature: Sniff requests and responses to Kamus
 
   Scenario Outline: MitM
     Given a compromised Kubernetes node
-    When the attacker impersonate all the network traffic in this node
+    When the attacker sniff all the network traffic in this node
     Then the attacker can view reqeusts and responses to Kamus
 
     Examples: Data types
