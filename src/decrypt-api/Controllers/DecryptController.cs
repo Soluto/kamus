@@ -14,51 +14,20 @@ using Serilog;
 namespace Hamuste.Controllers
 {
     
-    public class EncryptController : Controller
+    public class DecryptController : Controller
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
-        private readonly ILogger mAuditLogger = Log.ForContext<EncryptController>().AsAudit();
-        private readonly ILogger mLogger = Log.ForContext<EncryptController>();
+        private readonly ILogger mAuditLogger = Log.ForContext<DecryptController>().AsAudit();
+        private readonly ILogger mLogger = Log.ForContext<DecryptController>();
 
         //see: https://github.com/kubernetes/kubernetes/blob/d5803e596fc8aba17aa8c74a96aff9c73bb0f1da/staging/src/k8s.io/apiserver/pkg/authentication/serviceaccount/util.go#L27
         private const string ServiceAccountUsernamePrefix = "system:serviceaccount:";
         
-        public EncryptController(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public DecryptController(IKubernetes kubernetes, IKeyManagement keyManagement)
         {
             mKubernetes = kubernetes;
             mKeyManagement = keyManagement;
-        }
-
-        [HttpPost]
-        [Route("api/v1/encrypt")]
-        public async Task<ActionResult> Encrypt([FromBody]EncryptRequest body)
-        {
-            mAuditLogger.Information("Encryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}, Namespace: {namespace}",
-                    Request.HttpContext.Connection.RemoteIpAddress,
-                    body.SerivceAccountName,
-                    body.NamesapceName);
-            
-            try
-            {
-                await mKubernetes.ReadNamespacedServiceAccountAsync(body.SerivceAccountName, body.NamesapceName, true);
-            }
-            catch (HttpOperationException e) when (e.Response.StatusCode == HttpStatusCode.NotFound)
-            {
-                mLogger.Warning(e, "Service account {serviceAccount} not  found in namespace {namespace}", 
-                    body.SerivceAccountName,
-                    body.NamesapceName);                
-                return BadRequest();
-            }
-            
-            var encryptedData = await mKeyManagement.Encrypt(body.Data, $"{body.NamesapceName}:{body.SerivceAccountName}");
-
-            mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}", 
-                Request.HttpContext.Connection.RemoteIpAddress,
-                body.SerivceAccountName,
-                body.NamesapceName);
-            
-            return Content(encryptedData);
         }
 
         [HttpPost]
