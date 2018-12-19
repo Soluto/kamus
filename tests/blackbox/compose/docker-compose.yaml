@@ -1,14 +1,20 @@
 version: '3'
 services:
-  api:
+  encryptor:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - Kubernetes:ProxyUrl=http://wiremock:8080
+
+  decryptor:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Kubernetes__ProxyUrl=http://wiremock:8080
+
   black-box:
     build:
       context: ../
     environment:
-      - API_URL=http://api:9999/
+      - ENCRYPTOR=http://encryptor:9999/
+      - DECRYPTOR=http://decryptor:9999/
       - TEAMCITY_PROJECT_NAME=api
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080

@@ -1,5 +1,12 @@
 version: '3'
 services:
-  api:
+  encryptor:
     build:
         context: ../../../.
+        args:
+          PROJECT_NAME: encrypt-api
+  decryptor:
+    build:
+        context: ../../../.
+        args:
+          PROJECT_NAME: decrypt-api

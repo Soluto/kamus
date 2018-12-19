@@ -56,6 +56,7 @@ namespace Hamuste.KubernetesAuthentication
             });
 
             if (!reviewResult.Status.Authenticated.HasValue || !reviewResult.Status.Authenticated.Value) {
+                //todo: improve logging
                 return AuthenticateResult.Fail(reviewResult.Status.Error);
             }
 
