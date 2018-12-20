@@ -1,9 +1,9 @@
-const keytar = require('keytar');
 var bluebird = require('bluebird');
 const opn = require('opn');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
 const fetch = require("node-fetch");
+const isDocker = require('./is-docker');
 
 module.exports = async (args, options, logger) => {
     if (useAuth(options)) {
@@ -33,15 +33,14 @@ const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl }, token 
             }),
             headers
         });
-        
+
         if (!response.ok) handleEncryptionError(response);
 
         console.log(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
         console.log('Encrypted data:\n' + await response.text());
         process.exit(0);
     }
-    catch (err)
-    {
+    catch (err) {
         console.error('Error while trying to encrypt with kamus:', err.message);
         process.exit(1);
     }
@@ -69,12 +68,25 @@ const acquireToken = async ({ authTenant, authApplication, authResource }) => {
 
 const acquireTokenWithDeviceCode = async (context, authApplication, authResource) => {
     const userCodeResult = await context.acquireUserCodeAsync(authResource, authApplication, 'en');
-    console.log(`Enter this code to authenticate: ${userCodeResult.userCode} Be quick you have 20 seconds`);
-    opn(userCodeResult.verificationUrl);
+    await outputUserCodeInstructions(userCodeResult);
     const deviceCodeResult =
         await context.acquireTokenWithDeviceCodeAsync(authResource, authApplication, userCodeResult);
     return deviceCodeResult.refreshToken;
 };
+
+const outputUserCodeInstructions = async (userCodeResult) => {
+    var webSiteLoginText = `Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`;
+    if (isDocker()) {
+        console.log(webSiteLoginText)
+    } else {
+        try {
+            await opn(userCodeResult.verificationUrl);
+            console.log(`Enter this code to authenticate: ${userCodeResult.userCode}`);
+        } catch (err) {
+            console.log(webSiteLoginText)
+        }
+    }
+}
 
 const useAuth = ({ authTenant, authApplication, authResource }) => {
     if (authTenant && authApplication && authResource) {

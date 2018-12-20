@@ -25,7 +25,6 @@
     "adal-node": "^0.1.28",
     "bluebird": "^3.5.3",
     "caporal": "^1.1.0",
-    "keytar": "^4.3.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0"
   }
