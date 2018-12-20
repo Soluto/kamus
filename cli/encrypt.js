@@ -24,7 +24,7 @@ const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowIns
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
 
-    if (!allowInsecureUrl && url.parse(kamusUrl).protocol){
+    if (!allowInsecureUrl && url.parse(kamusUrl).protocol == 'http'){
         _logger.error("Insecure Kamus URL is not allowed");
         process.exit(1);
     }
