@@ -7,7 +7,10 @@ var url = require('url')
 
 //const isDocker = require('./is-docker');
 
+let _logger;
+
 module.exports = async (args, options, logger) => {
+    _logger = logger;
     if (useAuth(options)) {
         const token = await acquireToken(options);
         await encrypt(args, options, token);
@@ -18,12 +21,12 @@ module.exports = async (args, options, logger) => {
 }
 
 const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowInsecureUrl }, token = null) => {
-    console.log('Encryption started...');
-    console.log('service account:', serviceAccount);
-    console.log('namespace:', namespace);
+    _logger.log('Encryption started...');
+    _logger.log('service account:', serviceAccount);
+    _logger.log('namespace:', namespace);
 
     if (!allowInsecureUrl && url.parse(kamusUrl).protocol){
-        console.error("Insecure Kamus URL is not allowed");
+        _logger.error("Insecure Kamus URL is not allowed");
         process.exit(1);
     }
 
@@ -43,23 +46,23 @@ const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowIns
 
         if (!response.ok) handleEncryptionError(response);
 
-        console.log(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
-        console.log('Encrypted data:\n' + await response.text());
+        _logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
+        _logger.info('Encrypted data:\n' + await response.text());
         process.exit(0);
     }
     catch (err) {
-        console.error('Error while trying to encrypt with kamus:', err.message);
+        _logger.error('Error while trying to encrypt with kamus:', err.message);
         process.exit(1);
     }
 }
 
 const handleEncryptionError = (response) => {
-    console.error('Error while trying to encrypt with kamus');
+    _logger.error('Error while trying to encrypt with kamus');
     if (response.status == 400) {
-        console.error('Server returned bad request, make sure the service account and namespace exists');
+        _logger.error('Server returned bad request, make sure the service account and namespace exists');
     }
     if (response.status == 403) {
-        console.error('Server returned authentication error, make sure your user has access rights to kamus');
+        _logger.error('Server returned authentication error, make sure your user has access rights to kamus');
     }
     process.exit(1);
 }
@@ -82,16 +85,11 @@ const acquireTokenWithDeviceCode = async (context, authApplication, authResource
 };
 
 const outputUserCodeInstructions = async (userCodeResult) => {
-    var webSiteLoginText = `Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`;
     if (isDocker()) {
-        console.log(webSiteLoginText)
+        _logger.info(`Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`)
     } else {
-        try {
-            await opn(userCodeResult.verificationUrl);
-            console.log(`Enter this code to authenticate: ${userCodeResult.userCode}`);
-        } catch (err) {
-            console.log(webSiteLoginText)
-        }
+        opn(userCodeResult.verificationUrl);
+        _logger.info(`Enter this code to authenticate: ${userCodeResult.userCode}`);
     }
 }
 
@@ -100,7 +98,7 @@ const useAuth = ({ authTenant, authApplication, authResource }) => {
         return true;
     }
     else {
-        console.warn('Auth options were not provided, will trying to encrypt without authentication to kamus');
+        _logger.warn('Auth options were not provided, will trying to encrypt without authentication to kamus');
         return false;
     }
 }
