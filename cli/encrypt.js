@@ -4,8 +4,7 @@ const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
 const fetch = require("node-fetch");
 var url = require('url')
-
-//const isDocker = require('./is-docker');
+const isDocker = require('./is-docker');
 
 let _logger;
 
