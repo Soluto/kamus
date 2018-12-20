@@ -22,7 +22,7 @@ image:
   pullPolicy: IfNotPresent
 service:
   name: nginx
-  type: ClusterIP
+  type: NodePort
   externalPort: 80
   internalPort: 7000
   isAlivePath: /api/v1/isAlive
@@ -55,5 +55,7 @@ autoscale:
   targetCPU: 50
 envFrom: {}
 container: {}
-activeDirectory:
-  clientSecret: test
+keyManagment:
+  provider: AESKey
+  AES:
+    key: rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0=

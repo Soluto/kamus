@@ -4,6 +4,4 @@ metadata:
   name: {{ template "kamus.name" . }}-encryptor
   namespace: {{ .Values.team }}
 data:
-{{- if .Values.config }}
-{{ toYaml .Values.config | trimSuffix "\n" | indent 2 }}
-{{- end }}
+  KeyManagement__Provider: {{ .Values.keyManagment.provider }}

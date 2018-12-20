@@ -31,7 +31,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: encryptor-api
-          image: {{ .Values.image.repository }}/kamus:decryptor-{{ .Values.image.version }}
+          image: {{ .Values.image.repository }}/kamus:encryptor-{{ .Values.image.version }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: secret-volume
