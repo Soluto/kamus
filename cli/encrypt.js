@@ -3,7 +3,9 @@ const opn = require('opn');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
 const fetch = require("node-fetch");
-const isDocker = require('./is-docker');
+var url = require('url')
+
+//const isDocker = require('./is-docker');
 
 module.exports = async (args, options, logger) => {
     if (useAuth(options)) {
@@ -15,10 +17,15 @@ module.exports = async (args, options, logger) => {
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl }, token = null) => {
-    console.log('Encryption started...')
-    console.log('service account:', serviceAccount)
-    console.log('namespace:', namespace)
+const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowInsecureUrl }, token = null) => {
+    console.log('Encryption started...');
+    console.log('service account:', serviceAccount);
+    console.log('namespace:', namespace);
+
+    if (!allowInsecureUrl && url.parse(kamusUrl).protocol){
+        console.error("Insecure Kamus URL is not allowed");
+        process.exit(1);
+    }
 
     try {
         var headers = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" };

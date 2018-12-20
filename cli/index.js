@@ -13,6 +13,7 @@ prog
   .option('--auth-tenant <id>', 'Azure tenant id', regexGuid)
   .option('--auth-application <id>', 'Azure application id', regexGuid)
   .option('--auth-resource <name>', 'Azure resource name', prog.STRING)
-  .option('--kamus-url <url>', 'Kamus URL', prog.REQUIRED);
+  .option('--kamus-url <url>', 'Kamus URL', prog.REQUIRED)
+  .option('--allow-insecure-url', 'Allow insecure (http) Kamus URL', prog.BOOL);
 
 prog.parse(process.argv);
