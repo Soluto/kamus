@@ -8,6 +8,6 @@ subjects:
   name: {{ template "kamus.name" . }} 
   namespace: {{ .Values.team }}
 roleRef:
-  kind: Role 
+  kind: ClusterRole
   name: {{ template "kamus.name" . }}
   apiGroup: rbac.authorization.k8s.io
