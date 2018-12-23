@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Net;
 using Microsoft.Azure.KeyVault;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System;
 
 namespace blackbox
 {
@@ -67,6 +68,8 @@ namespace blackbox
 
         }
 
+        /*
+
         [Fact]
         public async Task Encrypt_KeyDoesNotExist_CreateIt()
         {
@@ -93,52 +96,15 @@ namespace blackbox
 
             var request = new EncryptRequest
             {
-                SerivceAccountName = "default",
+                SerivceAccountName = "dummy",
                 NamesapceName = "default",
                 Data = data
             };
 
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
 
             result.EnsureSuccessStatusCode();
-        }
-
-
-        [Fact]
-        public async Task Encrypt_SANotExist_ReturnBadRequest()
-        {
-            var httpClient = mHttpClientProvider.Provide();
-            var data = "test";
-
-            var request = new EncryptRequest
-            {
-                SerivceAccountName = "not-exist",
-                NamesapceName = "namespace",
-                Data = data
-            };
-
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
-        }
-
-        [Fact]
-        public async Task Encrypt_NamespaceNotExist_ReturnBadRequest()
-        {
-            var httpClient = mHttpClientProvider.Provide();
-            var data = "test";
-
-            var request = new EncryptRequest
-            {
-                SerivceAccountName = "default",
-                NamesapceName = "not-exist",
-                Data = data
-            };
-
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
-        }
+        }*/
 
         [Fact]
         public async Task TestFullFlow()
@@ -148,12 +114,12 @@ namespace blackbox
 
             var request = new EncryptRequest
             {
-                SerivceAccountName = "default",
+                SerivceAccountName = "dummy",
                 NamesapceName = "default",
                 Data = data
            };
-
-            var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+           
+            var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
 
             result.EnsureSuccessStatusCode();
 
@@ -166,12 +132,12 @@ namespace blackbox
 
             var decryptRequest = new DecryptRequest
             {
-                SerivceAccountName = "default",
+                SerivceAccountName = "dummy",
                 NamesapceName = "default",
                 EncryptedData = encryptedData
             };
 
-            result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/decrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
+            result = await httpClient.PostAsync(ConfigurationProvider.Configuration["DECRYPTOR"] + "api/v1/decrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
 
             result.EnsureSuccessStatusCode();
 
@@ -188,32 +154,14 @@ namespace blackbox
 
             var decryptRequest = new DecryptRequest
             {
-                SerivceAccountName = "default",
+                SerivceAccountName = "dummy",
                 NamesapceName = "default",
                 EncryptedData = data
             };
 
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/decrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
+            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["DECRYPTOR"] + "api/v1/decrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
-        }
-
-        [Fact]
-        public async Task Encrypt_SANotExist_Return400()
-        {
-            var httpClient = mHttpClientProvider.Provide();
-            var data = "test";
-
-            var decryptRequest = new DecryptRequest
-            {
-                SerivceAccountName = "123456",
-                NamesapceName = "default",
-                EncryptedData = data
-            };
-
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["API_URL"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
         }
     }
 }

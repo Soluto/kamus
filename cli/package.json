@@ -1,0 +1,31 @@
+{
+  "name": "kamus-cli",
+  "version": "0.0.1",
+  "description": "CLI Tool to encrypt secrets for kamus",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soluto/kamus.git"
+  },
+  "keywords": [
+    "Secrets",
+    "Kubernetes",
+    "Kamus"
+  ],
+  "author": "Shai Katz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soluto/kamus/issues"
+  },
+  "homepage": "https://github.com/soluto/kamus#readme",
+  "dependencies": {
+    "adal-node": "^0.1.28",
+    "bluebird": "^3.5.3",
+    "caporal": "^1.1.0",
+    "node-fetch": "^2.3.0",
+    "opn": "^5.4.0"
+  }
+}

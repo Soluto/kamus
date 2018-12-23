@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "kamus.name" . }}-encryptor
+  namespace: {{ .Values.team }}
+data:
+  KeyManagement__Provider: {{ .Values.keyManagment.provider }}

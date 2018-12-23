@@ -1,0 +1,100 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "kamus.name" . }}-encryptor
+  namespace: {{ .Values.team }}
+  labels:
+    app: {{ template "kamus.name" . }}
+    component: encryptor
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: {{ .Values.maxUnavailable }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+      matchLabels:
+        app: {{ template "kamus.name" . }}
+        component: encryptor
+        release: {{ .Release.Name }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "kamus.name" . }}
+        component: encryptor
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ template "kamus.name" . }}
+      automountServiceAccountToken: false
+      containers:
+        - name: encryptor-api
+          image: {{ .Values.image.repository }}/kamus:encryptor-{{ .Values.image.version }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: secret-volume
+              mountPath: /app/secrets
+          ports:
+            - containerPort: 9999
+          livenessProbe:
+            httpGet:
+              path: /api/v1/isAlive
+              port: 9999
+          readinessProbe:
+            httpGet:
+              path: /api/v1/isAlive
+              port: 9999
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          envFrom:
+           - configMapRef:
+              name: {{ template "kamus.name" . }}-encryptor
+        {{- if .Values.useAirbag }}
+        - name: "airbag"
+          image: "soluto/airbag:0.0.8"
+          ports:
+            - containerPort: {{ .Values.airbag.airbagPort }}
+          env:
+            - name: BACKEND_HOST_NAME
+              value: {{ .Values.airbag.backendHostName | quote }}
+            - name: BACKEND_SERVICE_PORT
+              value: "9999"
+            - name: UNAUTHENTICATED_ROUTES
+              value: '/api/v1/isAlive,/metrics'
+            - name: COLLECT_METRICS
+              value: {{ .Values.airbag.collectMetrics | quote }}
+            - name: ASPNETCORE_URLS
+              value: {{ print "http://+:" .Values.airbag.airbagPort }}
+            {{- if .Values.airbag.authority }}
+            - name: AUTHORITY
+              value: {{ .Values.airbag.authority | quote }}
+            - name: AUDIENCE
+              value: {{ .Values.airbag.audience | quote }}
+            - name: ISSUER
+              value: {{ .Values.airbag.issuer | quote }}  
+            {{- end }}  
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.service.isAlivePath }}
+              port: {{ .Values.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.service.isAlivePath }}
+              port: {{ .Values.service.internalPort }}
+          resources:
+{{ toYaml .Values.airbag.resources | indent 12 }}
+        {{- end }}
+        {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ toYaml .Values.imagePullSecrets }}
+        {{- end }}
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: {{ template "kamus.name" . }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}

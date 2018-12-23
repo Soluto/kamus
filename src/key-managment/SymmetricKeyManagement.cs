@@ -29,7 +29,7 @@ namespace Hamuste.KeyManagement
         
         public Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var splitted = encryptedData.Split(":");
+            var splitted = encryptedData.Split(':');
             if (splitted.Length != 2) {
                 throw new InvalidOperationException("Encrypted data format is invalid");
             }
