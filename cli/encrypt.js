@@ -6,6 +6,7 @@ const isDocker = require('./is-docker');
 const url = require('url')
 const request = require('request');
 const {promisify} = require('util');
+var pjson = require('./package.json');
 
 let _logger;
 
@@ -99,7 +100,7 @@ const useAuth = ({ authTenant, authApplication, authResource }) => {
 const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certficateFingerprint, token, cb) => {
 
     var headers = {
-        'User-Agent': 'kamus-cli',
+        'User-Agent': `kamus-cli-${pjson.version}`,
         'Content-Type': 'application/json'
     };
 
