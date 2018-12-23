@@ -12,7 +12,6 @@ let _logger;
 
 module.exports = async (args, options, logger) => {
     _logger = logger;
-    console.log(`options: ${JSON.stringify(options)}`);
     if (useAuth(options)) {
         const token = await acquireToken(options);
         
