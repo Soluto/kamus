@@ -14,6 +14,7 @@ prog
   .option('--auth-application <id>', 'Azure application id', regexGuid)
   .option('--auth-resource <name>', 'Azure resource name', prog.STRING)
   .option('--kamus-url <url>', 'Kamus URL', prog.REQUIRED)
-  .option('--allow-insecure-url', 'Allow insecure (http) Kamus URL', prog.BOOL);
+  .option('--allow-insecure-url', 'Allow insecure (http) Kamus URL', prog.BOOL)
+  .option('--cert-fingerprint <certFingerprint>', 'Force server certificate to match the givven fingerprint', prog.STRING);
 
 prog.parse(process.argv);
