@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "kamus.name" . -}}-encryptor
+{{- $serviceName := include "kamus.name" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 {{- $servicePath := .Values.ingress.path | default "/" -}}
 {{- $tlsSecretName := .Values.ingress.tls.secretName -}}
@@ -26,7 +26,7 @@ spec:
         paths:
           - path: {{ $servicePath }}
             backend:
-              serviceName: {{ $serviceName }}
+              serviceName: {{ $serviceName }}-encryptor
               servicePort: {{ $servicePort }}
     {{- end }}
 
