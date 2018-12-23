@@ -49,17 +49,6 @@ const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowIns
     }
 }
 
-const handleEncryptionError = (response) => {
-    _logger.error('Error while trying to encrypt with kamus');
-    if (response.status == 400) {
-        _logger.error('Server returned bad request, make sure the service account and namespace exists');
-    }
-    if (response.status == 403) {
-        _logger.error('Server returned authentication error, make sure your user has access rights to kamus');
-    }
-    process.exit(1);
-}
-
 const acquireToken = async ({ authTenant, authApplication, authResource }) => {
     const context = new AuthenticationContext(activeDirectoryEndpoint + authTenant);
     bluebird.promisifyAll(context);
