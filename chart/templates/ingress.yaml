@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "kamus.name" . -}}
+{{- $serviceName := include "kamus.name" . -}}-encryptor
 {{- $servicePort := .Values.service.externalPort -}}
 {{- $servicePath := .Values.ingress.path | default "/" -}}
 {{- $tlsSecretName := .Values.ingress.tls.secretName -}}
