@@ -64,7 +64,7 @@ namespace Hamuste.Controllers
             }
             catch (DecryptionFailureException e)
             {
-                mLogger.Warning(e, "Decryption request failed, ServiceAccount: {sa}",
+                mLogger.Warning(e, "Decryption request failed, SourceIP: {sourceIp}, ServiceAccount: {sa}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     serviceAccountUserName);
                 return StatusCode(400);

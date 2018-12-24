@@ -79,8 +79,7 @@ namespace Hamuste.KeyManagement
             return 
                 WebEncoders.Base64UrlEncode(
                     SHA256.Create().ComputeHash(
-                        Encoding.UTF8.GetBytes(serviceUserName)))
-                           .Replace("_", "-");
+                        Encoding.UTF8.GetBytes(serviceUserName)));
         }
     }
 }
