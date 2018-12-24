@@ -68,44 +68,6 @@ namespace blackbox
 
         }
 
-        /*
-
-        [Fact]
-        public async Task Encrypt_KeyDoesNotExist_CreateIt()
-        {
-            var clientId = ConfigurationProvider.Configuration["ClientId"];
-            var clientSecret = ConfigurationProvider.Configuration["ClientSecret"];
-
-
-            var client = new KeyVaultClient(async (authority, resource, scope) =>
-            {
-                var authContext = new AuthenticationContext(authority);
-                var clientCred = new ClientCredential(clientId, clientSecret);
-                var res = await authContext.AcquireTokenAsync(resource, clientCred);
-                return res.AccessToken;
-            });
-
-            var keys = await client.GetKeysAsync("https://k8spoc.vault.azure.net");
-
-            foreach(var key in keys){
-                await client.DeleteKeyAsync(key.Identifier.Vault, key.Identifier.Name);
-            }
-            
-            var httpClient = mHttpClientProvider.Provide();
-            var data = "test";
-
-            var request = new EncryptRequest
-            {
-                SerivceAccountName = "dummy",
-                NamesapceName = "default",
-                Data = data
-            };
-
-            var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
-
-            result.EnsureSuccessStatusCode();
-        }*/
-
         [Fact]
         public async Task TestFullFlow()
         {

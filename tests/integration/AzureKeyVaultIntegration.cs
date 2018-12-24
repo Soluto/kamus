@@ -18,7 +18,7 @@ namespace integration
         private IKeyManagement mAzureKeyManagement;
         private IKeyVaultClient mKeyVaultClient;
         private readonly IConfiguration mConfiguration;
-        private readonly string mKeyVaultName = "k8spoc";
+        private readonly string mKeyVaultName = "";
         public AzureKeyVaultIntegration()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
@@ -54,7 +54,7 @@ namespace integration
             }
             finally // clean up
             {
-                await mKeyVaultClient.DeleteKeyAsync("https://k8spoc.vault.azure.net", ComputeKeyId(serviceAccountId));
+                await mKeyVaultClient.DeleteKeyAsync("https://<>.vault.azure.net", ComputeKeyId(serviceAccountId));
             }
         }
 
