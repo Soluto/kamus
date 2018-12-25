@@ -5,7 +5,7 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "appsettings.secret.json" }}
+{{- define "appsettings.secrets.json" }}
 {{ printf "{\n\t\"ActiveDirectory\": { " }}
 {{ if .Values.keyManagment.azureKeyVault}}
 {{ printf "\t\t\"ClientSecret\": \"%s\" " .Values.keyManagment.azureKeyVault.clientSecret }}
