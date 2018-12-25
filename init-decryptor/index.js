@@ -5,6 +5,7 @@ const util = require('util');
 const readFileAsync = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 const axios = require('axios');
+const path = require('path');
 
 program
     .version('0.1.0')
@@ -67,22 +68,20 @@ async function innerRun() {
     {
         secrets[file] = await decryptFile(httpClient, file);
     }
-
-    console.log(`Writing output format using ${program.outputFormat} format`);
+    const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
+    console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
 
     switch(program.outputFormat){
       case "json":
-        await writeFile(program.decryptedPath + program.decryptedFileName, JSON.stringify(secrets));
+        await writeFile(outputFile, JSON.stringify(secrets));
         break;
       case "cfg":
-        await writeFile(program.decryptedPath + program.decryptedFileName, serializeToCfgFormat(secrets));
+        await writeFile(outputFile, serializeToCfgFormat(secrets));
         break;
       case "files":
-        await Promise.all(Object.keys(secrets).map(secretName => writeFile(program.decryptedPath + secretName, secrets[secretName])))
+        await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
         break;
     }
-    
-    
     
     console.log("Decrypted: " + Object.keys(secrets))
 }
