@@ -4,4 +4,4 @@ metadata:
   name: {{ template "kamus.name" . }}-decryptor
   namespace: {{ .Values.team }}
 data:
-  KeyManagement__Provider: {{ .Values.keyManagment.provider }}
+{{ include "common.configurations" . | indent 2 }}

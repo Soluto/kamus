@@ -22,6 +22,9 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-encryptor.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         app: {{ template "kamus.name" . }}
         component: encryptor
@@ -35,7 +38,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: secret-volume
-              mountPath: /app/secrets
+              mountPath: /home/dotnet/app/secrets
           ports:
             - containerPort: 9999
           livenessProbe:
