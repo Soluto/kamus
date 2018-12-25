@@ -44,9 +44,9 @@ namespace Hamuste.KeyManagement
                 using (var resultStream = new MemoryStream())
                 {
                     using (var rijndaelStream = new CryptoStream(resultStream, decryptor, CryptoStreamMode.Write))
-                    using (var plainStream = new MemoryStream(buffer))
+                    using (var cipherStream = new MemoryStream(buffer))
                     {
-                        plainStream.CopyTo(rijndaelStream);
+                        cipherStream.CopyTo(rijndaelStream);
                     }
 
                     result = resultStream.ToArray();

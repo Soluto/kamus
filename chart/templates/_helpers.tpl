@@ -16,16 +16,3 @@ Expand the name of the chart.
 {{- end -}}
 {{ printf "} \n}"}}
 {{- end }}
-
-"KeyManagement": {
-    "Provider": "AESKey",
-    "AES": {
-      "Key": "rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0="
-    },
-    "KeyVault":  {
-      "Name": "k8spoc",
-      "KeyType": "RSA",
-      "KeyLength": "2048",
-      "MaximumDataLength": "214"
-    }
-  }
