@@ -4,7 +4,7 @@ metadata:
   name: kamus-example
   labels:
     app: kamus-example
-  replicas: 1
+spec:
   template:
     metadata:
       labels:
@@ -14,20 +14,21 @@ metadata:
       automountServiceAccountToken: true
       initContainers:
         - name: "kamus-init"
-          image: "<>"
+          image: "local/kamus:init-container-1"
+          imagePullPolicy: IfNotPresent
           env:
             - name: KAMUS_URL
-              value: http://hamuste.team-devops.svc.cluster.local/ 
+              value: http://kamus-decryptor.default.svc.cluster.local/ 
           volumeMounts:
           - name: encrypted-secrets
             mountPath: /encrypted-secrets
           - name: decrypted-secrets
             mountPath: /decrypted-secrets
-        args: ["-e","/encrypted-secrets","-d","/decrypted-secrets/{{ .Values.decryptedJsonFileName }}"]
+          args: ["-e","/encrypted-secrets","-d","/decrypted-secrets", "-n", "config.json"]
       containers:
         - name: app
-          image: {{ .Values.image.repository }}/{{ default .Values.nameOverride .Values.image.name }}:{{ .Values.image.version }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: local/kamus:example
+          imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: decrypted-secrets
             mountPath: /secrets

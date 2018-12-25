@@ -1,4 +1,6 @@
 require 'json'
 
-config_file = File.read('config.json')
+puts "hello"
+config_file = File.read('/secrets/config.json')
 puts config_file
+  
