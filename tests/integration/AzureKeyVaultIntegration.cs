@@ -55,7 +55,7 @@ namespace integration
             }
             finally // clean up
             {
-                await mKeyVaultClient.DeleteKeyAsync("https://<>.vault.azure.net", ComputeKeyId(serviceAccountId));
+                await mKeyVaultClient.DeleteKeyAsync($"https://{mKeyVaultName}.vault.azure.net", ComputeKeyId(serviceAccountId));
             }
         }
 
