@@ -31,7 +31,7 @@ steps:
         type: build
         image_name: soluto/kamus
         working_directory: ./tests/blackbox/Wiremock
-        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-blackbox'
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-wiremock'
         dockerfile: Dockerfile
       RunIntegrationTests:
         title: Run integration tests
