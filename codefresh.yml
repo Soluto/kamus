@@ -21,7 +21,7 @@ steps:
           - PROJECT_NAME=encrypt-api
       RunIntegrationTests:
         title: Run integration tests
-        image_name: microsoft/dotnet:2.1-sdk
+        image: microsoft/dotnet:2.1-sdk
         working_directory: tests/integration
         cmd:
           - dotnet build
