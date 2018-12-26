@@ -1,9 +1,18 @@
 version: '1.0'
 steps:
-  BuildingDockerImage:
+  BuildingDecryptorDockerImage:
     title: Building Docker Image
     type: build
     image_name: soluto/kamus
     working_directory: ./
-    tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}-decryptor'
     dockerfile: Dockerfile
+  BuildingEncryptorDockerImage:
+    title: Building Docker Image
+    type: build
+    image_name: soluto/kamus
+    working_directory: ./
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}-encryptor'
+    dockerfile: Dockerfile
+    build_arguments:
+      - PROJECT_NAME=encrypt-api
