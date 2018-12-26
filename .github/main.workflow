@@ -1,6 +1,6 @@
 workflow "Build" {
   on = "push"
-  resolves = ["GitHub Action for Docker"]
+  resolves = ["Build Decryptor API", "Build Encryptor API"]
 }
 
 action "Build Decryptor API" {
