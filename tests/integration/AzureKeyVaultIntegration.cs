@@ -21,7 +21,7 @@ namespace integration
         private readonly string mKeyVaultName = "";
         public AzureKeyVaultIntegration()
         {
-            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
+            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
             InitializeKeyManagement();
         }
 
