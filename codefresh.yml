@@ -29,7 +29,7 @@ steps:
   BlackBoxTests:
     title: Run black box tests
     type: composition
-    composition: './tests'
+    composition: './tests/blackbox/compose/docker-compose.yaml'
     composition_candidates:
       black-box:
         command: ./run_test.sh
