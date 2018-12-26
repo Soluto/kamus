@@ -19,6 +19,20 @@ steps:
         dockerfile: Dockerfile
         build_arguments:
           - PROJECT_NAME=encrypt-api
+      BuildingBlackboxImage:
+        title: Building blackbox Image
+        type: build
+        image_name: soluto/kamus
+        working_directory: ./tests/blackbox
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-blackbox'
+        dockerfile: Dockerfile
+      BuildingWiremockImage:
+        title: Building wiremock Image
+        type: build
+        image_name: soluto/kamus
+        working_directory: ./tests/blackbox/Wiremock
+        tag: '${{CF_BRANCH_TAG_NORMALIZED}}-blackbox'
+        dockerfile: Dockerfile
       RunIntegrationTests:
         title: Run integration tests
         image: microsoft/dotnet:2.1-sdk
@@ -36,3 +50,5 @@ steps:
     composition_variables:      
       - ENCRYPTOR_IMAGE=${{BuildingEncryptorDockerImage}}
       - DECRYPTOR_IMAGE=${{BuildingDecryptorDockerImage}}
+      - BLACKBOX_IMAGE=${{BuildingBlackboxImage}}
+      - WIREMOCK_IMAGE=${{BuildingWiremockImage}}

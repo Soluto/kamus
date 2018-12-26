@@ -11,8 +11,7 @@ services:
       - Kubernetes__ProxyUrl=http://wiremock:8080
 
   black-box:
-    build:
-      context: ../
+    image: $BLACKBOX_IMAGE
     environment:
       - ENCRYPTOR=http://encryptor:9999/
       - DECRYPTOR=http://decryptor:9999/
@@ -23,8 +22,7 @@ services:
       - ../../../glue:/reports
   
   wiremock:
-    build:
-      context: ../Wiremock
+    image: $WIREMOCK_IMAGE
 
   zap:
     image: soluto/zap-ci:1531823009782
