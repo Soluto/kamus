@@ -18,10 +18,11 @@ namespace integration
         private IKeyManagement mAzureKeyManagement;
         private IKeyVaultClient mKeyVaultClient;
         private readonly IConfiguration mConfiguration;
-        private readonly string mKeyVaultName = "";
+        private readonly string mKeyVaultName;
         public AzureKeyVaultIntegration()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
+            mKeyVaultName = mConfiguration.GetValue<string>("KeyVault:Name");
             InitializeKeyManagement();
         }
 
