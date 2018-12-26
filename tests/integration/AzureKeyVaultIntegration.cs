@@ -22,7 +22,7 @@ namespace integration
         public AzureKeyVaultIntegration()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
-            mKeyVaultName = mConfiguration.GetValue<string>("KeyVault:Name");
+            mKeyVaultName = mConfiguration.GetValue<string>("KeyManagement:KeyVault:Name");
             InitializeKeyManagement();
         }
 
@@ -30,8 +30,8 @@ namespace integration
         {
             var clientId = mConfiguration.GetValue<string>("ActiveDirectory:ClientId");
             var clientSecret = mConfiguration.GetValue<string>("ActiveDirectory:ClientSecret");
-            mKeyVaultClient = new KeyVaultClient(((authority, resource, scope) => 
-                Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope)));
+            mKeyVaultClient = new KeyVaultClient((authority, resource, scope) => 
+                Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope));
             mAzureKeyManagement = new AzureKeyVaultKeyManagement(mKeyVaultClient, mConfiguration);
         }
         
