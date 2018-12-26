@@ -33,3 +33,6 @@ steps:
     composition_candidates:
       black-box:
         command: ./run_test.sh
+    composition_variables:      
+      - ENCRYPTOR_IMAGE=${{BuildingEncryptorDockerImage}}
+      - DECRYPTOR_IMAGE=${{BuildingDecryptorDockerImage}}
