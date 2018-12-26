@@ -55,6 +55,5 @@ steps:
   DynamicSecurityTests:
     title: Parse zap reports
     image: soluto/glue-ci:1532426297485
-    working_directory: ./glue
     commands:
-      - /app/run_glue.sh $(pwd)/glue.json $(pwd)/report.json
+      - /app/run_glue.sh  ${{main_clone}}/glue/glue.json  ${{main_clone}}/glue/report.json
