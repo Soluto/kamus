@@ -26,4 +26,10 @@ steps:
         commands:
           - dotnet build
           - dotnet test
-
+  BlackBoxTests:
+    title: Run black box tests
+    type: composition
+    composition: './tests'
+    composition_candidates:
+      black-box:
+        command: ./run_test.sh

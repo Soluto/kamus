@@ -1,10 +1,11 @@
 version: '3'
 services:
   encryptor:
+    image: soluto/kamus:${{CF_BRANCH_TAG_NORMALIZED}}-encryptor
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-
   decryptor:
+    image: soluto/kamus:${{CF_BRANCH_TAG_NORMALIZED}}-decryptor
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Kubernetes__ProxyUrl=http://wiremock:8080
@@ -24,3 +25,9 @@ services:
   wiremock:
     build:
       context: ../Wiremock
+
+  zap:
+    image: soluto/zap-ci:1531823009782
+    logging:
+      driver:
+        none
