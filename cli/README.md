@@ -13,7 +13,7 @@ It supports azure device flow authentication out of the box.
 
 ---
 #### How to enable azure active directory authentication 
-You need working active directory tenant and designated app registration, Then just set all the `auth` prefixed options.
+You need working active directory [tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant) and designated [native app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-register-an-app), Then just set all the `auth` prefixed options.
 Once the user will run the cli with the auth options, he will get a small code and and azure URL to login into.
 
 ---
