@@ -1,6 +1,6 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "GitOps"
   ],
   "author": "Shai Katz",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/soluto/kamus/issues"
   },
