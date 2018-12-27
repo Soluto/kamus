@@ -1,5 +1,5 @@
 {
-  "name": "kamus-cli",
+  "name": "@soluto-asurion/kamus-cli",
   "version": "0.0.1",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
@@ -13,7 +13,8 @@
   "keywords": [
     "Secrets",
     "Kubernetes",
-    "Kamus"
+    "Kamus",
+    "GitOps"
   ],
   "author": "Shai Katz",
   "license": "ISC",
@@ -27,5 +28,6 @@
     "caporal": "^1.1.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0"
-  }
+  },
+  "devDependencies": {}
 }
