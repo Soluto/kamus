@@ -55,3 +55,7 @@ autoscale:
   targetCPU: 50
 envFrom: {}
 container: {}
+keyManagment:
+  provider: AESKey
+  AES:
+    key: rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0=

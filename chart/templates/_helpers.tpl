@@ -6,14 +6,16 @@ Expand the name of the chart.
 {{- end -}}
 
 {{- define "appsettings.secrets.json" }}
-{{ printf "{\n\t\"ActiveDirectory\": { " }}
+{{ printf "{" }}
 {{ if .Values.keyManagment.azureKeyVault}}
+{{ printf "\n\t\"ActiveDirectory\": { " }}
 {{ printf "\t\t\"ClientSecret\": \"%s\" " .Values.keyManagment.azureKeyVault.clientSecret }}
+{{ printf "} \n"}}
 {{- end -}}
 {{ if .Values.keyManagment.AES}}
 {{ printf "\"KeyManagement\": { \n\t\t\"AES\": { \"Key\": \"%s\" } }" .Values.keyManagment.AES.key }}
 {{- end -}}
-{{ printf "} \n}"}}
+{{ printf "}" }}
 {{- end }}
 
 {{- define "common.configurations" -}}
