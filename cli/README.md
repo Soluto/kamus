@@ -24,6 +24,6 @@ Once the user will run the cli with the auth options, he will get a small code a
 | --auth-tenant         |   false        |  azure authentication tenant id                  |               |
 | --auth-application    |   false        |  azure authentication application id             |               |
 | --auth-resource       |   false        |  azure authentication resource id                |               |
-| --cert-fingerprint    |   false        |  certificate fingerprint for requests validations|               |
+| --cert-fingerprint    |   false        |  [certificate fingerprint](http://hassansin.github.io/certificate-pinning-in-nodejs) of encryption api for validation       |               |
 | --kamus-url           |   true         |  url of kamus encryption api                     |               |
 | --allow-insecure-url  |   false        |  allow or block non https endpoints              | false         |
