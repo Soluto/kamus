@@ -18,8 +18,6 @@ services:
       - TEAMCITY_PROJECT_NAME=api
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
-    volumes:
-      - ../../../glue:/reports
   
   wiremock:
     image: $WIREMOCK_IMAGE

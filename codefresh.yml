@@ -47,6 +47,8 @@ steps:
     composition_candidates:
       black-box:
         command: ./run_test.sh
+      volumes:
+        - ${{CF_VOLUME}}:/reports
     composition_variables:      
       - ENCRYPTOR_IMAGE=${{BuildingEncryptorDockerImage}}
       - DECRYPTOR_IMAGE=${{BuildingDecryptorDockerImage}}
@@ -57,4 +59,4 @@ steps:
     image: soluto/glue-ci:1532426297485
     working_directory: /app
     cmd:
-      - ls -la ${{main_clone}}
+      - ls
