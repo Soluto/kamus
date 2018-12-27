@@ -47,8 +47,8 @@ steps:
     composition_candidates:
       black-box:
         command: ./run_test.sh
-      volumes:
-        - ${{CF_VOLUME}}:/reports
+        volumes:
+          - ${{CF_VOLUME}}:/reports
     composition_variables:      
       - ENCRYPTOR_IMAGE=${{BuildingEncryptorDockerImage}}
       - DECRYPTOR_IMAGE=${{BuildingDecryptorDockerImage}}
