@@ -62,4 +62,4 @@ steps:
       - ls
     cmd:
       - -la
-      - ${{main_clone}}
+      - /reports
