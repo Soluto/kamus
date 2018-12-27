@@ -19,11 +19,11 @@ Once the user will run the cli with the auth options, he will get a small code a
 ---
 ##### CLI options:
 
-| Option                | Required       |  Default Value |
-| -------------------   | ------------   |  ------------- |
-| --auth-tenant         |   false        |                |
-| --auth-application    |   false        |                |
-| --auth-resource       |   false        |                |
-| --cert-fingerprint    |   false        |                |
-| --kamus-url           |   true         |                |
-| --allow-insecure-url  |   false        |  false         |
+| Option                | Required       |  Description                                     | Default Value |
+| -------------------   | ------------   |  ----------------------------------------------- | ------------- |
+| --auth-tenant         |   false        |  azure authentication tenant id                  |               |
+| --auth-application    |   false        |  azure authentication application id             |               |
+| --auth-resource       |   false        |  azure authentication resource id                |               |
+| --cert-fingerprint    |   false        |  certificate fingerprint for requests validations|               |
+| --kamus-url           |   true         |  url of kamus encryption api                     |               |
+| --allow-insecure-url  |   false        |  allow or block non https endpoints              | false         |
