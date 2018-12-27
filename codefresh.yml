@@ -59,7 +59,8 @@ steps:
     image: soluto/glue-ci:1532426297485
     working_directory: /app
     entry_point:
-      - ls
+      - /bin/sh
     cmd:
-      - -la
-      - /codefresh/volume
+      - /app/run_glue.sh
+      - /codefresh/volume/kamus/glue/glue.json
+      - /codefresh/volume/report.json
