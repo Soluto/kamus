@@ -1,7 +1,0 @@
-version: '3'
-services:
-  zap:
-    image: soluto/zap-ci:1531823009782
-    logging:
-      driver:
-        none

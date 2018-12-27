@@ -1,26 +1,29 @@
 version: '3'
 services:
   encryptor:
+    image: $ENCRYPTOR_IMAGE
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-
   decryptor:
+    image: $DECRYPTOR_IMAGE
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Kubernetes__ProxyUrl=http://wiremock:8080
 
   black-box:
-    build:
-      context: ../
+    image: $BLACKBOX_IMAGE
     environment:
       - ENCRYPTOR=http://encryptor:9999/
       - DECRYPTOR=http://decryptor:9999/
       - TEAMCITY_PROJECT_NAME=api
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
-    volumes:
-      - ../../../glue:/reports
   
   wiremock:
-    build:
-      context: ../Wiremock
+    image: $WIREMOCK_IMAGE
+
+  zap:
+    image: soluto/zap-ci:1531823009782
+    logging:
+      driver:
+        none

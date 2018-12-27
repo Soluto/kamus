@@ -15,7 +15,7 @@ namespace integration
         
         public EnvelopeDecoratorIntegrationTests()
         {
-            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
+            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
             InitializeKeyManagement();
         }
 

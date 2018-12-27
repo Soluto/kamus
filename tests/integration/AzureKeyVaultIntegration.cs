@@ -18,10 +18,11 @@ namespace integration
         private IKeyManagement mAzureKeyManagement;
         private IKeyVaultClient mKeyVaultClient;
         private readonly IConfiguration mConfiguration;
-        private readonly string mKeyVaultName = "";
+        private readonly string mKeyVaultName;
         public AzureKeyVaultIntegration()
         {
-            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
+            mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
+            mKeyVaultName = mConfiguration.GetValue<string>("KeyManagement:KeyVault:Name");
             InitializeKeyManagement();
         }
 
@@ -29,8 +30,8 @@ namespace integration
         {
             var clientId = mConfiguration.GetValue<string>("ActiveDirectory:ClientId");
             var clientSecret = mConfiguration.GetValue<string>("ActiveDirectory:ClientSecret");
-            mKeyVaultClient = new KeyVaultClient(((authority, resource, scope) => 
-                Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope)));
+            mKeyVaultClient = new KeyVaultClient((authority, resource, scope) => 
+                Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope));
             mAzureKeyManagement = new AzureKeyVaultKeyManagement(mKeyVaultClient, mConfiguration);
         }
         
@@ -54,7 +55,7 @@ namespace integration
             }
             finally // clean up
             {
-                await mKeyVaultClient.DeleteKeyAsync("https://<>.vault.azure.net", ComputeKeyId(serviceAccountId));
+                await mKeyVaultClient.DeleteKeyAsync($"https://{mKeyVaultName}.vault.azure.net", ComputeKeyId(serviceAccountId));
             }
         }
 
