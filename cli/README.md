@@ -1,6 +1,6 @@
 ## Kamus CLI
 
-This cli was created to give an easy interface to interact with Kamus API.
+This cli was created to provide an easy interface to interact with Kamus API.
 
 It supports azure device flow authentication out of the box. 
 
