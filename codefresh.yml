@@ -62,3 +62,24 @@ steps:
       - cat
     cmd:
       - /codefresh/volume/report.json
+  PushEncryptorImage:
+    type: push
+    title: Push Encryptor Api - lastest
+    when:
+      branch:
+        only:
+          - master
+    candidate: ${{BuildingEncryptorDockerImage}}
+    tags:
+      - encryptor-latest
+  PushDecryptorImage:
+    type: push
+    title: Push Decryptor Api - lastest
+    when:
+      branch:
+        only:
+          - master
+    candidate: ${{BuildingEncryptorDockerImage}}
+    tags:
+      - decryptor-latest
+
