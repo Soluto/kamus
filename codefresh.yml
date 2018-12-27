@@ -59,4 +59,6 @@ steps:
     image: soluto/glue-ci:1532426297485
     working_directory: /app
     cmd:
-      - ls
+      - /bin/sh
+    commands:
+      - ls -la ${{main_clone}}
