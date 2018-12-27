@@ -47,7 +47,7 @@ Kamus shipped with 2 utilities that make it easier to use:
 We take security seriously at Soluto. 
 To learn more about the security aspects of Kamus, reffer to the Threat Modeling docs, containing all the various threats and mitigations we discussed.
 Before installing Kamus in production, reffer the installation guide to learn the best practices of deploying Kamus securely.
-In case you find a security issue, or have something you would like to discuss, reffer to our [Security.md](Security.md) policy.
+In case you find a security issue, or have something you would like to discuss, reffer to our [security.md](security.md) policy.
 
 ## Contributing
 Find a bug? Have a missing feature? Please open an issue and let us know. 
