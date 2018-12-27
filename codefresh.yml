@@ -58,5 +58,3 @@ steps:
     working_directory: /app
     commands:
       - ls -la ${{main_clone}}
-      - cat ${{main_clone}}/glue/report.json
-      - /app/run_glue.sh  ${{main_clone}}/glue/glue.json  ${{main_clone}}/glue/report.json
