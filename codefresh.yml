@@ -62,4 +62,4 @@ steps:
       - ls
     cmd:
       - -la
-      - /codefresh
+      - /codefresh/volume
