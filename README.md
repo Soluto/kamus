@@ -20,7 +20,7 @@ kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
 The simplest way to achieve that is by using the init container.
 An alternative is to use Kamus decrypt API directly in the application code.
-To make it clearer, take a look on a working [example app](example/README).
+To make it clearer, take a look on a working [example app](example/README.md).
 You can deploy this app to any Kubernetes cluster that has Kamus installed, to understand how it works.
 
 ## Architecture
