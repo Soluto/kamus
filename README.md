@@ -1,7 +1,7 @@
 # Kamus
 An open source, git-ops, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
-The encryption is done using strong encryptiong providers (currently supported: Azure KeyVault and AES).
+The encryption is done using strong encryption providers (currently supported: Azure KeyVault and AES).
 
 ## Getting Started
 
