@@ -9,7 +9,7 @@ The simple way to run Kamus is by using the Helm chart:
 ```
 helm upgrade --install incubator/kamus
 ```
-Reffer to the installation guide for more details.
+Refer to the installation guide for more details.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a [Kubernetes Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account).
 Creat a service account for your application, and mount it on the pods running your application. 
