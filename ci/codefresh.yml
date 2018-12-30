@@ -82,4 +82,15 @@ steps:
     candidate: ${{BuildingEncryptorDockerImage}}
     tags:
       - decryptor-latest
-
+  DeployCliToNpm:
+    title: "Deploying Cli To NPM"
+    image: node:6.10.3-alpine
+    environment:
+      - NPM_TOKEN=${{NPM_TOKEN}}
+    commands:
+      - echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
+      - npm run publish
+    when:
+      branch:
+        only:
+          - master

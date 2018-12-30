@@ -4,7 +4,8 @@
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ci-publish": "ci-publish"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
     "caporal": "^1.1.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0"
+  },
+  "devDependencies": {
+    "ci-publish": "^1.3.1"
   }
 }
