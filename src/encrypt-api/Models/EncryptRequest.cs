@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Hamuste.Models
+namespace Kamus.Models
 {
     public class EncryptRequest
     {

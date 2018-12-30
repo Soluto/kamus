@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Hamuste.KubernetesAuthentication;
+using Kamus.KubernetesAuthentication;
 using k8s;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,13 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Serilog;
 using System.Linq;
-using Hamuste.KeyManagement;
+using Kamus.KeyManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 
-namespace Hamuste
+namespace Kamus
 {
     public class Startup {
         
@@ -50,7 +50,7 @@ namespace Hamuste
             services.AddMvc().AddMetrics();
 
             services.AddSwaggerGen (swagger => {
-                swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Hamuste Swagger" });
+                swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Kamus Swagger" });
             });
 
             services.AddSingleton<IKubernetes>(s =>
@@ -133,7 +133,7 @@ namespace Hamuste
 
             app.UseSwagger ();
             app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Hamuste Swagger");
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Kamus Swagger");
             });
 
             app.UseAuthentication();

@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace Hamuste.Extensions
+namespace Kamus.Extensions
 {
     public static class LoggingExtensions
     {

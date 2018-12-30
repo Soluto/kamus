@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace Hamuste.KubernetesAuthentication
+namespace Kamus.KubernetesAuthentication
 {
     public class KubernetesAuthenticationOptions : AuthenticationSchemeOptions
     {

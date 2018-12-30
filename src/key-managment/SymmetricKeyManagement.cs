@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace Hamuste.KeyManagement
+namespace Kamus.KeyManagement
 {
     public class SymmetricKeyManagement : IDynamicKeyManagmenet
     {
