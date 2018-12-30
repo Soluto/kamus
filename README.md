@@ -53,4 +53,4 @@ In case you find a security issue, or have something you would like to discuss, 
 Find a bug? Have a missing feature? Please open an issue and let us know. 
 We would like to help you using Kamus!
 Please notice: Do not report security issues on GitHub. 
-We will delete imediatlly such issues.
+We will immediately delete such issues.
