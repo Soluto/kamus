@@ -8,7 +8,7 @@ steps:
       - NPM_TOKEN=${{NPM_TOKEN}}
     commands:
       - echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
-      - npm run publish
+      - npm publish
     when:
       branch:
         only:
