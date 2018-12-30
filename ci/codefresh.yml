@@ -65,13 +65,12 @@ steps:
   PushEncryptorImage:
     type: push
     title: Push Encryptor Api - lastest
-    when:
-      branch:
-        only:
-          - master
     candidate: ${{BuildingEncryptorDockerImage}}
     tags:
       - encryptor-latest
+    credentials:
+      username: ${{DOCKER_REGISTRY_USERNAME}}
+      password: ${{DOCKER_REGISTRY_PASSWORD}}
   PushDecryptorImage:
     type: push
     title: Push Decryptor Api - lastest
