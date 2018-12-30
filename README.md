@@ -15,6 +15,7 @@ Kamus encrypt secrets for a specific application, represent by a [Kubernetes Ser
 Creat a service account for your application, and mount it on the pods running your application. 
 Now, when you know the name of the service account, and the namespace it exist in, use Kamus CLI to encrypt the secret:
 ```
+npm install -g @soluto-asurion/kamus-cli
 kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
 ```
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
