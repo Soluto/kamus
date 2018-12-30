@@ -5,6 +5,7 @@ steps:
   DeployCliToNpm:
     title: "Deploying Cli To NPM"
     image: node:6.10.3-alpine
+    working_directory: ./cli
     environment:
       - NPM_TOKEN=${{NPM_TOKEN}}
     commands:
