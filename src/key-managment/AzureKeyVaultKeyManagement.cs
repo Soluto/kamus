@@ -9,7 +9,7 @@ using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace Hamuste.KeyManagement 
+namespace Kamus.KeyManagement 
 {
     public class AzureKeyVaultKeyManagement : IKeyManagement
     {

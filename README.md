@@ -1,7 +1,7 @@
 # Kamus
 An open source, git-ops, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
-The encryption is done using strong encryptiong providers (currently supported: Azure KeyVault and AES).
+The encryption is done using strong encryption providers (currently supported: Azure KeyVault and AES).
 
 ## Getting Started
 
@@ -9,12 +9,13 @@ The simple way to run Kamus is by using the Helm chart:
 ```
 helm upgrade --install incubator/kamus
 ```
-Reffer to the installation guide for more details.
+Refer to the installation guide for more details.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a [Kubernetes Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account).
 Creat a service account for your application, and mount it on the pods running your application. 
 Now, when you know the name of the service account, and the namespace it exist in, use Kamus CLI to encrypt the secret:
 ```
+npm install -g @soluto-asurion/kamus-cli
 kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
 ```
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
@@ -53,4 +54,4 @@ In case you find a security issue, or have something you would like to discuss, 
 Find a bug? Have a missing feature? Please open an issue and let us know. 
 We would like to help you using Kamus!
 Please notice: Do not report security issues on GitHub. 
-We will delete imediatlly such issues.
+We will immediately delete such issues.

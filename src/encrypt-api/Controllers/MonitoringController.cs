@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Hamuste.Controllers
+namespace Kamus.Controllers
 {
     public class MonitoringController
     {

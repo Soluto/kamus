@@ -4,7 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 
-namespace Hamuste
+namespace Kamus
 {
     public class Program
     {

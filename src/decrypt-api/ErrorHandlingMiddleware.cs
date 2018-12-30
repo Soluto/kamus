@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Hamuste
+namespace Kamus
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class ErrorHandlingMiddleware

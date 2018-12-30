@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Hamuste.KeyManagement
+namespace Kamus.KeyManagement
 {
     public interface IKeyManagement 
     {

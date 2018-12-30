@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Hamuste.KeyManagement;
+using Kamus.KeyManagement;
 using Xunit;
 
 namespace unit.KeyManagment

@@ -32,7 +32,7 @@ namespace smoketests
         }
     }
     
-    public class Hamuste
+    public class Kamus
     {
         [Fact]
         public async Task Test_Encrypt()
@@ -47,10 +47,10 @@ namespace smoketests
                 Data = data
             };
 
-            var url = Environment.GetEnvironmentVariable("HAMUSTE_URL");
+            var url = Environment.GetEnvironmentVariable("Kamus_URL");
 
             if (string.IsNullOrEmpty(url)){
-                url = "https://hamuste.mysoluto.com";
+                url = "https://Kamus.mysoluto.com";
             }
 
             var result = await httpClient.PostAsync(url + "/api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));

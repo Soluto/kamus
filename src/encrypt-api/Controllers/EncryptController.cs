@@ -2,15 +2,15 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Linq;
-using Hamuste.Models;
+using Kamus.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Rest;
-using Hamuste.Extensions;
-using Hamuste.KeyManagement;
+using Kamus.Extensions;
+using Kamus.KeyManagement;
 using Serilog;
 
-namespace Hamuste.Controllers
+namespace Kamus.Controllers
 {
     
     public class EncryptController : Controller
