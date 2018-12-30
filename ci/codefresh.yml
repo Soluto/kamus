@@ -68,9 +68,6 @@ steps:
     candidate: ${{BuildingEncryptorDockerImage}}
     tags:
       - encryptor-latest
-    credentials:
-      username: ${{DOCKER_REGISTRY_USERNAME}}
-      password: ${{DOCKER_REGISTRY_PASSWORD}}
   PushDecryptorImage:
     type: push
     title: Push Decryptor Api - lastest
