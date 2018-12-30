@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/soluto/kamus.git"
+  },   
+   "bin": {
+    "kamus-cli": "index.js"
   },
   "keywords": [
     "Secrets",
@@ -27,7 +30,8 @@
     "bluebird": "^3.5.3",
     "caporal": "^1.1.0",
     "node-fetch": "^2.3.0",
-    "opn": "^5.4.0"
+    "opn": "^5.4.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {}
 }

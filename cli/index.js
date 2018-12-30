@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var pjson = require('./package.json');
 const prog = require('caporal');
 const encrypt = require('./encrypt');
