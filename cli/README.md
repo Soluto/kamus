@@ -1,4 +1,4 @@
-## Kamus CLI
+## Kamus CLI    [![npm version](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli.svg)](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli)
 
 This cli was created to provide an easy interface to interact with Kamus API.
 
