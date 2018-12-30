@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ template "kamus.name" . }}-decryptor
-  namespace: {{ .Values.team }}
-data:
-{{ include "common.configurations" . | indent 2 }}
