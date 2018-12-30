@@ -1,3 +1,4 @@
+![alt text](images/logo.png | width=48)
 # Kamus
 An open source, git-ops, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
@@ -55,3 +56,6 @@ Find a bug? Have a missing feature? Please open an issue and let us know.
 We would like to help you using Kamus!
 Please notice: Do not report security issues on GitHub. 
 We will immediately delete such issues.
+
+
+<div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
