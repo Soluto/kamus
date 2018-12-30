@@ -1,7 +1,5 @@
 version: '1.0'
 steps:
-  DeployCli:
-    steps:
   DeployCliToNpm:
     title: "Deploying Cli To NPM"
     image: node:6.10.3-alpine
