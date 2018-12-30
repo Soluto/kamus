@@ -1,4 +1,4 @@
-# Kamus
+# Kamus ![logo](images/logo.png) 
 An open source, git-ops, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault and AES).
@@ -55,3 +55,6 @@ Find a bug? Have a missing feature? Please open an issue and let us know.
 We would like to help you using Kamus!
 Please notice: Do not report security issues on GitHub. 
 We will immediately delete such issues.
+
+## Attribution
+The logo icon made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
