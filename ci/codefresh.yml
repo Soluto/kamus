@@ -65,13 +65,16 @@ steps:
   PushEncryptorImage:
     type: push
     title: Push Encryptor Api - lastest
+    candidate: ${{BuildingEncryptorDockerImage}}
+    tags:
+      - encryptor-latest
+    credentials:
+      username: ${{DOCKERHUB_REGISTRY_USERNAME}}
+      password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
     when:
       branch:
         only:
           - master
-    candidate: ${{BuildingEncryptorDockerImage}}
-    tags:
-      - encryptor-latest
   PushDecryptorImage:
     type: push
     title: Push Decryptor Api - lastest
@@ -82,15 +85,6 @@ steps:
     candidate: ${{BuildingEncryptorDockerImage}}
     tags:
       - decryptor-latest
-  DeployCliToNpm:
-    title: "Deploying Cli To NPM"
-    image: node:6.10.3-alpine
-    environment:
-      - NPM_TOKEN=${{NPM_TOKEN}}
-    commands:
-      - echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
-      - npm run publish
-    when:
-      branch:
-        only:
-          - master
+    credentials:
+      username: ${{DOCKERHUB_REGISTRY_USERNAME}}
+      password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
