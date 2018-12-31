@@ -7,7 +7,7 @@ services:
     environment:
       - KAMUS_URL=http://wiremock:8080/
     volumes:
-      - "${PWD}/output:/files"
+      - "${PWD}/output:/files:rw"
       - "${PWD}:/var/run/secrets/kubernetes.io/serviceaccount"
       - "${PWD}/encrypted:/encrypted"
 
