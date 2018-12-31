@@ -69,8 +69,8 @@ steps:
     tags:
       - encryptor-latest
     credentials:
-      username: ${{DOCKER_REGISTRY_USERNAME}}
-      password: ${{DOCKER_REGISTRY_PASSWORD}}
+      username: ${{DOCKERHUB_REGISTRY_USERNAME}}
+      password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
   PushDecryptorImage:
     type: push
     title: Push Decryptor Api - lastest
