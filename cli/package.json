@@ -4,14 +4,14 @@
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/mocha",
     "ci-publish": "ci-publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/soluto/kamus.git"
-  },   
-   "bin": {
+  },
+  "bin": {
     "kamus-cli": "index.js"
   },
   "keywords": [
@@ -34,5 +34,10 @@
     "opn": "^5.4.0",
     "request": "^2.88.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.5",
+    "sinon": "^7.2.2"
+  }
 }
