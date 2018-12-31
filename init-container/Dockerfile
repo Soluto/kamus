@@ -1,7 +1,8 @@
 FROM node:10-alpine
 
+RUN mkdir /home/node/app
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -12,5 +13,7 @@ RUN yarn --prod
 
 # Bundle app source
 COPY . .
+
+USER node
 
 ENTRYPOINT [ "node", "index.js" ]
