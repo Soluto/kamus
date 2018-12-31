@@ -10,8 +10,9 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 steps:
-- script: echo Hello, world!
+- script: ./test.sh
   displayName: 'Run a one-line script'
+  workingDirectory: $(Agent.BuildDirectory)/init-decryptor/tests
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
