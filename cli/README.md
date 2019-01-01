@@ -1,15 +1,22 @@
-## Kamus CLI    [![npm version](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli.svg)](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli)
+[![npm version](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli.svg)](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli)
+[![Known Vulnerabilities](https://snyk.io/test/github/soluto/kamus/badge.svg?targetFile=cli/package.json)](https://snyk.io/test/github/soluto/kamus)
+
+## Kamus CLI 
 
 This cli was created to provide an easy interface to interact with Kamus API.
 
 It supports azure device flow authentication out of the box. 
 
+To install, use the following NPM command:
+```
+npm install -g @soluto-asurion/kamus-cli
+```
 ---
 
 #### Supported commands:
 
 ##### Encrypt
-`node index.js encrypt <data> <serviceAccount> <namespace>`
+`kamus-cli encrypt <data> <serviceAccount> <namespace>`
 
 ---
 #### How to enable azure active directory authentication 
