@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - restore_cache:
-          key: v1-myapp-cach
+          key: docker_cache_key
       - run:
           name: Restore imahe
           command: |
