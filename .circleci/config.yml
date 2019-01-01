@@ -32,7 +32,7 @@ jobs:
       - run:
           name: Restore imahe
           command: |
-            docker load docker-cache/built-image.tar
+            docker load < docker-cache/built-image.tar
             docker tag kamus-init-container soluto/kamus-init-container:$CIRCLE_BUILD_NUM
       - run:
           name: Docker push
@@ -45,5 +45,7 @@ workflows:
   build_and_push:
     jobs:
       - build
-      - push
+      - push:
+          requires:
+            - build
 
