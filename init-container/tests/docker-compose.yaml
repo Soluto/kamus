@@ -2,12 +2,12 @@ version: '3.3'
 
 services:
   decryptor:
-    build:
-      context: ../
+    user: root
+    image: $INIT_CONTAINER_IMAGE
     environment:
       - KAMUS_URL=http://wiremock:8080/
     volumes:
-      - "${PWD}/output:/files"
+      - "${PWD}/output:/files:rw"
       - "${PWD}:/var/run/secrets/kubernetes.io/serviceaccount"
       - "${PWD}/encrypted:/encrypted"
 

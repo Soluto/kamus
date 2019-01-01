@@ -1,15 +1,9 @@
 version: '1.0'
 steps:
-  DeployCliToNpm:
-    title: "Deploying Cli To NPM"
-    image: node:6.10.3-alpine
+  Unit Tests:
+    title: "Run Unit Tests"
+    image: node:10-alpine
     working_directory: ./cli
-    environment:
-      - NPM_TOKEN=${{NPM_TOKEN}}
     commands:
-      - echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
-      - npm publish
-    when:
-      branch:
-        only:
-          - master
+      - yarn install 
+      - yarn test
