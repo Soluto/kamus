@@ -13,6 +13,4 @@ jobs:
       - run:
           name: Run black box tests
           working_directory: "init-container/tests"
-          command: sudo ./run_test.sh
-          environment:
-            INIT_CONTAINER_IMAGE: soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+          command: INIT_CONTAINER_IMAGE=soluto/kamus-init-container:$CIRCLE_BUILD_NUM sudo ./run_test.sh
