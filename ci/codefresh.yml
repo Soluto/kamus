@@ -82,7 +82,7 @@ steps:
       branch:
         only:
           - master
-    candidate: ${{BuildingEncryptorDockerImage}}
+    candidate: ${{BuildingDecryptorDockerImage}}
     tags:
       - decryptor-latest
     credentials:
