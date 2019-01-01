@@ -9,4 +9,4 @@ jobs:
       - run:
           name: Start container and verify it's working
           working_directory: "init-container/tests"
-          command: ./run_test.sh
+          command: sudo ./run_test.sh
