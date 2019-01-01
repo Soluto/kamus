@@ -24,6 +24,10 @@ jobs:
           paths:
             - docker-cache
   push:
+    filters:
+      branches:
+        only: master
+        
     machine: true
 
     steps:
