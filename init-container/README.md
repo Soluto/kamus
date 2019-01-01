@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus) [![Known Vulnerabilities](https://snyk.io/test/github/soluto/kamus/badge.svg?targetFile=init-container/package.json)](https://snyk.io/test/github/soluto/kamus) 
+
 # Kamus Init Container
 A [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) that decrypt secrets using Kamus decryptor API and write them to a file.
 
