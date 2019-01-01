@@ -8,20 +8,38 @@ jobs:
       - run:
           name: Build docker image
           working_directory: "init-container"
-          command: docker build . -t soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+          command: docker build . -t kamus-init-container
 
       - run:
           name: Run black box tests
           working_directory: "init-container/tests"
-          command: sudo INIT_CONTAINER_IMAGE=soluto/kamus-init-container:$CIRCLE_BUILD_NUM ./run_test.sh
+          command: sudo INIT_CONTAINER_IMAGE=kamus-init-container ./run_test.sh
+      - run:
+          name: Save docker image
+          command: |
+            mkdir -p docker-cache
+            docker save -o docker-cache/built-image.tar kamus-init-container
+      - save_cache:
+          key: docker_cache_key
+          paths:
+            - docker-cache
   push:
     machine: true
 
     steps:
+      - restore_cache:
+          key: v1-myapp-cach
+      - run:
+          name: Restore imahe
+          command: |
+            docker load docker-cache/built-image.tar
+            docker tag kamus-init-container soluto/kamus-init-container:$CIRCLE_BUILD_NUM
       - run:
           name: Docker push
           working_directory: "init-container/tests"
-          command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD && docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
 workflows:
   version: 2
   build_and_push:
