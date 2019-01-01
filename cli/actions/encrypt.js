@@ -2,11 +2,11 @@ var bluebird = require('bluebird');
 const opn = require('opn');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
-const isDocker = require('./is-docker');
+const isDocker = require('../is-docker');
 const url = require('url')
 const request = require('request');
 const {promisify} = require('util');
-var pjson = require('./package.json');
+var pjson = require('../package.json');
 
 let _logger;
 
