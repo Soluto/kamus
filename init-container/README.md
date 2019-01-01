@@ -1,5 +1,4 @@
 [![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus) [![Known Vulnerabilities](https://snyk.io/test/github/soluto/kamus/badge.svg?targetFile=init-container/package.json)](https://snyk.io/test/github/soluto/kamus) 
-
 # Kamus Init Container
 A [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) that decrypt secrets using Kamus decryptor API and write them to a file.
 
@@ -18,7 +17,7 @@ The init container has 2 mounted volumes:
 * Encrypted items: mounted from the config map, contains all the encrypted values
 * Decrypted items: the init container will write all the decrypted items to this volume. The vulme medium is memory for increased security.
 
-Take a look on the [deployment](example/deployment-kamus/deployment.yaml) of the example app to see how it's all connected together. You'll notice that app container and the init continer, and you can see the mount settings. Don't forget to mount the decrypted item into the container running the app.
+Take a look on the [deployment](example/deployment-kamus/deployment.yaml) of the example app to see how it's all connected together. You'll notice that app container and the init container, and you can see the mount settings. Don't forget to mount the decrypted item into the container running the app.
 
 ## Usage
 The init container accept the following environmenmt variables:
@@ -29,4 +28,4 @@ The init container accept the following environmenmt variables:
 | `-e/--encrypted-folder <path>`          |   true        |   Encrypted files folder path (the volume mounted with the config map)               |               |
 | `-d/--decrypted-path <path>`          |   false        |   Decrypted file/s folder path mounted. Pass this argument to create one decrypted file per encrypted secret              |               |
 | `-n/--decrypted-file-name <name>`          |   false        |   Decrypted file name. Pass this argument to create one configuration file with the encrypted secrets.             |               |
-| `-f/--output-format <format>`          |   false        |  he format of the output file, default to JSON. Supported types: json, cfg, files           |         JSON      |
+| `-f/--output-format <format>`          |   false        |  The format of the output file, default to JSON. Supported types: json, cfg, files           |         JSON      |
