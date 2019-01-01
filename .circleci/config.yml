@@ -1,16 +1,14 @@
 version: 2
 jobs:
   build:
-    machine: 
-      enabled: true
-      image: circleci/classic:201808-01
+    machine: true
 
     steps:
       - checkout
       - run:
           name: Build docker image
           working_directory: "init-container"
-          command: Docker build . -t soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+          command: docker build . -t soluto/kamus-init-container:$CIRCLE_BUILD_NUM
 
       - run:
           name: Run black box tests
