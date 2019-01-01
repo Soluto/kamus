@@ -1,7 +1,9 @@
 version: 2
 jobs:
   build:
-    machine: true
+    machine: 
+      enabled: true
+      image: circleci/classic:201808-01
 
     steps:
       - checkout
