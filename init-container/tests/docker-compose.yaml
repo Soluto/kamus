@@ -2,6 +2,7 @@ version: '3.3'
 
 services:
   decryptor:
+    user: root
     build:
       context: ../
     environment:
