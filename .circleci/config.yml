@@ -22,3 +22,10 @@ jobs:
           name: Docker push
           working_directory: "init-container/tests"
           command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD && docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+workflows:
+  version: 2
+  build_and_push:
+    jobs:
+      - build
+      - push
+
