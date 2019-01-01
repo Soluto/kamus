@@ -3,8 +3,7 @@ version: '3.3'
 services:
   decryptor:
     user: root
-    build:
-      context: ../
+    image: $INIT_CONTAINER_IMAGE
     environment:
       - KAMUS_URL=http://wiremock:8080/
     volumes:

@@ -5,8 +5,14 @@ jobs:
 
     steps:
       - checkout
-      
       - run:
-          name: Start container and verify it's working
+          name: Build docker image
+          working_directory: "init-container"
+          command: Docker build . -t soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+
+      - run:
+          name: Run black box tests
           working_directory: "init-container/tests"
           command: sudo ./run_test.sh
+          environment:
+            INIT_CONTAINER_IMAGE: soluto/kamus-init-container:$CIRCLE_BUILD_NUM
