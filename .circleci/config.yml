@@ -14,3 +14,8 @@ jobs:
           name: Run black box tests
           working_directory: "init-container/tests"
           command: sudo INIT_CONTAINER_IMAGE=soluto/kamus-init-container:$CIRCLE_BUILD_NUM ./run_test.sh
+
+      - run:
+          name: Docker push
+          working_directory: "init-container/tests"
+          command: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD && docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
