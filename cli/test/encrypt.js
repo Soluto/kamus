@@ -17,7 +17,7 @@ const data = 'super-secret';
 const serviceAccount = 'dummy';
 const namespace = 'team-a';
 
-describe('Get User tests', () => {
+describe('Encrypt', () => {
   beforeEach(() => {
     sinon.stub(process, 'exit');
     nock(kamusUrl)
@@ -25,7 +25,7 @@ describe('Get User tests', () => {
       .reply(200, '123ABC');
   });
 
-  it('Get a user by username', async () => {
+  it('Should return encrypted data', async () => {
     await encrypt({data, serviceAccount, namespace}, {kamusUrl}, logger);
     expect(process.exit.called).to.be.true;
     expect(process.exit.calledWith(0)).to.be.true;
