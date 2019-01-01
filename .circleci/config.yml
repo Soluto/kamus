@@ -24,10 +24,6 @@ jobs:
           paths:
             - docker-cache
   push:
-    filters:
-      branches:
-        only: master
-
     machine: true
 
     steps:
@@ -59,4 +55,7 @@ workflows:
       - push:
           requires:
             - build
+          filters:
+            branches:
+              only: master
 
