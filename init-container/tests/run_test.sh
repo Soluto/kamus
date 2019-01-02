@@ -45,3 +45,13 @@ for f in "output"/*; do
 done
 
 rm -rf output
+
+echo "running decryptor - upper case"
+
+OUTPUT_FORMAT=JSON docker-compose run decryptor
+
+if [[ $? != 0 ]]
+then
+  echo "should not fail on upper case format"
+  exit 1
+fi

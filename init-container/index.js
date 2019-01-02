@@ -71,7 +71,7 @@ async function innerRun() {
     const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
     console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
 
-    switch(program.outputFormat){
+    switch(program.outputFormat.toLowerCase()){
       case "json":
         await writeFile(outputFile, JSON.stringify(secrets));
         break;
@@ -81,6 +81,8 @@ async function innerRun() {
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
         break;
+      default:
+        throw new Error(`Unsupported output format: ${program.outputFormat}`);
     }
     
     console.log("Decrypted: " + Object.keys(secrets))
