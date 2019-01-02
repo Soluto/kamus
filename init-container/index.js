@@ -71,7 +71,7 @@ async function innerRun() {
     const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
     console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
 
-    switch(program.outputFormat){
+    switch(program.outputFormat.toLowerCase()){
       case "json":
         await writeFile(outputFile, JSON.stringify(secrets));
         break;

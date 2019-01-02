@@ -46,7 +46,9 @@ done
 
 rm -rf output
 
-OUTPUT_FORMAT=dummy docker-compose run decryptor
+echo "running decryptor - unsupported format"
+
+OUTPUT_FORMAT=JSON docker-compose run decryptor
 
 if [[ $? == 0 ]]
 then
