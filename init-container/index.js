@@ -81,6 +81,8 @@ async function innerRun() {
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
         break;
+      default:
+        console.error(`Unsupported format: ${program.outputFormat}`);
     }
     
     console.log("Decrypted: " + Object.keys(secrets))
