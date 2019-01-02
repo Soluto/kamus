@@ -48,7 +48,8 @@ rm -rf output
 
 OUTPUT_FORMAT=dummy docker-compose run decryptor
 
-if [[ $? != 0 ]]
+if [[ $? == 0 ]]
 then
   echo "should fail on unsupported format"
+  exit 1
 fi
