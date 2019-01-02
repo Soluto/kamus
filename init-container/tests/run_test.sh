@@ -46,12 +46,12 @@ done
 
 rm -rf output
 
-echo "running decryptor - unsupported format"
+echo "running decryptor - upper case"
 
 OUTPUT_FORMAT=JSON docker-compose run decryptor
 
-if [[ $? == 0 ]]
+if [[ $? != 0 ]]
 then
-  echo "should fail on unsupported format"
+  echo "should not fail on upper case format"
   exit 1
 fi
