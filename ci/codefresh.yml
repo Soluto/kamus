@@ -67,24 +67,16 @@ steps:
     title: Push Encryptor Api - lastest
     candidate: ${{BuildingEncryptorDockerImage}}
     tags:
-      - encryptor-latest
+      - encryptor-${{CF_BRANCH_TAG_NORMALIZED}}-
     credentials:
       username: ${{DOCKERHUB_REGISTRY_USERNAME}}
       password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
-    when:
-      branch:
-        only:
-          - master
   PushDecryptorImage:
     type: push
     title: Push Decryptor Api - lastest
-    when:
-      branch:
-        only:
-          - master
     candidate: ${{BuildingDecryptorDockerImage}}
     tags:
-      - decryptor-latest
+      - decryptor-${{CF_BRANCH_TAG_NORMALIZED}}-
     credentials:
       username: ${{DOCKERHUB_REGISTRY_USERNAME}}
       password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
