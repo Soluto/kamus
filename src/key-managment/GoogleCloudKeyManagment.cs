@@ -16,40 +16,57 @@ namespace Kamus.KeyManagement
         private readonly string mProjectName;
         private readonly string mKeyringName;
         private readonly string mKeyringLocation;
+        private readonly string mProtectionLevel;
 
         public GoogleCloudKeyManagment(
                 CloudKMSService kmsService,
                 string projectName,
                 string keyringName,
-                string keyringLocation)
+                string keyringLocation,
+                string protectionLevel)
         {
             mKmsService = kmsService;
             mProjectName = projectName;
             mKeyringName = keyringName;
             mKeyringLocation = keyringLocation;
+            mProtectionLevel = protectionLevel;
         }
 
 
-        public Task<string> Decrypt(string encryptedData, string serviceAccountId)
+        public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            throw new NotImplementedException();
+            var safeId = ComputeKeyId(serviceAccountId);
+            var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
+            var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
+            var keyId = $"{keyringId}/cryptoKeys/{safeId}";
+
+            var result = await cryptoKeys.Decrypt(new DecryptRequest
+            {
+                Ciphertext = encryptedData
+            }, keyId).ExecuteAsync();
+
+            return result.Plaintext;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
             var safeId = ComputeKeyId(serviceAccountId);
             var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
-            var keyringId = $"projects/${mProjectName}/locations/${mKeyringLocation}/keyRings/${mKeyringName}";
+            var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
             var keyId = $"{keyringId}/cryptoKeys/{safeId}";
             try
             {
-                var key = await cryptoKeys.Get(keyId).ExecuteAsync();
+                await cryptoKeys.Get(keyId).ExecuteAsync();
             } catch (GoogleApiException e) when (e.HttpStatusCode == HttpStatusCode.NotFound && createKeyIfMissing) 
             {
                 //todo: handle key rotation - currently set to never expired
                 var key = new CryptoKey
                 {
-                    Purpose = "ENCRYPT_DECRYPT"
+                    Purpose = "ENCRYPT_DECRYPT",
+                    VersionTemplate = new CryptoKeyVersionTemplate
+                    {
+                        ProtectionLevel = mProtectionLevel
+                    }
                 };
 
                 var request = cryptoKeys.Create(key, keyringId);
