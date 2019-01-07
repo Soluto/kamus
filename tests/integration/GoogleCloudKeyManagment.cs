@@ -13,7 +13,6 @@ namespace integration
     public class GoogleCloudKeyManagmentTests
     {
         private readonly IKeyManagement mGoogleCloudKeyManagement;
-        private readonly string mKeyringId;
         private readonly CloudKMSService mCloudKmsService;
         private readonly IConfiguration mConfiguration;
 

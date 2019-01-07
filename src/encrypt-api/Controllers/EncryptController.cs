@@ -18,9 +18,6 @@ namespace Kamus.Controllers
         private readonly IKeyManagement mKeyManagement;
         private readonly ILogger mAuditLogger = Log.ForContext<EncryptController>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<EncryptController>();
-
-        //see: https://github.com/kubernetes/kubernetes/blob/d5803e596fc8aba17aa8c74a96aff9c73bb0f1da/staging/src/k8s.io/apiserver/pkg/authentication/serviceaccount/util.go#L27
-        private const string ServiceAccountUsernamePrefix = "system:serviceaccount:";
         
         public EncryptController(IKeyManagement keyManagement)
         {

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.CloudKMS.v1;
+using Google.Apis.Services;
 using Kamus.KeyManagement;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +56,8 @@ namespace Kamus
                 var provider = Configuration.GetValue<string>("KeyManagement:Provider");
                 switch (provider)
                 {
+                    case "GoogleKms":
+                        return GetGoogleCloudKeyManagment();
                     case "AzureKeyVault":
                         return new EnvelopeEncryptionDecorator(
                             new AzureKeyVaultKeyManagement(s.GetService<IKeyVaultClient>(), Configuration), 
@@ -116,6 +122,38 @@ namespace Kamus
             app.UseAuthentication();
 
             app.UseMvc ();
+        }
+
+        private IKeyManagement GetGoogleCloudKeyManagment()
+        {
+            var location = Configuration.GetValue<string>("KeyManagement:GoogleKms:Location");
+            var keyRingName = Configuration.GetValue<string>("KeyManagement:GoogleKms:KeyRingName");
+            var protectionLevel = Configuration.GetValue<string>("KeyManagement:GoogleKms:ProtectionLevel");
+            var credentialsPath = Configuration.GetValue<string>("KeyManagement:GoogleKms:CredentialsPath");
+
+            var serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(File.OpenRead(credentialsPath));
+            var credentials = GoogleCredential.FromServiceAccountCredential(serviceAccountCredential);
+            if (credentials.IsCreateScopedRequired)
+            {
+                credentials = credentials.CreateScoped(new[]
+                {
+                    CloudKMSService.Scope.CloudPlatform
+                });
+            }
+
+            var kmsService = new CloudKMSService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credentials,
+                GZipEnabled = true
+            });
+
+
+            return new GoogleCloudKeyManagment(
+                kmsService,
+                serviceAccountCredential.ProjectId,
+                keyRingName,
+                location,
+                protectionLevel);
         }
     }
 }
