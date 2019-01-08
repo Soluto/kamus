@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kamus 1.0.0</title>
+    <style>body {
+  background: #23232E;
+  font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #7BA1AD;
+  margin: 20px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.featurebook-container {
+
+}
+
+.featurebook-metadata {
+}
+
+.featurebook-title {
+  font-size: xx-large;
+  font-weight: bolder;
+  color: #ffffff;
+}
+
+.featurebook-title a {
+  color: white;
+  text-decoration: none;
+}
+
+.featurebook-authors a {
+  color: #CC7832;
+}
+
+.featurebook-contributors a {
+  color: #BBB529;
+}
+
+.featurebook-spec-tree {
+  background: #373743;
+  float: left;
+  width: 25%;
+}
+
+.featurebook-spec-tree a:hover {
+    color: #CC7832;
+}
+
+.featurebook-spec-tree ul {
+    padding-left: 2em;
+}
+
+.featurebook-spec-tree-file {
+  color: white;
+  text-decoration: none;
+}
+
+.featurebook-spec-tree-directory {
+  color: #7BA1AD;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+  color: #BBB529;
+}
+
+.featurebook-main {
+  background: #373743;
+  float: right;
+  width: 73%;
+}
+
+.featurebook-tag {
+    display: inline-block;
+    margin-right: 0.5em;
+    color: #BBB529;
+}
+
+.featurebook-feature-name {
+  font-size: x-large;
+  color: #ffffff;
+}
+
+.featurebook-background, .featurebook-scenario-definition, .featurebook-examples {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.featurebook-step {
+
+}
+
+.featurebook-step-keyword {
+  color: #CC7832;
+  font-weight: normal;
+  display: inline-block;
+  text-align: right;
+  margin-right: 0;
+  width: 5em;
+  vertical-align: top;
+}
+
+.featurebook-step-text {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.featurebook-doc-string {
+  color: #6A8759;
+}
+
+.featurebook-background-name, .featurebook-scenario-definition-name, .featurebook-examples-name {
+  font-size: large;
+  margin-bottom: 0.5em;
+  color: #ffffff;
+}
+
+.featurebook-examples tr, .featurebook-step tr {
+  border-left: 2px dotted #CC7832;
+}
+
+.featurebook-examples td, .featurebook-step td {
+  border-right: 2px dotted #CC7832;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.featurebook-examples th, .featurebook-step th {
+  border-right: 2px dotted #CC7832;
+  font-weight: normal;
+  color: #9876AA;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="featurebook-container">
+      <div class="featurebook-metadata">
+        <div class="featurebook-title"><a href="./../../index.html">Kamus 1.0.0</a></div>
+        <div class="featurebook-authors"><span><a href="mailto:undefined">Omer Levi Hevroni</a></span>
+        </div>
+        <div class="featurebook-contributors">
+        </div>
+      </div>
+      <aside class="featurebook-spec-tree">
+        <ul>
+                <li><a href="./../../controls/index.html" class="featurebook-spec-tree-directory">Controls</a>
+                  <ul>
+                          <li><a href="./../../controls/KMS/index.html" class="featurebook-spec-tree-directory">KMS</a>
+                            <ul>
+                                    <li><a href="./../../controls/KMS/firewall_protection.feature.html" class="featurebook-spec-tree-file">Firewall protection</a></li>
+                                    <li><a href="./../../controls/KMS/hardening_credentials.feature.html" class="featurebook-spec-tree-file">Hardening credentials</a></li>
+                                    <li><a href="./../../controls/KMS/obfuscate_key_names.feature.html" class="featurebook-spec-tree-file">Obfuscate key names</a></li>
+                                    <li><a href="./../../controls/KMS/use_hsm.feature.html" class="featurebook-spec-tree-file active">Use hsm</a></li>
+                            </ul>
+                          </li>
+                          <li><a href="./../../controls/decryption/index.html" class="featurebook-spec-tree-directory">Decryption</a>
+                            <ul>
+                                    <li><a href="./../../controls/decryption/deny_default_sa.feature.html" class="featurebook-spec-tree-file">Deny default sa</a></li>
+                                    <li><a href="./../../controls/decryption/deny_secret_view.feature.html" class="featurebook-spec-tree-file">Deny secret view</a></li>
+                                    <li><a href="./../../controls/decryption/k8s_api_tls.feature.html" class="featurebook-spec-tree-file">K8s api tls</a></li>
+                                    <li><a href="./../../controls/decryption/kamus_in_cluster_tls.feature.html" class="featurebook-spec-tree-file">Kamus in cluster tls</a></li>
+                                    <li><a href="./../../controls/decryption/opa_pods_sercrets.feature.html" class="featurebook-spec-tree-file">Opa pods sercrets</a></li>
+                            </ul>
+                          </li>
+                          <li><a href="./../../controls/encryption/index.html" class="featurebook-spec-tree-directory">Encryption</a>
+                            <ul>
+                                    <li><a href="./../../controls/encryption/block_internet_access.feature.html" class="featurebook-spec-tree-file">Block internet access</a></li>
+                                    <li><a href="./../../controls/encryption/certificate_pinning.feature.html" class="featurebook-spec-tree-file">Certificate pinning</a></li>
+                                    <li><a href="./../../controls/encryption/client_side_encryption.feature.html" class="featurebook-spec-tree-file">Client side encryption</a></li>
+                                    <li><a href="./../../controls/encryption/deny_default_sa.feature.html" class="featurebook-spec-tree-file">Deny default sa</a></li>
+                                    <li><a href="./../../controls/encryption/ip_throttling.feature.html" class="featurebook-spec-tree-file">Ip throttling</a></li>
+                            </ul>
+                          </li>
+                  </ul>
+                </li>
+                <li><a href="./../../threats/index.html" class="featurebook-spec-tree-directory">Threats</a>
+                  <ul>
+                          <li><a href="./../../threats/decryption/index.html" class="featurebook-spec-tree-directory">Decryption</a>
+                            <ul>
+                                    <li><a href="./../../threats/decryption/pod_impersonation.feature.html" class="featurebook-spec-tree-file">Pod impersonation</a></li>
+                                    <li><a href="./../../threats/decryption/sniffing_tampering.feature.html" class="featurebook-spec-tree-file">Sniffing tampering</a></li>
+                            </ul>
+                          </li>
+                          <li><a href="./../../threats/encryption/index.html" class="featurebook-spec-tree-directory">Encryption</a>
+                            <ul>
+                                    <li><a href="./../../threats/encryption/denial_of_service.feature.html" class="featurebook-spec-tree-file">Denial of service</a></li>
+                                    <li><a href="./../../threats/encryption/namespace_sa_enumeration.feature.html" class="featurebook-spec-tree-file">Namespace sa enumeration</a></li>
+                                    <li><a href="./../../threats/encryption/sniffing_user_traffic.feature.html" class="featurebook-spec-tree-file">Sniffing user traffic</a></li>
+                            </ul>
+                          </li>
+                          <li><a href="./../../threats/kms/index.html" class="featurebook-spec-tree-directory">Kms</a>
+                            <ul>
+                                    <li><a href="./../../threats/kms/leaked_credentials.feature.html" class="featurebook-spec-tree-file">Leaked credentials</a></li>
+                                    <li><a href="./../../threats/kms/quantom_computing.feature.html" class="featurebook-spec-tree-file">Quantom computing</a></li>
+                            </ul>
+                          </li>
+                  </ul>
+                </li>
+        </ul>
+      </aside>
+      <main class="featurebook-main">
+        <div class="featurebook-feature-name">Feature: Use KMS with HSM support</div>
+        <div class="featurebook-feature-description featurebook-markdown"><p>In order to protect encryption keys
+As an engineer
+I want to store them using HSM</p>
+</div>
+        <div class="featurebook-scenario-definition">
+          <div class="featurebook-scenario-definition-name">Scenario: Azure KeyVauls</div>
+          <div></div>
+          <div class="featurebook-step"><span class="featurebook-step-keyword">Given </span><span class="featurebook-step-text">Azure KeyVault keys created in HSM mode</span></div>
+          <div class="featurebook-step"><span class="featurebook-step-keyword">When </span><span class="featurebook-step-text">a hacker tries to read the private key</span></div>
+          <div class="featurebook-step"><span class="featurebook-step-keyword">Then </span><span class="featurebook-step-text">the request will be denied</span></div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
