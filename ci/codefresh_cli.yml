@@ -7,3 +7,32 @@ steps:
     commands:
       - yarn install 
       - yarn test
+  ExportVersion:
+    title: "Export CLI Version"
+    image: stedolan/jq
+    working_directory: ./cli
+    commands:
+      - cf_export CLI_VERSION=$(jq '.version' -r < package.json)
+  BuildingCLIDockerImage:
+    title: Building CLI Docker Image
+    type: build
+    image_name: soluto/kamus-cli
+    working_directory: ./cli
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
+    dockerfile: Dockerfile
+    build_arguments:
+      - CLI_VERSION=${{CLI_VERSION}}
+  PushCLIImage:
+    type: push
+    title: Push CLI Docker image - lastest
+    candidate: ${{BuildingCLIDockerImage}}
+    tags:
+      - latest
+      - ${{CLI_VERSION}}
+    credentials:
+      username: ${{DOCKERHUB_REGISTRY_USERNAME}}
+      password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
+    # when:
+    #   branch:
+    #     only:
+    #       - master
