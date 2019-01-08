@@ -32,7 +32,7 @@ steps:
     credentials:
       username: ${{DOCKERHUB_REGISTRY_USERNAME}}
       password: ${{DOCKERHUB_REGISTRY_PASSWORD}}
-    # when:
-    #   branch:
-    #     only:
-    #       - master
+    when:
+      branch:
+        only:
+          - master
