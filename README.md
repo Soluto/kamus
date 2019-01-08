@@ -34,6 +34,7 @@ The encrypt and decrypt APIs handle encryption and decryption requests.
 The KMS is a wrapper for various cryptographic solutions. Currently supported:
 * AES - uses one key for all secrets
 * Azure KeyVault - creates one key per service account. 
+* Google Cloud KMS - creates one key per service account. 
 We look forward to add support for other cloud solutions, like AWS KMS. 
 If you're interested in such a failure, please let us know. 
 We would like help with testing it out.

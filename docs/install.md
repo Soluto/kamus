@@ -6,9 +6,11 @@ helm upgrade --install incubator/kamus
 Careful - using this command will deploy Kamus with the default encryption keys.
 Meaning, anyone could decrypt the data that Kamus encrypt.
 This is fine for testing and playing with Kamus, but not for production installations.
-For production usage, please configuration one of the supported KMS.
+For production usage, please configuration one of the supported Key Management Solutions (KMS).
 
-## AES KMS
+## Supported KMS Providers
+
+### AES KMS
 AES KMS is the simplest (but less secure) solution. 
 Kamus will use one strong AES key to encrypt all the data. 
 Currently, rolling this key is not supported.
@@ -22,8 +24,8 @@ key=$(openssl rand -base64 32 | tr -d '\n')
 helm upgrade --install kamus incubator/kamus --set keyManager.AES.key=$key
 ```
 
-## Azure KeyVault KMS
-Using [Azure KeyVault](https://azure.microsoft.com/en-us/services/key-vault/) as the key managment solution is a more secure solution.
+### Azure KeyVault KMS
+Using [Azure KeyVault](https://azure.microsoft.com/en-us/services/key-vault/) as the key managment solution is the secure solution when running a cluster on Azure.
 Azure documentation is far from perfect, so I'm going to reffer to a lot of different guides because there is no one guide documenting the required process.
 
 Start by creating a KeyVault instance. 
@@ -58,4 +60,42 @@ keyManagment:
 And now deploy Kamus using the following helm command:
 ```
 helm upgrade --install kamus incubator/kamus -f <path/to/values.yaml>
+```
+
+### Google Cloud KMS
+Using [Google Cloud KMS](https://cloud.google.com/kms/) as the key managment solution is the secure solution when running a cluster on Google Cloud.
+For a more secure installation, it is recommended to use a keys that are HSM-protected (see [Cloud HSM](https://cloud.google.com/kms/docs/hsm) documentation). Before using Google Cloud KMS, make sure the api is [enabled](https://console.cloud.google.com/flows/enableapi?apiid=cloudkms.googleapis.com&redirect=https://console.cloud.google.com&_ga=2.90411866.-1791338329.1542008700).
+
+To interact with Google Cloud KMS, Kamus needs an existing key ring and a service account.
+To create a key ring, run the following command:
+```
+gcloud kms keyrings create <key ring name> --location <location>
+```
+If you plan to use HSM protection, choose a region that is supported - you can find the full list [here](https://cloud.google.com/kms/docs/locations#hsm_regions).
+
+To create a service account, run the following commands:
+* Start by creating a service account: `gcloud iam service-accounts create kamus`
+* Assing the service account the required permissions:
+```
+gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.admin"
+```
+Please note: There is no exact role with all the required permissions for Kamus. It is recommended to create a custom role with the following permissions: `cloudkms.cryptoKeys.get`, `cloudkms.cryptoKeys.create`, `cloudkms.cryptoKeyVersions.useToEncrypt`, `cloudkms.cryptoKeyVersions.useToDecrypt`.
+* Generate keys for the service:
+```
+gcloud iam service-accounts keys create credentials.json --iam-account kamus@[PROJECT_ID].iam.gserviceaccount.com
+```
+
+Now add the following to your `values.yaml` file:
+```yaml
+keyManagement:
+  provider: GoogleKms
+  googleKms:
+    location: <location>
+    keyRing: <key ring name>
+    protectionLevelP: HSM
+```
+And use the following command to deploy kamus:
+```
+ helm upgrade --install kamus . -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
 ```
