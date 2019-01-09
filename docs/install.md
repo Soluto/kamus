@@ -1,7 +1,8 @@
 # Installing Kamus
 Kamus has an official helm chart, using it is the simplest way to install Kamus:
 ```
-helm upgrade --install incubator/kamus
+helm repo add soluto https://charts.soluto.io
+helm upgrade --install soluto/kamus
 ```
 Careful - using this command will deploy Kamus with the default encryption keys.
 Meaning, anyone could decrypt the data that Kamus encrypt.
@@ -21,7 +22,7 @@ key=$(openssl rand -base64 32 | tr -d '\n')
 ```
 * Pass the value when deploying kamus, either using `values.yaml` or directly in the helm command:
 ```
-helm upgrade --install kamus incubator/kamus --set keyManager.AES.key=$key
+helm upgrade --install kamus soluto/kamus --set keyManager.AES.key=$key
 ```
 
 ### Azure KeyVault KMS
@@ -59,7 +60,7 @@ keyManagment:
 ```
 And now deploy Kamus using the following helm command:
 ```
-helm upgrade --install kamus incubator/kamus -f <path/to/values.yaml>
+helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
 ```
 
 ### Google Cloud KMS
@@ -97,5 +98,5 @@ keyManagement:
 ```
 And use the following command to deploy kamus:
 ```
- helm upgrade --install kamus . -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
+ helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
 ```
