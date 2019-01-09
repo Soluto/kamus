@@ -3,6 +3,6 @@
   <title>PHP Test</title>
  </head>
  <body>
- <?php echo readfile("hello.rb"); ?> 
+ <?php echo readfile("/secrets/config.json"); ?> 
  </body>
 </html>

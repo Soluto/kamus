@@ -14,7 +14,7 @@ spec:
       automountServiceAccountToken: true
       initContainers:
         - name: "kamus-init"
-          image: "local/kamus:init-container-1"
+          image: "soluto/kamus-init-container:latest"
           imagePullPolicy: IfNotPresent
           env:
             - name: KAMUS_URL
@@ -27,7 +27,7 @@ spec:
           args: ["-e","/encrypted-secrets","-d","/decrypted-secrets", "-n", "config.json"]
       containers:
         - name: app
-          image: local/kamus:example
+          image: soluto/kamus-example-app
           imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: decrypted-secrets
