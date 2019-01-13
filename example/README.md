@@ -27,15 +27,13 @@ Check deployment status using
 ```
 kubectl get pods
 ```
-Notice the `kamus-example` pods. Wait for the pod to be in `Completed` state, and check the logs using
+Notice the `kamus-example` pods. Now run:
 ```
 kubectl port-forward deployment/kamus-example 8080:80
 ```
-You should see the following output
-```
-{"key":"super-secret"}
-```
-The example using an init container to decrypt the encrypted values. Checkout the documentation for additional details.
+Open [`http://localhost:8080`](http://localhost:8080) on your browser, you should see the encrypted secrets decrypted!
+
+In case you have issues running the demo, we made a [recorded version](https://www.youtube.com/watch?v=i_vdtubTrso&feature=youtu.be) of the demo.
 
 ## Kubernetes Secrets
 To complete the example, reffer to `deployment-secret`.
