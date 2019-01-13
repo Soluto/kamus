@@ -8,7 +8,7 @@ The encryption is done using strong encryption providers (currently supported: A
 The simple way to run Kamus is by using the Helm chart:
 ```
 helm repo add soluto https://charts.soluto.io
-helm upgrade --install soluto/kamus
+helm upgrade --install kamus soluto/kamus
 ```
 Refer to the installation guide for more details.
 After installing Kamus, you can start using it to encrypt secrets.
