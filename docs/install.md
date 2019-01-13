@@ -2,7 +2,7 @@
 Kamus has an official helm chart, using it is the simplest way to install Kamus:
 ```
 helm repo add soluto https://charts.soluto.io
-helm upgrade --install soluto/kamus
+helm upgrade --install kamus soluto/kamus
 ```
 Careful - using this command will deploy Kamus with the default encryption keys.
 Meaning, anyone could decrypt the data that Kamus encrypt.
