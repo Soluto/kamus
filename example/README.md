@@ -3,6 +3,12 @@ A small example app, showing the power of Kamus.
 Before running this demo, make sure Kamus is up and running, and the CLI is installed.
 
 ## Running the demo
+Before running the demo, make sure to install Kamus on the cluster. If Kamus is not installed, use the following command:
+```
+helm repo add soluto https://charts.soluto.io
+helm upgrade --install soluto/kamus
+```
+
 Start by encrypting a secret using the CLI:
 ```
 kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
@@ -23,7 +29,7 @@ kubectl get pods
 ```
 Notice the `kamus-example` pods. Wait for the pod to be in `Completed` state, and check the logs using
 ```
-kubectl logs -l app=kamus-example
+kubectl port-forward deployment/kamus-example 8080:80
 ```
 You should see the following output
 ```

@@ -17,7 +17,7 @@ docker run -it --rm soluto/kamus-cli encrypt <arguments>
 ```
 Or, using kubectl:
 ```
-kubectl run -it --rm --restart=Never kamus-cli --image=soluto/kamus-cli encrypt <arguments>
+kubectl run -it --rm --restart=Never kamus-cli --image=soluto/kamus-cli -- encrypt <arguments>
 ```
 ---
 
