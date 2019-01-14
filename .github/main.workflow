@@ -5,7 +5,7 @@ workflow "Build" {
 
 action "Build Decryptor API" {
   uses = "actions/docker/cli@76ff57a"
-  runs = "docker build ."
+  runs = "docker-compose -v"
 }
 
 action "Build Encryptor API" {
