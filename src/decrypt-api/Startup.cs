@@ -80,6 +80,7 @@ namespace Kamus
                             Configuration.GetValue<int>("KeyManagement:KeyVault:MaximumDataLength"));
                     case "AESKey":
                         var key = Configuration.GetValue<string>("KeyManagement:AES:Key");
+                        Console.WriteLine($"AES key used: {key}");
                         if (string.IsNullOrEmpty(key))
                         {
                             Log.ForContext<Startup>().Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
