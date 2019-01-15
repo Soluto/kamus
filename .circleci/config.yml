@@ -18,6 +18,21 @@ jobs:
           environment:
             ENCRYPTOR_IMAGE: soluto/kamus-encryptor
             DECRYPTOR_IMAGE: soluto/kamus-decryptor
+  run_tests:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          working_directory: "tests/unit"
+          command: dotnet test
+      - run:
+          name: Run integration
+          working_directory: "tests/integration"
+          command: dotnet test
+
   build:
     machine: true
 
@@ -79,4 +94,5 @@ workflows:
   api:
     jobs:
       - build_api
+      - run_tests
 
