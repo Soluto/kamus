@@ -66,7 +66,7 @@ jobs:
             - "4d:04:e5:64:ce:b0:fb:33:76:bf:bd:e6:9f:09:a1:db"
       - run:
           name: Deploy docs to gh-pages branch
-          command: git push
+          command: git push --set-upstream origin api_version
 
 
 
