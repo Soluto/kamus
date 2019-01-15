@@ -49,7 +49,7 @@ jobs:
 
   push-tags:
     docker:
-      - image: apline/git
+      - image: alpine/git
     steps:
       - checkout 
       - run:
