@@ -1,4 +1,4 @@
-var bluebird = require('bluebird');
+const bluebird = require('bluebird');
 const opn = require('opn');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
@@ -10,7 +10,7 @@ var pjson = require('../package.json');
 
 let _logger;
 
-module.exports = async (args, options, logger) => {
+module.exports = async (options, logger) => {
     _logger = logger;
     if (useAuth(options)) {
         const token = await acquireToken(options);
@@ -18,28 +18,27 @@ module.exports = async (args, options, logger) => {
         await encrypt(options, token);
     }
     else {
-        await encrypt(options)
+        await encrypt(options);
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint }, token = null) => {
+const encrypt = async ({ data, serviceAccount, namespace, kamusApiUrl, allowInsecureUrl, certFingerprint }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
 
-    if (!allowInsecureUrl && url.parse(kamusUrl).protocol !== "https:"){
+    if (!allowInsecureUrl && url.parse(kamusApiUrl).protocol !== 'https:') {
         _logger.error("Insecure Kamus URL is not allowed");
         process.exit(1);
     }
-
     try {
-        var response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token)
-        if (response.statusCode >= 300) {
+        const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusApiUrl, certFingerprint, token);
+        if (response && response.statusCode >= 300) {
             _logger.error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
             process.exit(1);
         }
         _logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
-        _logger.info('Encrypted data:\n' + response.body);
+        _logger.info(`Encrypted data:\n${response.body}`);
         process.exit(0);
     }
     catch (err) {
@@ -78,16 +77,14 @@ const useAuth = ({ authTenant, authApplication, authResource }) => {
     if (authTenant && authApplication && authResource) {
         return true;
     }
-    else {
-        _logger.warn('Auth options were not provided, will try to encrypt without authentication to kamus');
-        return false;
-    }
+    _logger.warn('Auth options were not provided, will try to encrypt without authentication to kamus');
+    return false;
 }
 
 //Source: http://hassansin.github.io/certificate-pinning-in-nodejs
 const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certficateFingerprint, token, cb) => {
 
-    var headers = {
+    const headers = {
         'User-Agent': `kamus-cli-${pjson.version}`,
         'Content-Type': 'application/json'
     };
@@ -96,7 +93,7 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
         headers['Authorization'] = `Bearer ${token}`
     }
 
-    var options = {
+    const options = {
         url: kamusUrl + '/api/v1/encrypt',
         headers: headers,
         // Certificate validation
@@ -104,13 +101,13 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
         method: 'POST',
     };
 
-    var req = request(options, cb);
+    const req = request(options, cb);
 
     req.on('socket', socket => {
         socket.on('secureConnect', () => {
-            var fingerprint = socket.getPeerCertificate().fingerprint;
+            const fingerprint = socket.getPeerCertificate().fingerprint;
             // Match the fingerprint with our saved fingerprints
-            if(certficateFingerprint != undefined && certficateFingerprint != fingerprint){
+            if(certficateFingerprint !== undefined && certficateFingerprint !== fingerprint) {
             // Abort request, optionally emit an error event
                 req.emit('error', new Error(`Server fingerprint ${fingerprint} does not match provided fingerprint ${certficateFingerprint}`));
                 return req.abort();
@@ -120,8 +117,8 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
 
     req.write(JSON.stringify({
         data,
-        "service-account": serviceAccount,
-        namespace
+        ['service-account']: serviceAccount,
+        namespace,
     }));
 }
 
