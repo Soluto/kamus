@@ -33,6 +33,39 @@ jobs:
           working_directory: "tests/integration"
           command: dotnet test
 
+  lint-scripts:
+    docker:
+      - image: koalaman/shellcheck-alpine
+    steps:
+      - checkout
+      - run:
+          name: lint
+          command: |
+            shellcheck -x ci/version_to_deploy.sh
+
+  push-tags:
+    docker:
+      - image: apline/git
+    steps:
+      - checkout 
+      - run:
+          name: Install and configure dependencies
+          command: |
+            git config user.email "ci-build@soluto.com"
+            git config user.name "ci-build"
+      - run:
+          name: tag branch
+          command: |
+            ./ci/version_to_deploy.sh
+      - add_ssh_keys:
+          fingerprints:
+            - "4d:04:e5:64:ce:b0:fb:33:76:bf:bd:e6:9f:09:a1:db"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: git push
+
+
+
   build:
     machine: true
 
