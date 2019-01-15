@@ -18,6 +18,10 @@ jobs:
           environment:
             ENCRYPTOR_IMAGE: soluto/kamus-encryptor
             DECRYPTOR_IMAGE: soluto/kamus-decryptor
+      - store_artifacts:
+          path: results/
+          destination: zap-reports
+
   run_tests:
     docker:
       - image: microsoft/dotnet:2.1-sdk
