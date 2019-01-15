@@ -14,15 +14,15 @@ module.exports = async (args, options, logger) => {
     _logger = logger;
     if (useAuth(options)) {
         const token = await acquireToken(options);
-        
-        await encrypt(args, options, token);
+
+        await encrypt(options, token);
     }
     else {
-        await encrypt(args, options)
+        await encrypt(options)
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace }, { kamusUrl, allowInsecureUrl, certFingerprint }, token = null) => {
+const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
@@ -103,9 +103,9 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
         strictSSL: true,
         method: 'POST',
     };
-    
+
     var req = request(options, cb);
-    
+
     req.on('socket', socket => {
         socket.on('secureConnect', () => {
             var fingerprint = socket.getPeerCertificate().fingerprint;
