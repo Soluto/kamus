@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const nock = require('nock');
 const sinon = require('sinon');
 
-const encrypt = require('../actions/encrypt.js');
+const encrypt = require('../actions/encrypt');
 
 const logger =
 {
