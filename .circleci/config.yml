@@ -1,5 +1,23 @@
 version: 2
 jobs:
+  build_api:
+    machine: true
+
+    steps:
+      - checkout
+      - run:
+          name: Build decryptor docker image
+          command: docker build . -t soluto/kamus-decryptor
+      - run:
+          name: Build encryptor docker image
+          command: docker build . -t soluto/kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
+
+      - run:
+          name: Run black box tests
+          command: docker-compose -f tests/blackbox/compose/docker-compose.yaml up --build --exit-code-from black-box --abort-on-container-exit
+          environment:
+            ENCRYPTOR_IMAGE: soluto/kamus-encryptor
+            DECRYPTOR_IMAGE: soluto/kamus-decryptor
   build:
     machine: true
 
@@ -58,4 +76,7 @@ workflows:
           filters:
             branches:
               only: master
+  api:
+    jobs:
+      - build_api
 
