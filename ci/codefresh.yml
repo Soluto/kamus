@@ -69,7 +69,6 @@ steps:
   AddTags:
     title: Run integration tests
     image: alpine/git
-    working_directory: 
     commands: ./ci/version_to_deploy.sh
   PushEncryptorImage:
     type: push
