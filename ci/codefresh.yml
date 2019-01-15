@@ -62,6 +62,15 @@ steps:
       - cat
     cmd:
       - /codefresh/volume/report.json
+  export_my_access_token: 
+    image: codefresh/cli
+    commands:
+      - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
+  AddTags:
+    title: Run integration tests
+    image: alpine/git
+    working_directory: 
+    commands: ./ci/version_to_deploy.sh
   PushEncryptorImage:
     type: push
     title: Push Encryptor Api - lastest
