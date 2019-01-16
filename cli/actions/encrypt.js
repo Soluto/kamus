@@ -10,7 +10,7 @@ var pjson = require('../package.json');
 
 let _logger;
 
-module.exports = async (options, logger) => {
+module.exports = async (args, options, logger) => {
     _logger = logger;
     if (useAuth(options)) {
         const token = await acquireToken(options);
