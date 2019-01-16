@@ -22,17 +22,17 @@ module.exports = async (args, options, logger) => {
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace, kamusApiUrl, allowInsecureUrl, certFingerprint }, token = null) => {
+const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
 
-    if (!allowInsecureUrl && url.parse(kamusApiUrl).protocol !== 'https:') {
+    if (!allowInsecureUrl && url.parse(kamusUrl).protocol !== 'https:') {
         _logger.error("Insecure Kamus URL is not allowed");
         process.exit(1);
     }
     try {
-        const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusApiUrl, certFingerprint, token);
+        const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
         if (response && response.statusCode >= 300) {
             _logger.error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
             process.exit(1);
@@ -48,7 +48,7 @@ const encrypt = async ({ data, serviceAccount, namespace, kamusApiUrl, allowInse
 }
 
 const acquireToken = async ({ authTenant, authApplication, authResource }) => {
-    const context = new AuthenticationContext(activeDirectoryEndpoint + authTenant);
+    const context = new AuthenticationContext(`${activeDirectoryEndpoint}${authTenant}`);
     bluebird.promisifyAll(context);
     refreshToken = await acquireTokenWithDeviceCode(context, authApplication, authResource);
     const refreshTokenResponse =

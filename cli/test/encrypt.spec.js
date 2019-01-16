@@ -12,7 +12,7 @@ const logger =
     log: console.log
 };
 
-const kamusApiUrl = 'https://kamus.com';
+const kamusUrl = 'https://kamus.com';
 const data = 'super-secret';
 const serviceAccount = 'dummy';
 const namespace = 'team-a';
@@ -22,13 +22,13 @@ let kamusApiScope;
 describe('Encrypt', () => {
   beforeEach(() => {
     sinon.stub(process, 'exit');
-    kamusApiScope = nock(kamusApiUrl)
+    kamusApiScope = nock(kamusUrl)
       .post('/api/v1/encrypt', { data, ['service-account']: serviceAccount, namespace})
       .reply(200, '123ABC');
   });
 
   it('Should return encrypted data', async () => {
-    await encrypt({data, serviceAccount, namespace, kamusApiUrl}, logger);
+    await encrypt(null, {data, serviceAccount, namespace, kamusUrl}, logger);
     expect(kamusApiScope.isDone()).to.be.true;
     expect(process.exit.called).to.be.true;
     expect(process.exit.calledWith(0)).to.be.true;
