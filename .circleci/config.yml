@@ -59,7 +59,7 @@ jobs:
 
   push-api-images:
     docker:
-      - image: circleci/buildpack-deps:buildpack-deps:trusty
+      - image: circleci/buildpack-deps:trusty
     steps:
       - checkout 
       - setup_remote_docker
