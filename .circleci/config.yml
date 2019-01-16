@@ -79,8 +79,8 @@ jobs:
       - run:
           name: Restore imahe
           command: |
-            docker load < docker-cache/kamus_decryptor.tar
-            docker load < docker-cache/kamus_encryptor.tar
+            docker load < docker-cache/kamus-decryptor.tar
+            docker load < docker-cache/kamus-encryptor.tar
             docker tag kamus_decryptor soluto/kamus_decryptor:$DECRYPTOR_API_DOCKER_TAG
             docker tag kamus_encryptor soluto/kamus_encryptor:$ENCRYPTOR_API_DOCKER_TAG
       - run:
