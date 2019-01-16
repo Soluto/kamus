@@ -131,7 +131,7 @@ workflows:
   api:
     jobs:
       - build_api
-     # - run_tests
+      - run_tests
       - lint-scripts
       - push-tags
 
