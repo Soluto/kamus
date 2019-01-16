@@ -24,7 +24,7 @@ kubectl run -it --rm --restart=Never kamus-cli --image=soluto/kamus-cli -- encry
 #### Supported commands:
 
 ##### Encrypt
-`kamus-cli encrypt --secret <data> --service-account <serviceAccount> --namespace <namespace> --kamus-api-url <kamus-api-url> `
+`kamus-cli encrypt --secret <data> --service-account <serviceAccount> --namespace <namespace> --kamus-url <kamus-url> `
 
 ---
 #### How to enable azure active directory authentication
@@ -40,5 +40,5 @@ Once the user will run the cli with the auth options, he will get a small code a
 | --auth-application    |   false        |  azure authentication application id             |               |
 | --auth-resource       |   false        |  azure authentication resource id                |               |
 | --cert-fingerprint    |   false        |  [certificate fingerprint](http://hassansin.github.io/certificate-pinning-in-nodejs) of encrypt api for validation       |               |
-| --kamus-api-url       |   true         |  url of kamus encrypt    api                     |               |
+| --kamus-url           |   true         |  url of kamus encrypt    api                     |               |
 | --allow-insecure-url  |   false        |  allow or block non https endpoints              | false         |

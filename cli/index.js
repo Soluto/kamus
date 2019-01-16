@@ -12,7 +12,7 @@ prog
   .option('--secret <data>','Data to encrypt', prog.REQUIRED)
   .option('--service-account <service-account>', 'Deployment service account', prog.REQUIRED)
   .option('--namespace <namespace>', 'Deployment namespace', prog.REQUIRED)
-  .option('--kamus-api-url <kamusApiUrl>', 'Kamus URL', prog.REQUIRED)
+  .option('--kamus-url <kamusUrl>', 'Kamus URL', prog.REQUIRED)
   .option('--auth-tenant <id>', 'Azure tenant id', regexGuid)
   .option('--auth-application <id>', 'Azure application id', regexGuid)
   .option('--auth-resource <name>', 'Azure resource name', prog.STRING)

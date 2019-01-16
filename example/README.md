@@ -11,7 +11,7 @@ helm upgrade --install soluto/kamus
 
 Start by encrypting a secret using the CLI:
 ```
-kamus-cli encrypt super-secret kamus-example-sa default --kamus-api-url <Kamus API URL>
+kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
 ```
 You might have to pass aditional arguments, based on your installation.
 
