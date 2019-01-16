@@ -39,3 +39,7 @@ if [[ "$(git tag | grep -c "$CLI_TAG")" == "0" ]]; then
     git tag "$CLI_TAG"
     export TWEEK_DOCKER_TAG_EDITOR=$CLI_VERSION
 fi
+
+
+echo "export DECRYPTOR_API_DOCKER_TAG=$DECRYPTOR_API_DOCKER_TAG" >> $BASH_ENV
+echo "export ENCRYPTOR_API_DOCKER_TAG=$ENCRYPTOR_API_DOCKER_TAG" >> $BASH_ENV

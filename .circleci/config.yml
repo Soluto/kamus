@@ -72,9 +72,7 @@ jobs:
           name: tag branch
           command: |
             ./ci/version_to_deploy.sh
-            echo $DECRYPTOR_API_DOCKER_TAG
-            echo "export DECRYPTOR_API_DOCKER_TAG=$DECRYPTOR_API_DOCKER_TAG" >> $BASH_ENV
-            echo "export ENCRYPTOR_API_DOCKER_TAG=$ENCRYPTOR_API_DOCKER_TAG" >> $BASH_ENV
+
       - add_ssh_keys:
           fingerprints:
             - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
