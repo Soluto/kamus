@@ -67,9 +67,13 @@ steps:
     commands:
       - cf_export GITHUB_TOKEN=$(codefresh get context github --decrypt -o yaml | yq -y .spec.data.auth.password)
   AddTags:
-    title: Run integration tests
+    title: Add the relevant tags
     image: alpine/git
-    command: ./ci/version_to_deploy.sh
+    commands: 
+      - git login
+      - ./ci/version_to_deploy.sh
+      - git push
+    entry_point: /bin/sh
   PushEncryptorImage:
     type: push
     title: Push Encryptor Api - lastest
