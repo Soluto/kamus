@@ -79,8 +79,10 @@ jobs:
       - restore_cache:
           keys: 
             - docker_api_cache_key
+
+      - restore_cache:
+          keys: 
             - docker_cache_key
-          
       - run:
           name: Restore image
           command: |
