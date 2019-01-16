@@ -15,8 +15,8 @@ jobs:
           name: Save docker image
           command: |
             mkdir -p docker-cache-api
-            docker save -o docker-cache/kamus-decryptor.tar kamus-decryptor
-            docker save -o docker-cache/kamus-encryptor.tar kamus-encryptor
+            docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
+            docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
       - save_cache:
           key: docker_api_cache_key
           paths:
