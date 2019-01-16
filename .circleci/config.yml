@@ -59,9 +59,10 @@ jobs:
 
   push-api-images:
     docker:
-      - image: alpine/git
+      - image: circleci/buildpack-deps:buildpack-deps:trusty
     steps:
       - checkout 
+      - setup_remote_docker
       - run:
           name: Install and configure dependencies
           command: |
@@ -77,7 +78,7 @@ jobs:
       - restore_cache:
           key: docker_api_cache_key
       - run:
-          name: Restore imahe
+          name: Restore image
           command: |
             docker load < docker-cache/kamus-decryptor.tar
             docker load < docker-cache/kamus-encryptor.tar
