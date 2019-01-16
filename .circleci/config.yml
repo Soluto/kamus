@@ -82,8 +82,8 @@ jobs:
           command: |
             docker load < docker-cache/kamus-decryptor.tar
             docker load < docker-cache/kamus-encryptor.tar
-            docker tag kamus_decryptor soluto/kamus_decryptor:$DECRYPTOR_API_DOCKER_TAG
-            docker tag kamus_encryptor soluto/kamus_encryptor:$ENCRYPTOR_API_DOCKER_TAG
+            docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+            docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
       - run:
           name: Docker push
           working_directory: "init-container/tests"
@@ -166,6 +166,7 @@ workflows:
       - lint-scripts
       - push-api-images:
           requires:
+            - lint-scripts
             - build_api
             - run_tests
 
