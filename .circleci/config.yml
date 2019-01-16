@@ -86,8 +86,8 @@ jobs:
       - run:
           name: Restore image
           command: |
-            docker load < docker-cache-api/kamus-decryptor.tar
-            docker load < docker-cache-api/kamus-encryptor.tar
+            docker load < docker-cache/kamus-decryptor.tar
+            docker load < docker-cache/kamus-encryptor.tar
             docker load < docker-cache/kamus-init-container.tar
             docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
