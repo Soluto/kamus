@@ -163,5 +163,8 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
-      - push-tags
+      - push-api-images:
+          requires:
+            - build_api
+            - run_tests
 

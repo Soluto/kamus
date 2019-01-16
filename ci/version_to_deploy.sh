@@ -1,7 +1,7 @@
 echo checking decryptor api version
 DECRYPTOR_API_VERSION=$(cat ./src/decrypt-api/decrypt-api.csproj | grep -E "<Version>" | grep -Eo "[0-9.]*(-rc[0-9]*)?")
-DECRYPTOR_API_TAG="decryptor-api-$DECRYPTOR_API_VERSION"
-export DECRYPTOR_API_DOCKER_TAG="latest"
+DECRYPTOR_API_TAG="decryptor-$DECRYPTOR_API_VERSION"
+export DECRYPTOR_API_DOCKER_TAG="decryptor-latest"
 if [[ "$(git tag | grep -c $DECRYPTOR_API_TAG)" == "0" ]]; then
     echo tagging $DECRYPTOR_API_TAG
     git tag $DECRYPTOR_API_TAG
@@ -10,8 +10,8 @@ fi
 
 echo checking encryptor api version
 ENCRYPTOR_API_VERSION=$(cat ./src/encrypt-api/encrypt-api.csproj | grep -E "<Version>" | grep -Eo "[0-9.]*(-rc[0-9]*)?")
-ENCRYPTOR_API_TAG="encryptor-api-$ENCRYPTOR_API_VERSION"
-export ENCRYPTOR_API_DOCKER_TAG="latest"
+ENCRYPTOR_API_TAG="encryptor-$ENCRYPTOR_API_VERSION"
+export ENCRYPTOR_API_DOCKER_TAG="encryptor-latest"
 if [[ "$(git tag | grep -c $ENCRYPTOR_API_TAG)" == "0" ]]; then
     echo tagging $ENCRYPTOR_API_TAG
     git tag $ENCRYPTOR_API_TAG
