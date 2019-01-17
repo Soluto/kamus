@@ -189,9 +189,9 @@ workflows:
             - build-init-container
             - lint-scripts
           filters:
-            branchs:
+            branches:
               only: master
-              
+
   api:
     jobs:
       - build-init-container
@@ -204,6 +204,6 @@ workflows:
             - build_api
             - run_tests
           filters:
-            branchs:
+            branches:
               only: master
 
