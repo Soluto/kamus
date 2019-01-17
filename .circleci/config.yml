@@ -104,9 +104,11 @@ jobs:
 
             docker push soluto/kamus:decryptor-latest
             docker push soluto/kamus:encryptor-latest
-      # - run:
-      #     name: push tags
-      #     command: git push --set-upstream origin api_version --tags
+      - run:
+          name: push tags
+          command: |
+            git pull
+            git push --set-upstream origin api_version --tags
 
   build-init-container:
     machine: true
@@ -117,7 +119,7 @@ jobs:
           name: Build docker image
           working_directory: "init-container"
           command: docker build . -t kamus-init-container
-
+      
       - run:
           name: Run black box tests
           working_directory: "init-container/tests"
@@ -132,12 +134,21 @@ jobs:
           paths:
             - docker-cache
   push-init-container:
-    machine: true
-
+    docker:
+      - image: circleci/buildpack-deps:trusty
     steps:
-      - checkout
+      - checkout 
+      - setup_remote_docker
+      - run:
+          name: Install and configure dependencies
+          command: |
+            git config user.email "ci-build@soluto.com"
+            git config user.name "ci-build"
       - restore_cache:
           key: docker_cache_key
+      - add_ssh_keys:
+          fingerprints:
+            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
       - run:
           name: tag branch
           command: |
@@ -161,6 +172,12 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker tag soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG soluto/kamus-init-container:latest
             docker push soluto/kamus-init-container:latest
+      - run:
+          name: push tags
+          command: |
+            git pull
+            git push --set-upstream origin api_version --tags
+
 workflows:
   version: 2
   init-container:
@@ -171,6 +188,10 @@ workflows:
           requires:
             - build-init-container
             - lint-scripts
+          filters:
+            branchs:
+              only: master
+              
   api:
     jobs:
       - build-init-container
@@ -182,4 +203,7 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
+          filters:
+            branchs:
+              only: master
 
