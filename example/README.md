@@ -22,7 +22,7 @@ Now, run
 ```
 kubectl apply -f deployment-kamus/
 ```
-To deploy the example app. 
+To deploy the example app.
 Check deployment status using
 ```
 kubectl get pods

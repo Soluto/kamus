@@ -1,10 +1,10 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha",
+    "test": "node_modules/.bin/mocha ./test/*.spec.js",
     "ci-publish": "ci-publish"
   },
   "repository": {
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^5.12.0",
     "mocha": "^5.2.0",
     "nock": "^10.0.5",
     "sinon": "^7.2.2"

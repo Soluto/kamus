@@ -1,11 +1,11 @@
 [![npm version](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli.svg)](https://badge.fury.io/js/%40soluto-asurion%2Fkamus-cli)
 [![Known Vulnerabilities](https://snyk.io/test/github/soluto/kamus/badge.svg?targetFile=cli/package.json)](https://snyk.io/test/github/soluto/kamus) [![docker hub](https://images.microbadger.com/badges/image/soluto/kamus-cli.svg)](https://hub.docker.com/r/soluto/kamus-cli "Get your own image badge on microbadger.com")
 
-## Kamus CLI 
+## Kamus CLI
 
 This cli was created to provide an easy interface to interact with Kamus API.
 
-It supports azure device flow authentication out of the box. 
+It supports azure device flow authentication out of the box.
 
 To install, use the following NPM command:
 ```
@@ -24,10 +24,10 @@ kubectl run -it --rm --restart=Never kamus-cli --image=soluto/kamus-cli -- encry
 #### Supported commands:
 
 ##### Encrypt
-`kamus-cli encrypt <data> <serviceAccount> <namespace>`
+`kamus-cli encrypt --secret <data> --service-account <serviceAccount> --namespace <namespace> --kamus-url <kamus-url> `
 
 ---
-#### How to enable azure active directory authentication 
+#### How to enable azure active directory authentication
 You need working active directory [tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant) and designated [native app registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-register-an-app), Then just set all the `auth` prefixed options.
 Once the user will run the cli with the auth options, he will get a small code and and azure URL to login into.
 

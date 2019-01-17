@@ -1,6 +1,6 @@
-var fs = require('fs');
+const fs = require('fs');
 
-var isDocker;
+let isDocker;
 
 function hasDockerEnv() {
 	try {
