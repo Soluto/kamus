@@ -135,6 +135,7 @@ jobs:
     machine: true
 
     steps:
+      - checkout
       - restore_cache:
           key: docker_cache_key
       - run:
