@@ -1,4 +1,5 @@
-# Kamus ![logo](images/logo.png) 
+# Kamus ![logo](images/logo.png)
+
 An open source, GitOps, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault and AES).
@@ -6,22 +7,34 @@ The encryption is done using strong encryption providers (currently supported: A
 ## Getting Started
 
 The simple way to run Kamus is by using the Helm chart:
-```
+
+```bash
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install kamus soluto/kamus
 ```
+
 Refer to the [installation guide](./docs/install.md) for more details.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a [Kubernetes Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account).
 Create a service account for your application, and mount it on the pods running your application.
 Now, when you know the name of the service account, and the namespace it exists in, install Kamus CLI:
-```
+
+```bash
 npm install -g @soluto-asurion/kamus-cli
 ```
+
 Use Kamus CLI to encrypt the secret:
-```
+
+```bash
 kamus-cli encrypt --secret super-secret --service-account kamus-example-sa --namespace default --kamus-url <Kamus URL>
 ```
+
+or
+
+```bash
+kamus-cli encrypt -s <data> -a <serviceAccount> -n <namespace> -u <kamus-url>
+```
+
 *If you're running Kamus locally the Kamus URL will be like `http://localhost:<port>`. So you need to add `--allow-insecure-url` flag to enable http protocol.*
 
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
@@ -31,13 +44,16 @@ To make it clearer, take a look on a working [example app](example/README.md).
 You can deploy this app to any Kubernetes cluster that has Kamus installed, to understand how it works.
 
 ## Architecture
+
 Kamus has 3 components:
+
 * Encrypt API
 * Decrypt API
 * Key Management System (KMS)
 
 The encrypt and decrypt APIs handle encryption and decryption requests.
 The KMS is a wrapper for various cryptographic solutions. Currently supported:
+
 * AES - uses one key for all secrets
 * Azure KeyVault - creates one key per service account.
 * Google Cloud KMS - creates one key per service account.
@@ -48,21 +64,26 @@ We would like help with testing it out.
 Consult the [installation guide](docs/install.md) for more details on how to deploy Kamus using the relevant KMS.
 
 ### Utilities
+
 Kamus is shipped with 2 utilities that make it easier to use:
+
 * Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the docs for more details.
 * Kamus init container - a init container that interacts with the Decrypt API. Refer to the docs for more details.
 
 ## Security
+
 We take security seriously at Soluto.
 To learn more about the security aspects of Kamus refer to the Threat Modeling docs containing all the various threats and mitigations we discussed.
 Before installing Kamus in production refer the installation guide to learn the best practices of deploying Kamus securely.
 In case you find a security issue or have something you would like to discuss refer to our [security.md](security.md) policy.
 
 ## Contributing
+
 Find a bug? Have a missing feature? Please open an issue and let us know.
 We would like to help you using Kamus!
 Please notice: Do not report security issues on GitHub.
 We will immediately delete such issues.
 
 ## Attribution
+
 The logo icon made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
