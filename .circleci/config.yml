@@ -108,7 +108,7 @@ jobs:
           name: push tags
           command: |
             git pull
-            git push --set-upstream origin api_version --tags
+            git push --set-upstream origin $CIRCLE_BRANCH --tags
 
   build-init-container:
     machine: true
@@ -176,7 +176,7 @@ jobs:
           name: push tags
           command: |
             git pull
-            git push --set-upstream origin api_version --tags
+            git push --set-upstream origin $CIRCLE_BRANCH	 --tags
 
 workflows:
   version: 2
