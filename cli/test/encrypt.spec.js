@@ -81,9 +81,9 @@ describe('Encrypt', () => {
       expect(fs.readFileSync(outputFile, { encoding: 'utf8' })).to.equal(existingFileContent);
     });
 
-    it('should save if the file exists but override flag added', async () => {
+    it('should save if the file exists but overwrite flag added', async () => {
       const outputFile = `${path}/${existingFile}`;
-      await encrypt(null, {data, serviceAccount, namespace, kamusUrl, outputFile, override: true}, logger);
+      await encrypt(null, {data, serviceAccount, namespace, kamusUrl, outputFile, overwrite: true}, logger);
       expect(kamusApiScope.isDone()).to.be.true;
       expect(process.exit.calledWith(0)).to.be.true;
       expect(fs.readFileSync(outputFile, { encoding: 'utf8' })).to.equal(encryptedData);

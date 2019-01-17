@@ -22,7 +22,7 @@ module.exports = async (args, options, logger) => {
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint, outputFile, override }, token = null) => {
+const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint, outputFile, overwrite }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
@@ -42,7 +42,7 @@ const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecur
             fs = require('fs');
             fs.writeFileSync(outputFile, response.body, {
                 encoding: 'utf8',
-                flag: override ? 'w' : 'wx',
+                flag: overwrite ? 'w' : 'wx',
             });
             _logger.info(`Encrypted data was saved to ${outputFile}.`);
         }
