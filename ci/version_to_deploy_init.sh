@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo checking init container version
 INIT_CONTAINER_VERSION=$(grep -E "\"version\"" ./init-container/package.json | grep -Eo "[0-9.]*(-rc[0-9]*)?")
 INIT_CONTAINER_TAG="init-container-$INIT_CONTAINER_VERSION"

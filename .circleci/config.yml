@@ -131,7 +131,7 @@ jobs:
           key: docker_cache_key
           paths:
             - docker-cache
-  push:
+  push-init-container:
     machine: true
 
     steps:
@@ -162,6 +162,14 @@ jobs:
             docker push soluto/kamus-init-container:latest
 workflows:
   version: 2
+  init-container:
+    jobs:
+      - build-init-container
+      - lint-scripts
+      - push-init-container:
+          requires:
+            - build-init-container
+            - lint-scripts
   api:
     jobs:
       - build-init-container
@@ -173,5 +181,4 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
-            - build-init-container
 
