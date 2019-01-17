@@ -147,19 +147,19 @@ jobs:
           name: Restore image
           command: |
             docker load < docker-cache/built-image.tar
-            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_TAG
+            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker push soluto/kamus-init-container$INIT_CONTAINER_TAG
+            docker push soluto/kamus-init-container$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker tag soluto/kamus-init-container:$INIT_CONTAINER_TAG soluto/kamus-init-container:latest
+            docker tag soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG soluto/kamus-init-container:latest
             docker push soluto/kamus-init-container:latest
 workflows:
   version: 2
