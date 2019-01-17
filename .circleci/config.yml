@@ -56,6 +56,7 @@ jobs:
           name: lint
           command: |
             shellcheck -x ci/version_to_deploy.sh
+            shellcheck -x ci/version_to_deploy_init.sh
 
   push-api-images:
     docker:
@@ -79,19 +80,13 @@ jobs:
       - restore_cache:
           keys: 
             - docker_api_cache_key
-
-      - restore_cache:
-          keys: 
-            - docker_cache_key
       - run:
           name: Restore image
           command: |
             docker load < docker-cache/kamus-decryptor.tar
             docker load < docker-cache/kamus-encryptor.tar
-            docker load < docker-cache/kamus-init-container.tar
             docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
-            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_TAG
       - run:
           name: Docker push version
           working_directory: "init-container/tests"
@@ -99,7 +94,6 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker push soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker push soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
-            docker push soluto/kamus-init-container:$INIT_CONTAINER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
@@ -107,11 +101,9 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker tag soluto/kamus:$DECRYPTOR_API_DOCKER_TAG soluto/kamus:decryptor-latest
             docker tag soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG soluto/kamus:encryptor-latest
-            docker tag soluto/kamus-init-container:$INIT_CONTAINER_TAG soluto/kamus-init-container:latest
 
             docker push soluto/kamus:decryptor-latest
             docker push soluto/kamus:encryptor-latest
-            docker push soluto/kamus-init-container:latest
       # - run:
       #     name: push tags
       #     command: git push --set-upstream origin api_version --tags
@@ -146,22 +138,27 @@ jobs:
       - restore_cache:
           key: docker_cache_key
       - run:
-          name: Restore imahe
+          name: tag branch
+          command: |
+            ./ci/version_to_deploy_init.sh
+
+      - run:
+          name: Restore image
           command: |
             docker load < docker-cache/built-image.tar
-            docker tag kamus-init-container soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_TAG
       - run:
           name: Docker push
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+            docker push soluto/kamus-init-container$INIT_CONTAINER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker tag soluto/kamus-init-container:$CIRCLE_BUILD_NUM soluto/kamus-init-container:latest
+            docker tag soluto/kamus-init-container:$INIT_CONTAINER_TAG soluto/kamus-init-container:latest
             docker push soluto/kamus-init-container:latest
 workflows:
   version: 2

@@ -20,16 +20,6 @@ if [[ "$(git tag | grep -c "$ENCRYPTOR_API_TAG")" == "0" ]]; then
     export ENCRYPTOR_API_DOCKER_TAG=$ENCRYPTOR_API_TAG
 fi
 
-echo checking init container version
-INIT_CONTAINER_VERSION=$(grep -E "\"version\"" ./init-container/package.json | grep -Eo "[0-9.]*(-rc[0-9]*)?")
-INIT_CONTAINER_TAG="init-container-$INIT_CONTAINER_VERSION"
-export INIT_CONTAINER_TAG="latest"
-if [[ "$(git tag | grep -c "$INIT_CONTAINER_TAG")" == "0" ]]; then
-    echo tagging "$INIT_CONTAINER_TAG"
-    git tag "$INIT_CONTAINER_TAG"
-    export INIT_CONTAINER_TAG=$INIT_CONTAINER_TAG
-fi
-
 echo  checking cli version
 CLI_VERSION=$(grep -E "\"version\"" ./cli/package.json  | grep -Eo "[0-9.]*(-rc[0-9]*)?")
 CLI_TAG="cli-$CLI_VERSION"
