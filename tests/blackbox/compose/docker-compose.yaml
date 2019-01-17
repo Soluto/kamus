@@ -11,16 +11,20 @@ services:
       - Kubernetes__ProxyUrl=http://wiremock:8080
 
   black-box:
-    image: $BLACKBOX_IMAGE
+    build:
+      context: ../
     environment:
       - ENCRYPTOR=http://encryptor:9999/
       - DECRYPTOR=http://decryptor:9999/
       - TEAMCITY_PROJECT_NAME=api
       - PROXY_URL=http://zap:8090
       - KUBERNETES_URL=http://wiremock:8080
+    volumes: 
+      - ./reports:/reports
   
   wiremock:
-    image: $WIREMOCK_IMAGE
+    build:
+      context: ../Wiremock
 
   zap:
     image: soluto/zap-ci:1531823009782

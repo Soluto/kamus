@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.CloudKMS.v1;
@@ -28,8 +29,6 @@ namespace Kamus
                 appsettingsPath = "appsettings.Development.json";
             }
 
-            Console.WriteLine($"Root: {env.ContentRootPath}");
-
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile(appsettingsPath, optional: true, reloadOnChange: true)
@@ -37,6 +36,9 @@ namespace Kamus
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Console.WriteLine($"Kamus Encryptor API {version} starting");
         }
 
 

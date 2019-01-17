@@ -1,6 +1,116 @@
 version: 2
 jobs:
-  build:
+  build_api:
+    machine: true
+
+    steps:
+      - checkout
+      - run:
+          name: Build decryptor docker image
+          command: docker build . -t kamus-decryptor
+      - run:
+          name: Build encryptor docker image
+          command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
+      - run:
+          name: Save docker image
+          command: |
+            mkdir -p docker-cache-api
+            docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
+            docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
+      - save_cache:
+          key: docker_api_cache_key
+          paths:
+            - docker-cache-api
+
+      - run:
+          name: Run black box tests
+          command: docker-compose -f tests/blackbox/compose/docker-compose.yaml up --build --exit-code-from black-box --abort-on-container-exit
+          environment:
+            ENCRYPTOR_IMAGE: kamus-encryptor
+            DECRYPTOR_IMAGE: kamus-decryptor
+      - store_artifacts:
+          path: reports/
+          destination: zap-reports
+
+  run_tests:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          working_directory: "tests/unit"
+          command: dotnet test
+      - run:
+          name: Run integration
+          working_directory: "tests/integration"
+          command: dotnet test
+
+  lint-scripts:
+    docker:
+      - image: koalaman/shellcheck-alpine
+    steps:
+      - checkout
+      - run:
+          name: lint
+          command: |
+            shellcheck -x ci/version_to_deploy.sh
+            shellcheck -x ci/version_to_deploy_init.sh
+
+  push-api-images:
+    docker:
+      - image: circleci/buildpack-deps:trusty
+    steps:
+      - checkout 
+      - setup_remote_docker
+      - run:
+          name: Install and configure dependencies
+          command: |
+            git config user.email "ci-build@soluto.com"
+            git config user.name "ci-build"
+      - run:
+          name: tag branch
+          command: |
+            ./ci/version_to_deploy.sh
+
+      - add_ssh_keys:
+          fingerprints:
+            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - restore_cache:
+          keys: 
+            - docker_api_cache_key
+      - run:
+          name: Restore image
+          command: |
+            docker load < docker-cache/kamus-decryptor.tar
+            docker load < docker-cache/kamus-encryptor.tar
+            docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+            docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+      - run:
+          name: Docker push version
+          working_directory: "init-container/tests"
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker push soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+            docker push soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+      - run:
+          name: Docker push latest
+          working_directory: "init-container/tests"
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker tag soluto/kamus:$DECRYPTOR_API_DOCKER_TAG soluto/kamus:decryptor-latest
+            docker tag soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG soluto/kamus:encryptor-latest
+
+            docker push soluto/kamus:decryptor-latest
+            docker push soluto/kamus:encryptor-latest
+      - run:
+          name: push tags
+          command: |
+            git pull
+            git push --set-upstream origin api_version --tags
+
+  build-init-container:
     machine: true
 
     steps:
@@ -9,7 +119,7 @@ jobs:
           name: Build docker image
           working_directory: "init-container"
           command: docker build . -t kamus-init-container
-
+      
       - run:
           name: Run black box tests
           working_directory: "init-container/tests"
@@ -18,43 +128,81 @@ jobs:
           name: Save docker image
           command: |
             mkdir -p docker-cache
-            docker save -o docker-cache/built-image.tar kamus-init-container
+            docker save -o docker-cache/kamus-init-container.tar kamus-init-container
       - save_cache:
           key: docker_cache_key
           paths:
             - docker-cache
-  push:
-    machine: true
-
+  push-init-container:
+    docker:
+      - image: circleci/buildpack-deps:trusty
     steps:
+      - checkout 
+      - setup_remote_docker
+      - run:
+          name: Install and configure dependencies
+          command: |
+            git config user.email "ci-build@soluto.com"
+            git config user.name "ci-build"
       - restore_cache:
           key: docker_cache_key
+      - add_ssh_keys:
+          fingerprints:
+            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
       - run:
-          name: Restore imahe
+          name: tag branch
+          command: |
+            ./ci/version_to_deploy_init.sh
+
+      - run:
+          name: Restore image
           command: |
             docker load < docker-cache/built-image.tar
-            docker tag kamus-init-container soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker push soluto/kamus-init-container:$CIRCLE_BUILD_NUM
+            docker push soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
-            docker tag soluto/kamus-init-container:$CIRCLE_BUILD_NUM soluto/kamus-init-container:latest
+            docker tag soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG soluto/kamus-init-container:latest
             docker push soluto/kamus-init-container:latest
+      - run:
+          name: push tags
+          command: |
+            git pull
+            git push --set-upstream origin api_version --tags
+
 workflows:
   version: 2
-  build_and_push:
+  init-container:
     jobs:
-      - build
-      - push:
+      - build-init-container
+      - lint-scripts
+      - push-init-container:
           requires:
-            - build
+            - build-init-container
+            - lint-scripts
+          filters:
+            branches:
+              only: master
+
+  api:
+    jobs:
+      - build-init-container
+      - build_api
+      - run_tests
+      - lint-scripts
+      - push-api-images:
+          requires:
+            - lint-scripts
+            - build_api
+            - run_tests
           filters:
             branches:
               only: master
