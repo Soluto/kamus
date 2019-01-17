@@ -22,7 +22,7 @@ module.exports = async (args, options, logger) => {
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint }, token = null) => {
+const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint, outputFile, override }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
@@ -38,7 +38,17 @@ const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecur
             process.exit(1);
         }
         _logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
-        _logger.info(`Encrypted data:\n${response.body}`);
+        if (outputFile) {
+            fs = require('fs');
+            fs.writeFileSync(outputFile, response.body, {
+                encoding: 'utf8',
+                flag: override ? 'w' : 'wx',
+            });
+            _logger.info(`Encrypted data was saved to ${outputFile}.`);
+        }
+        else {
+            _logger.info(`Encrypted data:\n${response.body}`);
+        }
         process.exit(0);
     }
     catch (err) {
