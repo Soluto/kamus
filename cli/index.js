@@ -9,7 +9,8 @@ prog
   .version(pjson.version)
   .command('encrypt', 'Encrypt data')
   .action(encrypt)
-  .option('-s, --secret <data>','Data to encrypt', prog.REQUIRED)
+  .option('-s, --secret <secret>','Secret to encrypt', prog.STRING)
+  .option('-f, --secret-file <file>','File with secret to encrypt', prog.STRING)
   .option('-a, --service-account <service-account>', 'Deployment service account', prog.REQUIRED)
   .option('-n, --namespace <namespace>', 'Deployment namespace', prog.REQUIRED)
   .option('-u, --kamus-url <kamusUrl>', 'Kamus URL', prog.REQUIRED)
@@ -17,6 +18,7 @@ prog
   .option('--auth-application <id>', 'Azure application id', regexGuid)
   .option('--auth-resource <name>', 'Azure resource name', prog.STRING)
   .option('--allow-insecure-url', 'Allow insecure (http) Kamus URL', prog.BOOL)
-  .option('--cert-fingerprint <certFingerprint>', 'Force server certificate to match the given fingerprint', prog.STRING);
+  .option('--cert-fingerprint <certFingerprint>', 'Force server certificate to match the given fingerprint', prog.STRING)
+  .option('--secret-file-encoding <fileEncoding>', 'Encoding of secret file', prog.STRING);
 
 prog.parse(process.argv);
