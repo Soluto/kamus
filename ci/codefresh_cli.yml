@@ -21,8 +21,9 @@ steps:
     tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
     dockerfile: CI.Dockerfile
     when:
-      ignore:
-        - master
+      branch:
+        ignore:
+          - master
   BuildingNPMCLIDockerImage:
     title: Building CLI Docker Image
     type: build
