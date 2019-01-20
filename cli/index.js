@@ -19,6 +19,8 @@ prog
   .option('--auth-resource <name>', 'Azure resource name', prog.STRING)
   .option('--allow-insecure-url', 'Allow insecure (http) Kamus URL', prog.BOOL)
   .option('--cert-fingerprint <certFingerprint>', 'Force server certificate to match the given fingerprint', prog.STRING)
-  .option('--secret-file-encoding <fileEncoding>', 'Encoding of secret file', prog.STRING);
+  .option('--secret-file-encoding <fileEncoding>', 'Encoding of secret file', prog.STRING)
+  .option('-o, --output <outputFile>', 'Output to file', prog.STRING)
+  .option('-O, --overwrite', 'Overwrites file if it already exists', prog.BOOL);
 
 prog.parse(process.argv);

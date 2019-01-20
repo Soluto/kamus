@@ -3,7 +3,7 @@ const opn = require('opn');
 const fs = require('fs');
 const url = require('url')
 const request = require('request');
-const {promisify} = require('util');
+const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
 
@@ -33,7 +33,7 @@ module.exports = async (args, options, logger) => {
         const encryptedSecret = await encrypt(options, token);
 
         logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
-        logger.info(`Encrypted data:\n${encryptedSecret}`);
+        outputEncryptedSecret(encryptedSecret, options, logger);
         process.exit(0);
     }
     catch (err) {
@@ -64,7 +64,6 @@ const validateArguments = ({ secret, file, kamusUrl, allowInsecureUrl }) => {
         throw new Error('Insecure Kamus URL is not allowed.');
     }
 };
-
 
 const acquireToken = async ({ authTenant, authApplication, authResource }, logger) => {
     const context = new AuthenticationContext(`${activeDirectoryEndpoint}${authTenant}`);
@@ -138,5 +137,19 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
         namespace,
     }));
 }
+
+const outputEncryptedSecret = (encryptedSecret, { outputFile, overwrite, fileEncoding }, logger) => {
+    if (outputFile) {
+        fs = require('fs');
+        fs.writeFileSync(outputFile, encryptedSecret, {
+            encoding: fileEncoding || DEFAULT_ENCODING,
+            flag: overwrite ? 'w' : 'wx',
+        });
+        logger.info(`Encrypted data was saved to ${outputFile}.`);
+    }
+    else {
+        logger.info(`Encrypted data:\n${encryptedSecret}`);
+    }
+};
 
 performEncryptRequestAsync = promisify(performEncryptRequest);
