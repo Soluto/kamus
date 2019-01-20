@@ -5,7 +5,7 @@ steps:
     image: node:10-alpine
     working_directory: ./cli
     commands:
-      - yarn install 
+      - yarn install
       - yarn test
   ExportVersion:
     title: "Export CLI Version"
@@ -13,6 +13,10 @@ steps:
     working_directory: ./cli
     commands:
       - cf_export CLI_VERSION=$(jq '.version' -r < package.json)
+    when:
+      branch:
+        only:
+          - master
   BuildingCLIDockerImage:
     title: Building CLI Docker Image
     type: build
@@ -22,6 +26,10 @@ steps:
     dockerfile: Dockerfile
     build_arguments:
       - CLI_VERSION=${{CLI_VERSION}}
+    when:
+      branch:
+        only:
+          - master
   PushCLIImage:
     type: push
     title: Push CLI Docker image - lastest
