@@ -5,7 +5,7 @@ steps:
     image: node:10-alpine
     working_directory: ./cli
     commands:
-      - yarn install 
+      - yarn install
       - yarn test
   ExportVersion:
     title: "Export CLI Version"
@@ -16,12 +16,26 @@ steps:
   BuildingCLIDockerImage:
     title: Building CLI Docker Image
     type: build
+    image_name: soluto/kamus-cli-local
+    working_directory: ./cli
+    tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
+    dockerfile: CI.Dockerfile
+    when:
+      ignore:
+        - master
+  BuildingNPMCLIDockerImage:
+    title: Building CLI Docker Image
+    type: build
     image_name: soluto/kamus-cli
     working_directory: ./cli
     tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
     dockerfile: Dockerfile
     build_arguments:
       - CLI_VERSION=${{CLI_VERSION}}
+    when:
+      branch:
+        only:
+          - master
   PushCLIImage:
     type: push
     title: Push CLI Docker image - lastest
