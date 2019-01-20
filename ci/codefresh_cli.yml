@@ -13,18 +13,11 @@ steps:
     working_directory: ./cli
     commands:
       - cf_export CLI_VERSION=$(jq '.version' -r < package.json)
-  BuildingCLIDockerImage:
-    title: Building CLI Docker Image
-    type: build
-    image_name: soluto/kamus-cli-local
-    working_directory: ./cli
-    tag: '${{CF_BRANCH_TAG_NORMALIZED}}'
-    dockerfile: CI.Dockerfile
     when:
       branch:
-        ignore:
+        only:
           - master
-  BuildingNPMCLIDockerImage:
+  BuildingCLIDockerImage:
     title: Building CLI Docker Image
     type: build
     image_name: soluto/kamus-cli
