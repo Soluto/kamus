@@ -1,6 +1,6 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "chai": "^4.2.0",
     "eslint": "^5.12.0",
     "mocha": "^5.2.0",
+    "mock-fs": "^4.7.0",
     "nock": "^10.0.5",
     "sinon": "^7.2.2"
   }
