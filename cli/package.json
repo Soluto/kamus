@@ -30,6 +30,8 @@
   "dependencies": {
     "adal-node": "^0.1.28",
     "bluebird": "^3.5.3",
+    "bunyan": "^1.8.12",
+    "bunyan-pretty-colors": "^0.1.7",
     "caporal": "^1.1.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
