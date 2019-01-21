@@ -9,16 +9,17 @@ using Microsoft.Rest;
 using Kamus.Extensions;
 using Kamus.KeyManagement;
 using Serilog;
+using System.Net.Http;
 
 namespace Kamus.Controllers
 {
-    
+
     public class EncryptController : Controller
     {
         private readonly IKeyManagement mKeyManagement;
         private readonly ILogger mAuditLogger = Log.ForContext<EncryptController>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<EncryptController>();
-        
+
         public EncryptController(IKeyManagement keyManagement)
         {
             mKeyManagement = keyManagement;
@@ -28,23 +29,28 @@ namespace Kamus.Controllers
         [Route("api/v1/encrypt")]
         public async Task<ActionResult> Encrypt([FromBody]EncryptRequest body)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("One of required fields doesn't present in request body.");
+            }
+
             mAuditLogger.Information("Encryption request started, SourceIP: {sourceIp}, ServiceAccount: {sa}, Namespace: {namespace}",
                     Request.HttpContext.Connection.RemoteIpAddress,
-                    body.SerivceAccountName,
-                    body.NamesapceName);
+                    body.ServiceAccountName,
+                    body.NamespaceName);
 
-            var encryptedData = await mKeyManagement.Encrypt(body.Data, $"{body.NamesapceName}:{body.SerivceAccountName}");
+            var encryptedData = await mKeyManagement.Encrypt(body.Data, $"{body.NamespaceName}:{body.ServiceAccountName}");
 
-            if (body.SerivceAccountName == "default")
+            if (body.ServiceAccountName == "default")
             {
                 return BadRequest("You cannot encrypt a secret for the default service account");
             }
 
-            mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}", 
+            mAuditLogger.Information("Encryption request succeeded, SourceIP: {sourceIp}, ServiceAccount: {serviceAccount}, Namesacpe: {namespace}",
                 Request.HttpContext.Connection.RemoteIpAddress,
-                body.SerivceAccountName,
-                body.NamesapceName);
-            
+                body.ServiceAccountName,
+                body.NamespaceName);
+
             return Content(encryptedData);
         }
     }

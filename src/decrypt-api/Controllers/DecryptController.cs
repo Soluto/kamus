@@ -13,7 +13,7 @@ using Serilog;
 
 namespace Kamus.Controllers
 {
-    
+
     public class DecryptController : Controller
     {
         private readonly IKubernetes mKubernetes;
@@ -23,7 +23,7 @@ namespace Kamus.Controllers
 
         //see: https://github.com/kubernetes/kubernetes/blob/d5803e596fc8aba17aa8c74a96aff9c73bb0f1da/staging/src/k8s.io/apiserver/pkg/authentication/serviceaccount/util.go#L27
         private const string ServiceAccountUsernamePrefix = "system:serviceaccount:";
-        
+
         public DecryptController(IKubernetes kubernetes, IKeyManagement keyManagement)
         {
             mKubernetes = kubernetes;
@@ -35,6 +35,11 @@ namespace Kamus.Controllers
         [Authorize(AuthenticationSchemes = "kubernetes")]
         public async Task<ActionResult> Decrypt([FromBody] DecryptRequest body)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("One of required fields doesn't present in request body.");
+            }
+
             var serviceAccountUserName = User.Claims.FirstOrDefault(claim => claim.Type == "name")?.Value;
 
             if (string.IsNullOrEmpty(serviceAccountUserName) ||
@@ -43,7 +48,7 @@ namespace Kamus.Controllers
                 mAuditLogger.Information("Unauthorized decrypt request, SourceIP: {sourceIp}, ServiceAccount User Name: {id}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     serviceAccountUserName);
-                
+
                 return StatusCode(403);
             }
 
@@ -53,11 +58,11 @@ namespace Kamus.Controllers
                 Request.HttpContext.Connection.RemoteIpAddress,
                 id);
 
-            try 
+            try
             {
                 var data = await mKeyManagement.Decrypt(body.EncryptedData, id);
 
-                mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccount user Name: {sa}", 
+                mAuditLogger.Information("Decryption request succeeded, SourceIP: {sourceIp}, ServiceAccount user Name: {sa}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     id);
                 return Content(data);
@@ -71,6 +76,6 @@ namespace Kamus.Controllers
             }
         }
 
-        
+
     }
 }
