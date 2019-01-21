@@ -66,7 +66,7 @@ namespace Kamus.Controllers
             }
             catch (Exception e)
             {
-                mLogger.Warning(e, "SelfSubjectAccessReview check failed")
+                mLogger.Warning(e, "SelfSubjectAccessReview check failed");
                 return false;
             }
         }
