@@ -42,3 +42,7 @@ Once the user will run the cli with the auth options, he will get a small code a
 | --cert-fingerprint    |   false        |  [certificate fingerprint](http://hassansin.github.io/certificate-pinning-in-nodejs) of encrypt api for validation       |               |
 | --kamus-url           |   true         |  url of kamus encrypt    api                     |               |
 | --allow-insecure-url  |   false        |  allow or block non https endpoints              | false         |
+| --log-level <debug&#124;verbose&#124;info&#124;warn&#124;error&#124;fatal> | false | specify global logger level |
+| --log-flag <\[no-\](date&#124;inline&#124;colorful)> | false | the prefix no- represent negation. date: whether to print date. default value is false. inline: each log record output in one line. default value is false. colorful: whether to print with colors. default value is true. 
+| --log-output <filepath> | false |  specify the output path (default behavior is output directory to stdout).
+| --log-encoding <encoding> | false | specify the log file's encoding.
