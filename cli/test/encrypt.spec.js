@@ -15,7 +15,7 @@ const logger =
 };
 
 const kamusUrl = 'https://kamus.com';
-const data = 'super-secret';
+const secret = 'super-secret';
 const encryptedData = '123ABC';
 const serviceAccount = 'dummy';
 const namespace = 'team-a';
@@ -27,7 +27,7 @@ describe('Encrypt', () => {
   beforeEach(() => {
     sinon.stub(process, 'exit');
     kamusApiScope = nock(kamusUrl)
-      .post('/api/v1/encrypt', { data, ['service-account']: serviceAccount, namespace})
+      .post('/api/v1/encrypt', { data: secret, ['service-account']: serviceAccount, namespace})
       .reply(200, encryptedData);
   });
 
@@ -36,7 +36,7 @@ describe('Encrypt', () => {
   });
 
   it('Should return encrypted data', async () => {
-    await encrypt(null, {data, serviceAccount, namespace, kamusUrl}, logger);
+    await encrypt(null, { secret, serviceAccount, namespace, kamusUrl}, logger);
     expect(kamusApiScope.isDone()).to.be.true;
     expect(process.exit.called).to.be.true;
     expect(process.exit.calledWith(0)).to.be.true;
@@ -64,7 +64,7 @@ describe('Encrypt', () => {
 
     it('should save if the file doesn\'t exist', async () => {
       const outputFile = `${path}/${newOutputFile}`;
-      await encrypt(null, {data, serviceAccount, namespace, kamusUrl, outputFile}, logger);
+      await encrypt(null, { secret, serviceAccount, namespace, kamusUrl, outputFile}, logger);
       expect(kamusApiScope.isDone()).to.be.true;
       expect(process.exit.called).to.be.true;
       expect(process.exit.calledWith(0)).to.be.true;
@@ -74,7 +74,7 @@ describe('Encrypt', () => {
 
     it('should fail if the file does exist', async () => {
       const outputFile = `${path}/${existingFile}`;
-      await encrypt(null, {data, serviceAccount, namespace, kamusUrl, outputFile}, logger);
+      await encrypt(null, { secret, serviceAccount, namespace, kamusUrl, outputFile}, logger);
       expect(kamusApiScope.isDone()).to.be.true;
       expect(process.exit.called).to.be.true;
       expect(process.exit.calledWith(0)).to.be.false;
@@ -83,7 +83,7 @@ describe('Encrypt', () => {
 
     it('should save if the file exists but overwrite flag added', async () => {
       const outputFile = `${path}/${existingFile}`;
-      await encrypt(null, {data, serviceAccount, namespace, kamusUrl, outputFile, overwrite: true}, logger);
+      await encrypt(null, { secret, serviceAccount, namespace, kamusUrl, outputFile, overwrite: true}, logger);
       expect(kamusApiScope.isDone()).to.be.true;
       expect(process.exit.calledWith(0)).to.be.true;
       expect(fs.readFileSync(outputFile, { encoding: 'utf8' })).to.equal(encryptedData);
