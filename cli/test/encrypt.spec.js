@@ -1,3 +1,4 @@
+/* global describe it before beforeEach after afterEach */
 const expect = require('chai').expect;
 const nock = require('nock');
 const sinon = require('sinon');
@@ -9,9 +10,9 @@ const encrypt = require('../actions/encrypt');
 const logger =
 {
     info: sinon.spy(),
-    error: console.error,
-    warn: console.warn,
-    log: console.log
+    error: sinon.spy(),
+    warn: sinon.spy(),
+    log: sinon.spy(),
 };
 
 const kamusUrl = 'https://kamus.com';

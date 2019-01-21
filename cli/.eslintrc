@@ -3,7 +3,33 @@
         "browser": false,
         "node": true
     },
+    "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion":  2017
+    },
+    "rules": {
+        "linebreak-style": [
+            "off",
+            "windows"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": [
+            "off"
+        ]
+    },
+    "globals": {
+        "it": true,
+        "after": true,
+        "afterEach": true,
+        "before": true,
+        "beforeEach": true,
+        "describe": true
     }
 }
