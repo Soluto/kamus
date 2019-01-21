@@ -9,7 +9,7 @@ prog
   .version(pjson.version)
   .command('encrypt', 'Encrypt data')
   .action(encrypt)
-  .option('-s, --secret <data>','Data to encrypt', prog.REQUIRED)
+  .option('-s, --secret <secret>','Data to encrypt', prog.REQUIRED)
   .option('-a, --service-account <service-account>', 'Deployment service account', prog.REQUIRED)
   .option('-n, --namespace <namespace>', 'Deployment namespace', prog.REQUIRED)
   .option('-u, --kamus-url <kamusUrl>', 'Kamus URL', prog.REQUIRED)
