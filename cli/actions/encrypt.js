@@ -22,7 +22,7 @@ module.exports = async (args, options, logger) => {
     }
 }
 
-const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint, outputFile, overwrite }, token = null) => {
+const encrypt = async ({ secret, serviceAccount, namespace, kamusUrl, allowInsecureUrl, certFingerprint, outputFile, overwrite }, token = null) => {
     _logger.log('Encryption started...');
     _logger.log('service account:', serviceAccount);
     _logger.log('namespace:', namespace);
@@ -32,7 +32,7 @@ const encrypt = async ({ data, serviceAccount, namespace, kamusUrl, allowInsecur
         process.exit(1);
     }
     try {
-        const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
+        const response = await performEncryptRequestAsync(secret, serviceAccount, namespace, kamusUrl, certFingerprint, token);
         if (response && response.statusCode >= 300) {
             _logger.error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
             process.exit(1);
