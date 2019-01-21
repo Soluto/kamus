@@ -43,6 +43,8 @@ namespace Kamus.Controllers
             return true;
         }
 
+        // Accodring to Kubernetes code: Not filling in spec.namespace means "in all namespaces".
+        // https://github.com/kubernetes/kubernetes/blob/dc3edee5f5f732df7c6b50e073c35bd20912ac6a/pkg/apis/authorization/types.go#L28
         private async Task<bool> CheckIsAlive()
         {
             try
@@ -61,6 +63,11 @@ namespace Kamus.Controllers
                         }
                     }
                 });
+
+                if (!result.Status.Allowed)
+                {
+                    mLogger.Warning("SelfSubjectAccessReview result is denied. Error: {error}, reason: {reason}", result.Status.EvaluationError, result.Status.Reason);
+                }
 
                 return result.Status.Allowed;
             }
