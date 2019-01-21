@@ -40,6 +40,7 @@ const encrypt = async ({ secret, serviceAccount, namespace, kamusUrl, allowInsec
         _logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
         if (outputFile) {
             const fs = require('fs');
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
             fs.writeFileSync(outputFile, response.body, {
                 encoding: 'utf8',
                 flag: overwrite ? 'w' : 'wx',
@@ -94,18 +95,20 @@ const useAuth = ({ authTenant, authApplication, authResource }) => {
 //Source: http://hassansin.github.io/certificate-pinning-in-nodejs
 const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certificateFingerprint, token, cb) => {
 
-    const headers = {
+    const headersBase = {
         'User-Agent': `kamus-cli-${pjson.version}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     };
 
-    if (token != null) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
+    const authHeaders = token ? {
+        Authorization: `Bearer ${token}`,
+    } : {};
+
+    const headers = { ...headersBase, ...authHeaders };
 
     const options = {
         url: kamusUrl + '/api/v1/encrypt',
-        headers: headers,
+        headers,
         // Certificate validation
         strictSSL: true,
         method: 'POST',

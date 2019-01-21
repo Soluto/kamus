@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 /* global describe it before beforeEach after afterEach */
 const expect = require('chai').expect;
 const nock = require('nock');

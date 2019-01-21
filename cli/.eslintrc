@@ -3,10 +3,16 @@
         "browser": false,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:security/recommended"
+    ],
     "parserOptions": {
-        "ecmaVersion":  2017
+        "ecmaVersion":  2018
     },
+    "plugins": [
+        "security"
+    ],
     "rules": {
         "linebreak-style": [
             "off",
