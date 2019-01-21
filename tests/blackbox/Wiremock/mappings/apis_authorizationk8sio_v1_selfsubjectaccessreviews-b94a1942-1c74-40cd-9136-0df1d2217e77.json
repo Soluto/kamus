@@ -1,0 +1,24 @@
+{
+  "id" : "b94a1942-1c74-40cd-9136-0df1d2217e77",
+  "name" : "apis_authorizationk8sio_v1_selfsubjectaccessreviews",
+  "request" : {
+    "url" : "/apis/authorization.k8s.io/v1/selfsubjectaccessreviews",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\n  \"apiVersion\": \"authorization.k8s.io/v1\",\n  \"kind\": \"SelfSubjectAccessReview\",\n  \"spec\": {\n    \"resourceAttributes\": {\n      \"group\": \"authentication.k8s.io\",\n      \"resource\": \"tokenreviews\",\n      \"verb\": \"create\"\n    }\n  }\n}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 201,
+    "body" : "{\"kind\":\"SelfSubjectAccessReview\",\"apiVersion\":\"authorization.k8s.io/v1\",\"metadata\":{\"creationTimestamp\":null},\"spec\":{\"resourceAttributes\":{\"verb\":\"create\",\"group\":\"authentication.k8s.io\",\"resource\":\"tokenreviews\"}},\"status\":{\"allowed\":true}}\n",
+    "headers" : {
+      "Content-Type" : "application/json",
+      "Date" : "Mon, 21 Jan 2019 06:20:20 GMT"
+    }
+  },
+  "uuid" : "b94a1942-1c74-40cd-9136-0df1d2217e77",
+  "persistent" : true,
+  "insertionIndex" : 3
+}
