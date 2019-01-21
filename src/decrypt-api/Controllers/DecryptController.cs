@@ -37,6 +37,9 @@ namespace Kamus.Controllers
         {
             if (!ModelState.IsValid)
             {
+                mAuditLogger.Warning("Bad request to Decrypt API: {validationState}",
+                    Request.HttpContext.Connection.RemoteIpAddress,
+                    ModelState.ValidationState);
                 return BadRequest("One of required fields doesn't present in request body.");
             }
 
