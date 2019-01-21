@@ -1,7 +1,7 @@
 const bluebird = require('bluebird');
 const opn = require('opn');
+const url = require('url');
 const fs = require('fs');
-const url = require('url')
 const request = require('request');
 const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
@@ -48,7 +48,7 @@ const encrypt = async ({ secret, file, serviceAccount, namespace, kamusUrl, cert
     if (response && response.statusCode >= 300) {
         throw new Error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
     }
-    return response.data;
+    return response.body;
 };
 
 const validateArguments = ({ secret, file, kamusUrl, allowInsecureUrl }) => {
@@ -68,7 +68,7 @@ const validateArguments = ({ secret, file, kamusUrl, allowInsecureUrl }) => {
 const acquireToken = async ({ authTenant, authApplication, authResource }, logger) => {
     const context = new AuthenticationContext(`${activeDirectoryEndpoint}${authTenant}`);
     bluebird.promisifyAll(context);
-    refreshToken = await acquireTokenWithDeviceCode(context, authApplication, authResource, logger);
+    const refreshToken = await acquireTokenWithDeviceCode(context, authApplication, authResource, logger);
     const refreshTokenResponse =
         await context.acquireTokenWithRefreshTokenAsync(refreshToken, authApplication, null, authResource);
     return refreshTokenResponse.accessToken;
@@ -99,7 +99,7 @@ const useAuth = ({ authTenant, authApplication, authResource }, logger) => {
 }
 
 //Source: http://hassansin.github.io/certificate-pinning-in-nodejs
-const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certficateFingerprint, token, cb) => {
+const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certificateFingerprint, token, cb) => {
     const headers = {
         'User-Agent': `kamus-cli-${pjson.version}`,
         'Content-Type': 'application/json'
@@ -123,9 +123,9 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
         socket.on('secureConnect', () => {
             const fingerprint = socket.getPeerCertificate().fingerprint;
             // Match the fingerprint with our saved fingerprints
-            if(certficateFingerprint !== undefined && certficateFingerprint !== fingerprint) {
+            if(certificateFingerprint !== undefined && certificateFingerprint !== fingerprint) {
             // Abort request, optionally emit an error event
-                req.emit('error', new Error(`Server fingerprint ${fingerprint} does not match provided fingerprint ${certficateFingerprint}`));
+                req.emit('error', new Error(`Server fingerprint ${fingerprint} does not match provided fingerprint ${certificateFingerprint}`));
                 return req.abort();
             }
         });
@@ -140,7 +140,6 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certfi
 
 const outputEncryptedSecret = (encryptedSecret, { outputFile, overwrite, fileEncoding }, logger) => {
     if (outputFile) {
-        fs = require('fs');
         fs.writeFileSync(outputFile, encryptedSecret, {
             encoding: fileEncoding || DEFAULT_ENCODING,
             flag: overwrite ? 'w' : 'wx',

@@ -4,7 +4,7 @@
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha ./test/*.spec.js",
+    "test": "node_modules/.bin/mocha ./test/*.spec.js --exit",
     "ci-publish": "ci-publish"
   },
   "repository": {
