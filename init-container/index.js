@@ -35,7 +35,11 @@ const getBarerToken = async () => {
 
 const decryptFile = async (httpClient, filePath) => {
     var encryptedContent = await readFileAsync(program.encryptedFolder + '/' + filePath, "utf8");
+    try {
     const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
+    } catch (e) {
+      throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : error.message}`)
+    }
     return response.data;
 }
 
@@ -68,6 +72,7 @@ async function innerRun() {
     {
         secrets[file] = await decryptFile(httpClient, file);
     }
+    
     const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
     console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
 
