@@ -36,7 +36,8 @@ const getBarerToken = async () => {
 const decryptFile = async (httpClient, filePath) => {
     var encryptedContent = await readFileAsync(program.encryptedFolder + '/' + filePath, "utf8");
     try {
-    const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
+      const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
+      return response.data;
     } catch (e) {
       throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : error.message}`)
     }
