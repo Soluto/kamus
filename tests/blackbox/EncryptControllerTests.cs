@@ -14,7 +14,7 @@ namespace blackbox
 {
     public class EncryptRequest
     {
-        
+
         [JsonProperty(PropertyName = "service-account", Required = Required.Always)]
         public string SerivceAccountName
         {
@@ -60,7 +60,7 @@ namespace blackbox
             set;
         }
     }
-    
+
     public class EncryptControllerTests {
         public IHttpClientProvider mHttpClientProvider { get; set; }
         public EncryptControllerTests () {
@@ -80,7 +80,7 @@ namespace blackbox
                 NamesapceName = "default",
                 Data = data
            };
-           
+
             var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
 
             result.EnsureSuccessStatusCode();
@@ -124,6 +124,23 @@ namespace blackbox
             var result = await httpClient.PostAsync(ConfigurationProvider.Configuration["DECRYPTOR"] + "api/v1/decrypt", new StringContent(JsonConvert.SerializeObject(decryptRequest), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task BadRequestShouldFail()
+        {
+            var httpClient = mHttpClientProvider.Provide();
+
+            var request = new EncryptRequest
+            {
+                SerivceAccountName = "dummy",
+                NamesapceName = "default"
+           };
+
+            var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
+
         }
     }
 }
