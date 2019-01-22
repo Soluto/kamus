@@ -6,7 +6,7 @@ const sinon = require('sinon');
 const fs = require('fs');
 const mockFS = require('mock-fs');
 
-const encrypt = require('../actions/encrypt');
+const encrypt = require('../lib/actions/encrypt');
 
 const logger =
 {

@@ -1,19 +1,18 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha ./test/*.spec.js --exit",
-    "eslint": "eslint . --ignore-pattern node_modules/",
-    "ci-publish": "ci-publish"
+    "eslint": "eslint . --ignore-pattern node_modules/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/soluto/kamus.git"
   },
   "bin": {
-    "kamus-cli": "index.js"
+    "kamus-cli": "lib/index.js"
   },
   "keywords": [
     "Secrets",
@@ -44,5 +43,9 @@
     "mock-fs": "^4.7.0",
     "nock": "^10.0.5",
     "sinon": "^7.2.2"
-  }
+  },
+  "files": [
+    "/lib",
+    "yarn.lock"
+  ]
 }

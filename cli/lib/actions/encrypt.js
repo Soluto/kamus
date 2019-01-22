@@ -7,7 +7,7 @@ const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = 'https://login.microsoftonline.com/';
 const isDocker = require('../is-docker');
-const pjson = require('../package.json');
+const pjson = require('../../package.json');
 
 const DEFAULT_ENCODING = 'utf8';
 
