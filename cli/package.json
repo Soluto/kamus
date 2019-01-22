@@ -53,7 +53,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
+      "pre-push": "yarn test --reporter min"
     }
   },
   "lint-staged": {
