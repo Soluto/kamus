@@ -31,7 +31,7 @@ namespace Kamus.Controllers
         {
             if (!ModelState.IsValid)
             {
-                mAuditLogger.Warning("Bad request to Encrypt API: {validationState}",
+                mAuditLogger.Warning("Bad request to Encrypt API: {sourceIP} {validationState}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     ModelState.ValidationState);
                 return BadRequest("One or more of the required fields doesn't present in the request body.");
