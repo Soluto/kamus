@@ -1,3 +1,5 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
+/* global describe it before beforeEach after afterEach */
 const expect = require('chai').expect;
 const nock = require('nock');
 const sinon = require('sinon');
@@ -27,7 +29,7 @@ describe('Encrypt', () => {
   const outputPath = 'path/to/outputDir';
   const newOutputFile = 'new.txt';
   const existingFile = 'existing.txt';
-  const unexistingFile = 'not-found.txt';
+  const nonexistingFile = 'not-found.txt';
   const existingFileContent = 'some content here';
 
   before(() => {
@@ -109,7 +111,6 @@ describe('Encrypt', () => {
     });
 
     it('should fail if neither secret or secret file options were set', async () => {
-      const file = `${inputPath}/${existingFile}`;
       await encrypt(null, { serviceAccount, namespace, kamusUrl }, logger);
       expect(kamusApiScope.isDone()).to.be.false;
       expect(process.exit.called).to.be.true;
@@ -125,7 +126,7 @@ describe('Encrypt', () => {
     });
 
     it('should fail if the file doesn\'t exists', async () => {
-      const file = `${inputPath}/${unexistingFile}`;
+      const file = `${inputPath}/${nonexistingFile}`;
       await encrypt(null, { file, serviceAccount, namespace, kamusUrl }, logger);
       expect(kamusApiScope.isDone()).to.be.false;
       expect(process.exit.called).to.be.true;

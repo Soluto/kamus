@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha ./test/*.spec.js --exit",
+    "eslint": "eslint . --ignore-pattern node_modules/",
     "ci-publish": "ci-publish"
   },
   "repository": {
@@ -37,6 +38,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.12.0",
+    "eslint-plugin-security": "^1.4.0",
     "mocha": "^5.2.0",
     "mock-fs": "^4.7.0",
     "nock": "^10.0.5",

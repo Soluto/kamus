@@ -5,11 +5,9 @@ const fs = require('fs');
 const request = require('request');
 const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
-const activeDirectoryEndpoint = "https://login.microsoftonline.com/";
-
-const  pjson = require('../package.json');
-
+const activeDirectoryEndpoint = 'https://login.microsoftonline.com/';
 const isDocker = require('../is-docker');
+const pjson = require('../package.json');
 
 const DEFAULT_ENCODING = 'utf8';
 
@@ -40,9 +38,10 @@ module.exports = async (args, options, logger) => {
         logger.error('Error while trying to encrypt with kamus:', err.message);
         process.exit(1);
     }
-}
+};
 
 const encrypt = async ({ secret, file, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, token = null) => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const data = file ? fs.readFileSync(file, { encoding: fileEncoding || DEFAULT_ENCODING }) : secret;
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
@@ -84,34 +83,36 @@ const acquireTokenWithDeviceCode = async (context, authApplication, authResource
 
 const outputUserCodeInstructions = async (userCodeResult, logger) => {
     if (isDocker()) {
-        logger.info(`Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`)
+        logger.info(`Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`);
     } else {
         opn(userCodeResult.verificationUrl);
         logger.info(`Enter this code to authenticate: ${userCodeResult.userCode}`);
     }
-}
+};
 
-const useAuth = ({ authTenant, authApplication, authResource }, logger) => {
+const useAuth = ({ authTenant, authApplication, authResource }) => {
     if (authTenant && authApplication && authResource) {
         return true;
     }
     return false;
-}
+};
 
 //Source: http://hassansin.github.io/certificate-pinning-in-nodejs
 const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certificateFingerprint, token, cb) => {
-    const headers = {
+    const headersBase = {
         'User-Agent': `kamus-cli-${pjson.version}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     };
 
-    if (token != null) {
-        headers['Authorization'] = `Bearer ${token}`
-    }
+    const authHeaders = token ? {
+        Authorization: `Bearer ${token}`,
+    } : {};
+
+    const headers = { ...headersBase, ...authHeaders };
 
     const options = {
         url: `${kamusUrl}/api/v1/encrypt`,
-        headers: headers,
+        headers,
         // Certificate validation
         strictSSL: true,
         method: 'POST',
@@ -136,10 +137,13 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certif
         ['service-account']: serviceAccount,
         namespace,
     }));
-}
+};
+
+const performEncryptRequestAsync = promisify(performEncryptRequest);
 
 const outputEncryptedSecret = (encryptedSecret, { outputFile, overwrite, fileEncoding }, logger) => {
     if (outputFile) {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         fs.writeFileSync(outputFile, encryptedSecret, {
             encoding: fileEncoding || DEFAULT_ENCODING,
             flag: overwrite ? 'w' : 'wx',
@@ -150,5 +154,3 @@ const outputEncryptedSecret = (encryptedSecret, { outputFile, overwrite, fileEnc
         logger.info(`Encrypted data:\n${encryptedSecret}`);
     }
 };
-
-performEncryptRequestAsync = promisify(performEncryptRequest);
