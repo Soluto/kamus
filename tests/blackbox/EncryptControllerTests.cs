@@ -127,7 +127,7 @@ namespace blackbox
         }
 
         [Fact]
-        public async Task BadRequestShouldFail()
+        public async Task Encrypt_BadRequest_ShouldFail()
         {
             var httpClient = mHttpClientProvider.Provide();
 
