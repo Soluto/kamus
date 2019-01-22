@@ -37,10 +37,10 @@ namespace Kamus.Controllers
         {
             if (!ModelState.IsValid)
             {
-                mAuditLogger.Warning("Bad request to Decrypt API: {validationState}",
+                mAuditLogger.Warning("Bad request to Decrypt API: {remoteIP} {validationState}",
                     Request.HttpContext.Connection.RemoteIpAddress,
                     ModelState.ValidationState);
-                return BadRequest("One of required fields doesn't present in request body.");
+                return BadRequest("One or more of required fields doesn't present in the request body.");
             }
 
             var serviceAccountUserName = User.Claims.FirstOrDefault(claim => claim.Type == "name")?.Value;
