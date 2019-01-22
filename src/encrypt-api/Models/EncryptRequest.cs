@@ -5,14 +5,14 @@ namespace Kamus.Models
     public class EncryptRequest
     {
         [JsonProperty(PropertyName = "service-account", Required = Required.Always)]
-        public string SerivceAccountName
+        public string ServiceAccountName
         {
             get;
             set;
         }
 
         [JsonProperty(PropertyName = "namespace", Required = Required.Always)]
-        public string NamesapceName
+        public string NamespaceName
         {
             get;
             set;
