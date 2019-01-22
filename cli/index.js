@@ -5,13 +5,13 @@ const prog = require('caporal');
 const encrypt = require('./actions/encrypt');
 const regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-const { ColorfulChalkLogger, DEBUG } = require('colorful-chalk-logger')
+const { ColorfulChalkLogger, DEBUG } = require('colorful-chalk-logger');
  
 const logger = new ColorfulChalkLogger('kamus-cli', {
   level: DEBUG,   // the default value is INFO
   date: false,    // the default value is false.
   colorful: true, // the default value is true.
-}, process.argv)
+}, process.argv);
 
 prog
   .logger(logger)
