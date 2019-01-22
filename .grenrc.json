@@ -1,0 +1,12 @@
+{
+    "dataSource": "issues",
+    "prefix": "",
+    "ignoreIssuesWith": ["duplicate", "internal", "invalid", "question"],
+    "onlyMilestones": false,
+    "ignoreTagsWith": ["init-container", "cli", "encryptor", "decryptor"],
+    "groupBy": {
+        "Enhancements:": ["enhancement", "documentation"],
+        "Bug Fixes:": ["bug"]
+    },
+    "changelogFilename": "CHANGELOG.md"
+}
