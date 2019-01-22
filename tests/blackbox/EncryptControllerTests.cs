@@ -15,21 +15,21 @@ namespace blackbox
     public class EncryptRequest
     {
 
-        [JsonProperty(PropertyName = "service-account", Required = Required.Always)]
+        [JsonProperty(PropertyName = "service-account")]
         public string SerivceAccountName
         {
             get;
             set;
         }
 
-        [JsonProperty(PropertyName = "namespace", Required = Required.Always)]
+        [JsonProperty(PropertyName = "namespace")]
         public string NamesapceName
         {
             get;
             set;
         }
 
-        [JsonProperty(PropertyName = "data", Required = Required.Always)]
+        [JsonProperty(PropertyName = "data")]
         public string Data
         {
             get;
