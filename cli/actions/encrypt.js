@@ -14,9 +14,9 @@ const DEFAULT_ENCODING = 'utf8';
 module.exports = async (args, options, logger) => {
 
     const { serviceAccount, namespace } = options;
-    logger.log('Encryption started...');
-    logger.log('service account:', serviceAccount);
-    logger.log('namespace:', namespace);
+    logger.info('Encryption started...');
+    logger.info('service account:', serviceAccount);
+    logger.info('namespace:', namespace);
 
     try {
         validateArguments(options);
