@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha ./test/*.spec.js --exit",
+    "eslint": "eslint . --ignore-pattern node_modules/",
     "ci-publish": "ci-publish"
   },
   "repository": {
