@@ -1,10 +1,6 @@
 ---
   dataSource: "issues"
   prefix: ""
-  ignoreLabels: 
-    - "bug"
-    - "documentation"
-    - "enhancement"
   ignoreIssuesWith: 
     - "duplicate"
     - "invalid"
@@ -14,5 +10,8 @@
     - "cli"
     - "encryptor"
     - "decryptor"
-  groupBy: "label"
+  groupBy: 
+    - Enhancements: ["enhancement", "documentation"]
+    - Bug Fixes: ["bug"]
+
   changelogFilename: "CHANGELOG.md"
