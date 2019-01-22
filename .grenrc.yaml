@@ -1,0 +1,18 @@
+---
+  dataSource: "issues"
+  prefix: ""
+  ignoreLabels: 
+    - "bug"
+    - "documentation"
+    - "enhancement"
+  ignoreIssuesWith: 
+    - "duplicate"
+    - "invalid"
+  onlyMilestones: false
+  ignoreTagsWith: 
+    - "init-container"
+    - "cli"
+    - "encryptor"
+    - "decryptor"
+  groupBy: "label"
+  changelogFilename: "CHANGELOG.md"
