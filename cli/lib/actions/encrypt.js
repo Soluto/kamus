@@ -3,6 +3,7 @@ const opn = require('opn');
 const os = require('os');
 const url = require('url');
 const fs = require('fs');
+const Confirm = require('prompt-confirm');
 const request = require('request');
 const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
@@ -29,7 +30,7 @@ module.exports = async (args, options, logger) => {
         else {
             token = await acquireToken(options, logger);
         }
-        const encryptedSecret = await encrypt(options, logger, token);
+        const encryptedSecret = await encrypt(options, token);
 
         logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
         outputEncryptedSecret(encryptedSecret, options, logger);
@@ -41,18 +42,23 @@ module.exports = async (args, options, logger) => {
     }
 };
 
-const warnAboutNewLines = (secret, logger) => {
+const checkForNewlines = async (secret) => {
     const eolIndex = secret.indexOf(os.EOL);
     
     if (eolIndex !== -1) {
-        logger.warn(`Secret contains newlines at index ${eolIndex}. Is this intentional?`);
+        const newlinesDetectedPrompt = new Confirm(`Secret contains newlines at index ${eolIndex}. Continue encrypting this secret?`);
+        const response = await newlinesDetectedPrompt.run();
+        
+        if (!response) {
+            throw new Error('Aborted secret encryption');
+        }
     }
 };
 
-const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, logger, token = null) => {
+const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, token = null) => {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     const data = secretFile ? fs.readFileSync(secretFile, { encoding: fileEncoding || DEFAULT_ENCODING }) : secret;
-    warnAboutNewLines(data, logger);
+    await checkForNewlines(data);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
         throw new Error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
