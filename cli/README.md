@@ -46,3 +46,5 @@ Once the user will run the cli with the auth options, he will get a small code a
 | --log-flag <\[no-\](date&#124;inline&#124;colorful)> | false | the prefix no- represent negation. date: whether to print date. default value is false. inline: each log record output in one line. default value is false. colorful: whether to print with colors. default value is true. 
 | --log-output <filepath> | false |  specify the output path (default behavior is output directory to stdout).
 | --log-encoding <encoding> | false | specify the log file's encoding.
+| --secret         |   true (or --secret-file)        |  the secret to encrypt                  |               |
+| --secret-file    |   true (or --secret)        |  the file containing the secret to encrypt             |               |

@@ -1,5 +1,6 @@
 const bluebird = require('bluebird');
 const opn = require('opn');
+const os = require('os');
 const url = require('url');
 const fs = require('fs');
 const request = require('request');
@@ -28,7 +29,7 @@ module.exports = async (args, options, logger) => {
         else {
             token = await acquireToken(options, logger);
         }
-        const encryptedSecret = await encrypt(options, token);
+        const encryptedSecret = await encrypt(options, logger, token);
 
         logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
         outputEncryptedSecret(encryptedSecret, options, logger);
@@ -40,9 +41,18 @@ module.exports = async (args, options, logger) => {
     }
 };
 
-const encrypt = async ({ secret, file, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, token = null) => {
+const warnAboutNewLines = (secret, logger) => {
+    const eolIndex = secret.indexOf(os.EOL);
+    
+    if (eolIndex !== -1) {
+        logger.warn(`Secret contains newlines at index ${eolIndex}. Is this intentional?`);
+    }
+};
+
+const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, logger, token = null) => {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const data = file ? fs.readFileSync(file, { encoding: fileEncoding || DEFAULT_ENCODING }) : secret;
+    const data = secretFile ? fs.readFileSync(secretFile, { encoding: fileEncoding || DEFAULT_ENCODING }) : secret;
+    warnAboutNewLines(data, logger);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
         throw new Error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
@@ -50,12 +60,12 @@ const encrypt = async ({ secret, file, serviceAccount, namespace, kamusUrl, cert
     return response.body;
 };
 
-const validateArguments = ({ secret, file, kamusUrl, allowInsecureUrl }) => {
-    if (!secret && !file) {
+const validateArguments = ({ secret, secretFile, kamusUrl, allowInsecureUrl }) => {
+    if (!secret && !secretFile) {
         throw new Error('Neither secret nor secret-file options were set.');
     }
 
-    if (secret && file) {
+    if (secret && secretFile) {
         throw new Error('Both secret nor secret-file options were set.');
     }
 

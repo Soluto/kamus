@@ -102,8 +102,8 @@ describe('Encrypt', () => {
   describe('Input from file', () => {
 
     it('should encrypt data from file', async () => {
-      const file = `${inputPath}/${existingFile}`;
-      await encrypt(null, { file, serviceAccount, namespace, kamusUrl }, logger);
+      const secretFile = `${inputPath}/${existingFile}`;
+      await encrypt(null, { secretFile, serviceAccount, namespace, kamusUrl }, logger);
       expect(kamusApiScope.isDone()).to.be.true;
       expect(process.exit.called).to.be.true;
       expect(process.exit.calledWith(0)).to.be.true;
@@ -118,8 +118,8 @@ describe('Encrypt', () => {
     });
 
     it('should fail if both secret and secret file options were set', async () => {
-      const file = `${inputPath}/${existingFile}`;
-      await encrypt(null, { secret, file, serviceAccount, namespace, kamusUrl }, logger);
+      const secretFile = `${inputPath}/${existingFile}`;
+      await encrypt(null, { secret, secretFile, serviceAccount, namespace, kamusUrl }, logger);
       expect(kamusApiScope.isDone()).to.be.false;
       expect(process.exit.called).to.be.true;
       expect(process.exit.calledWith(1)).to.be.true;
