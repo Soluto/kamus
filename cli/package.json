@@ -1,6 +1,6 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "colorful-chalk-logger": "^0.3.2",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
+    "prompt-confirm": "^2.0.4",
     "request": "^2.88.0"
   },
   "devDependencies": {
