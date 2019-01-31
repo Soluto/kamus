@@ -15,7 +15,7 @@ COPY  ./src/key-managment ./key-managment
 RUN dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj -c Release -o ./obj/Docker/publish
 
 # Build runtime image
-FROM microsoft/dotnet:2.2.1-aspnetcore-runtime as release
+FROM microsoft/dotnet:2.2.1-aspnetcore-runtime-alpine as release
 ARG PROJECT_NAME=decrypt-api
 ENV PROJECT_NAME_ENV=$PROJECT_NAME
 RUN groupadd -r dotnet && useradd --no-log-init -r -g dotnet -d /home/dotnet -ms /bin/bash dotnet
