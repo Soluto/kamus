@@ -31,6 +31,8 @@ An alternative is to use Kamus decrypt API directly in the application code.
 To make it clearer, take a look on a working [example app](example/README.md).
 You can deploy this app to any Kubernetes cluster that has Kamus installed, to understand how it works.
 
+Have a question? Something is not clear? Reach out to us on [Kamus Slack](https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE)!
+
 ## Architecture
 Kamus has 3 components:
 * Encrypt API
