@@ -1,4 +1,7 @@
-[![Helm Package](https://img.shields.io/badge/helm-latest-blue.svg)](https://hub.helm.sh/charts/soluto/kamus)
+[![Helm Package](https://img.shields.io/badge/helm-latest-blue.svg)](https://hub.helm.sh/charts/soluto/kamus) 
+[![Docker](https://img.shields.io/badge/dockerhub-latest-blue.svg)](https://hub.docker.com/r/soluto/kamus)
+[![Slack](https://img.shields.io/badge/slack-kamus-orange.svg)](https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE)
+[![Twitter](https://img.shields.io/twitter/follow/solutoeng.svg?label=Follow&style=popout)](https://twitter.com/intent/tweet?text=Checkout%20Kamus%20secret%20encryption%20for%20Kubernetes&url=https://github.com/Soluto/kamus&via=SolutoEng&hashtags=kubernetes,devops,devsecops) [![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus)
 # Kamus ![logo](images/logo.png)  
 An open source, GitOps, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
