@@ -7,8 +7,8 @@
     <ProjectReference Include="..\..\src\key-managment\key-managment.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Apis.CloudKMS.v1" Version="1.36.1.1443" />
-    <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.2" />
+    <PackageReference Include="Google.Apis.CloudKMS.v1" Version="1.37.0.1468" />
+    <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.3" />
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="4.4.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
