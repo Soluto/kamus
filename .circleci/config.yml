@@ -157,7 +157,7 @@ jobs:
       - run:
           name: Restore image
           command: |
-            docker load < docker-cache/built-image.tar
+            docker load < docker-cache/kamus-init-container.tar
             docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push
