@@ -1,0 +1,7 @@
+apiVersion: "soluto.com/v1alpha1"
+kind: KamusSecret
+metadata:
+  name: my-tls-secret
+type: TlsSecret
+data:
+  key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
