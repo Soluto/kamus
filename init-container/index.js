@@ -47,7 +47,15 @@ const decryptFile = async (httpClient, filePath) => {
 const serializeToCfgFormat = (secrets) => {
   var output = "";
   Object.keys(secrets).forEach(key => {
-    output += `${key}=${secrets[key]}\n`
+    switch(typeof(secrets[key]))
+    {
+      case "string":
+        output += `${key}="${secrets[key]}"\n`
+        break;
+      default:
+        output += `${key}=${secrets[key]}\n`
+    }
+    
   });
   
   output = output.substring(0, output.lastIndexOf('\n'));
@@ -60,7 +68,6 @@ async function innerRun() {
     let files = await getEncryptedFiles();
     let kamusUrl = getKamusUrl();
     let token = await getBarerToken();
-
     const httpClient = axios.create({
         baseURL: kamusUrl,
         timeout: 10000,
