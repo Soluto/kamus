@@ -12,7 +12,7 @@ program
     .option('-e, --encrypted-folder <path>', 'Encrypted files folder path')
     .option('-d, --decrypted-path <path>', 'Decrypted file/s folder path')
     .option('-n, --decrypted-file-name <name>', 'Decrypted file name' )
-    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|files)$/i, 'json')
+    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
     .parse(process.argv);
 
 const getEncryptedFiles = async () => {
