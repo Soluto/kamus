@@ -30,7 +30,7 @@ const getKamusUrl = () => {
 }
 
 const getBarerToken = async () => {
-    return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
+    return await readFileAsync("token", "utf8");
 }
 
 const decryptFile = async (httpClient, filePath) => {
@@ -45,6 +45,17 @@ const decryptFile = async (httpClient, filePath) => {
 }
 
 const serializeToCfgFormat = (secrets) => {
+  var output = "";
+  Object.keys(secrets).forEach(key => {
+    output += `${key}=${secrets[key]}\n`
+  });
+  
+  output = output.substring(0, output.lastIndexOf('\n'));
+
+  return output;
+}
+
+const serializeToCfgFormatStrict = (secrets) => {
   var output = "";
   Object.keys(secrets).forEach(key => {
     switch(typeof(secrets[key]))
@@ -89,6 +100,9 @@ async function innerRun() {
         await writeFile(outputFile, JSON.stringify(secrets));
         break;
       case "cfg":
+        await writeFile(outputFile, serializeToCfgFormat(secrets));
+        break;
+      case "cfg-strict":
         await writeFile(outputFile, serializeToCfgFormat(secrets));
         break;
       case "files":
