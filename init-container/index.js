@@ -103,7 +103,7 @@ async function innerRun() {
         await writeFile(outputFile, serializeToCfgFormat(secrets));
         break;
       case "cfg-strict":
-        await writeFile(outputFile, serializeToCfgFormat(secrets));
+        await writeFile(outputFile, serializeToCfgFormatStrict(secrets));
         break;
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
