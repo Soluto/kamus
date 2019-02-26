@@ -30,7 +30,7 @@ const getKamusUrl = () => {
 }
 
 const getBarerToken = async () => {
-    return await readFileAsync("token", "utf8");
+    return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
 }
 
 const decryptFile = async (httpClient, filePath) => {
