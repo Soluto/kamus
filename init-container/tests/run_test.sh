@@ -32,6 +32,16 @@ diff -q output/out.cfg expected.cfg
 
 rm -rf output
 
+echo "running decryptor - cfg strict format"
+
+OUTPUT_FORMAT=cfg-strict docker-compose run decryptor
+
+echo "comparing out.cfg-strict and expected-strict.cfg files"
+
+diff -q output/out.cfg-strict expected-strict.cfg
+
+rm -rf output
+
 echo "running decryptor - files format"
 
 OUTPUT_FORMAT=files docker-compose run decryptor

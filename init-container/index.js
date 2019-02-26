@@ -12,7 +12,7 @@ program
     .option('-e, --encrypted-folder <path>', 'Encrypted files folder path')
     .option('-d, --decrypted-path <path>', 'Decrypted file/s folder path')
     .option('-n, --decrypted-file-name <name>', 'Decrypted file name' )
-    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|files)$/i, 'json')
+    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
     .parse(process.argv);
 
 const getEncryptedFiles = async () => {
@@ -55,12 +55,30 @@ const serializeToCfgFormat = (secrets) => {
   return output;
 }
 
+const serializeToCfgFormatStrict = (secrets) => {
+  var output = "";
+  Object.keys(secrets).forEach(key => {
+    switch(typeof(secrets[key]))
+    {
+      case "string":
+        output += `${key}="${secrets[key]}"\n`
+        break;
+      default:
+        output += `${key}=${secrets[key]}\n`
+    }
+    
+  });
+  
+  output = output.substring(0, output.lastIndexOf('\n'));
+
+  return output;
+}
+
 async function innerRun() {
 
     let files = await getEncryptedFiles();
     let kamusUrl = getKamusUrl();
     let token = await getBarerToken();
-
     const httpClient = axios.create({
         baseURL: kamusUrl,
         timeout: 10000,
@@ -83,6 +101,9 @@ async function innerRun() {
         break;
       case "cfg":
         await writeFile(outputFile, serializeToCfgFormat(secrets));
+        break;
+      case "cfg-strict":
+        await writeFile(outputFile, serializeToCfgFormatStrict(secrets));
         break;
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
