@@ -18,7 +18,7 @@ jobs:
             docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
             docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
       - save_cache:
-          key: docker_api_cache_key
+          key: docker_api_cache_key-{{ epoch }}
           paths:
             - docker-cache-api
 
@@ -79,7 +79,7 @@ jobs:
             - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
       - restore_cache:
           keys: 
-            - docker_api_cache_key
+            - docker_api_cache_key-{{ epoch }}
       - run:
           name: Restore image
           command: |
@@ -130,7 +130,7 @@ jobs:
             mkdir -p docker-cache
             docker save -o docker-cache/kamus-init-container.tar kamus-init-container
       - save_cache:
-          key: docker_cache_key
+          key: docker_cache_key-{{ epoch }}
           paths:
             - docker-cache
   push-init-container:
@@ -145,7 +145,7 @@ jobs:
             git config user.email "ci-build@soluto.com"
             git config user.name "ci-build"
       - restore_cache:
-          key: docker_cache_key
+          key: docker_cache_key-{{ epoch }}
       - add_ssh_keys:
           fingerprints:
             - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
