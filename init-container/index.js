@@ -1,5 +1,4 @@
 let program = require('commander');
-let program = require('commander');
 const readfiles = require('node-readfiles');
 const fs = require('fs');
 const util = require('util');
