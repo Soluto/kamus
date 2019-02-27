@@ -1,4 +1,5 @@
 let program = require('commander');
+let program = require('commander');
 const readfiles = require('node-readfiles');
 const fs = require('fs');
 const util = require('util');
@@ -39,7 +40,7 @@ const decryptFile = async (httpClient, filePath) => {
       const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
       return response.data;
     } catch (e) {
-      throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : error.message}`)
+      throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : e.message}`)
     }
     return response.data;
 }
