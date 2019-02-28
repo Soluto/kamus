@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Amazon.KeyManagementService;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.CloudKMS.v1;
 using Google.Apis.Services;
@@ -58,6 +59,8 @@ namespace Kamus
                 var provider = Configuration.GetValue<string>("KeyManagement:Provider");
                 switch (provider)
                 {
+                    case "AwsKms":
+                        return GetAwsKeyManagement();
                     case "GoogleKms":
                         return GetGoogleCloudKeyManagment();
                     case "AzureKeyVault":
@@ -156,6 +159,16 @@ namespace Kamus
                 keyRingName,
                 location,
                 protectionLevel);
+        }
+        
+        private IKeyManagement GetAwsKeyManagement()
+        {
+            var awsKey = Configuration.GetValue<string>("KeyManagement:AwsKms:Key");
+            var awsSecret = Configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
+
+            var kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret);
+            
+            return new AwsKeyManagement(kmsService);
         }
     }
 }
