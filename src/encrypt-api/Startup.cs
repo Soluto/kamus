@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Amazon;
 using Amazon.KeyManagementService;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.CloudKMS.v1;
@@ -171,9 +172,10 @@ namespace Kamus
             }
             else
             {
+                var region = Configuration.GetValue<string>("KeyManagement:AwsKms:Region");
                 var awsKey = Configuration.GetValue<string>("KeyManagement:AwsKms:Key");
                 var awsSecret = Configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
-                kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret);
+                kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.GetBySystemName(region));
             }
             
             return new AwsKeyManagement(kmsService, new SymmetricKeyManagement());
