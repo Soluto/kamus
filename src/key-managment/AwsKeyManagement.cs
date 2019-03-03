@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Amazon.KeyManagementService;
 using Amazon.KeyManagementService.Model;
@@ -12,13 +11,11 @@ namespace Kamus.KeyManagement
     {
         private readonly IAmazonKeyManagementService mAmazonKeyManagementService;
         private readonly SymmetricKeyManagement mSymmetricKeyManagement;
-        private readonly string mUserArn;
 
-        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement, string userArn)
+        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement)
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
             mSymmetricKeyManagement = symmetricKeyManagement;
-            mUserArn = userArn;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
@@ -77,30 +74,7 @@ namespace Kamus.KeyManagement
 
         private async Task GenerateMasterKey(string keyAlias)
         {
-            String policy = "{" +
-                            "  \"Version\": \"2012-10-17\"," +
-                            "  \"Statement\": [{" +
-                            "    \"Sid\": \"Allow access for KamusUser\"," +
-                            "    \"Effect\": \"Allow\"," +
-                            "    \"Principal\": {\"AWS\": \""+mUserArn+"\"}," +
-                            "    \"Action\": [" +
-                            "      \"kms:Encrypt\"," +
-                            "      \"kms:Describe*\"," +
-                            "      \"kms:Get*\"," +
-                            "      \"kms:List*\"," +
-                            "      \"kms:GenerateDataKey*\"," +
-                            "      \"kms:Decrypt\"," +
-                            "      \"kms:Delete*\"," +
-                            "      \"kms:CreateAlias\"" +
-                            "    ]," +
-                            "    \"Resource\": \"*\"" +
-                            "  }]" +
-                            "}";
-            var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest()
-            {
-                BypassPolicyLockoutSafetyCheck = true,
-                Policy = policy,
-            });
+            var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest());
             await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId);
         }
     }

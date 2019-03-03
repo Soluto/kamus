@@ -4,6 +4,11 @@
     "AES": {
       "Key": "rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0="
     },
+    "AwsKms": {
+      "Key": "AKIAJTEAESFIQI5IRZZA",
+      "Secret": "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",
+      "UserArn": "arn:aws:iam::314747783941:user/kamus-tests"
+    },
     "KeyVault": {
       "KeyType": "RSA",
       "KeyLength": "2048"
