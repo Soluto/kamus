@@ -82,15 +82,14 @@ namespace Kamus.KeyManagement
                             "    \"Effect\": \"Allow\"," +
                             "    \"Principal\": {\"AWS\": \""+mUserArn+"\"}," +
                             "    \"Action\": [" +
-//                            "      \"kms:Encrypt\"," +
-//                            "      \"kms:Describe\"," +
-//                            "      \"kms:Get*\"," +
-//                            "      \"kms:List*\"," +
-//                            "      \"kms:GenerateDataKey*\"," +
-//                            "      \"kms:Decrypt\"," +
-//                            "      \"kms:Delete\"," +
-//                            "      \"kms:CreateAlias\"" +
-                            "      \"kms:*\"" +
+                            "      \"kms:Encrypt\"," +
+                            "      \"kms:Describe*\"," +
+                            "      \"kms:Get*\"," +
+                            "      \"kms:List*\"," +
+                            "      \"kms:GenerateDataKey*\"," +
+                            "      \"kms:Decrypt\"," +
+                            "      \"kms:Delete*\"," +
+                            "      \"kms:CreateAlias\"" +
                             "    ]," +
                             "    \"Resource\": \"*\"" +
                             "  }]" +
