@@ -94,7 +94,7 @@ keyManagement:
   googleKms:
     location: <location>
     keyRing: <key ring name>
-    protectionLevelP: HSM
+    protectionLevel: HSM
 ```
 And use the following command to deploy kamus:
 ```
