@@ -15,7 +15,6 @@ namespace integration
     public class AwsKeyManagementTests
     {
         private readonly IKeyManagement mAwsKeyManagement;
-        private readonly CloudKMSService mCloudKmsService;
         private readonly IConfiguration mConfiguration;
 
         public AwsKeyManagementTests()
