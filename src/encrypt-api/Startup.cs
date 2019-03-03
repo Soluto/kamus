@@ -163,12 +163,14 @@ namespace Kamus
         
         private IKeyManagement GetAwsKeyManagement()
         {
+            
             var awsKey = Configuration.GetValue<string>("KeyManagement:AwsKms:Key");
             var awsSecret = Configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
+            var userArn = Configuration.GetValue<string>("KeyManagement:AwsKms:UserArn");
 
             var kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret);
             
-            return new AwsKeyManagement(kmsService);
+            return new AwsKeyManagement(kmsService, new SymmetricKeyManagement(), userArn);
         }
     }
 }

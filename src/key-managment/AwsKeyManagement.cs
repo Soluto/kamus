@@ -11,52 +11,96 @@ namespace Kamus.KeyManagement
     public class AwsKeyManagement : IKeyManagement
     {
         private readonly IAmazonKeyManagementService mAmazonKeyManagementService;
+        private readonly SymmetricKeyManagement mSymmetricKeyManagement;
+        private readonly string mUserArn;
 
-        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService)
+        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement, string userArn)
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
+            mSymmetricKeyManagement = symmetricKeyManagement;
+            mUserArn = userArn;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var plaintextData = new MemoryStream(Encoding.UTF8.GetBytes(data))
-            {
-                Position = 0
-            };
+            var masterKeyAlias = $"alias/kamus/{KeyIdCreator.Create(serviceAccountId)}";
+            (var encryptionKey, var encryptedEncryptionKey ) = await GenerateEncryptionKey(masterKeyAlias);
+            mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(encryptionKey.ToArray()));
+            var encryptedData = await mSymmetricKeyManagement.Encrypt(data, serviceAccountId);
 
-            var encryptRequest = new EncryptRequest
-            {
-                KeyId = "d777bb55-70d1-4678-90bb-5d4f772aa09b",
-                Plaintext = plaintextData
-            };
-            
-            var response = await mAmazonKeyManagementService.EncryptAsync(encryptRequest);
+            return "env" + "$" + encryptedEncryptionKey + "$" + encryptedData;
 
-            if (response.HttpStatusCode != HttpStatusCode.OK)
-            {
-                throw new Exception("Encryption failed with status code " + response.HttpStatusCode);
-            }
-
-            var buffer = new byte[response.CiphertextBlob.Length];
-
-            response.CiphertextBlob.Read(buffer, 0, (int)response.CiphertextBlob.Length);
-
-            return Convert.ToBase64String(buffer);
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var cipherStream = new MemoryStream(Convert.FromBase64String(encryptedData)) { Position = 0 };
+            var encryptedEncryptionKey = encryptedData.Split('$')[1];
+            var actualEncryptedData = encryptedData.Split('$')[2];
+            
+            var encryptionKey = await ConvertMemoryStreamToBase64String((await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
+            {
+                CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedEncryptionKey)),
+            })).Plaintext);
+                
+            mSymmetricKeyManagement.SetEncryptionKey(encryptionKey);
+            return await mSymmetricKeyManagement.Decrypt(actualEncryptedData, serviceAccountId);
+        }
 
-            var decryptRequest = new DecryptRequest { CiphertextBlob = cipherStream };
+        private static async Task<string> ConvertMemoryStreamToBase64String(MemoryStream ms)
+        {
+            return Convert.ToBase64String(ms.ToArray());
+        }
 
-            var response = await mAmazonKeyManagementService.DecryptAsync(decryptRequest);
+        private async Task<(MemoryStream encryptionKey, string encryptedEncryptionKey)> GenerateEncryptionKey(string keyAlias)
+        {
+            GenerateDataKeyResponse generateKeyResponse = null;
+            try
+            {
+                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
 
-            var buffer = new byte[response.Plaintext.Length];
+            }
+            catch (NotFoundException e)
+            {
+                await GenerateMasterKey(keyAlias);
+                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
+            }
 
-            var bytesRead = response.Plaintext.Read(buffer, 0, (int)response.Plaintext.Length);
+            if (generateKeyResponse.HttpStatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception($"Couldn't generate encryption key for {keyAlias}");
+            }
 
-            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            return (generateKeyResponse.Plaintext, await ConvertMemoryStreamToBase64String(generateKeyResponse.CiphertextBlob));
+        }
+
+        private async Task GenerateMasterKey(string keyAlias)
+        {
+            String policy = "{" +
+                            "  \"Version\": \"2012-10-17\"," +
+                            "  \"Statement\": [{" +
+                            "    \"Sid\": \"Allow access for KamusUser\"," +
+                            "    \"Effect\": \"Allow\"," +
+                            "    \"Principal\": {\"AWS\": \""+mUserArn+"\"}," +
+                            "    \"Action\": [" +
+//                            "      \"kms:Encrypt\"," +
+//                            "      \"kms:Describe\"," +
+//                            "      \"kms:Get*\"," +
+//                            "      \"kms:List*\"," +
+//                            "      \"kms:GenerateDataKey*\"," +
+//                            "      \"kms:Decrypt\"," +
+//                            "      \"kms:Delete\"," +
+//                            "      \"kms:CreateAlias\"" +
+                            "      \"kms:*\"" +
+                            "    ]," +
+                            "    \"Resource\": \"*\"" +
+                            "  }]" +
+                            "}";
+            var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest()
+            {
+                BypassPolicyLockoutSafetyCheck = true,
+                Policy = policy,
+            });
+            await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId);
         }
     }
 }
