@@ -37,10 +37,12 @@ namespace Kamus.KeyManagement
             var encryptedEncryptionKey = encryptedData.Split('$')[1];
             var actualEncryptedData = encryptedData.Split('$')[2];
             
-            var encryptionKey = await ConvertMemoryStreamToBase64String((await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
+            var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {
                 CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedEncryptionKey)),
-            })).Plaintext);
+            });
+
+            var encryptionKey = await ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
                 
             mSymmetricKeyManagement.SetEncryptionKey(encryptionKey);
             return await mSymmetricKeyManagement.Decrypt(actualEncryptedData, serviceAccountId);
