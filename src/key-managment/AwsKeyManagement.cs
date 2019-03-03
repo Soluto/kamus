@@ -21,11 +21,11 @@ namespace Kamus.KeyManagement
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
             var masterKeyAlias = $"alias/kamus/{KeyIdCreator.Create(serviceAccountId)}";
-            (var encryptionKey, var encryptedEncryptionKey ) = await GenerateEncryptionKey(masterKeyAlias);
+            (var encryptionKey, var encryptedDataKey ) = await GenerateEncryptionKey(masterKeyAlias);
             mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(encryptionKey.ToArray()));
             var encryptedData = await mSymmetricKeyManagement.Encrypt(data, serviceAccountId);
 
-            return "env" + "$" + encryptedEncryptionKey + "$" + encryptedData;
+            return "env" + "$" + encryptedDataKey + "$" + encryptedData;
 
         }
 
@@ -39,13 +39,13 @@ namespace Kamus.KeyManagement
                 CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedEncryptionKey)),
             });
 
-            var encryptionKey = await ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
+            var encryptionKey = ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
                 
             mSymmetricKeyManagement.SetEncryptionKey(encryptionKey);
             return await mSymmetricKeyManagement.Decrypt(actualEncryptedData, serviceAccountId);
         }
 
-        private static async Task<string> ConvertMemoryStreamToBase64String(MemoryStream ms)
+        private static string ConvertMemoryStreamToBase64String(MemoryStream ms)
         {
             return Convert.ToBase64String(ms.ToArray());
         }
@@ -58,7 +58,7 @@ namespace Kamus.KeyManagement
                 generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
 
             }
-            catch (NotFoundException e)
+            catch (NotFoundException)
             {
                 await GenerateMasterKey(keyAlias);
                 generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
@@ -69,7 +69,7 @@ namespace Kamus.KeyManagement
                 throw new Exception($"Couldn't generate encryption key for {keyAlias}");
             }
 
-            return (generateKeyResponse.Plaintext, await ConvertMemoryStreamToBase64String(generateKeyResponse.CiphertextBlob));
+            return (generateKeyResponse.Plaintext, ConvertMemoryStreamToBase64String(generateKeyResponse.CiphertextBlob));
         }
 
         private async Task GenerateMasterKey(string keyAlias)
