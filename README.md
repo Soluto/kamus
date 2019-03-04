@@ -45,9 +45,7 @@ Kamus has 3 components:
 The encrypt and decrypt APIs handle encryption and decryption requests.
 The KMS is a wrapper for various cryptographic solutions. Currently supported:
 * AES - uses one key for all secrets
-* Azure KeyVault - creates one key per service account.
-* Google Cloud KMS - creates one key per service account.
-* AWS KMS - creates one key per service account.
+* AWS KMS, Azure KeyVault, Google Cloud KMS - creates one key per service account.
 
 Consult the [installation guide](docs/install.md) for more details on how to deploy Kamus using the relevant KMS.
 
