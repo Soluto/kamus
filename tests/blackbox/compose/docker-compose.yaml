@@ -27,7 +27,7 @@ services:
       context: ../Wiremock
 
   zap:
-    image: soluto/zap-ci:1531823009782
+    image: soluto/zap-ci:1551816665660
     logging:
       driver:
         none
