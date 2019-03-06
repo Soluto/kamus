@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Parse Zap's Report 
           command: |
-            docker run --rm -v $(pwd)/tests/blackbox/compose/reports/:/input -v $(pwd)/glue/:/glue soluto/glue-ci:1551818801630 sh -x /app/run_glue.sh /glue/glue.json /input/report.json
+            docker run --rm -v $(pwd)/tests/blackbox/compose/reports/:/input -v $(pwd)/glue/:/config soluto/glue-ci:1551818801630 sh -x /app/run_glue.sh /config/glue.json /input/report.json
         
       - store_artifacts:
           path: tests/blackbox/compose/reports/
