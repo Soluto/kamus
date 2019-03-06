@@ -29,10 +29,9 @@ jobs:
             ENCRYPTOR_IMAGE: kamus-encryptor
             DECRYPTOR_IMAGE: kamus-decryptor
       - run:
-          name: Parse Zap's Report
-          workdir: tests/blackbox/compose/reports/
+          name: Parse Zap's Report 
           command: |
-            docker run --rm -v $(pwd):/input -v ../../../../glue/:/glue soluto/glue-ci:1551818801630 sh -x /app/run_glue.sh /glue/glue.json /input/report.json
+            docker run --rm -v $(pwd)/tests/blackbox/compose/reports/:/input -v $(pwd)/glue/:/glue soluto/glue-ci:1551818801630 sh -x /app/run_glue.sh /glue/glue.json /input/report.json
         
       - store_artifacts:
           path: tests/blackbox/compose/reports/
