@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Linq;
 using k8s;
-using System.Reactive.Linq;
-using System.IO;
-using Microsoft.AspNetCore.JsonPatch;
 using k8s.Models;
 using System.Collections.Generic;
-using Polly;
-using Newtonsoft.Json.Linq;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorController;
 using Microsoft.Extensions.Configuration;
