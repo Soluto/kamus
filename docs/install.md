@@ -117,9 +117,9 @@ If you want to pass user access key and secret to Kamus deploy use the following
 keyManagement:
   provider: AwsKms
   awsKms:
-    Region: <>
-    Key: <>
-    Secret: <>
+    region: <>
+    key: <>
+    secret: <>
 ```
 And now deploy Kamus using the following helm command:
 ```
