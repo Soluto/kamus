@@ -91,7 +91,7 @@ Now add the following to your `values.yaml` file:
 ```yaml
 keyManagement:
   provider: GoogleKms
-  GoogleKms:
+  googleKms:
     location: <location>
     keyRing: <key ring name>
     protectionLevel: HSM
@@ -116,7 +116,7 @@ If you want to pass user access key and secret to Kamus deploy use the following
 ```yaml
 keyManagement:
   provider: AwsKms
-  AwsKms:
+  awsKms:
     Region: <>
     Key: <>
     Secret: <>
