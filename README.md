@@ -26,7 +26,7 @@ Use Kamus CLI to encrypt the secret:
 ```
 kamus-cli encrypt --secret super-secret --service-account kamus-example-sa --namespace default --kamus-url <Kamus URL>
 ```
-*If you're running Kamus locally the Kamus URL will be like `http://localhost:<port>`. So you need to add `--allow-insecure-url` flag to enable http protocol.*
+*If you're running Kamus locally the Kamus URL will be like `http://localhost:<port>`. So you need to add `--allow-insecure-url` flag to enable http protocol.* 
 
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
 The simplest way to achieve that is by using the init container.
