@@ -12,6 +12,9 @@ jobs:
           name: Build encryptor docker image
           command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
       - run:
+          name: Build CRD controller docker image
+          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller
+      - run:
           name: Save docker image
           command: |
             mkdir -p docker-cache-api
