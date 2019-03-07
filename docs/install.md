@@ -26,7 +26,7 @@ helm upgrade --install kamus soluto/kamus --set keyManager.AES.key=$key
 ```
 
 ### Azure KeyVault KMS
-Using [Azure KeyVault](https://azure.microsoft.com/en-us/services/key-vault/) as the key managment solution is the secure solution when running a cluster on Azure.
+Using [Azure KeyVault](https://azure.microsoft.com/en-us/services/key-vault/) as the key management solution is the most secure solution when running a cluster on Azure.
 Azure documentation is far from perfect, so I'm going to reffer to a lot of different guides because there is no one guide documenting the required process.
 
 Start by creating a KeyVault instance. 
@@ -102,9 +102,11 @@ And use the following command to deploy kamus:
 ```
 
 ### AWS KMS
-Using [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) as the key managment solution is the secure solution when running a cluster on AWS Cloud.
+Using [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) as the key management solution is the most secure solution when running a cluster on AWS Cloud.
+The required permissions for the IAM role/user for Kamus to work properly is full access to KMS.
 There are 2 options to authentication with the KMS:
-1. Kamus by default will try to use the regular AWS SDK discovery mechinisem, if your cluster in AWS you need to map IAM role to kamus POD by using one of the community tools, for example [kiam](https://github.com/uswitch/kiam).
+
+1. Kamus by default will try to use the regular AWS SDK discovery mechanism, if your cluster in AWS you need to map IAM role to kamus POD by using one of the community tools, for example [kiam](https://github.com/uswitch/kiam).
 2. Provide user access key and secret with KMS access.
 
 Typical values.yaml for AWS :

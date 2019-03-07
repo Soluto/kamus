@@ -47,6 +47,9 @@ The KMS is a wrapper for various cryptographic solutions. Currently supported:
 * AES - uses one key for all secrets
 * AWS KMS, Azure KeyVault, Google Cloud KMS - creates one key per service account.
 
+We look forward to add support for other cloud encryption backends.
+
+
 Consult the [installation guide](docs/install.md) for more details on how to deploy Kamus using the relevant KMS.
 
 ### Utilities

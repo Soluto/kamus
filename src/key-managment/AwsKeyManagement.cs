@@ -24,8 +24,8 @@ namespace Kamus.KeyManagement
         {
             var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
             var masterKeyAlias = $"alias/{cmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
-            var (encryptionKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
-            mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(encryptionKey.ToArray()));
+            var (dataKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
+            mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(dataKey.ToArray()));
             var encryptedData = await mSymmetricKeyManagement.Encrypt(data, serviceAccountId);
 
             return "env" + "$" + encryptedDataKey + "$" + encryptedData;
@@ -34,17 +34,17 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var encryptedEncryptionKey = encryptedData.Split('$')[1];
+            var encryptedDataKey = encryptedData.Split('$')[1];
             var actualEncryptedData = encryptedData.Split('$')[2];
             
             var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {
-                CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedEncryptionKey)),
+                CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedDataKey)),
             });
 
-            var encryptionKey = ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
+            var dataKey = ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
                 
-            mSymmetricKeyManagement.SetEncryptionKey(encryptionKey);
+            mSymmetricKeyManagement.SetEncryptionKey(dataKey);
             return await mSymmetricKeyManagement.Decrypt(actualEncryptedData, serviceAccountId);
         }
 
@@ -53,7 +53,7 @@ namespace Kamus.KeyManagement
             return Convert.ToBase64String(ms.ToArray());
         }
 
-        private async Task<(MemoryStream encryptionKey, string encryptedEncryptionKey)> GenerateEncryptionKey(string keyAlias)
+        private async Task<(MemoryStream dataKey, string encryptedDataKey)> GenerateEncryptionKey(string keyAlias)
         {
             GenerateDataKeyResponse generateKeyResponse = null;
             try
