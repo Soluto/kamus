@@ -91,12 +91,38 @@ Now add the following to your `values.yaml` file:
 ```yaml
 keyManagement:
   provider: GoogleKms
-  googleKms:
+  GoogleKms:
     location: <location>
     keyRing: <key ring name>
-    protectionLevelP: HSM
+    protectionLevel: HSM
 ```
 And use the following command to deploy kamus:
 ```
  helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
 ```
+
+### AWS KMS
+Using [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) as the key managment solution is the secure solution when running a cluster on AWS Cloud.
+There are 2 options to authentication with the KMS:
+1. Kamus by default will try to use the regular AWS SDK discovery mechinisem, if your cluster in AWS you need to map IAM role to kamus POD by using one of the community tools, for example [kiam](https://github.com/uswitch/kiam).
+2. Provide user access key and secret with KMS access.
+
+Typical values.yaml for AWS :
+```yaml
+keyManagement:
+  provider: AwsKms
+```
+If you want to pass user access key and secret to Kamus deploy use the following values.yaml command:
+```yaml
+keyManagement:
+  provider: AwsKms
+  AwsKms:
+    Region: <>
+    Key: <>
+    Secret: <>
+```
+And now deploy Kamus using the following helm command:
+```
+helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
+```
+
