@@ -103,7 +103,8 @@ And use the following command to deploy kamus:
 
 ### AWS KMS
 Using [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) as the key management solution is the most secure solution when running a cluster on AWS Cloud.
-The required permissions for the IAM role/user for Kamus to work properly is full access to KMS.
+The required permissions for the IAM role/user for Kamus to work properly are KMS permissions for Encrypt, Decrypt, and GenerateDataKey.
+
 There are 2 options to authentication with the KMS:
 
 1. Kamus by default will try to use the regular AWS SDK discovery mechanism, if your cluster in AWS you need to map IAM role to kamus POD by using one of the community tools, for example [kiam](https://github.com/uswitch/kiam).
