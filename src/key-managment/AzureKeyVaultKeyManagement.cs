@@ -34,7 +34,7 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var hash = ComputeKeyId(serviceAccountId);
+            var hash = KeyIdCreator.Create(serviceAccountId);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
             try
@@ -52,7 +52,7 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var hash = ComputeKeyId(serviceAccountId);
+            var hash = KeyIdCreator.Create(serviceAccountId);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
 
@@ -72,15 +72,6 @@ namespace Kamus.KeyManagement
             var encryptionResult = await mKeyVaultClient.EncryptAsync(keyId, "RSA-OAEP", Encoding.UTF8.GetBytes(data));
 
             return Convert.ToBase64String(encryptionResult.Result);
-        }
-
-        private string ComputeKeyId(string serviceUserName)
-        {
-            return 
-                WebEncoders.Base64UrlEncode(
-                    SHA256.Create().ComputeHash(
-                        Encoding.UTF8.GetBytes(serviceUserName)))
-                        .Replace("_", "-");
         }
     }
 }

@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>0.1.2.0</Version>
+    <Version>0.2.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -13,6 +13,7 @@
     <ProjectReference Include="..\key-managment\key-managment.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.7.21" />
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="2.0.0" />

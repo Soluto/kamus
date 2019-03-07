@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.KeyManagementService;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.CloudKMS.v1;
 using Google.Apis.Services;
@@ -58,6 +60,8 @@ namespace Kamus
                 var provider = Configuration.GetValue<string>("KeyManagement:Provider");
                 switch (provider)
                 {
+                    case "AwsKms":
+                        return GetAwsKeyManagement(s.GetRequiredService<ILogger>());
                     case "GoogleKms":
                         return GetGoogleCloudKeyManagment();
                     case "AzureKeyVault":
@@ -156,6 +160,27 @@ namespace Kamus
                 keyRingName,
                 location,
                 protectionLevel);
+        }
+        
+        private IKeyManagement GetAwsKeyManagement(ILogger logger)
+        {
+            AmazonKeyManagementServiceClient kmsService;
+            var region = Configuration.GetValue<string>("KeyManagement:AwsKms:Region");
+            var awsKey = Configuration.GetValue<string>("KeyManagement:AwsKms:Key");
+            var awsSecret = Configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
+            var cmkPrefix = Configuration.GetValue<string>("KeyManagement:AwsKms:CmkPrefix");
+            
+            if (string.IsNullOrEmpty(region) || string.IsNullOrEmpty(awsKey) || string.IsNullOrEmpty(awsSecret))
+            {
+                logger.Information("AwsKms credentials were not provided, using default AWS SDK credentials discovery");
+                kmsService = new AmazonKeyManagementServiceClient();
+            }
+            else
+            {
+                kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.GetBySystemName(region));
+            }
+            
+            return new AwsKeyManagement(kmsService, new SymmetricKeyManagement(), cmkPrefix);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var safeId = ComputeKeyId(serviceAccountId);
+            var safeId = KeyIdCreator.Create(serviceAccountId);
             var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
             var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
             var keyId = $"{keyringId}/cryptoKeys/{safeId}";
@@ -50,7 +50,7 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var safeId = ComputeKeyId(serviceAccountId);
+            var safeId = KeyIdCreator.Create(serviceAccountId);
             var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
             var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
             var keyId = $"{keyringId}/cryptoKeys/{safeId}";
@@ -80,15 +80,6 @@ namespace Kamus.KeyManagement
             }, keyId).ExecuteAsync();
 
             return encryted.Ciphertext;
-        }
-
-        private string ComputeKeyId(string serviceUserName)
-        {
-            return
-                WebEncoders.Base64UrlEncode(
-                    SHA256.Create().ComputeHash(
-                        Encoding.UTF8.GetBytes(serviceUserName)))
-                        .Replace("_", "-");
         }
     }
 }

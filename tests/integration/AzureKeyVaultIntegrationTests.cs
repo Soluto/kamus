@@ -13,13 +13,13 @@ using Xunit;
 
 namespace integration
 {
-    public class AzureKeyVaultIntegration
+    public class AzureKeyVaultIntegrationTests
     {
         private IKeyManagement mAzureKeyManagement;
         private IKeyVaultClient mKeyVaultClient;
         private readonly IConfiguration mConfiguration;
         private readonly string mKeyVaultName;
-        public AzureKeyVaultIntegration()
+        public AzureKeyVaultIntegrationTests()
         {
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
             mKeyVaultName = mConfiguration.GetValue<string>("KeyManagement:KeyVault:Name");
