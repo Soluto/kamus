@@ -150,30 +150,6 @@ namespace CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorCon
             };
 
             await mKubernetes.CreateNamespacedSecretAsync(secret, @namespace);
-
-            var @event = new V1Event
-            {
-                Message = "Create secret from KamusSecret succeed",
-                InvolvedObject = new V1ObjectReference
-                {
-                    Name = kamusSecret.Metadata.Name,
-                    NamespaceProperty = @namespace,
-                    Kind = kamusSecret.Kind,
-                    ApiVersion = kamusSecret.ApiVersion,
-                    ResourceVersion = kamusSecret.Metadata.ResourceVersion,
-                    Uid = kamusSecret.Metadata.Uid
-                },
-                Metadata = new V1ObjectMeta
-                {
-                    NamespaceProperty = @namespace,
-                    Name = $"{Environment.MachineName}.{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}"
-                },
-                Type = "Success",
-                ReportingComponent = "KamusCRDController",
-
-            };
-
-            await mKubernetes.CreateNamespacedEventAsync(@event, @namespace);
         }
 
         private async Task HandleDelete(KamusSecret kamusSecret)

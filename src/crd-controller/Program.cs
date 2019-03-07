@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using Polly;
 using Newtonsoft.Json.Linq;
 using Kamus.KeyManagement;
+using CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorController;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace crd_controller
 {
@@ -27,35 +30,31 @@ namespace crd_controller
 
         static void Main(string[] args)
         {
-            var configuration = KubernetesClientConfiguration.BuildConfigFromConfigFile();
-            var kubernetes = new Kubernetes(configuration);
+
+            string appsettingsPath = "appsettings.json";
+
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile(appsettingsPath, optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            var configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
+
+            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildConfigFromConfigFile());
 
             mKeyManagement = new SymmetricKeyManagement("rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0=");
 
-            Console.WriteLine("hello");
+            var controller = new KamusSecretController(kubernetes, mKeyManagement);
 
-            var blah = Observable.FromAsync(async () =>
-            {
-                var result = await kubernetes.ListClusterCustomObjectWithHttpMessagesAsync("soluto.com", "v1alpha1", "kamussecrets", watch: true);
-                var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
+            Log.Information("CRD controller started");
 
-                var watcher = result.Watch<KamusSecret>(
-                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
-                     onError: e => subject.OnError(e),
-                     onClosed: () => subject.OnCompleted());
-                return subject;
-            })
-            .SelectMany(x => x)
-            .Select(t => (t.Item1, t.Item2 as KamusSecret))
-            .Where(t => t.Item2 != null)
-            .SelectMany(x =>
-                Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2, kubernetes))
-            )
-            .Subscribe(onNext: t => { Console.WriteLine(t); }, onError: e => { Console.WriteLine(e); }, onCompleted: () => { Console.WriteLine("done!"); });
+            controller.Listen();
 
             Console.ReadKey();
-
-            Console.WriteLine("helo");
 
         }
 
