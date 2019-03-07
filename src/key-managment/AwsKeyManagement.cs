@@ -11,17 +11,20 @@ namespace Kamus.KeyManagement
     {
         private readonly IAmazonKeyManagementService mAmazonKeyManagementService;
         private readonly SymmetricKeyManagement mSymmetricKeyManagement;
+        private readonly string mCmkPrefix;
 
-        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement)
+        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement, string cmkPrefix = "")
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
             mSymmetricKeyManagement = symmetricKeyManagement;
+            mCmkPrefix = cmkPrefix;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var masterKeyAlias = $"alias/kamus/{KeyIdCreator.Create(serviceAccountId)}";
-            (var encryptionKey, var encryptedDataKey ) = await GenerateEncryptionKey(masterKeyAlias);
+            var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
+            var masterKeyAlias = $"alias/{cmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
+            var (encryptionKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
             mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(encryptionKey.ToArray()));
             var encryptedData = await mSymmetricKeyManagement.Encrypt(data, serviceAccountId);
 

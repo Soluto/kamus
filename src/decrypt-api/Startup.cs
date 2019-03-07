@@ -188,6 +188,7 @@ namespace Kamus
             var region = Configuration.GetValue<string>("KeyManagement:AwsKms:Region");
             var awsKey = Configuration.GetValue<string>("KeyManagement:AwsKms:Key");
             var awsSecret = Configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
+            var cmkPrefix = Configuration.GetValue<string>("KeyManagement:AwsKms:CmkPrefix");
             
             if (string.IsNullOrEmpty(region) || string.IsNullOrEmpty(awsKey) || string.IsNullOrEmpty(awsSecret))
             {
@@ -199,7 +200,7 @@ namespace Kamus
                 kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.GetBySystemName(region));
             }
             
-            return new AwsKeyManagement(kmsService, new SymmetricKeyManagement());
+            return new AwsKeyManagement(kmsService, new SymmetricKeyManagement(), cmkPrefix);
         }
     }
 }
