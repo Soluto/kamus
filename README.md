@@ -58,7 +58,7 @@ Kamus is shipped with 2 utilities that make it easier to use:
 * Kamus init container - a init container that interacts with the Decrypt API. Refer to the docs for more details.
 
 ## Security
-We take security seriously at Solutoץ
+We take security seriously at Soluto.
 To learn more about the security aspects of Kamus refer to the Threat Modeling docs containing all the various threats and mitigations we discussed.
 Before installing Kamus in production refer to the installation guide to learn the best practices of deploying Kamus securely.
 In case you find a security issue or have something you would like to discuss refer to our [security.md](security.md) policy.
