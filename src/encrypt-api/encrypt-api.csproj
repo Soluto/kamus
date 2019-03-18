@@ -15,8 +15,8 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.7.21" />
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="2.0.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.0.0" />
+    <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
