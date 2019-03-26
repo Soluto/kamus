@@ -67,6 +67,15 @@ describe('Encrypt', () => {
     expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
   });
 
+  it('Should return encrypted data with / in the end of the url', async () => {
+    let kamusUrlWithSlash = kamusUrl + '/';
+    await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: kamusUrlWithSlash }, logger);
+    expect(kamusApiScope.isDone()).to.be.true;
+    expect(process.exit.called).to.be.true;
+    expect(process.exit.calledWith(0)).to.be.true;
+    expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
+  });
+
   describe('Save to file', () => {
 
     it('should save if the file doesn\'t exist', async () => {
