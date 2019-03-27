@@ -1,9 +1,9 @@
 # Kamus Example
 A small example app, showing the power of Kamus. 
-Before running this demo, make sure Kamus is up and running, and the CLI is installed.
+Before running this demo, make sure Kamus is up and running under the namespace default, and the CLI is installed.
 
 ## Running the demo
-Before running the demo, make sure to install Kamus on the cluster. If Kamus is not installed, use the following command:
+Before running the demo, make sure to install Kamus on the cluster under the namespace default. If Kamus is not installed, use the following command:
 ```
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install soluto/kamus
