@@ -182,6 +182,22 @@ jobs:
           command: |
             git pull
             git push --set-upstream origin $CIRCLE_BRANCH	 --tags
+  push-cli-image:
+    docker:
+      - image: circleci/buildpack-deps:trusty
+    steps:
+      - checkout 
+      - setup_remote_docker 
+      - run:
+          name: Build docker image
+          working_directory: "cli"
+          command: docker build . -t kamus-cli:latest
+      - run:
+          name: Docker push latest
+          working_directory: "init-container/tests"
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker push soluto/kamus-cli:latest
 
 workflows:
   version: 2
@@ -208,6 +224,13 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
+          filters:
+            branches:
+              only: master
+
+  cli-image:
+    jobs:
+      - push-cli-image:
           filters:
             branches:
               only: master
