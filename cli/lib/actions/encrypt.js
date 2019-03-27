@@ -127,7 +127,7 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certif
     const headers = { ...headersBase, ...authHeaders };
 
     const options = {
-        url: `${kamusUrl}/api/v1/encrypt`,
+        url: url.resolve(kamusUrl, '/api/v1/encrypt'),
         headers,
         // Certificate validation
         strictSSL: true,
