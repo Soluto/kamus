@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
 
 ARG PROJECT_NAME=decrypt-api
 
@@ -15,7 +15,7 @@ COPY  ./src/key-managment ./key-managment
 RUN dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj -c Release -o ./obj/Docker/publish
 
 # Build runtime image
-FROM microsoft/dotnet:2.2.1-aspnetcore-runtime-alpine as release
+FROM mcr.microsoft.com/dotnet/core/runtime:2.2.3-alpine AS release
 ARG PROJECT_NAME=decrypt-api
 ENV PROJECT_NAME_ENV=$PROJECT_NAME
 RUN addgroup dotnet && adduser -D -G dotnet -h /home/dotnet dotnet
