@@ -46,12 +46,12 @@ namespace CustomResourceDescriptorController
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMetrics();
 
+            services.AddKeyManagement(Configuration);
+
             services.AddSingleton<IKubernetes>(s =>
-                new Kubernetes(KubernetesClientConfigurationExtensions.BuildDefaultConfig())
+                new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig())
             );
-
-            services.AddSingleton<IKeyManagement>(s => new SymmetricKeyManagement("rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0="));
-
+                
             services.AddHostedService<V1AlphaController>();
 
         }
