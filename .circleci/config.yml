@@ -62,6 +62,7 @@ jobs:
           command: |
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
+            shellcheck -x ci/version_to_deploy_cli_docker.sh
 
   push-api-images:
     docker:
@@ -252,6 +253,7 @@ workflows:
 
   cli-image:
     jobs:
+      - lint-scripts
       - push-cli-image:
           filters:
             branches:
