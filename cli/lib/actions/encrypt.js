@@ -21,6 +21,7 @@ module.exports = async (args, options, logger) => {
     logger.info('namespace:', namespace);
 
     try {
+        logger.debug('Validating Arguments');
         validateArguments(options);
 
         let token = null;
@@ -28,9 +29,12 @@ module.exports = async (args, options, logger) => {
             logger.warn('Auth options were not provided, will try to encrypt without authentication to kamus');
         }
         else {
+            logger.debug('Acquiring authentication token');
             token = await acquireToken(options, logger);
         }
-        const encryptedSecret = await encrypt(options, token);
+        logger.debug('Starting secret encryption');
+        const encryptedSecret = await encrypt(options, logger, token);
+        logger.debug('Secret encryption finished');
 
         logger.info(`Successfully encrypted data to ${serviceAccount} service account in ${namespace} namespace`);
         outputEncryptedSecret(encryptedSecret, options, logger);
@@ -55,14 +59,22 @@ const checkForNewlines = async (secret) => {
     }
 };
 
-const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, token = null) => {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const data = secretFile ? fs.readFileSync(secretFile, { encoding: fileEncoding || DEFAULT_ENCODING }) : secret;
+const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, logger, token = null) => {
+    let data;
+    if (secretFile) {
+        logger.debug(`Reading secret file ${secretFile}`);
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        data = fs.readFileSync(secretFile, { encoding: fileEncoding || DEFAULT_ENCODING });
+    } else {
+        data = secret;
+    }
     await checkForNewlines(data);
+    logger.debug(`starting request to encrypt api at ${kamusUrl}`);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
         throw new Error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
     }
+    logger.debug('Request to encrypt api finished successfully');
     return response.body;
 };
 
@@ -159,6 +171,7 @@ const performEncryptRequestAsync = promisify(performEncryptRequest);
 
 const outputEncryptedSecret = (encryptedSecret, { outputFile, overwrite, fileEncoding }, logger) => {
     if (outputFile) {
+        logger.debug(`Starting to write encrypted data to ${outputFile}`);
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         fs.writeFileSync(outputFile, encryptedSecret, {
             encoding: fileEncoding || DEFAULT_ENCODING,
