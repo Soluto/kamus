@@ -1,36 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CustomResourceDescriptorController.Models;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
+using Microsoft.Extensions.Hosting;
 using Serilog;
-using CustomResourceDescriptorController.Extensions;
 
-namespace CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorController
+namespace CustomResourceDescriptorController.HostedServices
 {
-    public class KamusSecretController : IDisposable
+    public class V1AlphaController : IHostedService
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private IDisposable mSubscription;
-        private readonly ILogger mAuditLogger = Log.ForContext<KamusSecretController>().AsAudit();
-        private readonly ILogger mLogger = Log.ForContext<KamusSecretController>();
+        private readonly ILogger mAuditLogger = Log.ForContext<V1AlphaController>();//.AsAudit();
+        private readonly ILogger mLogger = Log.ForContext<V1AlphaController>();
 
-        public KamusSecretController(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public V1AlphaController(IKubernetes kubernetes, IKeyManagement keyManagement)
         {
             this.mKubernetes = kubernetes;
             this.mKeyManagement = keyManagement;
         }
 
-        public void Dispose()
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             mSubscription.Dispose();
+            return Task.CompletedTask;
         }
 
-        public void Listen()
+        public Task StartAsync(CancellationToken token)
         {
             mSubscription = Observable.FromAsync(async () =>
             {
@@ -50,11 +52,13 @@ namespace CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorCon
                 Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
             )
             .Subscribe(
-                onNext: t => { }, 
-                onError: e => mLogger.Error(e, "Unexpected error occured while watching KamusSecret events"), 
+                onNext: t => { },
+                onError: e => mLogger.Error(e, "Unexpected error occured while watching KamusSecret events"),
                 onCompleted: () => mLogger.Debug("Watching KamusSecret events completed"));
 
             mLogger.Information("Starting watch for KamusSecret V1Alpha events");
+
+            return Task.CompletedTask;
 
         }
 
@@ -126,8 +130,8 @@ namespace CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorCon
                         },
                         Metadata = new V1ObjectMeta
                         {
-                             NamespaceProperty = @namespace,
-                             Name = "KamusCreate"
+                            NamespaceProperty = @namespace,
+                            Name = "KamusCreate"
                         }
 
                     };
@@ -156,10 +160,8 @@ namespace CustomResourceDescriptorController.V1Alpha.CustomResourceDescriptorCon
         {
             var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
 
-            await mKubernetes.DeleteNamespacedSecretAsync(
-                new V1DeleteOptions { }, 
-                kamusSecret.Metadata.Name, 
-                @namespace);
+            await mKubernetes.DeleteNamespacedSecretAsync(kamusSecret.Metadata.Name, @namespace);
         }
     }
+
 }

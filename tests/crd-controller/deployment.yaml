@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: crd-controller
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: default
+  name: kamus-crd
+rules:
+- apiGroups: ["soluto.com"] # "" indicates the core API group
+  resources: ["kamussecrets"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["secrets"]
+  verbs: ["create", "delete"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: crd-controller
+subjects:
+- kind: ServiceAccount
+  name: crd-controller
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: kamus-crd
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kamus-crd-controller
+  labels:
+    app: kamus
+    component: crd-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kamus
+      component: crd-controller
+  template:
+    metadata:
+      labels:
+        app: kamus
+        component: crd-controller
+    spec:
+      serviceAccountName: crd-controller
+      containers:
+      - name: controller
+        image: crd-controller
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /api/v1/isAlive
+            port: 9999        
+        readinessProbe:
+          httpGet:
+            path: /api/v1/isAlive
+            port: 9999
