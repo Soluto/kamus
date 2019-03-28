@@ -1,5 +1,6 @@
 node_modules
 .dockerignore
 Dockerfile
+test
 npm-debug.log
 .git
