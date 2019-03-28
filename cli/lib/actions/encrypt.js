@@ -14,7 +14,7 @@ const pjson = require('../../package.json');
 const DEFAULT_ENCODING = 'utf8';
 
 module.exports = async (args, options, logger) => {
-
+    
     const { serviceAccount, namespace } = options;
     logger.info('Encryption started...');
     logger.info('service account:', serviceAccount);
