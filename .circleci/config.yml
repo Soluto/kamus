@@ -206,13 +206,11 @@ jobs:
           command: docker build . --build-arg CLI_VERSION=$CLI_DOCKER_TAG -t soluto/kamus-cli:$CLI_DOCKER_TAG
       - run:
           name: Docker push
-          working_directory: "cli"
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker push soluto/kamus-cli:$CLI_DOCKER_TAG
       - run:
           name: Docker push latest
-          working_directory: "cli"
           command: |
             docker tag soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
