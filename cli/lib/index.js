@@ -20,6 +20,8 @@ const logger = new ColorfulChalkLogger('kamus-cli', {
   colorful: true, 
 }, process.argv);
 
+// remove the log levels before running caporal
+process.argv = process.argv.filter(x => (x != '--log-level' && x != 'debug'));
 
 prog
   .logger(logger)
