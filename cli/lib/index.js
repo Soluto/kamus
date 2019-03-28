@@ -13,6 +13,11 @@ const logger = new ColorfulChalkLogger('kamus-cli', {
   colorful: true, // the default value is true.
 }, process.argv);
 
+// ColorfulChalkLogger takes care of the verbosity, we don't want to pass it to caporal
+if (process.argv.indexOf('--verbose')) {
+  process.argv = process.argv.filter(arg => arg != '--verbose');
+}
+
 prog
   .logger(logger)
   .version(pjson.version)
