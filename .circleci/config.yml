@@ -62,6 +62,7 @@ jobs:
           command: |
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
+            shellcheck -x ci/version_to_deploy_cli_docker.sh
 
   push-api-images:
     docker:
@@ -182,6 +183,44 @@ jobs:
           command: |
             git pull
             git push --set-upstream origin $CIRCLE_BRANCH	 --tags
+  push-cli-image:
+    docker:
+      - image: circleci/buildpack-deps:trusty
+    steps:
+      - checkout 
+      - setup_remote_docker 
+      - run:
+          name: configure git
+          command: |
+            git config user.email "ci-build@soluto.com"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - run:
+          name: tag branch
+          command: |
+            ./ci/version_to_deploy_cli_docker.sh
+      - run:
+          name: Build docker image
+          working_directory: "cli"
+          command: docker build . --build-arg CLI_VERSION=$CLI_DOCKER_TAG -t soluto/kamus-cli:$CLI_DOCKER_TAG
+      - run:
+          name: Docker push
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker push soluto/kamus-cli:$CLI_DOCKER_TAG
+      - run:
+          name: Docker push latest
+          command: |
+            docker tag soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
+            docker push soluto/kamus-cli:latest
+      - run:
+          name: push tags
+          command: |
+            git pull
+            git push --set-upstream origin $CIRCLE_BRANCH	 --tags
 
 workflows:
   version: 2
@@ -208,6 +247,14 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
+          filters:
+            branches:
+              only: master
+
+  cli-image:
+    jobs:
+      - lint-scripts
+      - push-cli-image:
           filters:
             branches:
               only: master
