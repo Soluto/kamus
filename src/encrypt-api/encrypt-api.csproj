@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>0.2.1.0</Version>
+    <Version>0.2.2.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
