@@ -13,6 +13,8 @@ const logger = new ColorfulChalkLogger('kamus-cli', {
   colorful: true, 
 }, process.argv.indexOf('--verbose') > -1 ? process.argv.concat(new ['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
 
+process.argv.filter(x => x == 'verbose'); // ColorfulChalkLogger got the verbose, don't pass it to caporal
+
 prog
   .logger(logger)
   .version(pjson.version)
