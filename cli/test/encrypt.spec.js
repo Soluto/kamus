@@ -10,6 +10,7 @@ const encrypt = require('../lib/actions/encrypt');
 
 const logger =
 {
+    debug: sinon.spy(),
     info: sinon.spy(),
     error: sinon.spy(),
     warn: sinon.spy(),

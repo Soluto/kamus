@@ -5,13 +5,15 @@ const prog = require('caporal');
 const encrypt = require('./actions/encrypt');
 const regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-const { ColorfulChalkLogger, DEBUG } = require('colorful-chalk-logger');
- 
+const { ColorfulChalkLogger, INFO } = require('colorful-chalk-logger');
+
 const logger = new ColorfulChalkLogger('kamus-cli', {
-  level: DEBUG,   // the default value is INFO
-  date: false,    // the default value is false.
-  colorful: true, // the default value is true.
-}, process.argv);
+  level: INFO,
+  date: false,
+  colorful: true, 
+}, process.argv.indexOf('--verbose') > -1 ? process.argv.concat(new ['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
+
+process.argv.filter(x => x == 'verbose'); // ColorfulChalkLogger got the verbose, don't pass it to caporal
 
 prog
   .logger(logger)
@@ -31,7 +33,6 @@ prog
   .option('--secret-file-encoding <fileEncoding>', 'Encoding of secret file', prog.STRING)
   .option('-o, --output <outputFile>', 'Output to file', prog.STRING)
   .option('-O, --overwrite', 'Overwrites file if it already exists', prog.BOOL)
-  .option('--log-level <debug|verbose|info|warn|error|fatal>', 'log level', prog.STRING)
   .option('--log-flag <date|inline|colorful|no-date|no-inline|no-colorful>', 'log format', prog.STRING)
   .option('--log-output <filepath>', 'output log to file', prog.STRING)
   .option('--log-encoding <encoding>', 'log file encoding');
