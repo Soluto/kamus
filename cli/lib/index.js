@@ -7,13 +7,15 @@ const regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[
 
 const { ColorfulChalkLogger, INFO } = require('colorful-chalk-logger');
 
+const isVerboseLogging = (args) => args.indexOf('--verbose') > -1 || args.indexOf('-v') > -1;
+
 const logger = new ColorfulChalkLogger('kamus-cli', {
   level: INFO,
   date: false,
   colorful: true, 
-}, process.argv.indexOf('--verbose') > -1 ? process.argv.concat(['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
+}, isVerboseLogging(process.argv) ? process.argv.concat(['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
 
-process.argv = process.argv.filter(x => x == '--verbose'); // ColorfulChalkLogger got the verbose, don't pass it to caporal
+process.argv = process.argv.filter(x => x != '--verbose' && x != '-v' ); // ColorfulChalkLogger got the verbose, don't pass it to caporal
 
 prog
   .logger(logger)
