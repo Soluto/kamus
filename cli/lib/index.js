@@ -11,9 +11,9 @@ const logger = new ColorfulChalkLogger('kamus-cli', {
   level: INFO,
   date: false,
   colorful: true, 
-}, process.argv.indexOf('--verbose') > -1 ? process.argv.concat(new ['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
+}, process.argv.indexOf('--verbose') > -1 ? process.argv.concat(['--log-level', 'debug']) : process.argv); // translate to ColorfulChalkLogger log level
 
-process.argv.filter(x => x == 'verbose'); // ColorfulChalkLogger got the verbose, don't pass it to caporal
+process.argv.filter(x => x == '--verbose'); // ColorfulChalkLogger got the verbose, don't pass it to caporal
 
 prog
   .logger(logger)
