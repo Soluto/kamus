@@ -38,8 +38,10 @@ namespace Kamus.KeyManagement
                         if (string.IsNullOrEmpty(key))
                         {
                             logger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
+
+                            return new SymmetricKeyManagement(RijndaelUtils.GenerateKey(32));
                         }
-                        return new SymmetricKeyManagement(key);
+                        return new SymmetricKeyManagement(Convert.FromBase64String(key));
                     default:
                         throw new InvalidOperationException($"Unsupported provider type: {provider}");
                 }
@@ -64,8 +66,7 @@ namespace Kamus.KeyManagement
                 return result.AccessToken;
             });
 
-            return new EnvelopeEncryptionDecorator(new AzureKeyVaultKeyManagement(keyVault, configuration), 
-                            new SymmetricKeyManagement(),
+            return new EnvelopeEncryptionDecorator(new AzureKeyVaultKeyManagement(keyVault, configuration),
                             configuration.GetValue<int>("KeyManagement:KeyVault:MaximumDataLength"));
         }
 
@@ -119,7 +120,7 @@ namespace Kamus.KeyManagement
                 kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.GetBySystemName(region));
             }
 
-            return new AwsKeyManagement(kmsService, new SymmetricKeyManagement(), cmkPrefix);
+            return new AwsKeyManagement(kmsService, cmkPrefix);
         }
     }
 }
