@@ -11,7 +11,7 @@ metadata:
 rules:
 - apiGroups: ["soluto.com"] # "" indicates the core API group
   resources: ["kamussecrets"]
-  verbs: ["get", "watch", "list"]
+  verbs: ["watch"]
 - apiGroups: [""] # "" indicates the core API group
   resources: ["secrets"]
   verbs: ["create", "delete"]

@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using crdcontroller.Extensions;
 using CustomResourceDescriptorController.HostedServices;
+using CustomResourceDescriptorController.HealthChecks;
 using k8s;
 using Kamus.KeyManagement;
 using Microsoft.AspNetCore.Builder;
@@ -46,13 +46,16 @@ namespace CustomResourceDescriptorController
                     .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMetrics();
 
-            services.AddKeyManagement(Configuration);
+            services.AddKeyManagement(Configuration, Log.Logger);
 
             services.AddSingleton<IKubernetes>(s =>
                 new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig())
             );
                 
             services.AddHostedService<V1AlphaController>();
+
+            services.AddHealthChecks()
+                .AddCheck<KubernetesPermissionsHelthCheck>("permisssions check");
 
         }
 
@@ -66,12 +69,9 @@ namespace CustomResourceDescriptorController
 
             app.UseAuthentication ();
 
-            app.UseSwagger ();
-            app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "My First Swagger");
-            });
-
             app.UseMvc ();
+
+            app.UseHealthChecks("/healthz");
         }
     }
 }

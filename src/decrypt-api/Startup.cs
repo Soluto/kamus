@@ -58,7 +58,7 @@ namespace Kamus
                 return new Kubernetes(config);
             });
 
-            services.AddKeyManagement(Configuration);
+            services.AddKeyManagement(Configuration, Log.Logger);
 
             services.AddAuthentication().AddScheme<KubernetesAuthenticationOptions, KubernetesAuthenticationHandler>("kubernetes", null);
 

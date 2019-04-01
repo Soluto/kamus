@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.IO;
 using Amazon;
 using Amazon.KeyManagementService;
 using Google.Apis.Auth.OAuth2;
@@ -17,13 +17,14 @@ namespace Kamus.KeyManagement
     {
         public static void AddKeyManagement(
             this IServiceCollection services, 
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger logger)
         {
 
-            services.AddScoped<IKeyManagement>(s =>
+            services.AddSingleton<IKeyManagement>(s =>
             {
                 var provider = configuration.GetValue<string>("KeyManagement:Provider");
-                var logger = s.GetRequiredService<ILogger>();
+                logger.Information("Selected KeyManagement: {provider}", provider);
                 switch (provider)
                 {
                     case "AwsKms":

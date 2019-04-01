@@ -55,7 +55,7 @@ namespace Kamus
                 swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Kamus Swagger" });
             });
 
-            services.AddKeyManagement(Configuration);
+            services.AddKeyManagement(Configuration, Log.Logger);
 
             services.AddSingleton<IConfiguration>(Configuration);
 

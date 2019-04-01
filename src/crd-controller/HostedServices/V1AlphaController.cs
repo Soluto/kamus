@@ -59,7 +59,6 @@ namespace CustomResourceDescriptorController.HostedServices
             mLogger.Information("Starting watch for KamusSecret V1Alpha events");
 
             return Task.CompletedTask;
-
         }
 
         private async Task HandleEvent(WatchEventType @event, KamusSecret kamusSecret)
