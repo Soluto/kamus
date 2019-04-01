@@ -54,7 +54,10 @@ namespace CustomResourceDescriptorController.HostedServices
             .Subscribe(
                 onNext: t => { },
                 onError: e => mLogger.Error(e, "Unexpected error occured while watching KamusSecret events"),
-                onCompleted: () => mLogger.Debug("Watching KamusSecret events completed"));
+                onCompleted: () => {
+                    mLogger.Information("Watching KamusSecret events completed, terminating process");
+                    Environment.Exit(0);
+                    });
 
             mLogger.Information("Starting watch for KamusSecret V1Alpha events");
 
