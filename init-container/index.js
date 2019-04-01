@@ -16,10 +16,14 @@ program
     .parse(process.argv);
 
 const getEncryptedFiles = async () => {
-  return await readfiles(program.encryptedFolder, function (err, filename, contents) {
-    if (err) throw err;
-  });
-}
+    const folders = program.encryptedFolder.split(",");
+    const filesArrArr = await Promise.all(folders.map((folder) => {
+        return readfiles(folder, function (err, filename, contents) {
+            if (err) throw err;
+        });
+    }))
+    return _.flattenDeep(filesArrArr);
+};
 
 const getKamusUrl = () => {
     let url = process.env.KAMUS_URL;
