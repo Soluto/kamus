@@ -2,7 +2,9 @@
 [![Docker](https://img.shields.io/badge/dockerhub-latest-blue.svg)](https://hub.docker.com/r/soluto/kamus)
 [![Slack](https://img.shields.io/badge/slack-kamus-orange.svg)](https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE)
 [![Twitter](https://img.shields.io/twitter/follow/solutoeng.svg?label=Follow&style=popout)](https://twitter.com/intent/tweet?text=Checkout%20Kamus%20secret%20encryption%20for%20Kubernetes&url=https://github.com/Soluto/kamus&via=SolutoEng&hashtags=kubernetes,devops,devsecops) [![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus)
-# Kamus ![logo](images/logo.png)  
+
+![logo](images/logo.png)  
+# Kamus
 An open source, GitOps, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault, Google Cloud KMS and AES).
@@ -68,6 +70,3 @@ Found a bug? Have a missing feature? Please open an issue and let us know.
 We would like to help you use Kamus!
 Please notice: Do not report security issues on GitHub.
 We will immediately delete such issues.
-
-## Attribution
-The logo icon made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
