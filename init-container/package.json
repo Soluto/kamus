@@ -1,6 +1,6 @@
 {
   "name": "init-decryptor",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "Meant to be used inside init container to read encrypted values from a given folder and decrypt to them into a json in a given folder",
   "main": "index.js",
   "scripts": {
