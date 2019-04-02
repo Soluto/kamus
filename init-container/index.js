@@ -15,19 +15,11 @@ program
     .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
     .parse(process.argv);
 
-const getEncryptedFiles = async () => {
-    if (program.encryptedFolders == null){
-        throw new Error("Missing encrypted folders path");
-    }
-    const folders = program.encryptedFolders.split(",");
-    console.log(folders);
-    const filesArrArr = await Promise.all(folders.map((folder) => {
-        return readfiles(folder, function (err, filename, contents) {
-            if (err) throw err;
-        });
-    }))
-    return filesArrArr.flat(2);
-};
+const getEncryptedFiles = async (folder) => {
+    return await readfiles(folder, function (err, filename, contents) {
+        if (err) throw err;
+    });
+}
 
 const getKamusUrl = () => {
     let url = process.env.KAMUS_URL;
@@ -41,8 +33,8 @@ const getBarerToken = async () => {
     return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
 }
 
-const decryptFile = async (httpClient, filePath) => {
-    var encryptedContent = await readFileAsync(program.encryptedFolder + '/' + filePath, "utf8");
+const decryptFile = async (httpClient, filePath, folder) => {
+    var encryptedContent = await readFileAsync(folder + '/' + filePath, "utf8");
     try {
       const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
       return response.data;
@@ -84,7 +76,6 @@ const serializeToCfgFormatStrict = (secrets) => {
 
 async function innerRun() {
 
-    let files = await getEncryptedFiles();
     let kamusUrl = getKamusUrl();
     let token = await getBarerToken();
     const httpClient = axios.create({
@@ -94,10 +85,11 @@ async function innerRun() {
     });
 
     let secrets = {};
-
-    for (let file of files)
-    {
-        secrets[file] = await decryptFile(httpClient, file);
+    for (let folder of program.encryptedFolders.split(",")) {
+        let files = await getEncryptedFiles(folder);
+        for (let file of files) {
+            secrets[file] = await decryptFile(httpClient, file, folder);
+        }
     }
     
     const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
