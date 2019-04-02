@@ -5,3 +5,4 @@ metadata:
 type: TlsSecret
 data:
   key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
+serviceAccount: some-sa

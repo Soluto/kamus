@@ -9,6 +9,6 @@ namespace CustomResourceDescriptorController.Models
         public Dictionary<string, string> Data { get; set; }
         public string Type { get; set; }
         public V1ObjectMeta Metadata { get; set; }
-
+        public string ServiceAccount { get; set; }
     }
 }

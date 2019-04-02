@@ -55,9 +55,9 @@ spec:
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
-            path: /api/v1/isAlive
+            path: /healthz
             port: 9999        
         readinessProbe:
           httpGet:
-            path: /api/v1/isAlive
+            path: /healthz
             port: 9999
