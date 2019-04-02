@@ -9,20 +9,24 @@ const path = require('path');
 
 program
     .version('0.1.0')
-    .option('-e, --encrypted-folder <path>', 'Encrypted files folder path')
+    .option('-e, --encrypted-folders <path>', 'Encrypted files folder paths, comma separated')
     .option('-d, --decrypted-path <path>', 'Decrypted file/s folder path')
     .option('-n, --decrypted-file-name <name>', 'Decrypted file name' )
     .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
     .parse(process.argv);
 
 const getEncryptedFiles = async () => {
-    const folders = program.encryptedFolder.split(",");
+    if (program.encryptedFolders == null){
+        throw new Error("Missing encrypted folders path");
+    }
+    const folders = program.encryptedFolders.split(",");
+    console.log(folders);
     const filesArrArr = await Promise.all(folders.map((folder) => {
         return readfiles(folder, function (err, filename, contents) {
             if (err) throw err;
         });
     }))
-    return _.flattenDeep(filesArrArr);
+    return filesArrArr.flat(2);
 };
 
 const getKamusUrl = () => {

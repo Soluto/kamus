@@ -25,7 +25,7 @@ The init container accept the following environmenmt variables:
 | Option                | Required       |  Description                                     | Default Value |
 | -------------------   | ------------   |  ----------------------------------------------- | ------------- |
 | -V/--version          |   false        |   output the version number                |               |
-| `-e/--encrypted-folder <path>`          |   true        |   Encrypted files folder path (the volume mounted with the config map)               |               |
+| `-e/--encrypted-folders <path>`          |   true        |   Encrypted files folder paths, comma seperated (the volumes mounted with the config map)               |               |
 | `-d/--decrypted-path <path>`          |   false        |   Decrypted file/s folder path mounted. Pass this argument to create one decrypted file per encrypted secret              |               |
 | `-n/--decrypted-file-name <name>`          |   false        |   Decrypted file name. Pass this argument to create one configuration file with the encrypted secrets.             |               |
 | `-f/--output-format <format>`          |   false        |  The format of the output file. Supported types: json, cfg, cfg-strict (surround strings with quotation marks), files           |         JSON      |
