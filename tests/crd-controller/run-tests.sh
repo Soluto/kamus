@@ -37,7 +37,7 @@ create_kind_cluster() {
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
-    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-contoller/kind-config.yaml --image "kindest/node:$K8S_VERSION"
+    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/kind-config.yaml --image "kindest/node:$K8S_VERSION"
 
     docker_exec mkdir -p /root/.kube
 
