@@ -47,7 +47,7 @@ jobs:
       - run:
           name: install
           command: |
-            testד/crd-controller/run-tests.sh
+            tests/crd-controller/run-tests.sh
           no_output_timeout: 3600
 
   run_tests:
