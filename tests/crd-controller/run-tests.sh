@@ -94,7 +94,7 @@ install_charts() {
 }
 
 main() {
-    run_ct_container
+    run_e2e_container
     trap cleanup EXIT
 
     create_kind_cluster
