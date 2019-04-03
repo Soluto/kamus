@@ -4,7 +4,7 @@ Before running this demo, make sure Kamus is up and running under the namespace 
 
 ## Running the demo
 Before running the demo, make sure to install Kamus on the cluster under the namespace default. 
-If Kamus is not installed, switch to the default namespace, if required. Then, use the following command:
+If Kamus is not installed, use the following command:
 ```
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install soluto/kamus
