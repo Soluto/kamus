@@ -39,7 +39,7 @@ namespace Kamus.KeyManagement
                         {
                             logger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
 
-                            return new SymmetricKeyManagement(RijndaelUtils.GenerateKey(32));
+                            return new SymmetricKeyManagement(RijndaelUtils.GenerateKey(256));
                         }
                         return new SymmetricKeyManagement(Convert.FromBase64String(key));
                     default:

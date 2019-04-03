@@ -27,7 +27,7 @@ namespace Kamus.KeyManagement
 
             mLogger.Information("Encryption data too length, using envelope encryption");
 
-            var dataKey = RijndaelUtils.GenerateKey(32);
+            var dataKey = RijndaelUtils.GenerateKey(256);
             var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey, Encoding.UTF8.GetBytes(data));
             var encryptedDataKey = await mMasterKeyManagement.Encrypt(Convert.ToBase64String(dataKey), serviceAccountId, createKeyIfMissing);
             return $"env${encryptedDataKey}${Convert.ToBase64String(encryptedData)}${Convert.ToBase64String(iv)}";

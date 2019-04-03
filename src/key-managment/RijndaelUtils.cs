@@ -5,11 +5,11 @@ namespace Kamus.KeyManagement
 {
     public static class RijndaelUtils
     {
-        public static byte[] GenerateKey(int keySize = 32)
+        public static byte[] GenerateKey(int keySize = 256)
         {
             using (var aes = new AesManaged())
             {
-                aes.KeySize = 32;
+                aes.KeySize = 256;
                 aes.GenerateKey();
                 return aes.Key;
             }

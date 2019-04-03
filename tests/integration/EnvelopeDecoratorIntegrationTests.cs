@@ -24,7 +24,7 @@ namespace integration
             var keyVaultClient = new KeyVaultClient(((authority, resource, scope) => 
                 Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope)));
             var keyVaultManagement = new AzureKeyVaultKeyManagement(keyVaultClient, mConfiguration);
-            mDecorator = new EnvelopeEncryptionDecorator(keyVaultManagement, 32);        
+            mDecorator = new EnvelopeEncryptionDecorator(keyVaultManagement, 15);        
         }
 
         [Fact]
