@@ -27,13 +27,13 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext(e);
 
-            RunKubectlCommand("apply -f /Users/omerl/dev/kamus/tests/crd-controller/tls.yaml");
+            RunKubectlCommand("apply -f tls.yaml");
 
             Console.WriteLine("Waiting for secret creation");
 
             await subject.Where(e => e == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
-            RunKubectlCommand("delete -f /Users/omerl/dev/kamus/tests/crd-controller/tls.yaml");
+            RunKubectlCommand("delete -f tls.yaml");
 
             Console.WriteLine("Waiting for secret deletion");
 
@@ -45,8 +45,8 @@ namespace crd_controller
         {
             Console.WriteLine("Deploying CRD");
 
-            RunKubectlCommand("apply -f /Users/omerl/dev/kamus/tests/crd-controller/deployment.yaml");
-            RunKubectlCommand("apply -f /Users/omerl/dev/kamus/tests/crd-controller/crd.yaml");
+            RunKubectlCommand("apply -f deployment.yaml");
+            RunKubectlCommand("apply -f crd.yaml");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
