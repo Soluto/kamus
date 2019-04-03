@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
@@ -21,32 +22,35 @@ namespace crd_controller
 
             var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
 
-            var subject = new Subject<WatchEventType>();
+            var subject = new Subject<(WatchEventType, V1Secret)>();
 
             watch.OnClosed += () => subject.OnCompleted();
             watch.OnError += e => subject.OnError(e);
-            watch.OnEvent += (e, s) => subject.OnNext(e);
+            watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
             RunKubectlCommand("apply -f tls.yaml");
 
             Console.WriteLine("Waiting for secret creation");
 
-            await subject.Where(e => e == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            var tupple = await subject
+                .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+
+            Assert.Equal("TlsSecret", tupple.Item2.Type);
+            Assert.Equal(true, tupple.Item2.Data.ContainsKey("key"));
+            Assert.Equal("hello", Encoding.UTF8.GetString(tupple.Item2.Data["key"]));
 
             RunKubectlCommand("delete -f tls.yaml");
 
             Console.WriteLine("Waiting for secret deletion");
 
-            await subject.Where(e => e == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            await subject.Where(t => t.Item1 == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
         }
 
 
         private async Task DeployController()
         {
             Console.WriteLine("Deploying CRD");
-
-            Console.WriteLine(Environment.CurrentDirectory);
-
+            
             RunKubectlCommand("apply -f deployment.yaml");
             RunKubectlCommand("apply -f crd.yaml");
 
