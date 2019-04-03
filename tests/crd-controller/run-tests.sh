@@ -8,6 +8,7 @@ readonly CT_VERSION=v2.2.0
 readonly KIND_VERSION=0.1.0
 readonly CLUSTER_NAME=e2e-test
 readonly K8S_VERSION=v1.13.2
+readonly KUBECTL_VERSION=v1.13.0
 
 run_e2e_container() {
     echo 'Running e2e container...'
@@ -36,6 +37,11 @@ create_kind_cluster() {
     curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
+
+    curl -sSLO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/darwin/amd64/kubectl
+    chmod +x kubectl
+
+    docker cp kubectl e2e:/usr/local/bin/kubectl
 
     kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/kind-config.yaml --image "kindest/node:$K8S_VERSION"
 
