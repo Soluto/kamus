@@ -40,6 +40,16 @@ jobs:
           path: tests/blackbox/compose/reports/
           destination: zap-reports
 
+  test_crd:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: |
+            test/crd-controller/e2e-kind.sh
+          no_output_timeout: 3600
+
   run_tests:
     docker:
       - image: microsoft/dotnet:2.1-sdk
@@ -245,6 +255,7 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
+      - test_crd
       - push-api-images:
           requires:
             - lint-scripts
