@@ -49,7 +49,6 @@ namespace CustomResourceDescriptorController.HealthChecks
             });
 
             return results.All(r => r);
-
         }
 
         private async Task<bool> CheckPermissions(string group, string resource, string verb)
