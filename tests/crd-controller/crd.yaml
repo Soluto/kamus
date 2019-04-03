@@ -20,16 +20,4 @@ spec:
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
      - ks
-  validation:
-   # openAPIV3Schema is the schema for validating custom objects.
-    openAPIV3Schema:
-      properties:
-        spec:
-          properties:
-            type:
-              type: string
-              required: true
-            serviceAccount:
-              type: string
-              required: true
             

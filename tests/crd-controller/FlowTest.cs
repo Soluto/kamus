@@ -45,6 +45,8 @@ namespace crd_controller
         {
             Console.WriteLine("Deploying CRD");
 
+            Console.WriteLine(Environment.CurrentDirectory);
+
             RunKubectlCommand("apply -f deployment.yaml");
             RunKubectlCommand("apply -f crd.yaml");
 
@@ -69,9 +71,19 @@ namespace crd_controller
             {
                 FileName = "kubectl",
                 Arguments = commnad,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WorkingDirectory = Environment.CurrentDirectory
             });
+
+            
             process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                Console.WriteLine(process.StandardError.ReadToEnd());
+            }
+
             Assert.Equal(0, process.ExitCode);
         }
     }
