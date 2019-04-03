@@ -20,6 +20,7 @@ jobs:
             mkdir -p docker-cache-api
             docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
             docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
+            docker save -o docker-cache-api/crd-controller.tar crd-controller
       - save_cache:
           key: docker_api_cache_key-{{ .Revision }}
           paths:
@@ -44,6 +45,12 @@ jobs:
     machine: true
     steps:
       - checkout
+      - restore_cache:
+          keys: 
+            - docker_api_cache_key-{{ .Revision }}
+      - restore_docker_image:
+          command: |
+            docker load < docker-cache-api/crd-controller.tar 
       - run:
           name: install
           command: |
@@ -255,7 +262,9 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
-      - test_crd
+      - test_crd:
+          requires:
+            - build_api
       - push-api-images:
           requires:
             - lint-scripts

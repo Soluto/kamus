@@ -71,31 +71,8 @@ create_kind_cluster() {
     echo
 }
 
-install_tiller() {
-    echo 'Installing Tiller...'
-    docker_exec kubectl --namespace kube-system create sa tiller
-    docker_exec kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-    docker_exec helm init --service-account tiller --upgrade --wait
-    echo
-}
-
-install_hostpath-provisioner() {
-    # kind doesn't support Dynamic PVC provisioning yet, this is one way to get it working
-    # https://github.com/rimusz/charts/tree/master/stable/hostpath-provisioner
-
-    echo 'Installing hostpath-provisioner...'
-
-    # Remove default storage class. Will be recreated by hostpath -provisioner
-    docker_exec kubectl delete storageclass standard
-
-    docker_exec helm repo add rimusz https://charts.rimusz.net
-    docker_exec helm repo update
-    docker_exec helm install rimusz/hostpath-provisioner --name hostpath-provisioner --namespace kube-system --wait
-    echo
-}
-
-install_charts() {
-    docker_exec ct install
+run_test() {
+    docker_exec dotnet test 
     echo
 }
 
@@ -104,6 +81,8 @@ main() {
     trap cleanup EXIT
 
     create_kind_cluster
+
+    run_test
 }
 
 main
