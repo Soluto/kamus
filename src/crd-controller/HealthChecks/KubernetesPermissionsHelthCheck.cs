@@ -52,7 +52,7 @@ namespace CustomResourceDescriptorController.HealthChecks
 
         }
 
-        private async Task<bool> CheckPermissions(string group, string verb, string resource)
+        private async Task<bool> CheckPermissions(string group, string resource, string verb)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace CustomResourceDescriptorController.HealthChecks
 
                 if (!result.Status.Allowed)
                 {
-                    mLogger.Warning("SelfSubjectAccessReview result is denied. Error: {error}, reason: {reason}", result.Status.EvaluationError, result.Status.Reason);
+                    mLogger.Warning("SelfSubjectAccessReview result is denied. Error: {error}, reason: {reason}, group: {group}, verb: {verb}, resource: {resource}", result.Status.EvaluationError, result.Status.Reason, group, verb, resource);
                 }
 
                 return result.Status.Allowed;
