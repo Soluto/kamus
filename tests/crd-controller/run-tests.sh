@@ -14,7 +14,7 @@ run_e2e_container() {
     echo 'Running e2e container...'
     docker run --rm --interactive --detach --network host --name e2e \
         --volume "$(pwd):/workdir" \
-        --workdir /workdir \
+        --workdir /workdir/tests/crd-controller \
         "microsoft/dotnet:2.2-sdk" \
         cat
     echo
