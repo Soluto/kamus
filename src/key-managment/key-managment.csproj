@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.7.21" />
-    <PackageReference Include="Google.Apis.CloudKMS.v1" Version="1.37.0.1468" />
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.100.4" />
+    <PackageReference Include="Google.Apis.CloudKMS.v1" Version="1.38.0.1547" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
