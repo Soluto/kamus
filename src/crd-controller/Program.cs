@@ -20,7 +20,6 @@ namespace CustomResourceDescriptorController
                         endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
                     };
                 })
-                
                 .UseStartup<Startup>()
                 .UseSerilog();
     }
