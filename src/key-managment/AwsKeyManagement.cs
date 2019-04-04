@@ -35,7 +35,7 @@ namespace Kamus.KeyManagement
         {
             var splitted = encryptedData.Split('$');
 
-            if (splitted.Length != 3)
+            if (splitted.Length != 4)
             {
                 throw new InvalidOperationException("Invalid encrypted data format");
             }

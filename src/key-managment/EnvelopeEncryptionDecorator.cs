@@ -45,7 +45,7 @@ namespace Kamus.KeyManagement
             mLogger.Information("Encrypted data mactched envelope encryption pattern");
             var encryptedDataKey = match.Groups[2].Value;
             var actualEncryptedData = Convert.FromBase64String(match.Groups[3].Value);
-            var iv = Convert.FromBase64String(match.Groups[3].Value);
+            var iv = Convert.FromBase64String(match.Groups[4].Value);
 
             var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
 
