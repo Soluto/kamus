@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace Kamus.KeyManagement
@@ -40,19 +41,25 @@ namespace Kamus.KeyManagement
         public static byte[] Decrypt(byte[] key, byte[] iv, byte[] encryptedData)
         {
             byte[] result;
-            using (var rijndael = new RijndaelManaged())
+            try
             {
-                using (var decryptor = rijndael.CreateDecryptor(key, iv))
-                using (var resultStream = new MemoryStream())
+                using (var rijndael = new RijndaelManaged())
                 {
-                    using (var rijndaelStream = new CryptoStream(resultStream, decryptor, CryptoStreamMode.Write))
-                    using (var cipherStream = new MemoryStream(encryptedData))
+                    using (var decryptor = rijndael.CreateDecryptor(key, iv))
+                    using (var resultStream = new MemoryStream())
                     {
-                        cipherStream.CopyTo(rijndaelStream);
-                    }
+                        using (var rijndaelStream = new CryptoStream(resultStream, decryptor, CryptoStreamMode.Write))
+                        using (var cipherStream = new MemoryStream(encryptedData))
+                        {
+                            cipherStream.CopyTo(rijndaelStream);
+                        }
 
-                    result = resultStream.ToArray();
+                        result = resultStream.ToArray();
+                    }
                 }
+            }catch(ArgumentException e)
+            {
+                throw new Exception($"on no {key.Length}", e);
             }
 
             return result;
