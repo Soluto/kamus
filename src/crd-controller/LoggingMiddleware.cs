@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 
 namespace CustomResourceDescriptorController
 {
-    // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class LoggingMiddleware
     {
         private readonly RequestDelegate mNext;
