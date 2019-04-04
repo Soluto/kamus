@@ -1,5 +1,5 @@
-title = "kind"
-baseURL = "https://kind.sigs.k8s.io"
+title = "kamus"
+baseURL = "https://kamus.soluto.io"
 languageCode = "en-us"
 
 # we use this to disable indexing for the non-production build
@@ -20,7 +20,7 @@ sectionPagesMenu = "main"
 # menu entries
 [menu]
   [[menu.main]]
-    identifier = "ome"
+    identifier = "home"
     name = "Home"
     title = "Home"
     url = "/"

@@ -1,4 +1,4 @@
-<p style="text-align: center; margin-top: 2em; margin-bottom: -.75em;"><img alt="kind" src="./logo/logo.png" width="300px" /></p>
+<p style="text-align: center; margin-top: 2em; margin-bottom: -.75em;"><img alt="kamus" src="./logo/logo.png" width="300px" /></p>
 
 [kind] is a tool for running local Kubernetes clusters using Docker container "nodes".  
 kind is primarily designed for testing Kubernetes 1.11+, initially targeting the [conformance tests].
