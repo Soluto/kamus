@@ -98,7 +98,7 @@ namespace crd_controller
 
             if (printOutput)
             {
-                Console.WriteLine(process.StandardOutput);
+                Console.WriteLine(process.StandardOutput.ReadToEnd());
             }
 
             Assert.Equal(0, process.ExitCode);
