@@ -42,8 +42,7 @@ namespace CustomResourceDescriptorController
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddSingleton(Configuration);
-            services.AddMvc ()
-                    .SetCompatibilityVersion();
+            services.AddMvc ();
             services.AddMetrics();
 
             services.AddKeyManagement(Configuration, Log.Logger);
