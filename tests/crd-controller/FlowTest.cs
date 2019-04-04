@@ -58,18 +58,26 @@ namespace crd_controller
 
             Console.WriteLine("Waiting for deployment to complete");
 
-            var status = await Observable
-                .Interval(TimeSpan.FromMilliseconds(5000))
-                .SelectMany(_ => Observable.FromAsync(() => kubernetes.ReadNamespacedDeploymentAsync("kamus-crd-controller", "default")))
-                .Select(d => d.Status)
-                .Where(d => !d.UnavailableReplicas.HasValue)
-                .Timeout(TimeSpan.FromMinutes(2))
-                .FirstAsync();
+            try
+            {
+                var status = await Observable
+                    .Interval(TimeSpan.FromMilliseconds(5000))
+                    .SelectMany(_ => Observable.FromAsync(() => kubernetes.ReadNamespacedDeploymentAsync("kamus-crd-controller", "default")))
+                    .Select(d => d.Status)
+                    .Where(d => !d.UnavailableReplicas.HasValue)
+                    .Timeout(TimeSpan.FromMinutes(2))
+                    .FirstAsync();
+            }
+            catch(TimeoutException)
+            {
+                RunKubectlCommand("get pods", true);
+                throw;
+            }
 
             Console.WriteLine("Controller deployed successfully");
         }
 
-        private void RunKubectlCommand(string commnad)
+        private void RunKubectlCommand(string commnad, bool printOutput = false)
         {
             var process = Process.Start(new ProcessStartInfo
             {
@@ -86,6 +94,11 @@ namespace crd_controller
             if (process.ExitCode != 0)
             {
                 Console.WriteLine(process.StandardError.ReadToEnd());
+            }
+
+            if (printOutput)
+            {
+                Console.WriteLine(process.StandardOutput);
             }
 
             Assert.Equal(0, process.ExitCode);
