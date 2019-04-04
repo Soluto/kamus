@@ -108,8 +108,10 @@ jobs:
           command: |
             docker load < docker-cache-api/kamus-decryptor.tar
             docker load < docker-cache-api/kamus-encryptor.tar
+            docker load < docker-cache-api/crd-controller.tar
             docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker tag crd-controller soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push version
           working_directory: "init-container/tests"
@@ -117,6 +119,7 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker push soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker push soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker push soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
@@ -124,9 +127,11 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker tag soluto/kamus:$DECRYPTOR_API_DOCKER_TAG soluto/kamus:decryptor-latest
             docker tag soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG soluto/kamus:encryptor-latest
+            docker tag soluto/kamus:$CONTROLLER_API_DOCKER_TAG soluto/kamus:contoller-latest
 
             docker push soluto/kamus:decryptor-latest
             docker push soluto/kamus:encryptor-latest
+            docker push soluto/kamus:contoller-latest
       - run:
           name: push tags
           command: |
