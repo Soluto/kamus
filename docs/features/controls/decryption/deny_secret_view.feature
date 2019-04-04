@@ -4,10 +4,11 @@
 #   - Secrets decryption
 # Mitigates:
 #   - KAMUS-T-D-1
+#   - KAMUS-T-D-3
 # References:
 #   - https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
-Feature: Deny Kuberentes secrets view permissions
+Feature: Deny Kuberentes secrets get permissions
   In order to protect Kamus from DoS
   As a cluster admin
   I want to deny all users from getting Kubernetes secrets in all namespaces
