@@ -43,7 +43,7 @@ namespace CustomResourceDescriptorController
 
             services.AddSingleton(Configuration);
             services.AddMvc ()
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                    .SetCompatibilityVersion();
             services.AddMetrics();
 
             services.AddKeyManagement(Configuration, Log.Logger);
