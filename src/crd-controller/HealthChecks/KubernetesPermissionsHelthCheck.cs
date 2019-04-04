@@ -14,7 +14,7 @@ namespace CustomResourceDescriptorController.HealthChecks
     {
         private readonly IKubernetes mKubernetes;
         private readonly ILogger mLogger = Log.ForContext<KubernetesPermissionsHelthCheck>();
-        private readonly MemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
+        private static readonly MemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
 
         public KubernetesPermissionsHelthCheck(IKubernetes kubernetes)
         {
