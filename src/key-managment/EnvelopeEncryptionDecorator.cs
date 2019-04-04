@@ -49,7 +49,7 @@ namespace Kamus.KeyManagement
 
             var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
 
-            var decrypted = RijndaelUtils.Decrypt(Convert.FromBase64String(key), iv, actualEncryptedData);
+            var decrypted = RijndaelUtils.Decrypt(Encoding.UTF8.GetBytes(key), iv, actualEncryptedData);
             return Encoding.UTF8.GetString(decrypted);
 
         }
