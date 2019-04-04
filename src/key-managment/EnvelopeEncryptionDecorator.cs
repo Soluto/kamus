@@ -29,7 +29,7 @@ namespace Kamus.KeyManagement
 
             var dataKey = RijndaelUtils.GenerateKey(256);
             var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey, Encoding.UTF8.GetBytes(data));
-            var encryptedDataKey = await mMasterKeyManagement.Encrypt(Convert.ToBase64String(dataKey), serviceAccountId, createKeyIfMissing);
+            var encryptedDataKey = await mMasterKeyManagement.Encrypt(Encoding.UTF8.GetString(dataKey), serviceAccountId, createKeyIfMissing);
             return $"env${encryptedDataKey}${Convert.ToBase64String(encryptedData)}${Convert.ToBase64String(iv)}";
 
         }
