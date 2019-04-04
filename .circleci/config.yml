@@ -49,10 +49,6 @@ jobs:
           keys: 
             - docker_api_cache_key-{{ .Revision }}
       - run:
-          name: restore_docker_image
-          command: |
-            docker load < docker-cache-api/crd-controller.tar 
-      - run:
           name: install
           command: |
             tests/crd-controller/run-tests.sh
