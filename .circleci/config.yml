@@ -7,7 +7,7 @@ commands:
       kubernetes_version:
         type: string
         default: "1.14"
-      steps:
+    steps:
       - checkout
       - restore_cache:
           keys: 
