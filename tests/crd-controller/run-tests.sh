@@ -6,7 +6,6 @@ set -o pipefail
 
 readonly KIND_VERSION=0.2.1
 readonly CLUSTER_NAME=e2e-test
-readonly K8S_VERSION=v1.13.2
 readonly KUBECTL_VERSION=v1.13.0
 
 run_e2e_container() {
