@@ -4,7 +4,7 @@ commands:
   test_crd_command:
     description: "Testing CRD controller on Kubernetes cluster with the specified version"
     parameters:
-      kubernetes_version:
+      kubernetesVersion:
         type: string
         default: "1.14"
     steps:
@@ -15,7 +15,7 @@ commands:
       - run:
           name: install
           command: |
-            tests/crd-controller/run-tests.sh << kubernetes_version >>
+            tests/crd-controller/run-tests.sh << kubernetesVersion >>
           no_output_timeout: 3600
 
 jobs:
@@ -64,7 +64,7 @@ jobs:
     machine: true
     steps:
       - test_crd_command:
-          kubernetes_version: "1.12"
+          kubernetesVersion: "1.12"
 
   run_tests:
     docker:
