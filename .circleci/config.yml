@@ -64,7 +64,7 @@ jobs:
     machine: true
     steps:
       - test_crd_command:
-          kubernetesVersion: "1.12"
+          kubernetesVersion: "1.12.3"
 
   run_tests:
     docker:
