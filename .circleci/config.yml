@@ -1,4 +1,23 @@
-version: 2
+version: 2.1
+
+commands:
+  test_crd_command:
+    description: "Testing CRD controller on Kubernetes cluster with the specified version"
+    parameters:
+      kubernetes_version:
+        type: string
+        default: "1.14"
+      steps:
+      - checkout
+      - restore_cache:
+          keys: 
+            - docker_api_cache_key-{{ .Revision }}
+      - run:
+          name: install
+          command: |
+            tests/crd-controller/run-tests.sh << kubernetes_version >>
+          no_output_timeout: 3600
+
 jobs:
   build_api:
     machine: true
@@ -44,15 +63,8 @@ jobs:
   test_crd:
     machine: true
     steps:
-      - checkout
-      - restore_cache:
-          keys: 
-            - docker_api_cache_key-{{ .Revision }}
-      - run:
-          name: install
-          command: |
-            tests/crd-controller/run-tests.sh
-          no_output_timeout: 3600
+      - test_crd_command:
+          kubernetes_version: "1.12"
 
   run_tests:
     docker:
@@ -80,6 +92,7 @@ jobs:
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
             shellcheck -x ci/version_to_deploy_cli_docker.sh
+            shellcheck -x tests/crd-controller/run-tests.sh
 
   push-api-images:
     docker:

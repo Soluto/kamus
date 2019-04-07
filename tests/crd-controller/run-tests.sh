@@ -31,7 +31,9 @@ docker_exec() {
 }
 
 create_kind_cluster() {
+    K8S_VERSION=$1
     echo 'Installing kind...'
+    echo 'kubernetes version' $K8S_VERSION
 
     curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64"
     chmod +x kind
@@ -80,7 +82,7 @@ main() {
     run_e2e_container
     trap cleanup EXIT
 
-    create_kind_cluster
+    create_kind_cluster $1
 
     run_test
 }
