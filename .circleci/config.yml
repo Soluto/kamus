@@ -15,7 +15,7 @@ commands:
       - run:
           name: install
           command: |
-            tests/crd-controller/run-tests.sh << kubernetesVersion >>
+            tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
           no_output_timeout: 3600
 
 jobs:
