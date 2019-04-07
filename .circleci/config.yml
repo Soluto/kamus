@@ -280,6 +280,7 @@ workflows:
       - test_crd:
           requires:
             - build_api
+            - lint-scripts
       - push-api-images:
           requires:
             - lint-scripts
