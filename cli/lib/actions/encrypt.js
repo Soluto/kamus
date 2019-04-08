@@ -111,7 +111,7 @@ const acquireTokenWithDeviceCode = async (context, authApplication, authResource
 
 const outputUserCodeInstructions = async (userCodeResult, logger) => {
     if (isDocker()) {
-        logger.info(`Login to https://microsoft.com/devicelogin Enter this code to authenticate: ${userCodeResult.userCode}`);
+        logger.info(`Open "https://microsoft.com/devicelogin" in browser and login to Azure with the following code: ${userCodeResult.userCode}`);
     } else {
         opn(userCodeResult.verificationUrl);
         logger.info(`Enter this code to authenticate: ${userCodeResult.userCode}`);
