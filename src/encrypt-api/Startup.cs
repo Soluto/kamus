@@ -61,7 +61,7 @@ namespace Kamus
                 switch (provider)
                 {
                     case "AwsKms":
-                        return GetAwsKeyManagement(s.GetRequiredService<ILogger>());
+                        return GetAwsKeyManagement(Log.Logger);
                     case "GoogleKms":
                         return GetGoogleCloudKeyManagment();
                     case "AzureKeyVault":
