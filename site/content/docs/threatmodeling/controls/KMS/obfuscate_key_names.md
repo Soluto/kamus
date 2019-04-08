@@ -1,12 +1,4 @@
-# Id: KAMUS-C-K-4
-# Status: Confirmed
-# Components:
-#   - Secrets decryption
-#   - Secrets encryption
-# Mitigates:
-#   - KAMUS-T-K-1
-# References:
-#   - 
+# Key names obfuscation
 
 Feature: Key names obfuscation
   In order to protect encryption keys 
@@ -17,3 +9,11 @@ Feature: Key names obfuscation
     Given a namespace and service account
     When Kamus access KMS to retrieve the encryption key
     Then an obfuscated name will be created from the namespace and service account using SHA256
+
+
+## Remarks
+
+* Mitigates:
+* Status: Partial implementation. In future version, we'll add support to add a salt.
+
+Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

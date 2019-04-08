@@ -1,12 +1,4 @@
-# Id: KAMUS-C-E-1
-# Status: Confirmed
-# Components:
-#   - Secrets encryption
-# Mitigates:
-#   - KAMUS-T-E-1
-#   - KAMUS-T-E-2
-# References:
-#   - https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
+# Block anonymous internet access to Kamus
 
 Feature: Block anonymous internet access to Kamus
   In order to protect Kamus from DoS
@@ -27,4 +19,15 @@ Feature: Block anonymous internet access to Kamus
   Scenario: IP filtering
     Given an authenticated user (using Kubernetes user token?)
     When the user try to encrypt a secret
-    Then the user is allowed to perform the request only from a white-listed IPs
+    Then the user is allowed to perform the request only from a white-listed IP
+
+
+## Remarks
+
+* Mitigates:
+ * [Kamus server disrupting](/docs/threatmodeling/threats/encryption/denial_of_service)
+ * [Exposing names of namespaces and service accounts](/docs/threatmodeling/threats/encryption/namespace_enumeration)
+* References:
+ * https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
+
+Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

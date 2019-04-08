@@ -1,11 +1,4 @@
-# Id: KAMUS-C-K-3
-# Status: Confirmed
-# Components:
-#   - Secrets decryption
-#   - Secrets encryption
-# Mitigates:
-#   - KAMUS-T-K-1
-# References:
+# Credentials Hardening
 
 Feature: Credentials Hardening
   In order to protect KMS 
@@ -20,3 +13,11 @@ Feature: Credentials Hardening
     Given A machine idetity support is available
     When Kamus authenticate using this identity
     Then The request succeed
+
+## Remarks
+
+* Mitigates:
+ * [Accessing KMS with leaked credentials](/docs/threatmodeling/threats/kms/leaked_credentials)
+* References:
+
+Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

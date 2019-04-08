@@ -13,8 +13,10 @@ Feature: Deny Kuberentes secrets view permissions
 
 ## Remarks
 
-* Mitigates: KAMUS-T-D-1
+* Mitigates: 
+ * [Impersonating pod to decrypt it's secrets](/docs/threatmodeling/threats/decryption/pod_impersonation)
+ * [Using KamusSecret to decrypt secrets](/docs/threatmodeling/threats/decryption/leveraging_crd)
 * References:
- * - https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+ * https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
 Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

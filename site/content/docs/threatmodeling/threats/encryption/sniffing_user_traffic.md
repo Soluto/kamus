@@ -1,12 +1,4 @@
-# Id: KAMUS-T-E-3
-# Status: Confirmed
-# Components:
-#   - Secret encryption
-# STRIDE:
-#   - Spoofing
-#   - Information Disclosure 
-# References:
-#   - https://en.wikipedia.org/wiki/Man-in-the-middle_attack
+# Sniffing user's traffic
 
 Feature: Sniffing user's traffic
   In order to find information
@@ -24,3 +16,13 @@ Feature: Sniffing user's traffic
       | Teams                    |
       | Partners                 |
       | Bussiness information    |
+
+## Remarks
+
+* Controls:
+ * [Certificate pinning](/docs/threatmodeling/controls/encryption/certificate_pinning)
+ * [Client-side encryption](/docs/threatmodeling/controls/encryption/client_side_encryption)
+*  References: 
+ * https://en.wikipedia.org/wiki/Man-in-the-middle_attack
+
+Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

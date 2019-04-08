@@ -1,14 +1,4 @@
-# Id: KAMUS-T-D-1
-# Status: Confirmed
-# Components:
-#   - Secret decryption
-# STRIDE:
-#   - Spoofing
-#   - Information Disclosure 
-# References:
-#   - https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-#   - https://kubernetes.io/docs/concepts/configuration/secret/#service-accounts-automatically-create-and-attach-secrets-with-api-credentials
-#   - https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#tokenreview-v1-authentication-k8s-io
+# Impersonating pod to decrypt it's secrets
 
 Feature: Impersonating pod to decrypt it's secrets
   In order to decrypt pod's secrets
@@ -37,3 +27,16 @@ Feature: Impersonating pod to decrypt it's secrets
     And the attacker can spoof requests to Kubernetes API
     When Kamus use the API to review tokens
     Then the attacker can approve all requests
+
+## Remarks
+
+* Controls:
+ * [Deny request for default SA](/docs/threatmodeling/controls/decryption/deny_default_sa)
+ * [Deny Kuberentes secrets view permissions](/docs/threatmodeling/controls/decryption/deny_secret_view)
+ * [Use TLS when accessing Kuberentes API](/docs/threatmodeling/controls/decryption/k8s_api_tls)
+*  References: 
+ * https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
+ * https://kubernetes.io/docs/concepts/configuration/secret#service-accounts-automatically-create-and-attach-secrets-with-api-credentials
+ * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#tokenreview-v1-authentication-k8s-io
+
+Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

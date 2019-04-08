@@ -14,6 +14,7 @@ Feature: Use TLS when accessing Kuberentes API
 
 ## Remarks
 
-* Mitigates: KAMUS-T-D-1
+* Mitigates: 
+ * [Impersonating pod to decrypt it's secrets](/docs/threatmodeling/threats/decryption/pod_impersonation)
 
 Back to [Threats and Controls](/docs/threatmodeling/threats_controls)

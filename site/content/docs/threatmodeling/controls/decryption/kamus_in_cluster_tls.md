@@ -13,7 +13,8 @@ Feature: Serve Kamus API over TLS
 
 ## Remarks
 
-* Mitigates: KAMUS-T-D-2
+* Mitigates: 
+ * [Sniff requests and responses to Kamus](/docs/threatmodeling/threats/decryption/sniffing_tampering)
 * References:
  * https://stackoverflow.com/questions/50893535/securing-kubernetes-service-with-tls
  * https://istio.io/docs/tasks/security/https-overlay/

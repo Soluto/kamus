@@ -12,7 +12,8 @@ Feature: Deny request for default SA
 
 ## Remarks
 
-* Mitigates: KAMUS-T-D-1
+* Mitigates: 
+ * [Impersonating pod to decrypt it's secrets](/docs/threatmodeling/threats/decryption/pod_impersonation)
 *  References: 
  * https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
