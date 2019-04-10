@@ -12,8 +12,8 @@ For production usage, please configuration one of the supported Key Management S
 ## Supported KMS Providers
 
 ### AES KMS
-AES KMS is the simplest (but less secure) solution. 
-Kamus will use one strong AES key to encrypt all the data. 
+AES KMS is the simplest (but less secure) solution.
+Kamus will use one strong AES key to encrypt all the data.
 Currently, rolling this key is not supported.
 To deploy Kamus using AES Key:
 * Generate a strong AES key:
@@ -29,12 +29,12 @@ helm upgrade --install kamus soluto/kamus --set keyManager.AES.key=$key
 Using [Azure KeyVault](https://azure.microsoft.com/en-us/services/key-vault/) as the key management solution is the most secure solution when running a cluster on Azure.
 Azure documentation is far from perfect, so I'm going to reffer to a lot of different guides because there is no one guide documenting the required process.
 
-Start by creating a KeyVault instance. 
-It is recommend to create a KeyVault with HSM backend for additional security. 
+Start by creating a KeyVault instance.
+It is recommend to create a KeyVault with HSM backend for additional security.
 Follow this [guide](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-manage-with-cli2#working-with-hardware-security-modules-hsms) for details on how to create a KeyVault using the CLI. It is recommend to protect the KeyVault with firewall, see this [guide](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-network-security) for additional details.
 
 After creating a KeyVault instance, Kamus need permissions to access it.
-You grant Kamus permissions by creating an Azure Active Directory application for Kamus, and granting permissions for this application to access the KeyVault created in the previous step. 
+You grant Kamus permissions by creating an Azure Active Directory application for Kamus, and granting permissions for this application to access the KeyVault created in the previous step.
 Creating the required app is covered in 2 parts of the same guide. The [first part](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-an-azure-active-directory-application) will guide you through the process of creating the app. The [second part](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-application-id-and-authentication-key) will guide you through the process of creating the client id and client secret, that are used by Kamus for authentication. Try to create the client secret for short period, for example 6 months, and rotate it frequently.
 
 Now you should have 3 objects: KeyVault, client id and client secret. The last part is to grant the application the required permissions on the KeyVault. First we need to get the object id of the application:
@@ -124,7 +124,7 @@ keyManagement:
     key: <>
     secret: <>
 ```
-You can also provide `cmkPrefix` values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called `kamus-<GUID>`.
+You can also provide `cmkPrefix` values to give the custom master keys that Kamus creates better visibility, if not specific the keys alias will be called `kamus-<GUID>`.
 And now deploy Kamus using the following helm command:
 ```
 helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
