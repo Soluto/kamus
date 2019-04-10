@@ -50,7 +50,11 @@ echo "comparing output directory with expected.json"
 
 for f in "output"/*; do
   output=$(cat "$f")
-  expected=$(cat expected.json | jq .$(basename $f) | sed -e 's/^"//' -e 's/"$//') # remove double qoutes because they doesn't exist in files
+  if jq -e . >/dev/null 2>&1 <<<$output; then
+    expected=$(cat expected.json | jq -cr .\"$(basename $f)\")
+  else
+    expected=$(cat expected.json | jq -r .$(basename $f))
+  fi  
   diff <(echo $output) <(echo $expected)
 done
 
