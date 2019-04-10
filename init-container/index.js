@@ -107,7 +107,7 @@ async function innerRun() {
         break;
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), 
-                                                                           return(secrets[secretName].constructor === {}.constructor) ? 
+                                                                           (typeof secrets[secretName] === "object") ? 
                                                                                   JSON.stringify(secrets[secretName]) : 
                                                                                   secrets[secretName])));
         break;
