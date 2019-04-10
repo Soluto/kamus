@@ -15,7 +15,7 @@ data:
 Use the CLI or direct API calls to encrypt the values.
 The init container has 2 mounted volumes:
 * Encrypted items: mounted from the config map, contains all the encrypted values
-* Decrypted items: the init container will write all the decrypted items to this volume. The vulme medium is memory for increased security.
+* Decrypted items: the init container will write all the decrypted items to this volume. The volume medium is memory for increased security.
 
 Take a look on the [deployment](example/deployment-kamus/deployment.yaml) of the example app to see how it's all connected together. You'll notice that app container and the init container, and you can see the mount settings. Don't forget to mount the decrypted item into the container running the app.
 
