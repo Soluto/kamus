@@ -60,11 +60,23 @@ jobs:
           path: tests/blackbox/compose/reports/
           destination: zap-reports
 
-  test_crd:
+  test_crd_1.12:
     machine: true
     steps:
       - test_crd_command:
           kubernetesVersion: "v1.12.3"
+  
+  test_crd_1.13:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.13.4"
+
+  test_crd_1.14:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.14.0"
 
   run_tests:
     docker:
@@ -277,7 +289,15 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
-      - test_crd:
+      - test_crd_1.12:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1.13:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1.14:
           requires:
             - build_api
             - lint-scripts
