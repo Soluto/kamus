@@ -37,7 +37,6 @@ const decryptFile = async (httpClient, filePath, folder) => {
     var encryptedContent = await readFileAsync(folder + '/' + filePath, "utf8");
     try {
       const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
-      console.log(response.data);
       return response.data;
     } catch (e) {
       throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : e.message}`)
