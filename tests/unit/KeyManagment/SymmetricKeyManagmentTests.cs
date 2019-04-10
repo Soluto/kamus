@@ -8,13 +8,25 @@ namespace unit.KeyManagment
 {
     public class SymmetricKeyManagementTests
     {
+        private const string Key = "tWG4dk8ARsETnFL3jCf1xtMVe05imlx9vimER7iky2s=";
+
         [Fact]
         public async Task Get_ReturnsCorrectValues()
         {
-            var key = Convert.ToBase64String(GetRandomData(32));
-            var kms = new SymmetricKeyManagement(key);
+            var kms = new SymmetricKeyManagement(Key);
             var expected = "hello";
             var encrypted = await kms.Encrypt(expected, "sa");
+            var decrypted = await kms.Decrypt(encrypted, "sa");
+
+            Assert.Equal(expected, decrypted);
+        }
+
+        [Fact]
+        public async Task RegressionTest()
+        {
+            var kms = new SymmetricKeyManagement(Key);
+            var expected = "hello";
+            var encrypted = "C4gChhspnTa5yVqYmSitrg==:tr0Ke6OGUaUa8KZgMJg14g==";
             var decrypted = await kms.Decrypt(encrypted, "sa");
 
             Assert.Equal(expected, decrypted);

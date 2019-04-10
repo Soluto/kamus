@@ -67,5 +67,17 @@ namespace integration
             Assert.Equal(data, decrypted);
 
         }
+
+        [Fact]
+        public async Task RegresssionTests()
+        {
+            var sa = "sa:namespace";
+            var data = "data";
+            var encrypted = "CiQAk2+d4cP3NN9n6vGm1HGQxKmn0diLlThlLqYCK1d4gKdOFi8SLxItCgxEfJ8C73FrnA5mkVISC+lIUP+Q7ndlxmahGhCbWawi0v/yuOexJkeRl/b+";
+            var decrypted = await mGoogleCloudKeyManagement.Decrypt(encrypted, sa);
+
+            Assert.Equal(data, decrypted);
+
+        }
     }
 }
