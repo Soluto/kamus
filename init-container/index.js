@@ -37,6 +37,7 @@ const decryptFile = async (httpClient, filePath, folder) => {
     var encryptedContent = await readFileAsync(folder + '/' + filePath, "utf8");
     try {
       const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
+      console.log(response.data);
       return response.data;
     } catch (e) {
       throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : e.message}`)
@@ -106,7 +107,10 @@ async function innerRun() {
         await writeFile(outputFile, serializeToCfgFormatStrict(secrets));
         break;
       case "files":
-        await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
+        await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), 
+                                                                           return(secrets[secretName].constructor === {}.constructor) ? 
+                                                                                  JSON.stringify(secrets[secretName]) : 
+                                                                                  secrets[secretName])));
         break;
       default:
         throw new Error(`Unsupported output format: ${program.outputFormat}`);
