@@ -1,0 +1,29 @@
+{
+  "id" : "c5291391-7520-4d8d-a39a-9466ceb759e2",
+  "name" : "api_v1_decrypt_3",
+  "request" : {
+    "url" : "/api/v1/decrypt",
+    "method" : "POST",
+    "headers": {
+      "Authorization": {
+          "equalTo": "Bearer some-jwt"
+      }
+    },
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\"data\":\"{\\\"key\\\":\\\"value\\\"}\"}\n",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"secret_key\": \"secret_value\"}",
+    "headers" : {
+      "Content-Type" : "application/json",
+      "Date" : "Thu, 12 Jul 2018 05:20:33 GMT"
+    }
+  },
+  "uuid" : "c5291391-7520-4d8d-a39a-9466ceb759e3",
+  "persistent" : true,
+  "insertionIndex" : 2
+}

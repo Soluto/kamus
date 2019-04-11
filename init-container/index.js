@@ -33,6 +33,10 @@ const getBarerToken = async () => {
     return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
 }
 
+const stringifyIfJson = (secretValue) =>{
+  return((typeof secretValue === "object") ? JSON.stringify(secretValue) : secretValue);
+}
+
 const decryptFile = async (httpClient, filePath, folder) => {
     var encryptedContent = await readFileAsync(folder + '/' + filePath, "utf8");
     try {
@@ -47,7 +51,7 @@ const decryptFile = async (httpClient, filePath, folder) => {
 const serializeToCfgFormat = (secrets) => {
   var output = "";
   Object.keys(secrets).forEach(key => {
-    output += `${key}=${secrets[key]}\n`
+    output += `${key}=${stringifyIfJson(secrets[key])}\n`;
   });
   
   output = output.substring(0, output.lastIndexOf('\n'));
@@ -64,7 +68,7 @@ const serializeToCfgFormatStrict = (secrets) => {
         output += `${key}="${secrets[key]}"\n`
         break;
       default:
-        output += `${key}=${secrets[key]}\n`
+        output += `${key}=${stringifyIfJson(secrets[key])}\n`
     }
     
   });
@@ -106,7 +110,7 @@ async function innerRun() {
         await writeFile(outputFile, serializeToCfgFormatStrict(secrets));
         break;
       case "files":
-        await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), secrets[secretName])))
+        await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), stringifyIfJson(secrets[secretName]))));
         break;
       default:
         throw new Error(`Unsupported output format: ${program.outputFormat}`);
