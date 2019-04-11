@@ -30,17 +30,8 @@ if [[ "$(git tag | grep -c "$CONTROLLER_API_TAG")" == "0" ]]; then
     export CONTROLLER_API_DOCKER_TAG=$CONTROLLER_API_TAG
 fi
 
-echo  checking cli version
-CLI_VERSION=$(grep -E "\"version\"" ./cli/package.json  | grep -Eo "[0-9.]*(-rc[0-9]*)?")
-CLI_TAG="cli-$CLI_VERSION"
-export TWEEK_DOCKER_TAG_EDITOR="latest"
-if [[ "$(git tag | grep -c "$CLI_TAG")" == "0" ]]; then
-    echo tagging "$CLI_TAG"
-    git tag "$CLI_TAG"
-    export TWEEK_DOCKER_TAG_EDITOR=$CLI_VERSION
-fi
-
 {
     echo "export DECRYPTOR_API_DOCKER_TAG=$DECRYPTOR_API_DOCKER_TAG"
     echo "export ENCRYPTOR_API_DOCKER_TAG=$ENCRYPTOR_API_DOCKER_TAG"
+    echo "export CONTROLLER_API_DOCKER_TAG=$CONTROLLER_API_DOCKER_TAG"
 } >> "$BASH_ENV"
