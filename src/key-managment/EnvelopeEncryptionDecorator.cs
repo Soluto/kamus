@@ -30,22 +30,26 @@ namespace Kamus.KeyManagement
             var dataKey = RijndaelUtils.GenerateKey(256);
             var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey, Encoding.UTF8.GetBytes(data));
             var encryptedDataKey = await mMasterKeyManagement.Encrypt(Convert.ToBase64String(dataKey), serviceAccountId, createKeyIfMissing);
-            return $"env${encryptedDataKey}${Convert.ToBase64String(encryptedData)}${Convert.ToBase64String(iv)}";
+            return $"env${encryptedDataKey}${Convert.ToBase64String(iv)}:{Convert.ToBase64String(encryptedData)}";
 
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var regex = new Regex(@"(env)\$(.*)\$(.*)\$(.*)");
+            var splitted = encryptedData.Split('$');
+            var regex = new Regex("env\\$(?<encryptedDataKey>.*)\\$(?<iv>.*):(?<encryptedData>.*)");
             var match = regex.Match(encryptedData);
-            
+
             if (!match.Success)
-                return await mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId);
+            {
+                throw new InvalidOperationException("Invalid encrypted data format");
+            }
+
+            var encryptedDataKey = match.Groups["encryptedDataKey"].Value;
+            var actualEncryptedData = Convert.FromBase64String(match.Groups["encryptedData"].Value);
+            var iv = Convert.FromBase64String(match.Groups["iv"].Value);
 
             mLogger.Information("Encrypted data mactched envelope encryption pattern");
-            var encryptedDataKey = match.Groups[2].Value;
-            var actualEncryptedData = Convert.FromBase64String(match.Groups[3].Value);
-            var iv = Convert.FromBase64String(match.Groups[4].Value);
 
             var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
 

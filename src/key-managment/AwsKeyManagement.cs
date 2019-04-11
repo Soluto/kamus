@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Amazon.KeyManagementService;
 using Amazon.KeyManagementService.Model;
@@ -27,23 +28,24 @@ namespace Kamus.KeyManagement
 
             var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey.ToArray(), Encoding.UTF8.GetBytes(data));
 
-            return $"env${encryptedDataKey}${Convert.ToBase64String(encryptedData)}${Convert.ToBase64String(iv)}";
+            return $"env${encryptedDataKey}${Convert.ToBase64String(iv)}:{Convert.ToBase64String(encryptedData)}";
 
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
             var splitted = encryptedData.Split('$');
+            var regex = new Regex("env\\$(?<encryptedDataKey>.*)\\$(?<iv>.*):(?<encryptedData>.*)");
+            var match = regex.Match(encryptedData);
 
-            if (splitted.Length != 4)
+            if (!match.Success)
             {
                 throw new InvalidOperationException("Invalid encrypted data format");
             }
 
-            var encryptedDataKey = splitted[1];
-            var actualEncryptedData = Convert.FromBase64String(splitted[2]);
-            var iv = Convert.FromBase64String(splitted[3]);
-
+            var encryptedDataKey = match.Groups["encryptedDataKey"].Value;
+            var actualEncryptedData = Convert.FromBase64String(match.Groups["encryptedData"].Value);
+            var iv = Convert.FromBase64String(match.Groups["iv"].Value);
 
             var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {
