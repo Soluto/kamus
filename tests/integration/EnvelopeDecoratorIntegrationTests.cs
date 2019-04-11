@@ -1,9 +1,7 @@
-using System;
 using System.Threading.Tasks;
 using Kamus.KeyManagement;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Xunit;
 
 namespace integration
@@ -43,11 +41,20 @@ namespace integration
             var randomString = new string('*', 16);
             var encryptedData = await mDecorator.Encrypt(randomString, "a-service-account");
             Assert.Contains("env$", encryptedData);
-
-            InitializeKeyManagement(); // reset the key management services to simulate new call to decrypt
-                
+                            
             var decryptedString = await mDecorator.Decrypt(encryptedData, "a-service-account");
             
+            Assert.Equal(randomString, decryptedString);
+        }
+
+        [Fact]
+        public async Task RegressionTest()
+        {
+            var randomString = new string('*', 16);
+            var encryptedData = "env$Ux2a2llsVdGY5/FsQ+G79A0WJfvjzddXS2jQk+hkY7zzJh6k29Kezkg12M6OorA0cYA7nXByBAOilNRbIWsE2+36ygCeqZg8PUMxBDPGOVE4ANYI+3abrl4aXmUSIy8uDrbISdl4RCVhwFNO2BCgecwioNv5mFGNzonELR1FcX1cLShezibWJehcptPExFM9Sey+GcXixPS2Fi6IivgTjzwFqHMze20wLlDFPkiFHN9CcUsHOt9ntxUFujtaMpZTJecTvXnhwknQOqQ3KNBBWyOgX65Svm45f4YEP5WZmdvF2mBSHTdkQ7AkfKZZV15p4dN1mzxs3raHTR2Qp366Sg==$nzx0kjzDxQ/d4rYfDUfBhw==:BSRpNCPL7R3uKFanSnjUw2E55xXcqIHvMRKWC1e+zVU=";
+
+            var decryptedString = await mDecorator.Decrypt(encryptedData, "a-service-account");
+
             Assert.Equal(randomString, decryptedString);
         }
     }

@@ -32,6 +32,18 @@ namespace integration
             var sa = "sa:namespace";
             var data = "data";
             var encrypted = await mAwsKeyManagement.Encrypt(data, sa);
+
+            var decrypted = await mAwsKeyManagement.Decrypt(encrypted, sa);
+
+            Assert.Equal(data, decrypted);
+        }
+
+        [Fact]
+        public async Task RegressionTest()
+        {
+            var sa = "sa:namespace";
+            var data = "data";
+            var encrypted = "env$AQIDAHizI6sed7zuuIsC3swHqi0UTTDv7X15xoyC5QG9deKqMwHEoOhAcGhmWHDZ0naCQQ6lAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMGK6qLAGscq77QeC7AgEQgDuxpshMWysHf2mXmCDlFCdOKjFiGIIJvYNdJIuZCOfYZGXokLN77e+OS/ecob+SnCRRYYPMwGGWNBilYg==$o3t8Q+fpxvM+BuDID3ssqw==:2sutg2A6bmpDctVXaqDl4A==";
             var decrypted = await mAwsKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(data, decrypted);

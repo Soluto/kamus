@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Xunit;
 
 namespace integration
@@ -67,14 +66,25 @@ namespace integration
             var serviceAccountId = "default:default:";
 
             var encryptedData = await mAzureKeyManagement.Encrypt(data, serviceAccountId);
+            
+            var decryptedData = await mAzureKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
-            InitializeKeyManagement();
+            Assert.Equal(data, decryptedData);
+        }
+
+        [Fact]
+        public async Task RegressionTest()
+        {
+            var data = "test";
+            var serviceAccountId = "default:default:";
+
+            var encryptedData = "JFmV3jXtdTR02BQxRUVE/1fDYOIZ7y7xxN6fBROb5WO40LP6f3dgbKYXyR9XnzRXcPaejsVmaHg8j6X2qSCTi771MC90qtpnpygX/P5AWQT6BkblA/vA8qHRSh5k7atUSo81QwE2kEEilEHMB57pl5S4t0Zo7amSYQGOlEp/8Dohq74AbKlhWHvUPqfcr/7LO4mhr7IqzcacuarLTyeRBZQklIqXGo1jn7eREa6/Th2eo8PH1yJHu9WRpyizzE1+y4Wk/EPQ2MquImZu3vSUdeZMy7IhtVNDoJbEdSi8dfjwg3VXWwdAR+cUx516QC1LmXuPsE3pMupi95XSo0GBCg==";
 
             var decryptedData = await mAzureKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
             Assert.Equal(data, decryptedData);
         }
-        
+
         private string ComputeKeyId(string serviceUserName)
         {
             return 
