@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Amazon.KeyManagementService;
 using Amazon.KeyManagementService.Model;
@@ -10,13 +12,11 @@ namespace Kamus.KeyManagement
     public class AwsKeyManagement : IKeyManagement
     {
         private readonly IAmazonKeyManagementService mAmazonKeyManagementService;
-        private readonly SymmetricKeyManagement mSymmetricKeyManagement;
         private readonly string mCmkPrefix;
 
-        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, SymmetricKeyManagement symmetricKeyManagement, string cmkPrefix = "")
+        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, string cmkPrefix = "")
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
-            mSymmetricKeyManagement = symmetricKeyManagement;
             mCmkPrefix = cmkPrefix;
         }
 
@@ -25,32 +25,25 @@ namespace Kamus.KeyManagement
             var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
             var masterKeyAlias = $"alias/{cmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
             var (dataKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
-            mSymmetricKeyManagement.SetEncryptionKey(Convert.ToBase64String(dataKey.ToArray()));
-            var encryptedData = await mSymmetricKeyManagement.Encrypt(data, serviceAccountId);
 
-            return "env" + "$" + encryptedDataKey + "$" + encryptedData;
+            var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey.ToArray(), Encoding.UTF8.GetBytes(data));
+
+            return EnvelopeEncryptionUtils.Wrap(encryptedDataKey, iv, encryptedData);
 
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var encryptedDataKey = encryptedData.Split('$')[1];
-            var actualEncryptedData = encryptedData.Split('$')[2];
-            
+            var (encryptedDataKey, iv, actualEncryptedData) = EnvelopeEncryptionUtils.Unwrap(encryptedData);
+
             var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {
                 CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedDataKey)),
             });
 
-            var dataKey = ConvertMemoryStreamToBase64String(decryptionResult.Plaintext);
-                
-            mSymmetricKeyManagement.SetEncryptionKey(dataKey);
-            return await mSymmetricKeyManagement.Decrypt(actualEncryptedData, serviceAccountId);
-        }
+            var decrypted = RijndaelUtils.Decrypt(decryptionResult.Plaintext.ToArray(), iv, actualEncryptedData);
 
-        private static string ConvertMemoryStreamToBase64String(MemoryStream ms)
-        {
-            return Convert.ToBase64String(ms.ToArray());
+            return Encoding.UTF8.GetString(decrypted);
         }
 
         private async Task<(MemoryStream dataKey, string encryptedDataKey)> GenerateEncryptionKey(string keyAlias)
@@ -73,6 +66,11 @@ namespace Kamus.KeyManagement
             }
 
             return (generateKeyResponse.Plaintext, ConvertMemoryStreamToBase64String(generateKeyResponse.CiphertextBlob));
+        }
+
+        private static string ConvertMemoryStreamToBase64String(MemoryStream ms)
+        {
+            return Convert.ToBase64String(ms.ToArray());
         }
 
         private async Task GenerateMasterKey(string keyAlias)

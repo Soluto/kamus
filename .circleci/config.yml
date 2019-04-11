@@ -1,4 +1,23 @@
-version: 2
+version: 2.1
+
+commands:
+  test_crd_command:
+    description: "Testing CRD controller on Kubernetes cluster with the specified version"
+    parameters:
+      kubernetesVersion:
+        type: string
+        default: "1.14"
+    steps:
+      - checkout
+      - restore_cache:
+          keys: 
+            - docker_api_cache_key-{{ .Revision }}
+      - run:
+          name: install
+          command: |
+            tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
+          no_output_timeout: 3600
+
 jobs:
   build_api:
     machine: true
@@ -12,11 +31,15 @@ jobs:
           name: Build encryptor docker image
           command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
       - run:
+          name: Build CRD controller docker image
+          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller
+      - run:
           name: Save docker image
           command: |
             mkdir -p docker-cache-api
             docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
             docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
+            docker save -o docker-cache-api/crd-controller.tar crd-controller
       - save_cache:
           key: docker_api_cache_key-{{ .Revision }}
           paths:
@@ -36,6 +59,24 @@ jobs:
       - store_artifacts:
           path: tests/blackbox/compose/reports/
           destination: zap-reports
+
+  test_crd_1_12:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.12.3"
+  
+  test_crd_1_13:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.13.4"
+
+  test_crd_1_14:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.14.0"
 
   run_tests:
     docker:
@@ -63,6 +104,7 @@ jobs:
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
             shellcheck -x ci/version_to_deploy_cli_docker.sh
+            shellcheck -x tests/crd-controller/run-tests.sh
 
   push-api-images:
     docker:
@@ -91,8 +133,10 @@ jobs:
           command: |
             docker load < docker-cache-api/kamus-decryptor.tar
             docker load < docker-cache-api/kamus-encryptor.tar
+            docker load < docker-cache-api/crd-controller.tar
             docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker tag crd-controller soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push version
           working_directory: "init-container/tests"
@@ -100,6 +144,7 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker push soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
             docker push soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker push soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
@@ -107,9 +152,11 @@ jobs:
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD 
             docker tag soluto/kamus:$DECRYPTOR_API_DOCKER_TAG soluto/kamus:decryptor-latest
             docker tag soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG soluto/kamus:encryptor-latest
+            docker tag soluto/kamus:$CONTROLLER_API_DOCKER_TAG soluto/kamus:contoller-latest
 
             docker push soluto/kamus:decryptor-latest
             docker push soluto/kamus:encryptor-latest
+            docker push soluto/kamus:contoller-latest
       - run:
           name: push tags
           command: |
@@ -242,6 +289,18 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
+      - test_crd_1_12:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1_13:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1_14:
+          requires:
+            - build_api
+            - lint-scripts
       - push-api-images:
           requires:
             - lint-scripts

@@ -8,7 +8,7 @@ namespace unit.KeyManagment
 {
     public class SymmetricKeyManagementTests
     {
-        private const string Key = "tWG4dk8ARsETnFL3jCf1xtMVe05imlx9vimER7iky2s=";
+        private static readonly byte[] Key = Convert.FromBase64String("tWG4dk8ARsETnFL3jCf1xtMVe05imlx9vimER7iky2s =");
 
         [Fact]
         public async Task Get_ReturnsCorrectValues()

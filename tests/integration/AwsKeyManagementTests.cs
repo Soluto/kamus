@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Amazon;
 using Amazon.KeyManagementService;
 using Kamus.KeyManagement;
@@ -23,7 +24,7 @@ namespace integration
 
             var kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.USEast1);
 
-            mAwsKeyManagement = new AwsKeyManagement(kmsService, new SymmetricKeyManagement());
+            mAwsKeyManagement = new AwsKeyManagement(kmsService);
         }
 
         [Fact]
@@ -32,7 +33,6 @@ namespace integration
             var sa = "sa:namespace";
             var data = "data";
             var encrypted = await mAwsKeyManagement.Encrypt(data, sa);
-
             var decrypted = await mAwsKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(data, decrypted);

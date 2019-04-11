@@ -9,12 +9,6 @@ namespace Kamus.KeyManagement
         Task<string> Decrypt(string encryptedData, string serviceAccountId);
     }
 
-    public interface IDynamicKeyManagmenet : IKeyManagement
-    {
-        void SetEncryptionKey(string key = null);
-        string GetEncryptionKey();
-    }
-
     public class DecryptionFailureException : Exception
     {
         public DecryptionFailureException(string reason, Exception innerException) : base(reason, innerException)
