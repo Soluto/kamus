@@ -56,8 +56,9 @@ Consult the [installation guide](docs/install.md) for more details on how to dep
 
 ### Utilities
 Kamus is shipped with 2 utilities that make it easier to use:
-* Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the docs for more details.
-* Kamus init container - a init container that interacts with the Decrypt API. Refer to the docs for more details.
+* Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/cli/README.md) for more details.
+* Kamus init container - a init container that interacts with the Decrypt API. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/init-container/README.md) for more details.
+* CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/docs/crd.md) for more details.
 
 ## Security
 We take security seriously at Soluto.
