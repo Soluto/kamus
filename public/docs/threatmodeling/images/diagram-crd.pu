@@ -1,0 +1,28 @@
+@startuml
+
+actor User 
+participant EncryptApi
+participant KMS
+participant CRDController
+participant KubernetesApi
+
+== Encryption ==
+
+autonumber
+User -> EncryptApi: Encrypt - data, namespace, default service account
+EncryptApi -> KMS: Encrypt - data, namespace, default service account
+KMS ->  EncryptApi: Enrypted data
+EncryptApi -> User: Enrypted data
+
+== Decryption ==
+
+autonumber 1
+CRDController -> KubernetesApi: Watch KamusSecret Objects
+User -> KubernetesApi: Create KamusSecret - encrypted data, namesapce
+KubernetesApi -> User: Success
+KubernetesApi -> CRDController: KamusSecret created 
+CRDController -> KMS: Decrypt data
+KMS -> CRDController: Decrypted data
+CRDController -> KubernetesApi: Create secret - decrypted data, namespace
+
+@enduml

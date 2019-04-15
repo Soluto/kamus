@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kamus</title>
+    <link>https://kamus.soluto.io/docs/</link>
+    <description>Recent content on kamus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://kamus.soluto.io/docs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</guid>
+      <description>Enable firewall protection for KMS Feature: Enable firewall protection for KMS In order to protect KMS As an engineer I want to allow traffic to KMS only from Kamus
+Scenario: A KMS encrypt/decrypt request
+Given firewall protection enabled on KMS When a request is sent not from Kamus Then the request will be denied
+Remarks  Mitigates:  Accessing KMS with leaked credentials Exposing names of namespaces and service accounts  References:  https://docs.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</guid>
+      <description>Credentials Hardening Feature: Credentials Hardening In order to protect KMS As an engineer I want to harden the credentials used by Kamus
+Scenario: Short-lived credentials When I create KMS credentials Then I will use as short as possible expiration time
+Scenario: Use machine identity for authentication Given A machine idetity support is available When Kamus authenticate using this identity Then The request succeed
+Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</guid>
+      <description>Key names obfuscation Feature: Key names obfuscation In order to protect encryption keys As an engineer I want to obfuscate the key names
+Scenario: Using SHA256 Given a namespace and service account When Kamus access KMS to retrieve the encryption key Then an obfuscated name will be created from the namespace and service account using SHA256
+Remarks  Mitigates: Status: Partial implementation. In future version, we&amp;rsquo;ll add support to add a salt.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</guid>
+      <description>Use KMS with HSM support Feature: Use KMS with HSM support In order to protect encryption keys As an engineer I want to store them using HSM
+Scenario: Azure KeyVauls Given Azure KeyVault keys created in HSM mode When a hacker tries to extract the private key Then the request will be denied
+Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  https://docs.microsoft.com/en-us/azure/key-vault/key-vault-hsm-protected-keys   Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_default_sa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_default_sa/</guid>
+      <description>Deny request for default SA Feature: Deny request for default SA In order to protect pods from impersonation As an engineer I want to deny all requests with default service accounts
+Scenario: A decrypt request with token for default SA Given a pod that is mounted with default service account When the pod try to decrypt secrets using the token Then the operation denied
+Remarks  Mitigates:  Impersonating pod to decrypt it&amp;rsquo;s secrets  References:  https://kubernetes.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_secret_view/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_secret_view/</guid>
+      <description>Deny Kuberentes secrets view permissions Feature: Deny Kuberentes secrets view permissions In order to protect Kamus from DoS As a cluster admin I want to deny all users from getting Kubernetes secrets in all namespaces
+Scenario: Using Kubernetes RBAC Given a user role without secrets get permissions When the user try to read service account&amp;rsquo;s secret Then the operation denied
+Remarks  Mitigates:  Impersonating pod to decrypt it&amp;rsquo;s secrets Using KamusSecret to decrypt secrets  References:  https://kubernetes.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/k8s_api_tls/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/k8s_api_tls/</guid>
+      <description>Use TLS when accessing Kuberentes API Feature: Use TLS when accessing Kuberentes API In order to protect Kamus from spoffing As an engineer I want to use TLS for all requests to Kubernetes API
+Scenario: Using token review API Given Kamus request to token review API And The request is not using TLS When sending the requesrt Then the request will fail
+Remarks  Mitigates:  Impersonating pod to decrypt it&amp;rsquo;s secrets   Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/kamus_in_cluster_tls/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/kamus_in_cluster_tls/</guid>
+      <description>Serve Kamus API over TLS Feature: Serve Kamus API over TLS In order to protect Kamus from spoffing As an engineer I want to use TLS to encrypt traffic to and from Kamus
+Scenario: Using Kubernetes CA Given A certifcate from Kubernetes CA When Kamus serve a request Then The request will be encrypted using TLS
+Remarks  Mitigates:  Sniff requests and responses to Kamus  References:  https://stackoverflow.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/opa_pods_secrets/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/opa_pods_secrets/</guid>
+      <description>Use a policy to control pod&amp;rsquo;s service account Feature: Use a policy to control pod&amp;rsquo;s service account In order to protect pods from impersonation As a cluster admin I want to use a policy to define which pods can use which service account
+Scenario: Using Azure OPA Given a pod A And a service account B is used by another pod B When the user try mount service account B to pod A Then the operation denied</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/block_internet_access/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/block_internet_access/</guid>
+      <description>Block anonymous internet access to Kamus Feature: Block anonymous internet access to Kamus In order to protect Kamus from DoS As an engineer I want to block anonymous access to Kamus from the internet
+Scenario: Use Kubernetes port-forward Given a user has valid Kubernetes config file When the user open port forward to Kamus service Then the user can use Kamus for encryption
+Scenario: User authentication Given an authenticated user (using Kubernetes user token?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/certificate_pinning/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/certificate_pinning/</guid>
+      <description>Certificate pinning Feature: Certificate pinning In order to protect Kamus from DoS As an engineer I want to protect the user from MitM attack
+Scenario: Certificate pinning Given a user that encrypt a secret using Kamus CLI When the user initiate a TLS session with Kamus Then the server certificate is validated with a pre-defined certificate
+Remarks  Mitigates:  Sniffing user&amp;rsquo;s traffic  References:  https://www.owasp.org/index.php/Certificate_and_Public_Key_Pinning TODO: link to cert pinning docs in the CLI   Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/client_side_encryption/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/client_side_encryption/</guid>
+      <description>Client-side encryption Feature: Client-side encryption In order to protect Kamus from DoS As an engineer I want to move all encryption logic to the client
+Scenario: Expose public key Given a user has aceess to the public key When the user need to encrypt a secret Then the user can encrypt it with the public key
+Remarks  Mitigates:  Kamus server disrupting Sniffing user&amp;rsquo;s traffic  Status: proposed. Currently we decided it&amp;rsquo;s better to perform all encryption in the server side for simplicity.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/deny_default_sa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/deny_default_sa/</guid>
+      <description>Deny request for default SA Feature: Deny request for default SA In order to protect enumeration and make it harder to perform DoS attack As an engineer I want to deny all requests with default service account
+Scenario: An encrypt request for default SA Given a default service acount When the user try to encrypt data for this service account Then the operation denied
+Remarks  Mitigates:  Kamus server disrupting Exposing names of namespaces and service accounts   Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/ip_throttling/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/ip_throttling/</guid>
+      <description>Throttling requests by source IP Feature: Throttling requests by source IP In order to protect Kamus from DoS As an engineer I want to throttle incoming requests
+Scenario: Using Nginx Ingress Given an attacker sending multiple requests When the limit of allowed request breached Then Nginx will deny these requests from hitting Kamus
+Remarks  Mitigates:  Kamus server disrupting Exposing names of namespaces and service accounts  References:  https://github.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/leveraging_crd/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/leveraging_crd/</guid>
+      <description>Using KamusSecret to decrypt secrets Feature: Using KamusSecret to decrypt secrets In order to decrypt pod&amp;rsquo;s secrets As an attacker I want to create KamusSecret
+Scenario Outline: Creating KamusSecret Given a user with permissions to create KamusSecret and get Kubernetes Secrets When the user create a KamusSecret with a pod&amp;rsquo;s secrets from the same namespace Then the user can get the created Kubernetes Secret and read the decrypted secrets</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/pod_impersonation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/pod_impersonation/</guid>
+      <description>Impersonating pod to decrypt it&amp;rsquo;s secrets Feature: Impersonating pod to decrypt it&amp;rsquo;s secrets In order to decrypt pod&amp;rsquo;s secrets As an attacker I want to impersonate this pod
+Scenario Outline: Impersonation via leaked token Given a service account token was compromised When the attacker use this token for authentication Then the attacker can decrypt this pod&amp;rsquo;s secrets forever
+Examples: Data types | data-type | | password | | API key | | X.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/sniffing_tampering/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/sniffing_tampering/</guid>
+      <description>Sniff requests and responses to Kamus Feature: Sniff requests and responses to Kamus In order to compromise secrets As an attacker I want to sniff requests and response to Kamus
+Scenario Outline: MitM Given a compromised Kubernetes node When the attacker sniff all the network traffic in this node Then the attacker can view reqeusts and responses to Kamus
+Examples: Data types | data-type | | password | | API key | | X.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/denial_of_service/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/denial_of_service/</guid>
+      <description>Kamus server disrupting Feature: Kamus server disrupting In order to distrupt Kamus server As an attacker I want to load it with requests
+Scenario: Encryption requests Given a name of a namespace and a service account When the attacker send massive amount of encrypt request Then the attacker can distrupt the service
+Remarks  Controls:  Block anonymous internet access to Kamus Deny request for default SA Client-side encryption Throttling requests by source IP  References:  https://en.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/namespace_enumeration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/namespace_enumeration/</guid>
+      <description>Exposing names of namespaces and service accounts Feature: Exposing names of namespaces and service accounts In order to find information As an attacker I want to enumarate all possible combinations of namespaces and service accounts
+Scenario Outline: Enumeration of all possible combinations Given a list of all possible combinations And the attacker send encrypt request for each combination When the attacker receive sucess response Then the attacker know the combination exists on the cluster</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/sniffing_user_traffic/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/sniffing_user_traffic/</guid>
+      <description>Sniffing user&amp;rsquo;s traffic Feature: Sniffing user&amp;rsquo;s traffic In order to find information As an attacker I want to sniff user&amp;rsquo;s traffic
+Scenario Outline: Sniffing encryption request Given a compromised user device When the user send an encryption request to Kamus Then the attacker can inspect the traffic and retrieve the secret sent to Kamus
+Examples: Data types | Namespace | | Service account | | Teams | | Partners | | Bussiness information |  Remarks  Controls:  Certificate pinning Client-side encryption  References:  https://en.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/kms/leaked_credentials/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/kms/leaked_credentials/</guid>
+      <description>Accessing KMS with leaked credentials Feature: Accessing KMS with leaked credentials In order to decrypt pod&amp;rsquo;s secrets As an attacker I can access KMS directly
+Scenario Outline: Used leaked credentials Given KMS compromised When the attacker call KMS with these credentials Then the attacker can decrypt any pod secrets, until the credentials expired
+Examples: Data types | data-type | | password | | API key | | X.509 private key | | SSH private key |  Remarks  Controls:  Enable firewall protection for KMS Credentials Hardening Use KMS with HSM support  References:  Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats/kms/quantom_computing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats/kms/quantom_computing/</guid>
+      <description>Breaking encryption key Feature: Breaking encryption key In order to decrypt pod&amp;rsquo;s secrets As an attacker I want to find the private key from the public key
+Scenario Outline: Using Shor&amp;rsquo;s algorithm Given a client with acess to a public key used by Kamus And a quantom-powered computer When the attacker use Shor&amp;rsquo;s algorithm Then the attacker can find the matching private key
+Examples: Data types | data-type | | password | | API key | | X.</description>
+    </item>
+    
+    <item>
+      <title>Architecture</title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/architecture/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/architecture/</guid>
+      <description> Kamus Architecture Kamus consist from 4 components:
+ Encrypt API - handling encryption Decrypt API - handling decryption, should not be exposed externally KMS - Handling the encryption using various providers. Controller - Responsible for interavtion with Kubernetes API, currently only for CRUD operations on KamusSecrets objects.  This is the flow of encryption/decryption: This is the flow of the Controller: </description>
+    </item>
+    
+    <item>
+      <title>Creating Kubernetes Secrets</title>
+      <link>https://kamus.soluto.io/docs/user/crd/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/user/crd/</guid>
+      <description>Custom Resource Descriptor Support Kamus supports also creating native Kubernetes secrets from an object called KamusSecret. KamusSecret is very similar to Secret, with one small difference - all the items in it are encrypted. Using KamusSecret allows to use Kamus with applications that requires native Kubernetes secrets - for example, TLS secrets.
+Usage KamusSecret works very similary to regular secret encryption flow with Kamus. To encrypt the data, start by deciding to which namespace and which service account you&amp;rsquo;re encrypting it.</description>
+    </item>
+    
+    <item>
+      <title>Getting Started</title>
+      <link>https://kamus.soluto.io/docs/contributing/getting-started/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/contributing/getting-started/</guid>
+      <description>Getting Started Welcome! This guide covers how to get started contributing to Kamus.
+1. Install Tools Install git Our source code is managed with git, to develop locally you will need to install git.
+You can check if git is already on your system and properly installed with the following command:
+git --version  Install Hugo If you wish to contribute to the documentation, it is recommended but not required to install hugo, which we use to develop this site.</description>
+    </item>
+    
+    <item>
+      <title>Installing Kamus</title>
+      <link>https://kamus.soluto.io/docs/user/install/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/user/install/</guid>
+      <description>Installing Kamus Kamus has an official helm chart, using it is the simplest way to install Kamus:
+helm repo add soluto https://charts.soluto.io helm upgrade --install kamus soluto/kamus  Careful - using this command will deploy Kamus with the default encryption keys. Meaning, anyone could decrypt the data that Kamus encrypt. This is fine for testing and playing with Kamus, but not for production installations. For production usage, please configuration one of the supported Key Management Solutions (KMS).</description>
+    </item>
+    
+    <item>
+      <title>Known Issues</title>
+      <link>https://kamus.soluto.io/docs/user/known-issues/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/user/known-issues/</guid>
+      <description>Known Issues Having problems with Kamus? This guide is covers some known problems and solutions / workarounds.
+It may additionally be helpful to:
+ check our issue tracker file an issue (if there isn&amp;rsquo;t one already) reach out and ask for help on the kamus slack (use the slack invite link)  Contents  Encryption failure  Encryption failure You might experience an issue when trying to encrypt with the CLI, similar to the following:</description>
+    </item>
+    
+    <item>
+      <title>Quick Start</title>
+      <link>https://kamus.soluto.io/docs/user/quick-start/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/user/quick-start/</guid>
+      <description>Quick Start The simple way to run Kamus is by using the Helm chart:
+helm repo add soluto https://charts.soluto.io helm upgrade --install kamus soluto/kamus  Refer to the installation guide to learn about production grade deployment. After installing Kamus, you can start using it to encrypt secrets. Kamus encrypt secrets for a specific application, represent by a Kubernetes Service Account. Create a service account for your application, and mount it on the pods running your application.</description>
+    </item>
+    
+    <item>
+      <title>Reporting Security Issues</title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/security/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/security/</guid>
+      <description>Reporting Security Issues If you discover a security issue in Kamus, please report it by sending an email to security@soluto.com.
+We have a S/MIME certificate for this address, use it to send encrypted mail messages.
+This will allow us to assess the risk, and make a fix available before we add a bug report to the GitHub repository.
+Thanks for helping make Kamus safe for everyone.</description>
+    </item>
+    
+    <item>
+      <title>Roadmap</title>
+      <link>https://kamus.soluto.io/docs/contributing/roadmap/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/contributing/roadmap/</guid>
+      <description>Roadmap 🗺️ This document outlines some goals and future aspirations for Kamus as a project.
+High level goals for Kamus include:
+Support for non-kubernetes deployments (#112) Automatic init container injection (#155) Stability, improve tests coverage and other non-functional tasks (there are multiple issues around this area)  Other goals / tasks not listed here can be found in the GitHub issues.
+Looking for good starting point? look for issues labeled good first issue or help wanted!</description>
+    </item>
+    
+    <item>
+      <title>Threats and Controls</title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/threats_controls/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/threats_controls/</guid>
+      <description> Threats and Controls This page document the output of Kamus threat model, by listing all the different threats and mitigations that we discussed.
+Threats Decryption  Impersonating pod to decrypt it&amp;rsquo;s secrets Sniff requests and responses to Kamus Using KamusSecret to decrypt secrets  Encryption  Kamus server disrupting Exposing names of namespaces and service accounts Sniffing user&amp;rsquo;s traffic  KMS  Accessing KMS with leaked credentials Breaking encryption key  Controls Decryption  Deny default service account Deny Kuberentes secrets view permissions Use TLS when accessing Kuberentes API Serve Kamus API over TLS Use a policy to control pod&amp;rsquo;s service account  Encryption  Block anonymous internet access to Kamus Certificate pinning Client-side encryption Deny request for default SA Throttling requests by source IP  Key Management System  Enable firewall protection for KMS Credentials Hardening Key names obfuscation Use KMS with HSM support  </description>
+    </item>
+    
+  </channel>
+</rss>

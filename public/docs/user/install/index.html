@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>kamus</title>
+  
+<style>html{width:100%;font-size:18px;line-height:1;-webkit-font-smoothing:antialiased!important;-moz-osx-font-smoothing:grayscale!important;text-rendering:optimizeLegibility!important;-webkit-tap-highlight-color:transparent;height:100%;min-height:100%;margin:0;padding:0;font-size:100%;background-color:#fff;color:#000;font-family:-apple-system,BlinkMacSystemFont,Roboto,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji}code,pre{font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,Roboto Mono,Courier,monospace}body{width:100%;margin:0;padding:0;font-size:18px;line-height:1.5;min-height:100%;display:flex;flex-direction:column;background-color:#fff}#wrapper{background-color:#fff;max-width:100%;clear:both;overflow-x:hidden;flex:1 0 auto;margin:0;margin-left:240px}.sidebar-collapsed #wrapper{margin-left:0}#content,.footer{padding-left:.2em;margin:0 auto;padding:0 4px;width:calc(100% - 8px);max-width:50em}#content{padding-top:1em;min-height:calc(100vh - 4em)}#navbar{position:fixed;top:0;width:calc(100% - 240px);padding:2px 0;margin-left:1px;background-color:#fff;border-bottom:1px solid rgba(0,0,0,.1);display:flex;justify-content:space-between}.sidebar-collapsed #navbar{width:100%;margin-left:0}#navbar-title>a{font-weight:700;font-size:20px;padding:0 4px;vertical-align:middle}#navbar-title>a,#github>a{text-decoration:none}#sidebar-toggle{color:#000;cursor:pointer;padding:1px .5em;padding-bottom:0;user-select:none}#github{padding:0 .5em}#github img{height:1.4em;width:1.4em;vertical-align:middle}#sidebar{height:100%;position:fixed;display:flex;flex-direction:column;width:240px;border-right:1px solid rgba(0,0,0,.1);background-color:#fafafa}.sidebar-collapsed #sidebar{display:none}#sidebar-logo{padding:16px;padding-bottom:10px}#sidebar-title{display:none;margin-top:-16px;padding-right:37px;margin-bottom:10px;text-align:center;text-decoration:none;font-size:24px;font-weight:700}#sidebar li.active-entry :first-child,#sidebar li.active :first-child{font-weight:700}#sidebar li.active-entry :first-child{color:#000}a{color:#1f28f0}#content img{max-width:100%}hr{background:#333;border:1px solid #333}pre{background-color:#f3f4f4!important;overflow-x:auto;border-radius:5px;padding:.5em;font-size:85%}code{background-color:#f3f4f4;border-radius:3px;padding:.1em .4em;font-size:85%}pre code{background-color:transparent;padding:0;font-size:100%}.footer{text-align:center}.footer>*{font-size:.6em;line-height:1}.hanchor{font-size:100%;visibility:hidden;font-size:.5em;vertical-align:middle;text-decoration:none!important}h1:hover a,h2:hover a,h3:hover a,h4:hover a{visibility:visible}#content ul{padding-left:1.75em}#content ul ul{padding-left:1em}#sidebar ul ul{padding-left:1.25em}@media(max-width:50em){#content{font-size:16px}#wrapper{margin-left:0}#wrapper #navbar{margin-left:241px}.sidebar-collapsed #wrapper #navbar{margin-left:0}#content ul{padding-left:1.5em}}</style>
+
+  
+<script>function toggleSidebar(){if(document.body.classList.contains('sidebar-collapsed')){window.localStorage.setItem('sidebar-collapsed','false');showSideBar();}else{window.localStorage.setItem('sidebar-collapsed','true');hideSideBar();}}
+function showSideBar(){document.body.classList.remove('sidebar-collapsed');}
+function hideSideBar(){document.body.classList.add('sidebar-collapsed');}
+function getWidth(){return Math.max(document.body.scrollWidth,document.documentElement.scrollWidth,document.body.offsetWidth,document.documentElement.offsetWidth,document.documentElement.clientWidth);}
+var oldWidth;document.addEventListener("DOMContentLoaded",function(){var manualCollapsed=window.localStorage.getItem('sidebar-collapsed');var width=getWidth();if(width>900&&(manualCollapsed=='false'||manualCollapsed==null)){showSideBar();}
+oldWidth=width;window.addEventListener("resize",function(){var width=getWidth();if(oldWidth==width){oldWidth=width;return;}
+oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.localStorage.getItem('sidebar-collapsed');if(manualCollapsed=='false'||manualCollapsed==null){showSideBar();}}});});</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-3743375-31"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-3743375-31');
+</script>
+<body ontouchstart="return true" class="sidebar-collapsed">
+<div id="sidebar">
+  <a href="https://kamus.soluto.io" id="sidebar-logo"><img src="/logo/logo.png" width="60%" alt="kamus logo"/></a>
+  <div style="background-color: rgba(0, 0, 0, 0.1); width: 100%; height: 1px"></div>
+  <ul>
+    
+    
+      
+        
+          <li class="">
+            <a href="/">
+              
+              <span>Home</span>
+            </a>
+          </li>
+        
+      
+    
+      
+        <li class="active"><span>User Guide</span></li>
+        <ul class="sub-menu">
+          
+            <li class="">
+              <a href="/docs/user/quick-start/">Quick Start</a>
+            </li>
+          
+            <li class="active-entry">
+              <a href="/docs/user/install/">Installing Kamus</a>
+            </li>
+          
+            <li class="">
+              <a href="/docs/user/crd/">Creating Kubernetes Secrets</a>
+            </li>
+          
+            <li class="">
+              <a href="/docs/user/known-issues/">Known Issues</a>
+            </li>
+          
+        </ul>
+      
+    
+      
+        <li class=""><span>Contributing</span></li>
+        <ul class="sub-menu">
+          
+            <li class="">
+              <a href="/docs/contributing/getting-started/">Getting Started</a>
+            </li>
+          
+            <li class="">
+              <a href="/docs/contributing/roadmap/">Roadmap</a>
+            </li>
+          
+        </ul>
+      
+    
+      
+        
+      
+    
+      
+        <li class=""><span>Threat Modeling</span></li>
+        <ul class="sub-menu">
+          
+            <li class="">
+              <a href="/docs/threatmodeling/architecture/">Architecture</a>
+            </li>
+          
+            <li class="">
+              <a href="/docs/threatmodeling/threats_controls/">Threats and Controls</a>
+            </li>
+          
+            <li class="">
+              <a href="/docs/threatmodeling/security/">Reporting Security Issues</a>
+            </li>
+          
+        </ul>
+      
+    
+  </ul>
+</div>
+<div id="wrapper"><div id="navbar">
+  <span id="sidebar-toggle" onclick="toggleSidebar()">&#9776;</span><span id="navbar-title"><a href="https://kamus.soluto.io">kamus</a></span><span id="github"><a href="https://github.com/soluto/kamus"><img alt="github" title="github" src="/third_party/GitHub-Mark-120px-plus.png"></a></span>
+</div>
+
+
+<div id="content">
+
+<h1 id="installing-kamus">Installing Kamus<a href="#installing-kamus" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
+
+<p>Kamus has an official helm chart, using it is the simplest way to install Kamus:</p>
+
+<pre><code>helm repo add soluto https://charts.soluto.io
+helm upgrade --install kamus soluto/kamus
+</code></pre>
+
+<p>Careful - using this command will deploy Kamus with the default encryption keys.
+Meaning, anyone could decrypt the data that Kamus encrypt.
+This is fine for testing and playing with Kamus, but not for production installations.
+For production usage, please configuration one of the supported Key Management Solutions (KMS).</p>
+
+<h2 id="contents">Contents<a href="#contents" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<ul>
+<li><a href="#aes-kms">AES KMS</a></li>
+<li><a href="#azure-keyvault-kms">Azure Keyvault KMS</a></li>
+<li><a href="#google-cloud-kms">Google Cloud KMS</a></li>
+<li><a href="#aws-kms">AWS KMS</a></li>
+</ul>
+
+<h3 id="aes-kms">AES KMS<a href="#aes-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>AES KMS is the simplest (but less secure) solution.
+Kamus will use one strong AES key to encrypt all the data.
+Currently, rolling this key is not supported.
+To deploy Kamus using AES Key:
+* Generate a strong AES key:</p>
+
+<pre><code>key=$(openssl rand -base64 32 | tr -d '\n')
+</code></pre>
+
+<ul>
+<li>Pass the value when deploying kamus, either using <code>values.yaml</code> or directly in the helm command:
+<code>
+helm upgrade --install kamus soluto/kamus --set keyManager.AES.key=$key
+</code></li>
+</ul>
+
+<h3 id="azure-keyvault-kms">Azure KeyVault KMS<a href="#azure-keyvault-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>Using <a href="https://azure.microsoft.com/en-us/services/key-vault/">Azure KeyVault</a> as the key management solution is the most secure solution when running a cluster on Azure.
+Azure documentation is far from perfect, so I&rsquo;m going to reffer to a lot of different guides because there is no one guide documenting the required process.</p>
+
+<p>Start by creating a KeyVault instance.
+It is recommend to create a KeyVault with HSM backend for additional security.
+Follow this <a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-manage-with-cli2#working-with-hardware-security-modules-hsms">guide</a> for details on how to create a KeyVault using the CLI. It is recommend to protect the KeyVault with firewall, see this <a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-network-security">guide</a> for additional details.</p>
+
+<p>After creating a KeyVault instance, Kamus need permissions to access it.
+You grant Kamus permissions by creating an Azure Active Directory application for Kamus, and granting permissions for this application to access the KeyVault created in the previous step.
+Creating the required app is covered in 2 parts of the same guide. The <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-an-azure-active-directory-application">first part</a> will guide you through the process of creating the app. The <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-application-id-and-authentication-key">second part</a> will guide you through the process of creating the client id and client secret, that are used by Kamus for authentication. Try to create the client secret for short period, for example 6 months, and rotate it frequently.</p>
+
+<p>Now you should have 3 objects: KeyVault, client id and client secret. The last part is to grant the application the required permissions on the KeyVault. First we need to get the object id of the application:</p>
+
+<pre><code>objectId=$(az ad app show --id &lt;&gt; --output json | jq '.objectId' -r)
+</code></pre>
+
+<p>Now use the following command to grant access:</p>
+
+<pre><code>az keyvault set-policy --name &lt;&gt; --object-id $objectId --key-permissions get list create encrypt decrypt
+</code></pre>
+
+<p>Now it&rsquo;s time to deploy Kamus! Use the following settings in your <code>values.yaml</code> file:</p>
+
+<pre><code>keyManagment:
+  provider: AzureKeyVault
+  azureKeyVault:
+    clientId: &lt;&gt;
+    clientSecret: &lt;&gt;
+    keyVaultName: &lt;&gt;
+    keyType: RSA-HSM //change to RSA if you choosed not to use premium SKU
+    keySize: 2048
+    maximumDataLength: 214
+</code></pre>
+
+<p>And now deploy Kamus using the following helm command:</p>
+
+<pre><code>helm upgrade --install kamus soluto/kamus -f &lt;path/to/values.yaml&gt;
+</code></pre>
+
+<h3 id="google-cloud-kms">Google Cloud KMS<a href="#google-cloud-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>Using <a href="https://cloud.google.com/kms/">Google Cloud KMS</a> as the key managment solution is the secure solution when running a cluster on Google Cloud.
+For a more secure installation, it is recommended to use a keys that are HSM-protected (see <a href="https://cloud.google.com/kms/docs/hsm">Cloud HSM</a> documentation). Before using Google Cloud KMS, make sure the api is <a href="https://console.cloud.google.com/flows/enableapi?apiid=cloudkms.googleapis.com&amp;redirect=https://console.cloud.google.com&amp;_ga=2.90411866.-1791338329.1542008700">enabled</a>.</p>
+
+<p>To interact with Google Cloud KMS, Kamus needs an existing key ring and a service account.
+To create a key ring, run the following command:</p>
+
+<pre><code>gcloud kms keyrings create &lt;key ring name&gt; --location &lt;location&gt;
+</code></pre>
+
+<p>If you plan to use HSM protection, choose a region that is supported - you can find the full list <a href="https://cloud.google.com/kms/docs/locations#hsm_regions">here</a>.</p>
+
+<p>To create a service account, run the following commands:
+* Start by creating a service account: <code>gcloud iam service-accounts create kamus</code>
+* Assing the service account the required permissions:</p>
+
+<pre><code>gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.cryptoKeyEncrypterDecrypter&quot;
+gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.admin&quot;
+</code></pre>
+
+<p>Please note: There is no exact role with all the required permissions for Kamus. It is recommended to create a custom role with the following permissions: <code>cloudkms.cryptoKeys.get</code>, <code>cloudkms.cryptoKeys.create</code>, <code>cloudkms.cryptoKeyVersions.useToEncrypt</code>, <code>cloudkms.cryptoKeyVersions.useToDecrypt</code>.
+* Generate keys for the service:</p>
+
+<pre><code>gcloud iam service-accounts keys create credentials.json --iam-account kamus@[PROJECT_ID].iam.gserviceaccount.com
+</code></pre>
+
+<p>Now add the following to your <code>values.yaml</code> file:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">keyManagement<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>provider<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>GoogleKms<span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>googleKms<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>location<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;location<span style="color:#8f5902;font-style:italic">&gt;
+</span><span style="color:#8f5902;font-style:italic">    keyRing: &lt;key ring name&gt;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>protectionLevel<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>HSM</code></pre></div>
+<p>And use the following command to deploy kamus:</p>
+
+<pre><code> helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials=&quot;$(cat credentials.json | base64)&quot;
+</code></pre>
+
+<h3 id="aws-kms">AWS KMS<a href="#aws-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>Using <a href="https://docs.aws.amazon.com/kms/latest/developerguide/overview.html">AWS KMS</a> as the key management solution is the most secure solution when running a cluster on AWS Cloud.
+The required permissions for the IAM role/user for Kamus to work properly are KMS permissions for Encrypt, Decrypt, and GenerateDataKey.</p>
+
+<p>There are 2 options to authentication with the KMS:</p>
+
+<ol>
+<li>Kamus by default will try to use the regular AWS SDK discovery mechanism, if your cluster in AWS you need to map IAM role to kamus POD by using one of the community tools, for example <a href="https://github.com/uswitch/kiam">kiam</a>.</li>
+<li>Provide user access key and secret with KMS access.</li>
+</ol>
+
+<p>Typical values.yaml for AWS :</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">keyManagement<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>provider<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>AwsKms</code></pre></div>
+<p>If you want to pass user access key and secret to Kamus deploy use the following values.yaml command:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">keyManagement<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>provider<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>AwsKms<span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">  </span>awsKms<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>region<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;<span style="color:#8f5902;font-style:italic">&gt;
+</span><span style="color:#8f5902;font-style:italic">    key: &lt;&gt;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>secret<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;&gt;</code></pre></div>
+<p>You can also provide <code>cmkPrefix</code> values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called <code>kamus-&lt;GUID&gt;</code>.
+And now deploy Kamus using the following helm command:</p>
+
+<pre><code>helm upgrade --install kamus soluto/kamus -f &lt;path/to/values.yaml&gt;
+</code></pre>
+</div>
+<div class="footer">
+  <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+  <p>Last Updated on 2019-04-15 13:15:20 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/caa63f8bcaf727c359c6905fcaa00186f0573bc6">caa63f8</a></span></p>
+</div>
+</div>
+</body>
+</html>
