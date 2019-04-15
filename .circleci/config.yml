@@ -272,20 +272,12 @@ jobs:
   build-website:
     docker:
       - image: circleci/buildpack-deps:trusty
-    working_directory: site
     steps:
       - checkout 
       - setup_remote_docker 
       - run:
-          name: configure git
-          command: |
-            git config user.email "ci-build@soluto.com"
-            git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
-      - run:
           name: build website
+          working_directory: site
           command: |
             yarn
             yarn run build
@@ -308,7 +300,7 @@ jobs:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "32:25:46:eb:9c:43:c0:25:4b:62:3f:f3:50:69:65:42"
+            - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --message "[skip ci] Updates" --dist website/
