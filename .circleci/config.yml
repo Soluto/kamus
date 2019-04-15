@@ -361,4 +361,7 @@ workflows:
       - deploy-website:
           requires:
             - build-website
+          filters:
+            branches:
+              only: master
 
