@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Kamus.KeyManagement;
 using Microsoft.Azure.KeyVault;
