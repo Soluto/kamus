@@ -291,7 +291,8 @@ jobs:
       - image: node:8.10.0
     steps:
       - attach_workspace:
-          at: website/
+          at: public/
+      - checkout 
       - run:
           name: Install and configure dependencies
           command: |
@@ -303,7 +304,7 @@ jobs:
             - "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
       - run:
           name: Deploy docs to gh-pages branch
-          command: gh-pages --message "[skip ci] Updates" --dist website/
+          command: gh-pages --message "[skip ci] Updates" --dist public/
 
 workflows:
   version: 2
