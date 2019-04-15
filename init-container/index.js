@@ -38,6 +38,7 @@ const stringifyIfJson = (secretValue) =>{
 }
 
 const decryptFile = async (httpClient, filePath, folder) => {
+    console.log(`Decrypting ${filePath}`);
     var encryptedContent = await readFileAsync(folder + '/' + filePath, "utf8");
     try {
       const response = await httpClient.post('/api/v1/decrypt', {data: encryptedContent});
