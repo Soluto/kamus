@@ -282,9 +282,9 @@ jobs:
             yarn
             yarn run build
       - persist_to_workspace:
-          root: site/public/
+          root: site
           paths: 
-            - "*.*"
+            - public
 
   deploy-website:
     docker:
