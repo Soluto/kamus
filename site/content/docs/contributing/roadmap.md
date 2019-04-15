@@ -25,3 +25,4 @@ Looking for good starting point? look for issues labeled [good first issue] or [
 [#155]: https://github.com/Soluto/kamus/issues/155
 [good first issue]: https://github.com/Soluto/kamus/labels/good%20first%20issue
 [help wanted]: https://github.com/Soluto/kamus/labels/help%20wanted
+[GitHub issues]: https://github.com/Soluto/Kamus/issues
