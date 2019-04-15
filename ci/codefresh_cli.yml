@@ -1,9 +1,0 @@
-version: '1.0'
-steps:
-  Unit Tests:
-    title: "Run Unit Tests"
-    image: node:10-alpine
-    working_directory: ./cli
-    commands:
-      - yarn install 
-      - yarn test

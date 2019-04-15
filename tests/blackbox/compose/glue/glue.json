@@ -1,5 +1,0 @@
-{
-  "ZAPhttp://api:9999/api/v1/isAliveResource Allows Anonymous Access": "ignore",
-  "ZAPhttp://api:9999/api/v1/encryptResource Allows Anonymous Access": "ignore",
-  "ZAPhttp://api:9999/api/v1/encryptBase64 Disclosure": "ignore"
-}

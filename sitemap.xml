@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://kamus.soluto.io/</loc>
+    <lastmod>2019-04-15T14:06:47+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/</loc>
+    <lastmod>2019-04-15T14:06:47+03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_default_sa/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_secret_view/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/k8s_api_tls/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/kamus_in_cluster_tls/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/opa_pods_secrets/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/block_internet_access/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/certificate_pinning/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/client_side_encryption/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/deny_default_sa/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/ip_throttling/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/leveraging_crd/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/pod_impersonation/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/decryption/sniffing_tampering/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/denial_of_service/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/namespace_enumeration/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/encryption/sniffing_user_traffic/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/kms/leaked_credentials/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats/kms/quantom_computing/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/architecture/</loc>
+    <lastmod>2019-04-14T17:03:01+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/user/crd/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/contributing/getting-started/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/user/install/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/user/known-issues/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/user/quick-start/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/security/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/contributing/roadmap/</loc>
+    <lastmod>2019-04-15T14:06:47+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/threats_controls/</loc>
+    <lastmod>2019-04-15T13:15:20+03:00</lastmod>
+  </url>
+  
+</urlset>
