@@ -271,7 +271,7 @@ jobs:
 
   build-website:
     docker:
-      - image: circleci/buildpack-deps:trusty
+      - image: node:8.10.0
     steps:
       - checkout 
       - setup_remote_docker 
