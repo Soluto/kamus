@@ -17,8 +17,6 @@ namespace integration
 
         public AwsKeyManagementTests()
         {
-            var lines = File.ReadLines("/Users/omerl/dev/kamus/tests/integration/.env");
-
             mConfiguration = new ConfigurationBuilder()
                 .AddJsonFile("settings.json")
                 .AddEnvironmentVariables().Build();
