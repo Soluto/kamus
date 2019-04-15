@@ -282,6 +282,7 @@ jobs:
             yarn
             yarn run build
       - persist_to_workspace:
+          working_directory: site
           root: public/
           paths: 
             - "*.*"
