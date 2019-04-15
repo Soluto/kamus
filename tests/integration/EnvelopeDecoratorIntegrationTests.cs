@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Kamus.KeyManagement;
 using Microsoft.Azure.KeyVault;
@@ -13,6 +16,18 @@ namespace integration
         
         public EnvelopeDecoratorIntegrationTests()
         {
+            var lines = File.ReadLines("/Users/omerl/dev/kamus/tests/integration/.env");
+
+            var regex = new Regex("(.*?)=(.*)");
+
+            foreach (var line in lines)
+            {
+                var match = regex.Match(line);
+
+                Environment.SetEnvironmentVariable(match.Groups[1].Value, match.Groups[2].Value);
+            }
+
+
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
             InitializeKeyManagement();
         }

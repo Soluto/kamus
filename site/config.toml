@@ -31,12 +31,6 @@ sectionPagesMenu = "main"
     title = "User Guide"
     weight = 2
   [[menu.main]]
-    identifier = "design"
-    name = "Design"
-    title = "Design"
-    url = "/docs/design/"
-    weight = 5
-  [[menu.main]]
     identifier = "contributing"
     name = "Contributing"
     title = "contributing"

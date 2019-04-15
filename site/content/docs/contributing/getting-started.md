@@ -8,17 +8,9 @@ menu:
 ---
 # Getting Started
 
-Welcome! This guide covers how to get started contributing to kind.
+Welcome! This guide covers how to get started contributing to Kamus.
 
-## 1. Read the Kubernetes community guidelines
-
-Make sure to read you read the [Kubernetes community guidelines][community].
-In specific, read through the [Kubernetes contributor guidelines][contributor].
-
-Additionally, note that kind is developed on [GitHub][github] and will require
-an account to contribute.
-
-## 2. Install Tools
+## 1. Install Tools
 
 ### Install git
 
@@ -40,28 +32,44 @@ required to install [hugo], which we use to develop this site.
 Please see: https://gohugo.io/getting-started/installing/
 
 
-### Install Go
+### Install .NET core
 
-To work on kind's codebase you will need [Go][golang].
+To work on Kamus's API codebase you will need [.NET core].
 
-Install or upgrade [Go using the instructions for your operating system][golang].
-You can check if Go is in your system with the following command:
+Install or upgrade [.NET core using the instructions for your operating system][.NET core].
+You can check if .NET is in your system with the following command:
 
 ```
-go version
+dotnet --version
 ```
 
-Preferably Go `1.11.5` or greater should be installed. 
+Required .NET `2.2.103` or greater should be installed. 
 
-Correct automatic formatting of the source with `gofmt` requires at least
-`1.11.0`.
+### Install NodeJS
 
-Working with Go [modules] (which we use for dependency management) requires at
-least `1.11.4` due to checksum bugs in lower versions.
+To work on Kamus's CLI or init container you will need [NodeJS]
+
+Install or upgrade [NodeJS using the instructions for your operating system][NodeJS].
+You can check if NodeJS is in your system with the following command:
+
+```
+node --version
+```
+
+Required NodeJS `v10.0.0` or greater should be installed. 
+
+It is recommended to use [yarn] instead of NPM. 
+You can check if Yarn is in your system using the following command:
+
+```
+yarn --version
+```
+
+Recommended Yarn `1.12.1` or greater should be installed. 
 
 ### Install Docker
 
-Currently, to create clusters you will need to install [Docker][docker].
+To develop Kamus you will need to install [Docker][docker].
 
 If you haven't already, [install Docker][install docker], following the
 [official instructions][install docker].
@@ -72,14 +80,29 @@ To check if `docker` is has been installed:
 ```
 docker --version
 ```
-This documentation is written using Docker version 18.09.2.
+Recommend usin Docker version 18.09.2 or greater.
 
-## 3. Read The Docs 
+### Install Kubernetes
 
-The [design principles], [1.0 roadmap], [project structure], and [initial design]
+You'll also need [Kubernetes] to develop Kamus.
+
+To install Kubernetes locally, you can use either [minikube], [docker for desktop] or [kind] (which is also required for running the black box tests).
+To interact with the cluster you'll also have to install [kubectl]
+
+You can check if NodeJS is in your system with the following command:
+
+```
+kubectl version
+```
+
+Kamus support all the versions supported by Kubernetes - currently it.s 1.12.\*, 1.13.\* or 1.14.\*.
+
+## 2. Read The Docs 
+
+The [roadmap], [architecture], and [threat modeling]
 may be helpful to review before contributing.
 
-## 4. Reaching Out
+## 3. Reaching Out
 
 Issues are tracked on GitHub. Please check [the issue tracker][issues] to see
 if there is any existing dicussion or work related to your interests.
@@ -89,33 +112,32 @@ If you do not see anything, please [file a new issue][file an issue].
 Please reach out for bugs, feature requests, and other issues!  
 The maintainers of this project are reachable via:
 
-- [Kubernetes Slack] in the [#kind] channel
+- reach out and ask for help on the [kamus slack][kamus slack] (use the [slack invite] link)
 - [filing an issue][file an issue]
-- The Kubernetes [SIG-Testing Mailing List]
 
-Current maintainers are [@BenTheElder] and [@munnerz] - feel free to
+Current maintainers are [@omerlh] and [@shaikatz] - feel free to
 reach out if you have any questions!
-
-See also: the Kubernetes [community page].
 
 [git]: https://git-scm.com/
 [hugo]: https://gohugo.io
-[issues]: https://github.com/kubernetes-sigs/kind/issues
-[file an issue]: https://github.com/kubernetes-sigs/kind/issues/new
-[design principles]: /docs/design/principles
-[1.0 roadmap]: /docs/contributing/1.0-roadmap
-[project scope]: /docs/contributing/project-scope
-[project structure]: /docs/contributing/project-structure
-[initial design]: /docs/design/initial
+[roadmap]: /docs/contributing/roadmap
+[architecture]: /docs/threatmodeling/architecture
+[threat modeling]: /docs/threatmodeling/threats_controls
 [github]: https://github.com/
-[golang]: https://golang.org/doc/install
+[.NET core]: https://dotnet.microsoft.com/download
+[NodeJS]: https://nodejs.org/en/download/
+[yarn]: https://yarnpkg.com/lang/en/docs/install/
 [docker]: https://www.docker.com/
 [install docker]: https://docs.docker.com/install/#supported-platforms
+[Kubernetes]: https://kubernetes.io
+[minikube]: https://kubernetes.io/docs/tasks/tools/install-minikube/
+[docker for desktop]: https://docs.docker.com/docker-for-mac/#kubernetes
+[kubectl]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [community]: https://github.com/kubernetes/community
 [contributor]: https://github.com/kubernetes/community/blob/master/contributors/guide/README.md
-[Kubernetes Slack]: http://slack.k8s.io/
-[#kind]: https://kubernetes.slack.com/messages/CEKK1KTN2/
-[@BenTheElder]: https://github.com/BenTheElder
-[@munnerz]: https://github.com/munnerz
-[community page]: http://kubernetes.io/community/
-[modules]: https://github.com/golang/go/wiki/Modules
+[issues]: https://github.com/Soluto/Kamus/issues
+[file an issue]: https://github.com/Soluto/Kamus/issues/new
+[kamus slack]: http://k8s-kamus.slack.io/
+[slack invite]: https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE
+[@omerlh]: https://github.com/omerlh
+[@shaikatz]: https://github.com/shaikatz

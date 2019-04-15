@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Kamus.KeyManagement;
 using Microsoft.AspNetCore.WebUtilities;
@@ -20,6 +22,17 @@ namespace integration
         private readonly string mKeyVaultName;
         public AzureKeyVaultIntegrationTests()
         {
+            var lines = File.ReadLines("/Users/omerl/dev/kamus/tests/integration/.env");
+
+            var regex = new Regex("(.*?)=(.*)");
+
+            foreach (var line in lines)
+            {
+                var match = regex.Match(line);
+
+                Environment.SetEnvironmentVariable(match.Groups[1].Value, match.Groups[2].Value);
+            }
+
             mConfiguration = new ConfigurationBuilder().AddJsonFile("settings.json").AddEnvironmentVariables().Build();
             mKeyVaultName = mConfiguration.GetValue<string>("KeyManagement:KeyVault:Name");
             InitializeKeyManagement();

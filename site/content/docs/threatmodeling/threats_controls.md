@@ -4,7 +4,7 @@ menu:
   main:
     parent: "Threat Modeling"
     identifier: "threat_controls"
-    weight: 1
+    weight: 2
 ---
 
 # Threats and Controls
