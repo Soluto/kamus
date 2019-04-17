@@ -37,7 +37,12 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             mSubscription = Observable.FromAsync(async () =>
             {
-                var result = await mKubernetes.ListClusterCustomObjectWithHttpMessagesAsync("soluto.com", "v1alpha1", "kamussecrets", watch: true);
+                var result = await mKubernetes.ListClusterCustomObjectWithHttpMessagesAsync(
+                    "soluto.com", 
+                    "v1alpha1",
+                    "kamussecrets", 
+                    watch: true, 
+                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds);
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
 
                 var watcher = result.Watch<KamusSecret>(
