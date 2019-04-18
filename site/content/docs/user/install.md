@@ -128,6 +128,7 @@ Typical values.yaml for AWS :
 ```yaml
 keyManagement:
   provider: AwsKms
+  region: <the region to use for AWS KMS, if not specified by the instance metadata>
 ```
 If you want to pass user access key and secret to Kamus deploy use the following values.yaml command:
 ```yaml
@@ -138,7 +139,7 @@ keyManagement:
     key: <>
     secret: <>
 ```
-You can also provide `cmkPrefix` values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called `kamus-<GUID>`.
+You can also provide `cmkPrefix` values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called `kamus-<GUID>`. 
 And now deploy Kamus using the following helm command:
 ```
 helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
