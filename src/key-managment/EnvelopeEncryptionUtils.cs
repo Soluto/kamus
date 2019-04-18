@@ -13,6 +13,11 @@ namespace Kamus.KeyManagement
             return $"env${encryptedDataKey}${Convert.ToBase64String(iv)}:{Convert.ToBase64String(encryptedData)}";
         }
 
+        /// <summary>
+        /// Return some with the decryption results if the value is wrapped, otherwise returns none.
+        /// </summary>
+        /// <returns>The unwrap.</returns>
+        /// <param name="wrappedData">Wrapped data.</param>
         public static Option<Tuple<string, byte[], byte[]>> Unwrap(string wrappedData)
         {
             var match = WrappedDataRegex.Match(wrappedData);

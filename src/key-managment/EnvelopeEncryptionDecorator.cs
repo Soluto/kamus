@@ -36,19 +36,19 @@ namespace Kamus.KeyManagement
 
         public Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var result = EnvelopeEncryptionUtils.Unwrap(encryptedData);
+            return EnvelopeEncryptionUtils.Unwrap(encryptedData).Match(
+                some: async t =>
+                {
+                    (string encryptedDataKey, byte[] iv, byte[] actualEncryptedData) = t;
+                    mLogger.Information("Encrypted data mactched envelope encryption pattern");
 
-            return result.Map(async t =>
-            {
-                (string encryptedDataKey, byte[] iv, byte[] actualEncryptedData) = t;
-                mLogger.Information("Encrypted data mactched envelope encryption pattern");
+                    var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
 
-                var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
-
-                var decrypted = RijndaelUtils.Decrypt(Convert.FromBase64String(key), iv, actualEncryptedData);
-                return Encoding.UTF8.GetString(decrypted);
-            })
-            .ValueOr(async () => await mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId));
+                    var decrypted = RijndaelUtils.Decrypt(Convert.FromBase64String(key), iv, actualEncryptedData);
+                    return Encoding.UTF8.GetString(decrypted);
+                },
+                none: () => mMasterKeyManagement.Decrypt(encryptedData, serviceAccountId)
+            );
         }
     }
 }
