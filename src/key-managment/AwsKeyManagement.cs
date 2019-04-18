@@ -2,10 +2,11 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Amazon.KeyManagementService;
 using Amazon.KeyManagementService.Model;
+using Optional.Unsafe;
+
 
 namespace Kamus.KeyManagement
 {
@@ -34,7 +35,9 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
-            var (encryptedDataKey, iv, actualEncryptedData) = EnvelopeEncryptionUtils.Unwrap(encryptedData);
+            var tuple = EnvelopeEncryptionUtils.Unwrap(encryptedData).ValueOrFailure("Invalid encrypted data format");
+
+            var (encryptedDataKey, iv, actualEncryptedData) = tuple;
 
             var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {

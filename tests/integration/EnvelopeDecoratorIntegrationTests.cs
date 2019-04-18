@@ -36,7 +36,19 @@ namespace integration
             var encryptedData = await mDecorator.Encrypt("123", "a-service-account");
             Assert.DoesNotContain(encryptedData, "env$");
         }
-        
+
+        [Fact]
+        public async Task DataIsLessThenMaximumConfiguration_DecryptsBackCorrectly()
+        {
+            var data = "123";
+            var encryptedData = await mDecorator.Encrypt(data, "a-service-account");
+
+            var decryptedString = await mDecorator.Decrypt(encryptedData, "a-service-account");
+
+            Assert.Equal(data, decryptedString);
+
+        }
+
         [Fact]
         public async Task DataIsMoreThenMaximumConfiguration_EnvelopeApplied_DecryptsBackCorrectly()
         {

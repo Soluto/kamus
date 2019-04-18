@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Optional;
+using System;
 using System.Text.RegularExpressions;
 
 namespace Kamus.KeyManagement
@@ -12,20 +13,20 @@ namespace Kamus.KeyManagement
             return $"env${encryptedDataKey}${Convert.ToBase64String(iv)}:{Convert.ToBase64String(encryptedData)}";
         }
 
-        public static (string encryptedDataKey, byte[] iv, byte[] encryptedData) Unwrap(string wrappedData)
+        public static Option<Tuple<string, byte[], byte[]>> Unwrap(string wrappedData)
         {
             var match = WrappedDataRegex.Match(wrappedData);
 
             if (!match.Success)
             {
-                throw new InvalidOperationException("Invalid encrypted data format");
+                Option.None<Tuple<string, byte[], byte[]>>();
             }
 
             var encryptedDataKey = match.Groups["encryptedDataKey"].Value;
             var actualEncryptedData = Convert.FromBase64String(match.Groups["encryptedData"].Value);
             var iv = Convert.FromBase64String(match.Groups["iv"].Value);
 
-            return (encryptedDataKey, iv, actualEncryptedData);
+            return Option.Some(Tuple.Create(encryptedDataKey, iv, actualEncryptedData));
         }
     }
 }
