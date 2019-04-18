@@ -19,21 +19,17 @@ namespace CustomResourceDescriptorController
     {
         public Startup(IHostingEnvironment env, IConfiguration config)
         {
-            var appsettingsPath = "appsettings.json";
-            var secretsPath = "appsettings.secrets.json";
-            var basePath = Directory.GetCurrentDirectory();
+            string appsettingsPath = "appsettings.json";
 
             if (env.IsDevelopment())
             {
-                basePath = Directory.GetCurrentDirectory();
                 appsettingsPath = "appsettings.Development.json";
-                secretsPath = "appsettings.Development.secrets.json";
             }
-            
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath(basePath)
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile(appsettingsPath, optional: true, reloadOnChange: true)
-                .AddJsonFile($"/secrets/{secretsPath}", optional: true)
+                .AddJsonFile("secrets/appsettings.secrets.json", optional: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
