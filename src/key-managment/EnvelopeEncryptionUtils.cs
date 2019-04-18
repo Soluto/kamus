@@ -24,7 +24,7 @@ namespace Kamus.KeyManagement
 
             if (!match.Success)
             {
-                Option.None<Tuple<string, byte[], byte[]>>();
+                return Option.None<Tuple<string, byte[], byte[]>>();
             }
 
             var encryptedDataKey = match.Groups["encryptedDataKey"].Value;
