@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Net.Http;
+using Microsoft.Rest;
+using System;
 
 namespace CustomResourceDescriptorController
 {
@@ -47,8 +50,15 @@ namespace CustomResourceDescriptorController
 
             services.AddKeyManagement(Configuration, Log.Logger);
 
+
+
             services.AddSingleton<IKubernetes>(s =>
-                new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig())
+            {
+                var k = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+                k.HttpClient.Timeout = TimeSpan.FromMinutes(60);
+
+                return k;
+            }
             );
                 
             services.AddHostedService<V1AlphaController>();
@@ -72,5 +82,6 @@ namespace CustomResourceDescriptorController
 
             app.UseHealthChecks("/healthz");
         }
+
     }
 }
