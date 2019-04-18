@@ -16,7 +16,7 @@ The simple way to run Kamus is by using the Helm chart:
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install kamus soluto/kamus
 ```
-Refer to the [installation guide](./docs/install.md) for more details.
+Refer to the [installation guide](https://kamus.soluto.io/docs/user/install/) for more details.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a [Kubernetes Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account).
 Create a service account for your application, and mount it on the pods running your application.
@@ -58,7 +58,7 @@ Consult the [installation guide](docs/install.md) for more details on how to dep
 Kamus is shipped with 2 utilities that make it easier to use:
 * Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/cli/README.md) for more details.
 * Kamus init container - a init container that interacts with the Decrypt API. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/init-container/README.md) for more details.
-* CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/docs/crd.md) for more details.
+* CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs](https://kamus.soluto.io/docs/user/crd/) for more details.
 
 ## Security
 We take security seriously at Soluto.
