@@ -17,7 +17,7 @@ KamusSecret works very similary to regular secret encryption flow with Kamus.
 To encrypt the data, start by deciding to which namespace and which service account you're encrypting it.
 The service account does not have to exist or used by the pod consuming the secret.
 It just used for expressing who can consume this encrypted secret.
-Use the [CLI](../cli/README.md) to encrypt the data:
+Use the [CLI](https://github.com/Soluto/kamus/blob/master/cli/README.md) to encrypt the data:
 ```
 kamus-cli encrypt 
   --secret super-secret \\ 
