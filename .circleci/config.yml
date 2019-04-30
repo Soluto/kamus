@@ -271,7 +271,7 @@ jobs:
 
   build-website:
     docker:
-      - image: node:8.10.0
+      - image: node:8.16.0
     steps:
       - checkout 
       - setup_remote_docker 
@@ -288,7 +288,7 @@ jobs:
 
   deploy-website:
     docker:
-      - image: node:8.10.0
+      - image: node:8.16.0
     steps:
       - checkout 
       - attach_workspace:
