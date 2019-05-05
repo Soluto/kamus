@@ -124,7 +124,7 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 <p>An open source, GitOps, zero-trust secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault, Google Cloud KMS, Amazon Web Services KMS and AES).
-To learn more about Kamus, check out the <a href="https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github">blog post</a> and <a href="https://www.slideshare.net/SolutoTLV/can-kubernetes-keep-a-secret">slides</a>.</p>
+To learn more about Kamus, check out the <a href="https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github">blog post</a> and a <a href="https://www.youtube.com/watch?v=FoM3u8G99pc&amp;&amp;index=14&amp;t=0s">talk</a> from AppSec California 2019.</p>
 
 <h2 id="utilities">Utilities<a href="#utilities" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
@@ -143,6 +143,27 @@ To learn more about the security aspects of Kamus refer to the Threat Modeling d
 Before installing Kamus in production refer to the installation guide to learn the best practices of deploying Kamus securely.
 In case you find a security issue or have something you would like to discuss refer to our <a href="docs/threatmodeling/security">responsible disclousre</a> policy.</p>
 
+<h2 id="alternatives-to-kamus">Alternatives to Kamus<a href="#alternatives-to-kamus" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Kamus designed to support GitOps flow.
+There are other projects you can use to encrypt secrets for Kubernetes, for example:</p>
+
+<ul>
+<li><a href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</a></li>
+<li><a href="https://github.com/futuresimple/helm-secrets">Helm Secrets</a></li>
+</ul>
+
+<p>There are also good solutions that let you have a centralized location for storing secrets, for example:</p>
+
+<ul>
+<li><a href="https://www.vaultproject.io/">Hashicorp Vault</a></li>
+<li><a href="https://github.com/lyft/confidant">Lyft Confidant</a></li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS SSM Parameter Store</a></li>
+<li><a href="https://azure.microsoft.com/en-us/services/key-vault/">Azure KeyVault</a></li>
+</ul>
+
+<p>Kamus works a bit different from those projects. This is discussed as part of this <a href="https://www.youtube.com/watch?v=FoM3u8G99pc&amp;&amp;index=14&amp;t=0s">talk</a>.</p>
+
 <h2 id="contributing">Contributing<a href="#contributing" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Found a bug? Have a missing feature? Please open an issue and let us know.
@@ -156,7 +177,7 @@ We will immediately delete such issues.</p>
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-04-15 16:15:25 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/70c61402fcf9d9aebf74577ec944e800fb4a59ed">70c6140</a></span></p>
+  <p>Last Updated on 2019-05-05 09:09:53 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/50ce1b4556cdcf105924b800e415ca0da899b2cd">50ce1b4</a></span></p>
 </div>
 </div>
 </body>
