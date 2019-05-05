@@ -4,13 +4,17 @@
   "description": "Meant to be used inside init container to read encrypted values from a given folder and decrypt to them into a json in a given folder",
   "main": "index.js",
   "scripts": {
-    "test": "cd tests && ./run_test.sh"
+    "test": "cd tests && ./run_test.sh",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Soluto",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "commander": "^2.19.0",
-    "node-readfiles": "^0.2.0"
-  }
+    "node-readfiles": "^0.2.0",
+    "snyk": "^1.161.1"
+  },
+  "snyk": true
 }
