@@ -9,10 +9,12 @@ WORKDIR /home/node/app
 # where available (npm@5+)
 COPY package*.json yarn.lock ./
 
-RUN yarn --prod
+RUN yarn --prod 
 
 # Bundle app source
 COPY . .
+
+RUN yarn run snyk-protect
 
 USER node
 
