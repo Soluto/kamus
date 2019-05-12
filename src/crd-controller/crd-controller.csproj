@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="1.5.18" />
+    <PackageReference Include="KubernetesClient" Version="1.5.19" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="3.1.0" />
