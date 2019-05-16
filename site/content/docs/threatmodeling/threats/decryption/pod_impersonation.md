@@ -34,6 +34,7 @@ Feature: Impersonating pod to decrypt it's secrets
  * [Deny request for default SA](/docs/threatmodeling/controls/decryption/deny_default_sa)
  * [Deny Kuberentes secrets view permissions](/docs/threatmodeling/controls/decryption/deny_secret_view)
  * [Use TLS when accessing Kuberentes API](/docs/threatmodeling/controls/decryption/k8s_api_tls)
+ * [Use a policy to control pod's service account](/docs/threatmodeling/controls/decryption/opa_pods_secrets)
 *  References: 
  * https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
  * https://kubernetes.io/docs/concepts/configuration/secret#service-accounts-automatically-create-and-attach-secrets-with-api-credentials
