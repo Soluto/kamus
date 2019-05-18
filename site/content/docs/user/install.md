@@ -36,7 +36,7 @@ key=$(openssl rand -base64 32 | tr -d '\n')
 ```
 * Pass the value when deploying kamus, either using `values.yaml` or directly in the helm command:
 ```
-helm upgrade --install kamus soluto/kamus --set keyManager.AES.key=$key
+helm upgrade --install kamus soluto/kamus --set keyManagement.AES.key=$key
 ```
 
 ### Azure KeyVault KMS
