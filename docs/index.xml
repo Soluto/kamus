@@ -332,9 +332,8 @@ Thanks for helping make Kamus safe for everyone.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://kamus.soluto.io/docs/contributing/roadmap/</guid>
-      <description>Roadmap 🗺️ This document outlines some goals and future aspirations for Kamus as a project.
-High level goals for Kamus include:
-Support for non-kubernetes deployments (#112) Automatic init container injection (#155) Stability, improve tests coverage and other non-functional tasks (there are multiple issues around this area)  Other goals / tasks not listed here can be found in the GitHub issues.
+      <description>Roadmap 🗺️ This document outlines the features we plan to work on in the near future:
+Support for non-kubernetes deployments (#112) Templating support for init container (#141, #202) Automatic init container injection (#155) Stability, improve tests coverage and other non-functional tasks (there are multiple issues around this area)  Other goals / tasks not listed here can be found in the GitHub issues.
 Looking for good starting point? look for issues labeled good first issue or help wanted!</description>
     </item>
     
