@@ -8,7 +8,7 @@ menu:
 ---
 # Roadmap 🗺️
 
-This document outlines the features we planned to work on in the near future:
+This document outlines the features we plan to work on in the near future:
 
 - [ ] Support for non-kubernetes deployments (#112)
 - [ ] Templating support for init container (#141, #202)
