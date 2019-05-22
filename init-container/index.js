@@ -15,6 +15,16 @@ program
     .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
     .parse(process.argv);
 
+//Source: https://blog.raananweber.com/2015/12/15/check-if-a-directory-exists-in-node-js/
+function checkDirectorySync(directory) {  
+  try {
+    fs.statSync(directory);
+  } catch(e) {
+    fs.mkdirSync(directory);
+  }
+}
+    
+
 const getEncryptedFiles = async (folder) => {
     return await readfiles(folder, function (err, filename, contents) {
         if (err) throw err;
@@ -30,7 +40,12 @@ const getKamusUrl = () => {
 }
 
 const getBarerToken = async () => {
-    return await readFileAsync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8");
+    var tokenFilePath = process.env.TOKEN_FILE_PATH;
+    if (tokenFilePath == null || tokenFilePath == "")
+    {
+      tokenFilePath = "/var/run/secrets/kubernetes.io/serviceaccount/token";
+    }
+    return await readFileAsync(tokenFilePath, "utf8");
 }
 
 const stringifyIfJson = (secretValue) =>{
@@ -96,6 +111,8 @@ async function innerRun() {
             secrets[file] = await decryptFile(httpClient, file, folder);
         }
     }
+
+    checkDirectorySync(program.decryptedPath);
     
     const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
     console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
