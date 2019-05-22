@@ -6,6 +6,7 @@ const readFileAsync = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 const axios = require('axios');
 const path = require('path');
+let ejs = require('ejs');
 
 program
     .version('0.1.0')
@@ -61,37 +62,12 @@ const decryptFile = async (httpClient, filePath, folder) => {
     } catch (e) {
       throw new Error(`request to decrypt API failed: ${e.response ? e.response.status : e.message}`)
     }
-    return response.data;
 }
 
-const serializeToCfgFormat = (secrets) => {
-  var output = "";
-  Object.keys(secrets).forEach(key => {
-    output += `${key}=${stringifyIfJson(secrets[key])}\n`;
-  });
-  
-  output = output.substring(0, output.lastIndexOf('\n'));
-
-  return output;
-}
-
-const serializeToCfgFormatStrict = (secrets) => {
-  var output = "";
-  Object.keys(secrets).forEach(key => {
-    switch(typeof(secrets[key]))
-    {
-      case "string":
-        output += `${key}="${secrets[key]}"\n`
-        break;
-      default:
-        output += `${key}=${stringifyIfJson(secrets[key])}\n`
-    }
-    
-  });
-  
-  output = output.substring(0, output.lastIndexOf('\n'));
-
-  return output;
+const writeFileWithTemplate = async (secrets, templateName, outputFile) => {
+  var template = await fs.readFileAsync(`templates/${templateName}.ejs`, "utf-8");
+  var rendered = ejs.render(template, {secrets}, {});
+  await writeFile(outputFile, rendered);
 }
 
 async function innerRun() {
@@ -119,13 +95,13 @@ async function innerRun() {
 
     switch(program.outputFormat.toLowerCase()){
       case "json":
-        await writeFile(outputFile, JSON.stringify(secrets));
+        await writeFileWithTemplate(secrets, "json", outputFile);
         break;
       case "cfg":
-        await writeFile(outputFile, serializeToCfgFormat(secrets));
+        await writeFileWithTemplate(secrets, "cfg", outputFile);
         break;
       case "cfg-strict":
-        await writeFile(outputFile, serializeToCfgFormatStrict(secrets));
+        await writeFileWithTemplate(secrets, "cfg-strict", outputFile);
         break;
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), stringifyIfJson(secrets[secretName]))));
