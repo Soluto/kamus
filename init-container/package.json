@@ -7,7 +7,7 @@
     "test": "cd tests && ./run_test.sh",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
-    "pretest": "ejslint",
+    "pretest": "ejslint templates/*",
     "ejslint": "ejslint templates/*"
   },
   "author": "Soluto",

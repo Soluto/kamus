@@ -13,7 +13,7 @@ program
     .option('-e, --encrypted-folders <path>', 'Encrypted files folder paths, comma separated')
     .option('-d, --decrypted-path <path>', 'Decrypted file/s folder path')
     .option('-n, --decrypted-file-name <name>', 'Decrypted file name' )
-    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files', /^(json|cfg|cfg-strict|files)$/i, 'json')
+    .option('-f, --output-format <format>', 'The format of the output file, default to JSON. Supported types: json, cfg, files, custom', /^(json|cfg|cfg-strict|files|custom)$/i, 'json')
     .parse(process.argv);
 
 //Source: https://blog.raananweber.com/2015/12/15/check-if-a-directory-exists-in-node-js/
@@ -65,7 +65,7 @@ const decryptFile = async (httpClient, filePath, folder) => {
 }
 
 const writeFileWithTemplate = async (secrets, templateName, outputFile) => {
-  var template = await fs.readFileAsync(`templates/${templateName}.ejs`, "utf-8");
+  var template = await readFileAsync(templateName, "utf-8");
   var rendered = ejs.render(template, {secrets}, {});
   await writeFile(outputFile, rendered);
 }
@@ -81,9 +81,14 @@ async function innerRun() {
     });
 
     let secrets = {};
+    var templatePath = "";
     for (let folder of program.encryptedFolders.split(",")) {
         let files = await getEncryptedFiles(folder);
         for (let file of files) {
+            if (file === "template.ejs" && program.outputFormat === "custom"){
+              templatePath = path.join(folder, file)
+              continue;
+            }
             secrets[file] = await decryptFile(httpClient, file, folder);
         }
     }
@@ -95,16 +100,23 @@ async function innerRun() {
 
     switch(program.outputFormat.toLowerCase()){
       case "json":
-        await writeFileWithTemplate(secrets, "json", outputFile);
+        await writeFileWithTemplate(secrets, "templates/json.ejs", outputFile);
         break;
       case "cfg":
-        await writeFileWithTemplate(secrets, "cfg", outputFile);
+        await writeFileWithTemplate(secrets, "templates/cfg.ejs", outputFile);
         break;
       case "cfg-strict":
-        await writeFileWithTemplate(secrets, "cfg-strict", outputFile);
+        await writeFileWithTemplate(secrets, "templates/cfg-strict.ejs", outputFile);
         break;
       case "files":
         await Promise.all(Object.keys(secrets).map(secretName => writeFile(path.join(program.decryptedPath, secretName), stringifyIfJson(secrets[secretName]))));
+        break;
+      case "custom":
+        if (templatePath == "")
+        {
+          throw new Error(`Missing template file, cannot write output`);
+        }
+        await writeFileWithTemplate(secrets, templatePath, outputFile);
         break;
       default:
         throw new Error(`Unsupported output format: ${program.outputFormat}`);
