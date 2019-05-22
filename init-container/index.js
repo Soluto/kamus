@@ -66,7 +66,7 @@ const decryptFile = async (httpClient, filePath, folder) => {
 
 const writeFileWithTemplate = async (secrets, templateName, outputFile) => {
   var template = await readFileAsync(templateName, "utf-8");
-  var rendered = ejs.render(template, {secrets}, {});
+  var rendered = ejs.render(template, {secrets, stringifyIfJson}, {});
   await writeFile(outputFile, rendered);
 }
 
