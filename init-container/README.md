@@ -42,7 +42,7 @@ metadata:
 data:
   key: 4AD7lM6lc4dGvE3oF+5w8g==:WrcckiNNOAlMhuWHaM0kTw==
   template.ejs: |
-     <%= secrets["key"] -%>
+     <%= secrets["key"] %>
      hello
 ```
 

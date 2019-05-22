@@ -42,6 +42,17 @@ diff -q output/out.cfg-strict expected-strict.cfg
 
 rm -rf output
 
+echo "running decryptor - custom format"
+
+cp templates/template.ejs encrypted/
+OUTPUT_FORMAT=custom docker-compose run decryptor
+rm -rf encrypted/template.ejs
+echo "comparing out.custom and expected-custom.txt files"
+
+diff -q output/out.custom expected-custom.txt
+
+rm -rf output
+
 echo "running decryptor - files format"
 
 OUTPUT_FORMAT=files docker-compose run decryptor
