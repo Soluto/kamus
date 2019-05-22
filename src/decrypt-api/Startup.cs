@@ -49,7 +49,12 @@ namespace Kamus
                 swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Kamus Swagger" });
             });
 
-            services.AddSingleton<IKubernetes>(s => new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig()));
+            services.AddSingleton<IKubernetes>(s => {
+                var config = string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"])
+                ? KubernetesClientConfiguration.BuildDefaultConfig()
+                : new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
+                return new Kubernetes(config);
+                });
 
             services.AddKeyManagement(Configuration, Log.Logger);
 
