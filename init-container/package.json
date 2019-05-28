@@ -1,18 +1,23 @@
 {
   "name": "init-decryptor",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Meant to be used inside init container to read encrypted values from a given folder and decrypt to them into a json in a given folder",
   "main": "index.js",
   "scripts": {
+    "build": "docker build . -t init-container && export set INIT_CONTAINER_IMAGE=init-container",
     "test": "cd tests && ./run_test.sh",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "pretest": "ejslint templates/*",
+    "ejslint": "ejslint templates/*"
   },
   "author": "Soluto",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "commander": "^2.19.0",
+    "ejs": "^2.6.1",
+    "ejs-lint": "^0.3.0",
     "node-readfiles": "^0.2.0",
     "snyk": "^1.161.1"
   },

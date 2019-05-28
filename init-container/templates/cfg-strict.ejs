@@ -1,0 +1,7 @@
+<%_ Object.keys(secrets).forEach(function(key){ -%>
+<%_ if(typeof(secrets[key]) === "string") { -%>
+<%= key %>="<%- secrets[key] %>"
+<%_ } else { -%>
+<%= key %>=<%- stringifyIfJson(secrets[key]) %>
+<%_ } -%>
+<%_ }); -%>
