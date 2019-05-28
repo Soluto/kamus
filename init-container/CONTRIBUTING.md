@@ -19,6 +19,8 @@ export set KAMUS_URL=http://localhost:5000
 node index.js -e encrypted -d decrypted -n output.json 
 ```
 
+The first argument (`-e`) point to the folder with the encrypted files, the second (`-d`) point to the folder that will contain the decrypted items and (`-n`) is the decrypted file name.
+
 And you should see a file name `output.json` created under `decrypted` folder with the decrypted content.
 Now you can run the init continer locally, debug it and add features. 
 
