@@ -11,7 +11,7 @@ menu:
 This document outlines the features we plan to work on in the near future:
 
 - [ ] Support for non-kubernetes deployments (#112)
-- [ ] Templating support for init container (#141, #202)
+- [X] Templating support for init container (#141, #202)
 - [ ] Automatic init container injection (#155)
 - [ ] Stability, improve tests coverage and other non-functional tasks (there are multiple issues around this area)
 
