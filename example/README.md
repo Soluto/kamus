@@ -1,6 +1,11 @@
 # Kamus Example
 A small example app, showing the power of Kamus. 
 Before running this demo, make sure Kamus is up and running under the namespace default, and the CLI is installed.
+The example show 2 deployments of the same application:
+* Using regular secrets (`deployment-secret`)
+* Using Kamus init container (`deployment-kamus`)
+
+We included both options to make it easier to understand how Kamus make it easier to consume secrets.
 
 ## Running the demo
 Before running the demo, make sure to install Kamus on the cluster under the namespace default. 
