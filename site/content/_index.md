@@ -3,12 +3,25 @@ Kamus enable users to easily encrypt secrets than can be decrypted only by the a
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault, Google Cloud KMS, Amazon Web Services KMS and AES).
 To learn more about Kamus, check out the [blog post](https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github) and a [talk](https://www.youtube.com/watch?v=FoM3u8G99pc&&index=14&t=0s) from AppSec California 2019.
 
+## Overview
+Kamus offers two different mechanism for consuming encrypted secret:
+
+* Store them on a config map and use the [init container] to decrypt them. 
+The init container will produce a configuration file that can be consumed by the application with the decrypted secrets.
+* Create a [KamusSecret][crd] that contains the encrypted data. 
+Kamus will decrypt the items in the KamusSecret and create a regular Kubernetes Secret object with the decypted items. 
+The application can consume this Secret like any other Secret (refer to the [docs][secrets] for more details). 
+
+Please note: the second flow (KamusSecrets) is intended to be used by application that cannot use the regular secrets (mainly 3rd party applications) or for specific Secrets types (like TLS secrets or docker registry credentials). 
+Kubernetes Secrets has some limitations, especially when consuming them as volume mounts. 
+We recommend the usage of the first flow for most use cases.
+
 ## Utilities
 Kamus is shipped with 3 utilities that make it easier to use:
 
 * Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the docs for more details.
-* Kamus init container - a init container that interacts with the Decrypt API. Refer to the docs for more details.
-* CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs](docs/user/crd) for more details.
+* [Kamus init container][init container] - a init container that interacts with the Decrypt API. Refer to the docs for more details.
+* CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs][crd] for more details.
 
 ## Security
 We take security seriously at Soluto.
@@ -41,3 +54,6 @@ We will immediately delete such issues.
 Kamus docs are based on [kind] docs. All the content was replaced, but the underline framework is the same. Thank you Kind team for building your website!
 
 [kind]: https://kind.sigs.k8s.io
+[init container]: https://github.com/Soluto/kamus/tree/master/init-container
+[crd]: docs/user/crd
+[secrets]: https://kubernetes.io/docs/concepts/configuration/secret/
