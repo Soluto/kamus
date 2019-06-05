@@ -126,13 +126,29 @@ Kamus enable users to easily encrypt secrets than can be decrypted only by the a
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault, Google Cloud KMS, Amazon Web Services KMS and AES).
 To learn more about Kamus, check out the <a href="https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github">blog post</a> and a <a href="https://www.youtube.com/watch?v=FoM3u8G99pc&amp;&amp;index=14&amp;t=0s">talk</a> from AppSec California 2019.</p>
 
+<h2 id="overview">Overview<a href="#overview" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>Kamus offers two different mechanism for consuming encrypted secret:</p>
+
+<ul>
+<li>Store them on a config map and use the <a href="https://github.com/Soluto/kamus/tree/master/init-container">init container</a> to decrypt them.
+The init container will produce a configuration file that can be consumed by the application with the decrypted secrets.</li>
+<li>Create a <a href="docs/user/crd">KamusSecret</a> that contains the encrypted data.
+Kamus will decrypt the items in the KamusSecret and create a regular Kubernetes Secret object with the decypted items.
+The application can consume this Secret like any other Secret (refer to the <a href="https://kubernetes.io/docs/concepts/configuration/secret/">docs</a> for more details).</li>
+</ul>
+
+<p>Please note: the second flow (KamusSecrets) is intended to be used by application that cannot use the regular secrets (mainly 3rd party applications) or for specific Secrets types (like TLS secrets or docker registry credentials).
+Kubernetes Secrets has some limitations, especially when consuming them as volume mounts.
+We recommend the usage of the first flow for most use cases.</p>
+
 <h2 id="utilities">Utilities<a href="#utilities" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>Kamus is shipped with 3 utilities that make it easier to use:</p>
 
 <ul>
 <li>Kamus CLI - a small CLI that eases the interaction with the Encrypt API. Refer to the docs for more details.</li>
-<li>Kamus init container - a init container that interacts with the Decrypt API. Refer to the docs for more details.</li>
+<li><a href="https://github.com/Soluto/kamus/tree/master/init-container">Kamus init container</a> - a init container that interacts with the Decrypt API. Refer to the docs for more details.</li>
 <li>CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the <a href="docs/user/crd">docs</a> for more details.</li>
 </ul>
 
@@ -177,7 +193,7 @@ We will immediately delete such issues.</p>
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-05-05 09:09:53 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/50ce1b4556cdcf105924b800e415ca0da899b2cd">50ce1b4</a></span></p>
+  <p>Last Updated on 2019-06-05 17:02:19 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/0d1a9203b795e966e68c4034c6bbc1c10fd08ef5">0d1a920</a></span></p>
 </div>
 </div>
 </body>

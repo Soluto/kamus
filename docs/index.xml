@@ -257,8 +257,8 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://kamus.soluto.io/docs/threatmodeling/architecture/</guid>
-      <description> Kamus Architecture Kamus consist from 4 components:
- Encrypt API - handling encryption Decrypt API - handling decryption, should not be exposed externally KMS - Handling the encryption using various providers. Controller - Responsible for interavtion with Kubernetes API, currently only for CRUD operations on KamusSecrets objects.  This is the flow of encryption/decryption: This is the flow of the Controller: </description>
+      <description>Kamus Architecture Kamus consist from 4 components:
+ Encrypt API - handling encryption Decrypt API - handling decryption, should not be exposed externally KMS - Handling the encryption using various providers. Controller - Responsible for interavtion with Kubernetes API, currently only for CRUD operations on KamusSecrets objects.  First flow - using the Init Container High-level overview of encryption/decryption flow: Let&amp;rsquo;s take a deeper look of what&amp;rsquo;s inside a pod: We have multiple objects here:</description>
     </item>
     
     <item>
