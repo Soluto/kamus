@@ -24,6 +24,7 @@ For production usage, please configuration one of the supported Key Management S
 * [Azure Keyvault KMS](#azure-keyvault-kms)
 * [Google Cloud KMS](#google-cloud-kms)
 * [AWS KMS](#aws-kms)
+* [Installing without helm](#installing-without-helm)
 
 ### AES KMS
 AES KMS is the simplest (but less secure) solution. 
@@ -144,3 +145,24 @@ And now deploy Kamus using the following helm command:
 ```
 helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
 ```
+
+### Installing Without Helm
+While Helm is the easiest way to install Kamus, it is not mandatory.
+You can use [helm template] to generate the raw Kubernetes manifest files and than install Kamus using kubectl:
+
+* Download and install [helm] and [helm template]. 
+You can initialize Helm using `helm init -c`, which allows you to use Helm locally, without a connected cluster. Make sure to add soluto helm repository, as specified above.
+* Create `values.yaml` according to your needs. Follow the instructions above and choose the method that fits your environment.
+* Run the following command to generate the manifest file:
+```
+helm fetch soluto/kamus --untar && helm template kamus -f values.yamk > manifest.yaml
+```
+* Now use `kubectl` to install Kamus:
+```
+kubectl apply -f manifest.yaml
+```
+
+And you're done! Kamus is now installed on your cluster. 
+
+[helm template]: https://github.com/technosophos/helm-template
+[helm]: https://helm.sh/
