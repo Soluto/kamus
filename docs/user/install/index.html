@@ -140,6 +140,7 @@ For production usage, please configuration one of the supported Key Management S
 <li><a href="#azure-keyvault-kms">Azure Keyvault KMS</a></li>
 <li><a href="#google-cloud-kms">Google Cloud KMS</a></li>
 <li><a href="#aws-kms">AWS KMS</a></li>
+<li><a href="#installing-without-helm">Installing without helm</a></li>
 </ul>
 
 <h3 id="aes-kms">AES KMS<a href="#aes-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
@@ -268,10 +269,31 @@ And now deploy Kamus using the following helm command:</p>
 
 <pre><code>helm upgrade --install kamus soluto/kamus -f &lt;path/to/values.yaml&gt;
 </code></pre>
+
+<h3 id="installing-without-helm">Installing Without Helm<a href="#installing-without-helm" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
+
+<p>While Helm is the easiest way to install Kamus, it is not mandatory.
+You can use <a href="https://github.com/technosophos/helm-template">helm template</a> to generate the raw Kubernetes manifest files and than install Kamus using kubectl:</p>
+
+<ul>
+<li>Download and install <a href="https://helm.sh/">helm</a> and <a href="https://github.com/technosophos/helm-template">helm template</a>.
+You can initialize Helm using <code>helm init -c</code>, which allows you to use Helm locally, without a connected cluster. Make sure to add soluto helm repository, as specified above.</li>
+<li>Create <code>values.yaml</code> according to your needs. Follow the instructions above and choose the method that fits your environment.</li>
+<li>Run the following command to generate the manifest file:
+<code>
+helm fetch soluto/kamus --untar &amp;&amp; helm template kamus -f values.yamk &gt; manifest.yaml
+</code></li>
+<li>Now use <code>kubectl</code> to install Kamus:
+<code>
+kubectl apply -f manifest.yaml
+</code></li>
+</ul>
+
+<p>And you&rsquo;re done! Kamus is now installed on your cluster.</p>
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-05-19 12:41:58 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/071fe17ae3c0c7c23f782eed1aa2dba79e029d40">071fe17</a></span></p>
+  <p>Last Updated on 2019-06-16 13:11:40 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/b93aea24f6afa2bbd06d33233abc56518f636d5a">b93aea2</a></span></p>
 </div>
 </div>
 </body>
