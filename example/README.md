@@ -15,9 +15,9 @@ helm repo add soluto https://charts.soluto.io
 helm upgrade --install soluto/kamus
 ```
 
-Start by encrypting a secret using the CLI:
+Start by encrypting a secret using the CLI (see cli documentation on how to use `kamus-cli` without installations):
 ```
-kamus-cli encrypt super-secret kamus-example-sa default --kamus-url <Kamus URL>
+kamus-cli encrypt --secret super-secret --service-account kamus-example-sa --namespace default --kamus-url <Kamus URL>
 ```
 You might have to pass aditional arguments, based on your installation.
 
