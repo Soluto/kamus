@@ -14,7 +14,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: app
-          image: local/kamus:example
+          image: soluto/kamus-example-app
           imagePullPolicy: IfNotPresent
           volumeMounts:
           - name: secret-volume
