@@ -22,7 +22,7 @@ kamus-cli encrypt --secret super-secret --service-account kamus-example-sa --nam
 You might have to pass aditional arguments, based on your installation.
 
 After encrypting the secret, open `deployment-kamus\configmap.yaml`.
-Modify the value of `key` to the encrypted value returned from the CLI.
+Modify the value of `token` to the encrypted value returned from the CLI.
 
 Now, run
 ```
