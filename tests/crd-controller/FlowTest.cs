@@ -8,13 +8,21 @@ using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace crd_controller
 {
     public class FlowTest
     {
+        private readonly ITestOutputHelper mTestOutputHelper;
+
+        public FlowTest(ITestOutputHelper testOutputHelper)
+        {
+            mTestOutputHelper = testOutputHelper;
+        }
+
         [Fact]
-        public async Task Create_Delete_KamusSecret()
+        public async Task Create_Update_Delete_KamusSecret()
         {
             await DeployController();
 
@@ -30,18 +38,29 @@ namespace crd_controller
 
             RunKubectlCommand("apply -f tls.yaml");
 
-            Console.WriteLine("Waiting for secret creation");
+            mTestOutputHelper.WriteLine("Waiting for secret creation");
 
-            var tupple = await subject
+            var (_, v1Secret) = await subject
                 .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
-            Assert.Equal("TlsSecret", tupple.Item2.Type);
-            Assert.Equal(true, tupple.Item2.Data.ContainsKey("key"));
-            Assert.Equal("hello", Encoding.UTF8.GetString(tupple.Item2.Data["key"]));
+            Assert.Equal("TlsSecret", v1Secret.Type);
+            Assert.True(v1Secret.Data.ContainsKey("key"));
+            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
 
+            RunKubectlCommand("apply -f updated-tls.yaml");
+
+            mTestOutputHelper.WriteLine("Waiting for secret update");
+            
+            (_, v1Secret) = await subject
+                .Where(t => t.Item1 == WatchEventType.Modified).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+
+            Assert.Equal("TlsSecret", v1Secret.Type);
+            Assert.True(v1Secret.Data.ContainsKey("key"));
+            Assert.Equal("modified_hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
+            
             RunKubectlCommand("delete -f tls.yaml");
 
-            Console.WriteLine("Waiting for secret deletion");
+            mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
             await subject.Where(t => t.Item1 == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
         }
