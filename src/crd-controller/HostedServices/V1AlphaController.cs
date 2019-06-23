@@ -42,7 +42,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     "v1alpha1",
                     "kamussecrets", 
                     watch: true, 
-                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds);
+                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: token);
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
 
                 var watcher = result.Watch<KamusSecret>(
@@ -85,13 +85,16 @@ namespace CustomResourceDescriptorController.HostedServices
                 switch (@event)
                 {
                     case WatchEventType.Added:
-                        await HandleAdd(kamusSecret);
+                        await Handle(kamusSecret);
                         return;
 
                     case WatchEventType.Deleted:
                         await HandleDelete(kamusSecret);
                         return;
-
+                    
+                    case WatchEventType.Modified:
+                        await Handle(kamusSecret, true);
+                        return;
                     default:
                         mLogger.Warning("Event of type {type} is not supported. KamusSecret {name} in namesapce {namespace}",
                             @event.ToString(),
@@ -110,7 +113,7 @@ namespace CustomResourceDescriptorController.HostedServices
             }
         }
 
-        private async Task HandleAdd(KamusSecret kamusSecret)
+        private async Task Handle(KamusSecret kamusSecret, bool isUpdate = false)
         {
             var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
             var serviceAccount = kamusSecret.ServiceAccount;
@@ -122,18 +125,18 @@ namespace CustomResourceDescriptorController.HostedServices
                 kamusSecret.Metadata.Name,
                 @namespace);
 
-            foreach (var item in kamusSecret.Data)
+            foreach (var (key, value) in kamusSecret.Data)
             {
                 try
                 {
-                    var decrypted = await mKeyManagement.Decrypt(item.Value, id);
+                    var decrypted = await mKeyManagement.Decrypt(value, id);
 
-                    decryptedItems.Add(item.Key, decrypted);
+                    decryptedItems.Add(key, decrypted);
                 }
                 catch (Exception e)
                 {
                     Log.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namesapce {namespace}",
-                        item.Key,
+                        key,
                         kamusSecret.Metadata.Name,
                         @namespace);
                         
@@ -155,8 +158,15 @@ namespace CustomResourceDescriptorController.HostedServices
                 Type = kamusSecret.Type,
                 StringData = decryptedItems
             };
-
-            await mKubernetes.CreateNamespacedSecretAsync(secret, @namespace);
+            
+            if (isUpdate)
+            {
+                await mKubernetes.ReplaceNamespacedSecretWithHttpMessagesAsync(secret, kamusSecret.Metadata.Name, @namespace);
+            }
+            else
+            {
+                await mKubernetes.CreateNamespacedSecretAsync(secret, @namespace);    
+            }
 
             mAuditLogger.Information("Created a secret from KamusSecret {name} in namesapce {namespace successfully.",
                 kamusSecret.Metadata.Name,
