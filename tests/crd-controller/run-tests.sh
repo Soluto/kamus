@@ -3,7 +3,6 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-set -o xtrace
 
 readonly KIND_VERSION=0.2.1
 readonly CLUSTER_NAME=e2e-test
