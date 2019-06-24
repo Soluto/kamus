@@ -36,6 +36,8 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
+            subject.Subscribe();
+            
             RunKubectlCommand("apply -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret creation");
@@ -69,7 +71,8 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
-
+            subject.Subscribe();
+            
             RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
@@ -102,6 +105,8 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
+            subject.Subscribe();
+            
             RunKubectlCommand("delete -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
