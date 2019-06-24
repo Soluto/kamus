@@ -112,11 +112,32 @@ namespace crd_controller
 
         private void Cleanup()
         {
-            RunKubectlCommand("delete -f tls-KamusSecret.yaml --ignore-not-found");
-            RunKubectlCommand("delete -f updated-tls-KamusSecret.yaml --ignore-not-found");
-            RunKubectlCommand("delete -f tls-Secret.yaml --ignore-not-found");
+            try
+            {
+                RunKubectlCommand("delete -f tls-KamusSecret.yaml --ignore-not-found");
+            }
+            catch
+            {
+                // ignored
+            }
 
+            try
+            {
+                RunKubectlCommand("delete -f updated-tls-KamusSecret.yaml --ignore-not-found");
+            }
+            catch
+            {
+                // ignored
+            }
 
+            try
+            {
+                RunKubectlCommand("delete -f tls-Secret.yaml --ignore-not-found");
+            }
+            catch
+            {
+                // ignored
+            }
         }
         private async Task DeployController()
         {
