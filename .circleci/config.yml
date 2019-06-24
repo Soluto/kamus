@@ -17,7 +17,6 @@ commands:
           command: |
             tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
           no_output_timeout: 3600
-
 jobs:
   build_api:
     machine: true
