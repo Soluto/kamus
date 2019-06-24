@@ -162,25 +162,25 @@ namespace CustomResourceDescriptorController.HostedServices
         private async Task HandleAdd(KamusSecret kamusSecret, bool isUpdate = false)
         {
             var secret = await CreateSecret(kamusSecret);
-            await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);    
+            var createdSecret = await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);    
 
             mAuditLogger.Information("Created a secret from KamusSecret {name} in namesapce {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
             
-            await PostHandleStatusUpdate(kamusSecret, secret);
+            await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
 
         private async Task HandleModify(KamusSecret kamusSecret)
         {
             var secret = await CreateSecret(kamusSecret);
-            await mKubernetes.ReplaceNamespacedSecretWithHttpMessagesAsync(secret, kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
+            var secretCreationResponse = await mKubernetes.ReplaceNamespacedSecretWithHttpMessagesAsync(secret, kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
 
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namesapce {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
 
-            await PostHandleStatusUpdate(kamusSecret, secret);
+            await PostHandleStatusUpdate(kamusSecret, secretCreationResponse.Body);
         }
         
         private async Task HandleDelete(KamusSecret kamusSecret)
@@ -194,7 +194,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             await mKubernetes.PatchNamespacedCustomObjectWithHttpMessagesAsync(new
                 {
-                    Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted"
+                    Status = kamusSecret.Data.Count == secret.StringData.Count ? "Decrypted" : "PartiallyDecrypted"
                 },                     
                 "soluto.com", 
                 "v1alpha1",
