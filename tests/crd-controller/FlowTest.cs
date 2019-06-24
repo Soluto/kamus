@@ -53,10 +53,11 @@ namespace crd_controller
         {
             Cleanup();
             
-            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
-            RunKubectlCommand("apply -f tls-Secret.yaml");
-            
             await DeployController();
+            
+            RunKubectlCommand("apply -f tls-Secret.yaml");
+            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+            
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
@@ -86,10 +87,10 @@ namespace crd_controller
         {
             Cleanup();
 
-            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
-            RunKubectlCommand("apply -f tls-Secret.yaml");
-
             await DeployController();
+            
+            RunKubectlCommand("apply -f tls-Secret.yaml");
+            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
