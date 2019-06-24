@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.2.1
+readonly KIND_VERSION=0.3.0
 readonly CLUSTER_NAME=e2e-test
 readonly KUBECTL_VERSION=v1.13.0
 
@@ -34,7 +34,7 @@ create_kind_cluster() {
     echo 'Installing kind...'
     echo 'kubernetes version' "$K8S_VERSION"
 
-    curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64"
+    curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-linux-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
