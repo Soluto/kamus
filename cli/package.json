@@ -31,9 +31,9 @@
     "bluebird": "^3.5.3",
     "caporal": "^1.1.0",
     "colorful-chalk-logger": "^0.3.2",
+    "enquirer": "^2.3.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
-    "prompt-confirm": "^2.0.4",
     "request": "^2.88.0"
   },
   "devDependencies": {
