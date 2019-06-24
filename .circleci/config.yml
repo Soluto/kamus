@@ -359,6 +359,10 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
+            - test_blackbox
+            - test_crd_1_12
+            - test_crd_1_13
+            - test_crd_1_14
           filters:
             branches:
               only: master
