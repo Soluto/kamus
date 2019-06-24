@@ -75,19 +75,19 @@ jobs:
     machine: true
     steps:
       - test_crd_command:
-          kubernetesVersion: "v1.12.3"
+          kubernetesVersion: "v1.12.8"
   
   test_crd_1_13:
     machine: true
     steps:
       - test_crd_command:
-          kubernetesVersion: "v1.13.4"
+          kubernetesVersion: "v1.13.6"
 
   test_crd_1_14:
     machine: true
     steps:
       - test_crd_command:
-          kubernetesVersion: "v1.14.0"
+          kubernetesVersion: "v1.14.2"
 
   run_tests:
     docker:
