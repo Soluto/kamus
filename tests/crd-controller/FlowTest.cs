@@ -81,13 +81,14 @@ namespace crd_controller
             Assert.Equal("modified_hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
 
-        [Fact] public async Task DeleteKamusSecret_SecretDeleted()
+        [Fact]
+        public async Task DeleteKamusSecret_SecretDeleted()
         {
             Cleanup();
-            
+
             RunKubectlCommand("apply -f tls-KamusSecret.yaml");
             RunKubectlCommand("apply -f tls-Secret.yaml");
-            
+
             await DeployController();
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
@@ -99,14 +100,13 @@ namespace crd_controller
             watch.OnClosed += () => subject.OnCompleted();
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
-            
+
             RunKubectlCommand("delete -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
-            var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
-            
-            Assert.Null(await kubernetes.GetNamespacedCustomObjectWithHttpMessagesAsync(V1Secret.KubeGroup, V1Secret.KubeKind, v1Secret.Metadata.NamespaceProperty, "secrets", "my-tls-secret"));
+            var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted)
+                .Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
         }
 
 
