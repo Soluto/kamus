@@ -40,7 +40,7 @@
     "chai": "4.2.0",
     "eslint": "6.0.0",
     "eslint-plugin-security": "1.4.0",
-    "husky": "2.4.1",
+    "husky": "2.5.0",
     "lint-staged": "8.2.1",
     "mocha": "6.1.4",
     "mock-fs": "4.10.1",
