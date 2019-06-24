@@ -17,7 +17,6 @@ commands:
           command: |
             tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
           no_output_timeout: 3600
-
 jobs:
   build_api:
     machine: true
@@ -45,6 +44,18 @@ jobs:
           paths:
             - docker-cache-api
 
+  test_blackbox:
+    machine: true
+    steps:
+      - checkout
+      - restore_cache:
+          keys: 
+            - docker_api_cache_key-{{ .Revision }}
+      - run:
+          name: Restore images
+          command: |
+            docker load < docker-cache-api/kamus-decryptor.tar
+            docker load < docker-cache-api/kamus-encryptor.tar
       - run:
           name: Run black box tests
           command: docker-compose -f tests/blackbox/compose/docker-compose.yaml up --build --exit-code-from black-box --abort-on-container-exit
@@ -326,6 +337,10 @@ workflows:
       - build_api
       - run_tests
       - lint-scripts
+      - test_blackbox:
+          requires:
+            - build_api
+            - lint-scripts
       - test_crd_1_12:
           requires:
             - build_api
@@ -343,6 +358,10 @@ workflows:
             - lint-scripts
             - build_api
             - run_tests
+            - test_blackbox
+            - test_crd_1_12
+            - test_crd_1_13
+            - test_crd_1_14
           filters:
             branches:
               only: master
