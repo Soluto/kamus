@@ -112,9 +112,9 @@ namespace crd_controller
 
         private void Cleanup()
         {
-            RunKubectlCommand("delete -f tls.yaml --ignore-not-found");
-            RunKubectlCommand("delete -f updated-tls.yaml --ignore-not-found");
-            RunKubectlCommand("delete secret my-tls-secret --ignore-not-found");
+            RunKubectlCommand("delete -f tls-KamusSecret.yaml --ignore-not-found");
+            RunKubectlCommand("delete -f updated-tls-KamusSecret.yaml --ignore-not-found");
+            RunKubectlCommand("delete -f tls-Secret.yaml --ignore-not-found");
 
 
         }
