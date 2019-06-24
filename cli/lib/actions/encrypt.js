@@ -3,7 +3,7 @@ const opn = require('opn');
 const os = require('os');
 const url = require('url');
 const fs = require('fs');
-const Confirm = require('prompt-confirm');
+const { Confirm } = require('enquirer');
 const request = require('request');
 const { promisify } = require('util');
 const { AuthenticationContext } = require('adal-node');
@@ -46,15 +46,19 @@ module.exports = async (args, options, logger) => {
     }
 };
 
-const checkForNewlines = async (secret) => {
+const checkForNewlines = async (secret, logger) => {
     const eolIndex = secret.indexOf(os.EOL);
     
     if (eolIndex !== -1) {
-        const newlinesDetectedPrompt = new Confirm(`Secret contains newlines at index ${eolIndex}. Continue encrypting this secret?`);
+        const newlinesDetectedPrompt = new Confirm({
+            name: 'question',
+            message: `Secret contains newlines at index ${eolIndex}. Continue encrypting this secret?`
+        });
         const response = await newlinesDetectedPrompt.run();
         
         if (!response) {
-            throw new Error('Aborted secret encryption');
+            logger.info('Aborting - secrets contains newline');
+            process.exit(0);
         }
     }
 };
@@ -68,7 +72,9 @@ const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl
     } else {
         data = secret;
     }
-    await checkForNewlines(data);
+
+    await checkForNewlines(data, logger);
+    
     logger.debug(`starting request to encrypt api at ${kamusUrl}`);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
