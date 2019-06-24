@@ -22,8 +22,40 @@ namespace crd_controller
         }
 
         [Fact]
-        public async Task Create_Update_Delete_KamusSecret()
+        public async Task CreateKamusSecret_SecretCreated()
         {
+            Cleanup();
+            await DeployController();
+            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+
+            var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
+
+            var subject = new Subject<(WatchEventType, V1Secret)>();
+
+            watch.OnClosed += () => subject.OnCompleted();
+            watch.OnError += e => subject.OnError(e);
+            watch.OnEvent += (e, s) => subject.OnNext((e, s));
+
+            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+
+            mTestOutputHelper.WriteLine("Waiting for secret creation");
+
+            var (_, v1Secret) = await subject
+                .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+
+            Assert.Equal("TlsSecret", v1Secret.Type);
+            Assert.True(v1Secret.Data.ContainsKey("key"));
+            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
+        }
+        
+        [Fact]
+        public async Task UpdateKamusSecret_SecretUpdated()
+        {
+            Cleanup();
+            
+            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+            RunKubectlCommand("apply -f tls-Secret.yaml");
+            
             await DeployController();
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
@@ -36,36 +68,56 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
-            RunKubectlCommand("apply -f tls.yaml");
 
-            mTestOutputHelper.WriteLine("Waiting for secret creation");
-
-            var (_, v1Secret) = await subject
-                .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
-
-            Assert.Equal("TlsSecret", v1Secret.Type);
-            Assert.True(v1Secret.Data.ContainsKey("key"));
-            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
-
-            RunKubectlCommand("apply -f updated-tls.yaml");
+            RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
-            (_, v1Secret) = await subject
+            var (_, v1Secret) = await subject
                 .Where(t => t.Item1 == WatchEventType.Modified).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
             Assert.Equal("modified_hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
+        }
+
+        [Fact] public async Task DeleteKamusSecret_SecretDeleted()
+        {
+            Cleanup();
             
-            RunKubectlCommand("delete -f tls.yaml");
+            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+            RunKubectlCommand("apply -f tls-Secret.yaml");
+            
+            await DeployController();
+
+            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+
+            var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
+
+            var subject = new Subject<(WatchEventType, V1Secret)>();
+
+            watch.OnClosed += () => subject.OnCompleted();
+            watch.OnError += e => subject.OnError(e);
+            watch.OnEvent += (e, s) => subject.OnNext((e, s));
+            
+            RunKubectlCommand("delete -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
-            await subject.Where(t => t.Item1 == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            
+            Assert.Null(await kubernetes.GetNamespacedCustomObjectWithHttpMessagesAsync(V1Secret.KubeGroup, V1Secret.KubeKind, v1Secret.Metadata.NamespaceProperty, "secrets", "my-tls-secret"));
         }
 
 
+        private void Cleanup()
+        {
+            RunKubectlCommand("delete -f tls.yaml --ignore-not-found");
+            RunKubectlCommand("delete -f updated-tls.yaml --ignore-not-found");
+            RunKubectlCommand("delete secret my-tls-secret --ignore-not-found");
+
+
+        }
         private async Task DeployController()
         {
             Console.WriteLine("Deploying CRD");
