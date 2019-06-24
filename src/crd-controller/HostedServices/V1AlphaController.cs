@@ -131,7 +131,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 {
                     var decrypted = await mKeyManagement.Decrypt(value, id);
 
-                    decryptedItems.Add(key, "FailedToDecrypt");
+                    decryptedItems.Add(key, decrypted);
                 }
                 catch (Exception e)
                 {
@@ -139,7 +139,6 @@ namespace CustomResourceDescriptorController.HostedServices
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
-                    
                 }
             }
 
