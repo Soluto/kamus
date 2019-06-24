@@ -195,7 +195,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             await mKubernetes.PatchNamespacedCustomObjectWithHttpMessagesAsync(new
                 {
-                    Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted";
+                    Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted"
                 },                     
                 "soluto.com", 
                 "v1alpha1",
