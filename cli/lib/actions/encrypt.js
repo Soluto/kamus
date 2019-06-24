@@ -72,7 +72,9 @@ const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl
     } else {
         data = secret;
     }
+
     await checkForNewlines(data, logger);
+    
     logger.debug(`starting request to encrypt api at ${kamusUrl}`);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
