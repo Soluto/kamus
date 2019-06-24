@@ -34,7 +34,7 @@ create_kind_cluster() {
     echo 'Installing kind...'
     echo 'kubernetes version' "$K8S_VERSION"
 
-    curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64"
+    curl -sSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-linux-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
