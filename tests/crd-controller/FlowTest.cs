@@ -32,7 +32,7 @@ namespace crd_controller
                 watch: true
             );
             
-            var subject = new Subject<(WatchEventType, V1Secret)>();
+            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
 
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
@@ -69,7 +69,7 @@ namespace crd_controller
                 watch: true
             );
             
-            var subject = new Subject<(WatchEventType, V1Secret)>();
+            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
 
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
@@ -106,7 +106,7 @@ namespace crd_controller
                 watch: true
             );
             
-            var subject = new Subject<(WatchEventType, V1Secret)>();
+            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
 
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
