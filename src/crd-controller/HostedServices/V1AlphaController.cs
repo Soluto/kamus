@@ -174,7 +174,7 @@ namespace CustomResourceDescriptorController.HostedServices
         private async Task HandleModify(KamusSecret kamusSecret)
         {
             var secret = await CreateSecret(kamusSecret);
-            var secretCreationResponse = await mKubernetes.PatchNamespacedSecretWithHttpMessagesAsync(new V1Patch(new
+            var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(new V1Patch(new
             {
                 secret.StringData
             }), kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
@@ -183,7 +183,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
 
-            await PostHandleStatusUpdate(kamusSecret, secretCreationResponse.Body);
+            await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
         
         private async Task HandleDelete(KamusSecret kamusSecret)
