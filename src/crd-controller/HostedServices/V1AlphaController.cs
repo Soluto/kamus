@@ -64,7 +64,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     onError: e =>
                     {
                         mLogger.Error(e, "Unexpected error occured while watching KamusSecret events");
-                        Environment.Exit(0);
+                        Environment.Exit(1);
                     },
                     onCompleted: () =>
                     {
