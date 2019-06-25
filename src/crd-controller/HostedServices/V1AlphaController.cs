@@ -8,6 +8,8 @@ using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.Extensions;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -36,36 +38,38 @@ namespace CustomResourceDescriptorController.HostedServices
         public Task StartAsync(CancellationToken token)
         {
             mSubscription = Observable.FromAsync(async () =>
-            {
-                var result = await mKubernetes.ListClusterCustomObjectWithHttpMessagesAsync(
-                    "soluto.com", 
-                    "v1alpha1",
-                    "kamussecrets", 
-                    watch: true, 
-                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: token);
-                var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
+                {
+                    var result = await mKubernetes.ListClusterCustomObjectWithHttpMessagesAsync(
+                        "soluto.com",
+                        "v1alpha1",
+                        "kamussecrets",
+                        watch: true,
+                        timeoutSeconds: (int) TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: token);
+                    var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
 
-                var watcher = result.Watch<KamusSecret>(
-                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
-                     onError: e => subject.OnError(e),
-                     onClosed: () => subject.OnCompleted());
-                return subject;
-            })
-            .SelectMany(x => x)
-            .Select(t => (t.Item1, t.Item2 as KamusSecret))
-            .Where(t => t.Item2 != null)
-            .SelectMany(x =>
-                Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
-            )
-            .Subscribe(
-                onNext: t => { },
-                onError: e => {
-                    mLogger.Error(e, "Unexpected error occured while watching KamusSecret events");
-                    Environment.Exit(0); 
-                },
-                onCompleted: () => {
-                    mLogger.Information("Watching KamusSecret events completed, terminating process");
-                    Environment.Exit(0);
+                    var watcher = result.Watch<KamusSecret>(
+                        onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                        onError: e => subject.OnError(e),
+                        onClosed: () => subject.OnCompleted());
+                    return subject;
+                })
+                .SelectMany(x => x)
+                .Select(t => (t.Item1, t.Item2 as KamusSecret))
+                .Where(t => t.Item2 != null)
+                .SelectMany(x =>
+                    Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
+                )
+                .Subscribe(
+                    onNext: t => { },
+                    onError: e =>
+                    {
+                        mLogger.Error(e, "Unexpected error occured while watching KamusSecret events");
+                        Environment.Exit(0);
+                    },
+                    onCompleted: () =>
+                    {
+                        mLogger.Information("Watching KamusSecret events completed, terminating process");
+                        Environment.Exit(0);
                     });
 
             mLogger.Information("Starting watch for KamusSecret V1Alpha events");
@@ -91,28 +95,30 @@ namespace CustomResourceDescriptorController.HostedServices
                     case WatchEventType.Deleted:
                         await HandleDelete(kamusSecret);
                         return;
-                    
+
                     case WatchEventType.Modified:
                         await HandleModify(kamusSecret);
                         return;
                     default:
-                        mLogger.Warning("Event of type {type} is not supported. KamusSecret {name} in namespace {namespace}",
+                        mLogger.Warning(
+                            "Event of type {type} is not supported. KamusSecret {name} in namespace {namespace}",
                             @event.ToString(),
                             kamusSecret.Metadata.Name,
                             kamusSecret.Metadata.NamespaceProperty ?? "default");
                         return;
-                    
+
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                mLogger.Error(e, "Error while handling KamusSecret event of type {eventType}, for KamusSecret {name} on namespace {namespace}",
+                mLogger.Error(e,
+                    "Error while handling KamusSecret event of type {eventType}, for KamusSecret {name} on namespace {namespace}",
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
             }
         }
-        
+
         private async Task<V1Secret> CreateSecret(KamusSecret kamusSecret)
         {
             var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
@@ -135,7 +141,8 @@ namespace CustomResourceDescriptorController.HostedServices
                 }
                 catch (Exception e)
                 {
-                    mLogger.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
+                    mLogger.Error(e,
+                        "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
@@ -158,26 +165,30 @@ namespace CustomResourceDescriptorController.HostedServices
                 StringData = decryptedItems
             };
         }
-        
+
         private async Task HandleAdd(KamusSecret kamusSecret, bool isUpdate = false)
         {
             var secret = await CreateSecret(kamusSecret);
-            var createdSecret = await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);    
+            var createdSecret =
+                await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
 
             mAuditLogger.Information("Created a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
-            
+
             await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
 
         private async Task HandleModify(KamusSecret kamusSecret)
         {
             var secret = await CreateSecret(kamusSecret);
-            var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(new V1Patch(new
-            {
-                secret.StringData
-            }), kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
+            var secretPatch = new JsonPatchDocument<V1Secret>();
+            secretPatch.Replace(e => e.StringData, secret.StringData);
+            var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(
+                new V1Patch(secretPatch),
+                kamusSecret.Metadata.Name,
+                secret.Metadata.NamespaceProperty
+            );
 
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
@@ -185,24 +196,24 @@ namespace CustomResourceDescriptorController.HostedServices
 
             await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
-        
+
         private async Task HandleDelete(KamusSecret kamusSecret)
         {
             var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
 
             await mKubernetes.DeleteNamespacedSecretAsync(kamusSecret.Metadata.Name, @namespace);
         }
-        
+
         private async Task PostHandleStatusUpdate(KamusSecret kamusSecret, V1Secret secret)
         {
             await mKubernetes.PatchNamespacedCustomObjectAsync(new
                 {
                     Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted"
-                },                     
-                "soluto.com", 
+                },
+                "soluto.com",
                 "v1alpha1",
                 kamusSecret.Metadata.NamespaceProperty,
-                "kamussecrets", 
+                "kamussecrets",
                 kamusSecret.Metadata.Name);
         }
     }
