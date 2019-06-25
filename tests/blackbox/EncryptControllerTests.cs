@@ -47,7 +47,7 @@ namespace blackbox
         }
 
         [JsonProperty(PropertyName = "namespace", Required = Required.Always)]
-        public string namespaceName
+        public string NamespaceName
         {
             get;
             set;
