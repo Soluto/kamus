@@ -34,11 +34,11 @@ create_kind_cluster() {
     echo 'Installing kind...'
     echo 'kubernetes version' "$K8S_VERSION"
 
-    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-darwin-amd64"
+    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-linux-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
-    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/darwin/amd64/kubectl
+    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
     chmod +x kubectl
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
