@@ -73,8 +73,8 @@ namespace crd_controller
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
-            var (_, v1Secret) = await subject.Do(e => mTestOutputHelper.WriteLine("got event" + e.Item1))
-                .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            var (_, v1Secret) = await subject
+                .Where(t => t.Item1 == WatchEventType.Modified).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
