@@ -195,7 +195,7 @@ namespace CustomResourceDescriptorController.HostedServices
         
         private async Task PostHandleStatusUpdate(KamusSecret kamusSecret, V1Secret secret)
         {
-            await mKubernetes.PatchNamespacedCustomObjectWithHttpMessagesAsync(new
+            await mKubernetes.PatchNamespacedCustomObjectAsync(new
                 {
                     Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted"
                 },                     
