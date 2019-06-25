@@ -27,14 +27,14 @@ namespace crd_controller
             Cleanup();
             await DeployController();
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-
-            var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
-
+            
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
-            watch.OnClosed += () => subject.OnCompleted();
-            watch.OnError += e => subject.OnError(e);
-            watch.OnEvent += (e, s) => subject.OnNext((e, s));
+            await kubernetes.WatchNamespacedSecretAsync(
+                "my-tls-secret", 
+                "default", 
+                onEvent: (e,s) => subject.OnNext((e, s)),
+                onClosed: subject.OnCompleted,
+                onError: subject.OnError);
 
             RunKubectlCommand("apply -f tls-KamusSecret.yaml");
 
@@ -61,13 +61,13 @@ namespace crd_controller
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
-            var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
-
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
-            watch.OnClosed += () => subject.OnCompleted();
-            watch.OnError += e => subject.OnError(e);
-            watch.OnEvent += (e, s) => subject.OnNext((e, s));
+            await kubernetes.WatchNamespacedSecretAsync(
+                "my-tls-secret", 
+                "default", 
+                onEvent: (e,s) => subject.OnNext((e, s)),
+                onClosed: subject.OnCompleted,
+                onError: subject.OnError);
 
             RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
 
@@ -93,13 +93,13 @@ namespace crd_controller
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
-            var watch = await kubernetes.WatchNamespacedSecretAsync("my-tls-secret", "default");
-
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
-            watch.OnClosed += () => subject.OnCompleted();
-            watch.OnError += e => subject.OnError(e);
-            watch.OnEvent += (e, s) => subject.OnNext((e, s));
+            await kubernetes.WatchNamespacedSecretAsync(
+                "my-tls-secret", 
+                "default", 
+                onEvent: (e,s) => subject.OnNext((e, s)),
+                onClosed: subject.OnCompleted,
+                onError: subject.OnError);
 
             RunKubectlCommand("delete -f tls-KamusSecret.yaml");
 

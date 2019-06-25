@@ -135,7 +135,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
+                    mLogger.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
