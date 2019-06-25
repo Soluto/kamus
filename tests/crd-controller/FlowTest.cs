@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -28,20 +27,24 @@ namespace crd_controller
             await DeployController();
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
             
-            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-            await kubernetes.WatchNamespacedSecretAsync(
-                "my-tls-secret", 
-                "default", 
-                onEvent: (e,s) => subject.OnNext((e, s)),
-                onClosed: subject.OnCompleted,
-                onError: subject.OnError);
+            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+            
+            var subject = new Subject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                onError: e => subject.OnError(e),
+                onClosed: () => subject.OnCompleted());
 
             RunKubectlCommand("apply -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret creation");
 
             var (_, v1Secret) = await subject
-                .Where(t => t.Item1 == WatchEventType.Added).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+                .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
@@ -61,20 +64,25 @@ namespace crd_controller
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
-            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-            await kubernetes.WatchNamespacedSecretAsync(
-                "my-tls-secret", 
-                "default", 
-                onEvent: (e,s) => subject.OnNext((e, s)),
-                onClosed: subject.OnCompleted,
-                onError: subject.OnError);
+            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+            
+            var subject = new Subject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                onError: e => subject.OnError(e),
+                onClosed: () => subject.OnCompleted());
 
             RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
             var (_, v1Secret) = await subject
-                .Where(t => t.Item1 == WatchEventType.Modified).Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+                .Where(t => t.Item1 == WatchEventType.Modified && t.Item2.Metadata.Name == "my-tls-secret")
+                .Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
@@ -93,19 +101,23 @@ namespace crd_controller
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
-            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-            await kubernetes.WatchNamespacedSecretAsync(
-                "my-tls-secret", 
-                "default", 
-                onEvent: (e,s) => subject.OnNext((e, s)),
-                onClosed: subject.OnCompleted,
-                onError: subject.OnError);
+            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+            
+            var subject = new Subject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                onError: e => subject.OnError(e),
+                onClosed: () => subject.OnCompleted());
 
             RunKubectlCommand("delete -f tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
-            var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted)
+            var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted && t.Item2.Metadata.Name == "my-tls-secret")
                 .Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
         }
 
