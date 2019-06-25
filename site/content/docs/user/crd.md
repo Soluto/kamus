@@ -53,5 +53,4 @@ my-tls-secret                              TlsSecret                            
 This is the alpha release of this feature, so not all functionality is supported. 
 The current known issues:
 
-* There is no support for updating KamusSecrets object - only add/delete
 * There is no validation - so if you forgot to add mandatory keys to the KamusSecret objects, it will not be created properly.
