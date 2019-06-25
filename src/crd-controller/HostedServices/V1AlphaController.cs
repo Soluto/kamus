@@ -71,12 +71,50 @@ namespace CustomResourceDescriptorController.HostedServices
                         mLogger.Information("Watching KamusSecret events completed, terminating process");
                         Environment.Exit(0);
                     });
+            
+            var Subscription2 = Observable.FromAsync(async () =>
+                {
+                    var result = await mKubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                        "default",
+                        watch: true,
+                        timeoutSeconds: (int) TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: token);
+                    var subject = new System.Reactive.Subjects.Subject<(WatchEventType, V1Secret)>();
+
+                    var watcher = result.Watch<V1Secret>(
+                        onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                        onError: e => subject.OnError(e),
+                        onClosed: () => subject.OnCompleted());
+                    return subject;
+                })
+                .SelectMany(x => x)
+                .Select(t => (t.Item1, t.Item2 as V1Secret))
+                .Where(t => t.Item2 != null)
+                .SelectMany(x =>
+                    Observable.FromAsync(async () => await HandleSecretEvent(x.Item1, x.Item2))
+                )
+                .Subscribe(
+                    onNext: t => { },
+                    onError: e =>
+                    {
+                        mLogger.Error(e, "Unexpected error occured while watching Secrets events");
+                        Environment.Exit(0);
+                    },
+                    onCompleted: () =>
+                    {
+                        mLogger.Information("Watching KamusSecret events completed, terminating process");
+                        Environment.Exit(0);
+                    });
 
             mLogger.Information("Starting watch for KamusSecret V1Alpha events");
 
             return Task.CompletedTask;
         }
 
+        private async Task HandleSecretEvent(WatchEventType @event, V1Secret secret)
+        {
+            mLogger.Information("Got {event} with secret {secret}", @event, @secret);
+        }
+        
         private async Task HandleEvent(WatchEventType @event, KamusSecret kamusSecret)
         {
             try

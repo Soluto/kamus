@@ -60,8 +60,6 @@ namespace crd_controller
             
             RunKubectlCommand("apply -f tls-Secret.yaml");
             RunKubectlCommand("apply -f tls-KamusSecret.yaml");
-
-            await Task.Delay(2000); // wait 2 seconds for resources to be created
             
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
