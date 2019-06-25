@@ -77,7 +77,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             try
             {
-                mLogger.Information("Handling event of type {type}. KamusSecret {name} in namesapce {namespace}",
+                mLogger.Information("Handling event of type {type}. KamusSecret {name} in namespace {namespace}",
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
@@ -96,7 +96,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         await HandleModify(kamusSecret);
                         return;
                     default:
-                        mLogger.Warning("Event of type {type} is not supported. KamusSecret {name} in namesapce {namespace}",
+                        mLogger.Warning("Event of type {type} is not supported. KamusSecret {name} in namespace {namespace}",
                             @event.ToString(),
                             kamusSecret.Metadata.Name,
                             kamusSecret.Metadata.NamespaceProperty ?? "default");
@@ -106,7 +106,7 @@ namespace CustomResourceDescriptorController.HostedServices
             }
             catch(Exception e)
             {
-                mLogger.Error(e, "Error while handling KamusSecret event of type {eventType}, for KamusSecret {name} on namesapce {namespace}",
+                mLogger.Error(e, "Error while handling KamusSecret event of type {eventType}, for KamusSecret {name} on namespace {namespace}",
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
@@ -121,7 +121,7 @@ namespace CustomResourceDescriptorController.HostedServices
 
             var decryptedItems = new Dictionary<string, string>();
 
-            mLogger.Debug("Starting decrypting KamusSecret items. KamusSecret {name} in namesapce {namespace}",
+            mLogger.Debug("Starting decrypting KamusSecret items. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
 
@@ -135,14 +135,14 @@ namespace CustomResourceDescriptorController.HostedServices
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namesapce {namespace}",
+                    Log.Error(e, "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
                 }
             }
 
-            mLogger.Debug("KamusSecret items decrypted successfully. KamusSecret {name} in namesapce {namespace}",
+            mLogger.Debug("KamusSecret items decrypted successfully. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
 
@@ -164,7 +164,7 @@ namespace CustomResourceDescriptorController.HostedServices
             var secret = await CreateSecret(kamusSecret);
             var createdSecret = await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);    
 
-            mAuditLogger.Information("Created a secret from KamusSecret {name} in namesapce {namespace} successfully.",
+            mAuditLogger.Information("Created a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
             
@@ -179,7 +179,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 secret.StringData
             }), kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
 
-            mAuditLogger.Information("Updated a secret from KamusSecret {name} in namesapce {namespace} successfully.",
+            mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
 

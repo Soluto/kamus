@@ -23,7 +23,7 @@ namespace blackbox
         }
 
         [JsonProperty(PropertyName = "namespace")]
-        public string NamesapceName
+        public string NamespaceName
         {
             get;
             set;
@@ -47,7 +47,7 @@ namespace blackbox
         }
 
         [JsonProperty(PropertyName = "namespace", Required = Required.Always)]
-        public string NamesapceName
+        public string namespaceName
         {
             get;
             set;
@@ -77,7 +77,7 @@ namespace blackbox
             var request = new EncryptRequest
             {
                 SerivceAccountName = "dummy",
-                NamesapceName = "default",
+                NamespaceName = "default",
                 Data = data
            };
 
@@ -95,7 +95,7 @@ namespace blackbox
             var decryptRequest = new DecryptRequest
             {
                 SerivceAccountName = "dummy",
-                NamesapceName = "default",
+                NamespaceName = "default",
                 EncryptedData = encryptedData
             };
 
@@ -117,7 +117,7 @@ namespace blackbox
             var decryptRequest = new DecryptRequest
             {
                 SerivceAccountName = "dummy",
-                NamesapceName = "default",
+                NamespaceName = "default",
                 EncryptedData = data
             };
 
@@ -134,7 +134,7 @@ namespace blackbox
             var request = new EncryptRequest
             {
                 SerivceAccountName = "dummy",
-                NamesapceName = "default"
+                NamespaceName = "default"
            };
 
             var result = await httpClient.PostAsync (ConfigurationProvider.Configuration["ENCRYPTOR"] + "api/v1/encrypt", new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"));
