@@ -174,7 +174,10 @@ namespace CustomResourceDescriptorController.HostedServices
         private async Task HandleModify(KamusSecret kamusSecret)
         {
             var secret = await CreateSecret(kamusSecret);
-            var secretCreationResponse = await mKubernetes.ReplaceNamespacedSecretWithHttpMessagesAsync(secret, kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
+            var secretCreationResponse = await mKubernetes.PatchNamespacedSecretWithHttpMessagesAsync(new V1Patch(new
+            {
+                StringData = secret.StringData
+            }), kamusSecret.Metadata.Name, secret.Metadata.NamespaceProperty);
 
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namesapce {namespace} successfully.",
                 kamusSecret.Metadata.Name,

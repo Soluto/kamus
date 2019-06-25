@@ -69,7 +69,6 @@ namespace crd_controller
             watch.OnError += e => subject.OnError(e);
             watch.OnEvent += (e, s) => subject.OnNext((e, s));
 
-
             RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
