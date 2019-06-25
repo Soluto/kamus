@@ -175,8 +175,6 @@ namespace CustomResourceDescriptorController.HostedServices
             mAuditLogger.Information("Created a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
-
-            await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
 
         private async Task HandleModify(KamusSecret kamusSecret)
@@ -193,8 +191,6 @@ namespace CustomResourceDescriptorController.HostedServices
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
-
-            await PostHandleStatusUpdate(kamusSecret, createdSecret);
         }
 
         private async Task HandleDelete(KamusSecret kamusSecret)
@@ -202,19 +198,6 @@ namespace CustomResourceDescriptorController.HostedServices
             var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
 
             await mKubernetes.DeleteNamespacedSecretAsync(kamusSecret.Metadata.Name, @namespace);
-        }
-
-        private async Task PostHandleStatusUpdate(KamusSecret kamusSecret, V1Secret secret)
-        {
-            await mKubernetes.PatchNamespacedCustomObjectAsync(new
-                {
-                    Status = kamusSecret.Data.Count == secret.Data.Count ? "Decrypted" : "PartiallyDecrypted"
-                },
-                "soluto.com",
-                "v1alpha1",
-                kamusSecret.Metadata.NamespaceProperty,
-                "kamussecrets",
-                kamusSecret.Metadata.Name);
         }
     }
 }
