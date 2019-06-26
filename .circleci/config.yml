@@ -353,10 +353,6 @@ workflows:
           requires:
             - build_api
             - lint-scripts
-      - test_crd_1_15:
-          requires:
-            - build_api
-            - lint-scripts
       - push-api-images:
           requires:
             - lint-scripts
