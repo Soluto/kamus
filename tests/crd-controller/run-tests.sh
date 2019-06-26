@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.3.0
+readonly KIND_VERSION=0.4.0
 readonly CLUSTER_NAME=e2e-test
 readonly KUBECTL_VERSION=v1.13.0
 
