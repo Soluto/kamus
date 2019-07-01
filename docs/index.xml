@@ -262,6 +262,15 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
     </item>
     
     <item>
+      <title>Changelog</title>
+      <link>https://kamus.soluto.io/docs/user/changelog/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/user/changelog/</guid>
+      <description>Changelog kamus-0.5 (30/06/2019) Enhancements:  [enhancement] Drop testing against Kubernetes 1.12 and start testing against Kubernetes 1.15 #223 [enhancement] Add CRD to create secrets wrapper #13 [enhancement] Add support for modifying KamusSecret #225 [documentation] document method of installing kamus without Helm #215 [documentation] Document decryption flow #207 [enhancement][good first issue][help wanted] Ability to encrypt only values that are actually secret #202 [documentation] The documentation has incorrect reference of &amp;ldquo;KeyManager&amp;rdquo; #197 [documentation] encryptor can&amp;rsquo;t work with kms provider via kiam role #158 [chart][documentation] Document POD annotations #151 [enhancement][good first issue][help wanted] init container should accept multiple encrypted directories #139  Bug Fixes:  [bug] type=KamusSecret is NOT working.</description>
+    </item>
+    
+    <item>
       <title>Creating Kubernetes Secrets</title>
       <link>https://kamus.soluto.io/docs/user/crd/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

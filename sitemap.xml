@@ -4,13 +4,13 @@
   
   <url>
     <loc>https://kamus.soluto.io/</loc>
-    <lastmod>2019-06-23T17:47:10+03:00</lastmod>
+    <lastmod>2019-07-01T10:36:56+03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://kamus.soluto.io/docs/</loc>
-    <lastmod>2019-06-23T17:47:10+03:00</lastmod>
+    <lastmod>2019-07-01T10:36:56+03:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -127,6 +127,11 @@
   <url>
     <loc>https://kamus.soluto.io/docs/threatmodeling/architecture/</loc>
     <lastmod>2019-06-05T17:02:19+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/user/changelog/</loc>
+    <lastmod>2019-07-01T10:36:56+03:00</lastmod>
   </url>
   
   <url>
