@@ -6,9 +6,9 @@ We also maintain "artifical releases" - releases that exists on the release page
 
 ## Creating a new release
 * Create and push a new tag in the format `kamus-<version>` (Due to [this bug][pr-bug], the latest PR is not included in the release - if you need it, make sure to create a dummy commit after it).
-* Create new [personal access token](https://github.com/settings/tokens), with `repo` scope.
+* Create new [personal access token], with `repo` scope.
 * Export the token `export GREN_GITHUB_TOKEN=<>`
-* Install [gren](https://github.com/github-tools/github-release-notes)
+* Install [gren]
 * Create a new release:
 ```
 gren release prerelease
@@ -18,10 +18,14 @@ gren release prerelease
 gren changelog --override 
 ```
 
+* Delete the token when you're done on the [personal access token] page.
+
 Please note: due to [this issue][issues-bug], gren will fetch only the first 30 issues, if there are more issues - gren will not detect them. There is a partial workaround documented in the issue.
 
 ### How releases are created?
 Gren will look for all issues closed with PRs that has one of those labels: "enhancement", "documentation" or "bug". If you noticed a missing issue in the release, make sure it has the relevant labels.
 
+[personal access token]: https://github.com/settings/tokens
+[gren]: https://github.com/github-tools/github-release-notes
 [pr-bug]: https://github.com/github-tools/github-release-notes/issues/128
 [issues-bug]: https://github.com/github-tools/github-release-notes/issues/209
