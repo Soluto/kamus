@@ -2,7 +2,7 @@
 Kamus releases are somewhat complex, we're aware to that.
 Each component has it's own versioning, following semantic versioning rules.
 Each component version has it's matching tag on git (e.g. `kamus-cli-0.1`) for tracking version history.
-We also maintain "artifical releases" - releases that exists on the release page and on the changelog file. Those releases are used to track closed issues and features - make it easier to understand what change in Kamus.
+We also maintain "artificial releases" - releases that exists on the release page and on the changelog file. Those releases are used to track closed issues and features - make it easier to understand what change in Kamus.
 
 ## Creating a new release
 * Create and push a new tag in the format `kamus-<version>` (Due to [this bug][pr-bug], the latest PR is not included in the release - if you need it, make sure to create a dummy commit after it).
