@@ -8,5 +8,8 @@
         "Enhancements:": ["enhancement", "documentation"],
         "Bug Fixes:": ["bug"]
     },
-    "changelogFilename": "CHANGELOG.md"
+    "changelogFilename": "site/content/docs/user/CHANGELOG.md",
+    "template": {
+        "changelogTitle": "---\ntitle: \"Changelog\"\nmenu:\n  main:\n    parent: \"user\"\n    identifier: \"changelog\"\n    weight: 6\n---\n# Changelog\n\n"
+    }
 }
