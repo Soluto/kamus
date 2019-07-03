@@ -107,14 +107,18 @@ Now add the following to your `values.yaml` file:
 keyManagement:
   provider: GoogleKms
   googleKms:
+    projectId: <project id>
     location: <location>
     keyRing: <key ring name>
     protectionLevel: HSM
+    rotationPeriod: <optional, the period for automatic key rotation>
 ```
 And use the following command to deploy kamus:
 ```
  helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
 ```
+
+Automatic credentials rotation is supported by Google Cloud KMS (see the docs [here][gcp kms key rotation]). To enable it, just set `keyManagement.googleKms.rotationPeriod` to the desired period. The value is using [C# Time Span Format][timespan], which is simply the number of days you want. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.
 
 ### AWS KMS
 Using [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) as the key management solution is the most secure solution when running a cluster on AWS Cloud.
@@ -139,12 +143,15 @@ keyManagement:
     region: <>
     key: <>
     secret: <>
+    enableAutomaticKeyRotation: <optional, set to true if you want>
 ```
 You can also provide `cmkPrefix` values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called `kamus-<GUID>`. 
 And now deploy Kamus using the following helm command:
 ```
 helm upgrade --install kamus soluto/kamus -f <path/to/values.yaml>
 ```
+
+Automatic key rotation is support by AWS KMS (see the documentation [here][aws kms key rotation]). When enabled, AWS will rotate the credentials once every year. To enable it, just set `keyManagement.awsKms.enableAutomaticKeyRotation` to true. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.
 
 ### Installing Without Helm
 While Helm is the easiest way to install Kamus, it is not mandatory.
@@ -166,3 +173,6 @@ And you're done! Kamus is now installed on your cluster.
 
 [helm template]: https://github.com/technosophos/helm-template
 [helm]: https://helm.sh/
+[gcp kms key rotation]: https://cloud.google.com/kms/docs/key-rotation
+[aws kms key rotation]: https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html
+[timespan]: https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings
