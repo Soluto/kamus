@@ -1,21 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
-using Amazon;
-using Amazon.KeyManagementService;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.CloudKMS.v1;
-using Google.Apis.Services;
 using Kamus.KeyManagement;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Serilog;
 
 namespace Kamus

@@ -14,11 +14,16 @@ namespace Kamus.KeyManagement
     {
         private readonly IAmazonKeyManagementService mAmazonKeyManagementService;
         private readonly string mCmkPrefix;
+        private readonly bool mEnableAutomaticKeyRotation;
 
-        public AwsKeyManagement(IAmazonKeyManagementService amazonKeyManagementService, string cmkPrefix = "")
+        public AwsKeyManagement(
+            IAmazonKeyManagementService amazonKeyManagementService, 
+            string cmkPrefix,
+            bool enableAutomaticKeyRotation)
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
             mCmkPrefix = cmkPrefix;
+            mEnableAutomaticKeyRotation = enableAutomaticKeyRotation;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
@@ -78,7 +83,14 @@ namespace Kamus.KeyManagement
 
         private async Task GenerateMasterKey(string keyAlias)
         {
-            var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest());
+            var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest { });
+            if (mEnableAutomaticKeyRotation) {
+                await mAmazonKeyManagementService.EnableKeyRotationAsync(
+                    new EnableKeyRotationRequest
+                    {
+                        KeyId = createKeyResponse.KeyMetadata.KeyId
+                    });
+            }
             await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId);
         }
     }
