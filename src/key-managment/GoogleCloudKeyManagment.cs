@@ -16,7 +16,7 @@ namespace Kamus.KeyManagement
         private readonly string mKeyringName;
         private readonly string mKeyringLocation;
         private readonly string mProtectionLevel;
-        private readonly TimeSpan mRotationPeriod;
+        private readonly TimeSpan? mRotationPeriod;
 
         public GoogleCloudKeyManagment(
                 KeyManagementServiceClient keyManagementServiceClient,
@@ -31,7 +31,9 @@ namespace Kamus.KeyManagement
             mKeyringName = keyringName;
             mKeyringLocation = keyringLocation;
             mProtectionLevel = protectionLevel;
-            mRotationPeriod = TimeSpan.Parse(rotationPeriod);
+            mRotationPeriod = string.IsNullOrEmpty(rotationPeriod) ? 
+                (TimeSpan?)null : 
+                TimeSpan.Parse(rotationPeriod);
         }
 
 
@@ -66,10 +68,14 @@ namespace Kamus.KeyManagement
                     VersionTemplate = new CryptoKeyVersionTemplate
                     {
                         ProtectionLevel = ProtectionLevel.Software
-                    },
-                    NextRotationTime = (DateTime.UtcNow + mRotationPeriod).ToTimestamp(),
-                    RotationPeriod = Duration.FromTimeSpan(mRotationPeriod)
+                    }
                 };
+
+                if (mRotationPeriod.HasValue)
+                {
+                    key.NextRotationTime = (DateTime.UtcNow + mRotationPeriod.Value).ToTimestamp();
+                    key.RotationPeriod = Duration.FromTimeSpan(mRotationPeriod.Value);
+                }
 
                 var request = await mKmsService.CreateCryptoKeyAsync(keyring, safeId, key);
                
