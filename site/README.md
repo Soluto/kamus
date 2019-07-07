@@ -1,4 +1,4 @@
-# kind's docs
+# Kamus's docs
 
 Januys's docs are built with [hugo], and can be browsed live at https://kamus.soluto.io/
 
