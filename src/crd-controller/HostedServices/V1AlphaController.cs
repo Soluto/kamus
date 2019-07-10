@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ using k8s.Models;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -125,53 +125,24 @@ namespace CustomResourceDescriptorController.HostedServices
             var serviceAccount = kamusSecret.ServiceAccount;
             var id = $"{@namespace}:{serviceAccount}";
 
-            var decryptedStrings = new Dictionary<string, string>();
-            var decryptedBinaries = new Dictionary<string, byte[]>();
+
 
             mLogger.Debug("Starting decrypting KamusSecret items. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
 
-            foreach (var (key, value) in kamusSecret.Data)
-            {
-                try
-                {
-                    var decrypted = await mKeyManagement.Decrypt(value, id);
-
-                    decryptedStrings.Add(key, decrypted);
-                }
-                catch (Exception e)
-                {
-                    mLogger.Error(e,
+            Action<Exception, string> errorHandler = (e, key) => mLogger.Error(e,
                         "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
-                }
-            }
-
-            foreach (var (key, value) in kamusSecret.BinaryData)
-            {
-                try
-                {
-                    var decrypted = await mKeyManagement.Decrypt(value, id);
-
-                    decryptedBinaries.Add(key, Convert.FromBase64String(decrypted));
-                }
-                catch (Exception e)
-                {
-                    mLogger.Error(e,
-                        "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
-                        key,
-                        kamusSecret.Metadata.Name,
-                        @namespace);
-                }
-            }
+                        
+            var decryptedStrings = await DecryptItems(kamusSecret.Data, id, errorHandler, x => x);
+            var decryptedBinaries = await DecryptItems(kamusSecret.BinaryData, id, errorHandler, Convert.FromBase64String);
 
             mLogger.Debug("KamusSecret items decrypted successfully. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
-
 
             return new V1Secret
             {
@@ -185,6 +156,37 @@ namespace CustomResourceDescriptorController.HostedServices
                 Data = decryptedBinaries
             };
         }
+
+        private async Task<Dictionary<string, T>> DecryptItems<T>(
+            Dictionary<string, string> source, 
+            string serviceAccountId,
+            Action<Exception, string> errorHandler,
+            Func<string, T> mapper)
+        {
+            var result = new Dictionary<string, T>();
+
+            if (source == null)
+            {
+                return result;
+            }
+
+            foreach (var (key, value) in source)
+            {
+                try
+                {
+                    var decrypted = await mKeyManagement.Decrypt(value, serviceAccountId);
+
+                    result.Add(key, mapper(decrypted));
+                }
+                catch (Exception e)
+                {
+                    errorHandler(e, key);
+                }
+            }
+
+            return result;
+        }
+
 
         private async Task HandleAdd(KamusSecret kamusSecret, bool isUpdate = false)
         {
