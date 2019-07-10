@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -48,7 +49,8 @@ namespace crd_controller
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
-            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
+            Assert.True(v1Secret.Data.ContainsKey("key3"));
+            Assert.Equal(File.ReadAllText("key.crt"), Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
         
         [Fact]

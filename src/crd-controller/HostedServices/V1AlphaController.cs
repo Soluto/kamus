@@ -125,7 +125,8 @@ namespace CustomResourceDescriptorController.HostedServices
             var serviceAccount = kamusSecret.ServiceAccount;
             var id = $"{@namespace}:{serviceAccount}";
 
-            var decryptedItems = new Dictionary<string, string>();
+            var decryptedStrings = new Dictionary<string, string>();
+            var decryptedBinaries = new Dictionary<string, byte[]>();
 
             mLogger.Debug("Starting decrypting KamusSecret items. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
@@ -137,7 +138,25 @@ namespace CustomResourceDescriptorController.HostedServices
                 {
                     var decrypted = await mKeyManagement.Decrypt(value, id);
 
-                    decryptedItems.Add(key, decrypted);
+                    decryptedStrings.Add(key, decrypted);
+                }
+                catch (Exception e)
+                {
+                    mLogger.Error(e,
+                        "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
+                        key,
+                        kamusSecret.Metadata.Name,
+                        @namespace);
+                }
+            }
+
+            foreach (var (key, value) in kamusSecret.BinaryData)
+            {
+                try
+                {
+                    var decrypted = await mKeyManagement.Decrypt(value, id);
+
+                    decryptedBinaries.Add(key, Convert.FromBase64String(decrypted));
                 }
                 catch (Exception e)
                 {
@@ -162,7 +181,8 @@ namespace CustomResourceDescriptorController.HostedServices
                     NamespaceProperty = @namespace
                 },
                 Type = kamusSecret.Type,
-                StringData = decryptedItems
+                StringData = decryptedStrings,
+                Data = decryptedBinaries
             };
         }
 
