@@ -49,6 +49,25 @@ default-token-m6whl                        kubernetes.io/service-account-token  
 my-tls-secret                              TlsSecret                             1      5s
 ```
 
+## Binary data support
+In case you need to create secret that contains binary data (e.g. private keys), you can use the same flow.
+Encrypt the data (after encoding it using base64 encoding), and create KamusSecret in the following format:
+
+```
+apiVersion: "soluto.com/v1alpha1"
+kind: KamusSecret
+metadata:
+  name: my-tls-secret     //This will be the name of the secret
+  namespace: default      //The secret and KamusSecret live in this namespace
+type: TlsSecret           //The type of the secret that will be created
+binaryData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data
+  key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
+serviceAccount: some-sa   //The service account used for encrypting the data
+```
+
+You can have both `data` and `binaryData` in the same KamusSecret object, the created secret will contain both.
+Just ensure that the keys are uniques - you cannot have the same key in `data` and `binaryData`.
+
 ## Known limitation
 This is the alpha release of this feature, so not all functionality is supported. 
 The current known issues:
