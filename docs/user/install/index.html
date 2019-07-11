@@ -237,13 +237,17 @@ gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;service
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">keyManagement<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
 </span><span style="color:#f8f8f8;text-decoration:underline">  </span>provider<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>GoogleKms<span style="color:#f8f8f8;text-decoration:underline">
 </span><span style="color:#f8f8f8;text-decoration:underline">  </span>googleKms<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
-</span><span style="color:#f8f8f8;text-decoration:underline">    </span>location<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;location<span style="color:#8f5902;font-style:italic">&gt;
-</span><span style="color:#8f5902;font-style:italic">    keyRing: &lt;key ring name&gt;</span><span style="color:#f8f8f8;text-decoration:underline">
-</span><span style="color:#f8f8f8;text-decoration:underline">    </span>protectionLevel<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>HSM</code></pre></div>
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>projectId<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;project<span style="color:#f8f8f8;text-decoration:underline"> </span>id<span style="color:#8f5902;font-style:italic">&gt;
+</span><span style="color:#8f5902;font-style:italic">    location: &lt;location&gt;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>keyRing<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;key<span style="color:#f8f8f8;text-decoration:underline"> </span>ring<span style="color:#f8f8f8;text-decoration:underline"> </span>name<span style="color:#8f5902;font-style:italic">&gt;
+</span><span style="color:#8f5902;font-style:italic">    protectionLevel: HSM</span><span style="color:#f8f8f8;text-decoration:underline">
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>rotationPeriod<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;optional<span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span>the<span style="color:#f8f8f8;text-decoration:underline"> </span>period<span style="color:#f8f8f8;text-decoration:underline"> </span>for<span style="color:#f8f8f8;text-decoration:underline"> </span>automatic<span style="color:#f8f8f8;text-decoration:underline"> </span>key<span style="color:#f8f8f8;text-decoration:underline"> </span>rotation&gt;</code></pre></div>
 <p>And use the following command to deploy kamus:</p>
 
 <pre><code> helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials=&quot;$(cat credentials.json | base64)&quot;
 </code></pre>
+
+<p>Automatic credentials rotation is supported by Google Cloud KMS (see the docs <a href="https://cloud.google.com/kms/docs/key-rotation">here</a>). To enable it, just set <code>keyManagement.googleKms.rotationPeriod</code> to the desired period. The value is using <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings">C# Time Span Format</a>, which is simply the number of days you want. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.</p>
 
 <h3 id="aws-kms">AWS KMS<a href="#aws-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 
@@ -267,12 +271,15 @@ The required permissions for the IAM role/user for Kamus to work properly are KM
 </span><span style="color:#f8f8f8;text-decoration:underline">  </span>awsKms<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline">
 </span><span style="color:#f8f8f8;text-decoration:underline">    </span>region<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;<span style="color:#8f5902;font-style:italic">&gt;
 </span><span style="color:#8f5902;font-style:italic">    key: &lt;&gt;</span><span style="color:#f8f8f8;text-decoration:underline">
-</span><span style="color:#f8f8f8;text-decoration:underline">    </span>secret<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;&gt;</code></pre></div>
+</span><span style="color:#f8f8f8;text-decoration:underline">    </span>secret<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;<span style="color:#8f5902;font-style:italic">&gt;
+</span><span style="color:#8f5902;font-style:italic">    enableAutomaticKeyRotation: &lt;optional, set to true if you want&gt;</span></code></pre></div>
 <p>You can also provide <code>cmkPrefix</code> values to give the custerom master keys that Kamus creates better visibility, if not specific the keys alias will be called <code>kamus-&lt;GUID&gt;</code>.
 And now deploy Kamus using the following helm command:</p>
 
 <pre><code>helm upgrade --install kamus soluto/kamus -f &lt;path/to/values.yaml&gt;
 </code></pre>
+
+<p>Automatic key rotation is support by AWS KMS (see the documentation <a href="https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html">here</a>). When enabled, AWS will rotate the credentials once every year. To enable it, just set <code>keyManagement.awsKms.enableAutomaticKeyRotation</code> to true. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.</p>
 
 <h3 id="installing-without-helm">Installing Without Helm<a href="#installing-without-helm" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 
@@ -297,7 +304,7 @@ kubectl apply -f manifest.yaml
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-06-16 13:11:40 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/b93aea24f6afa2bbd06d33233abc56518f636d5a">b93aea2</a></span></p>
+  <p>Last Updated on 2019-07-11 19:38:28 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/25e8b566e0342282fbc8f93e2cfc3ee80647f9a8">25e8b56</a></span></p>
 </div>
 </div>
 </body>
