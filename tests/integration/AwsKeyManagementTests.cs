@@ -26,7 +26,7 @@ namespace integration
 
             var kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.USEast1);
 
-            mAwsKeyManagement = new AwsKeyManagement(kmsService);
+            mAwsKeyManagement = new AwsKeyManagement(kmsService,"", true);
         }
 
         [Fact]

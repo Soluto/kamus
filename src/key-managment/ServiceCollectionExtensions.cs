@@ -3,8 +3,8 @@ using System.IO;
 using Amazon;
 using Amazon.KeyManagementService;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.CloudKMS.v1;
 using Google.Apis.Services;
+using Google.Cloud.Kms.V1;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,31 +75,16 @@ namespace Kamus.KeyManagement
             var location = configuration.GetValue<string>("KeyManagement:GoogleKms:Location");
             var keyRingName = configuration.GetValue<string>("KeyManagement:GoogleKms:KeyRingName");
             var protectionLevel = configuration.GetValue<string>("KeyManagement:GoogleKms:ProtectionLevel");
-            var credentialsPath = configuration.GetValue<string>("KeyManagement:GoogleKms:CredentialsPath");
-
-            var serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(File.OpenRead(credentialsPath));
-            var credentials = GoogleCredential.FromServiceAccountCredential(serviceAccountCredential);
-            if (credentials.IsCreateScopedRequired)
-            {
-                credentials = credentials.CreateScoped(new[]
-                {
-                    CloudKMSService.Scope.CloudPlatform
-                });
-            }
-
-            var kmsService = new CloudKMSService(new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credentials,
-                GZipEnabled = true
-            });
-
+            var rotationPeriod = configuration.GetValue<string>("KeyManagement:GoogleKms:RotationPeriod");
+            var projectName = configuration.GetValue<string>("KeyManagement:GoogleKms:ProjectId");
 
             return new GoogleCloudKeyManagment(
-                kmsService,
-                serviceAccountCredential.ProjectId,
+                KeyManagementServiceClient.Create(),
+                projectName,
                 keyRingName,
                 location,
-                protectionLevel);
+                protectionLevel,
+                rotationPeriod);
         }
 
         private static IKeyManagement GetAwsKeyManagement(ILogger logger, IConfiguration configuration)
@@ -109,6 +94,7 @@ namespace Kamus.KeyManagement
             var awsKey = configuration.GetValue<string>("KeyManagement:AwsKms:Key");
             var awsSecret = configuration.GetValue<string>("KeyManagement:AwsKms:Secret");
             var cmkPrefix = configuration.GetValue<string>("KeyManagement:AwsKms:CmkPrefix");
+            var enableAutomaticKeyRotation = configuration.GetValue<bool>("KeyManagement:AwsKms:AutomaticKeyRotation", false);
 
             if (string.IsNullOrEmpty(region) || string.IsNullOrEmpty(awsKey) || string.IsNullOrEmpty(awsSecret))
             {
@@ -120,7 +106,7 @@ namespace Kamus.KeyManagement
                 kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.GetBySystemName(region));
             }
 
-            return new AwsKeyManagement(kmsService, cmkPrefix);
+            return new AwsKeyManagement(kmsService, cmkPrefix, enableAutomaticKeyRotation);
         }
     }
 }

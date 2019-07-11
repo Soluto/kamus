@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.CloudKMS.v1;
-using Google.Apis.Services;
+using Google.Cloud.Kms.V1;
 using Kamus.KeyManagement;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -12,8 +9,11 @@ namespace integration
 {
     public class GoogleCloudKeyManagmentTests
     {
-        private readonly IKeyManagement mGoogleCloudKeyManagement;
-        private readonly CloudKMSService mCloudKmsService;
+        private readonly string mKeyRingName;
+        private readonly string mProtectionLevel;
+        private readonly GoogleCloudKeyManagment mGoogleCloudKeyManagement;
+        private readonly string mProjectName;
+        private readonly string mLocation;
         private readonly IConfiguration mConfiguration;
 
         public GoogleCloudKeyManagmentTests()
@@ -24,37 +24,21 @@ namespace integration
 
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
-            writer.Write(mConfiguration.GetValue<string>("KeyManagment:GoogleKms:Credentials"));
-            writer.Flush();
-            stream.Position = 0;
-            var serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(stream);
-            var credentials = GoogleCredential.FromServiceAccountCredential(serviceAccountCredential);
-            if (credentials.IsCreateScopedRequired)
-            {
-                credentials = credentials.CreateScoped(new[]
-                {
-                    CloudKMSService.Scope.CloudPlatform
-                });
-            }
-
-            mCloudKmsService = new CloudKMSService(new BaseClientService.Initializer
-            {
-                HttpClientInitializer = credentials,
-                GZipEnabled = true
-            });
+            File.WriteAllText("creds.json", System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"));
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "creds.json");
             var location = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:Location");
             var keyRingName = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:KeyRingName");
             var protectionLevel = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:ProtectionLevel");
+            var projectId = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:ProjectId");
 
             mGoogleCloudKeyManagement = new GoogleCloudKeyManagment(
-                mCloudKmsService,
-                serviceAccountCredential.ProjectId,
+                KeyManagementServiceClient.Create(),
+                projectId,
                 keyRingName,
                 location,
-                protectionLevel);
+                protectionLevel,
+                "30");
         }
-
-
 
         [Fact]
         public async Task TestFullFlow()

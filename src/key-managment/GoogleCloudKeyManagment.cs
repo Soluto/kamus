@@ -1,85 +1,90 @@
 ﻿using System;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Google;
-using Google.Apis.CloudKMS.v1;
-using Google.Apis.CloudKMS.v1.Data;
-using Microsoft.AspNetCore.WebUtilities;
+using Google.Cloud.Kms.V1;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 
 namespace Kamus.KeyManagement
 {
     public class GoogleCloudKeyManagment : IKeyManagement
     {
-        private readonly CloudKMSService mKmsService;
+        private readonly KeyManagementServiceClient mKmsService;
         private readonly string mProjectName;
         private readonly string mKeyringName;
         private readonly string mKeyringLocation;
         private readonly string mProtectionLevel;
+        private readonly TimeSpan? mRotationPeriod;
 
         public GoogleCloudKeyManagment(
-                CloudKMSService kmsService,
+                KeyManagementServiceClient keyManagementServiceClient,
                 string projectName,
                 string keyringName,
                 string keyringLocation,
-                string protectionLevel)
+                string protectionLevel,
+                string rotationPeriod)
         {
-            mKmsService = kmsService;
+            mKmsService = keyManagementServiceClient;
             mProjectName = projectName;
             mKeyringName = keyringName;
             mKeyringLocation = keyringLocation;
             mProtectionLevel = protectionLevel;
+            mRotationPeriod = string.IsNullOrEmpty(rotationPeriod) ? 
+                (TimeSpan?)null : 
+                TimeSpan.Parse(rotationPeriod);
         }
 
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
             var safeId = KeyIdCreator.Create(serviceAccountId);
-            var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
-            var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
-            var keyId = $"{keyringId}/cryptoKeys/{safeId}";
+            var cryptoKeyName =
+                new CryptoKeyName(mProjectName, mKeyringLocation, mKeyringName, safeId);
+            var result = 
+                await mKmsService.DecryptAsync(
+                    cryptoKeyName, 
+                ByteString.FromBase64(encryptedData));
 
-            var result = await cryptoKeys.Decrypt(new DecryptRequest
-            {
-                Ciphertext = encryptedData
-            }, keyId).ExecuteAsync();
-
-            return result.Plaintext;
+            return result.Plaintext.ToBase64();
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
             var safeId = KeyIdCreator.Create(serviceAccountId);
-            var cryptoKeys = mKmsService.Projects.Locations.KeyRings.CryptoKeys;
-            var keyringId = $"projects/{mProjectName}/locations/{mKeyringLocation}/keyRings/{mKeyringName}";
-            var keyId = $"{keyringId}/cryptoKeys/{safeId}";
+            var keyring = new KeyRingName(mProjectName, mKeyringLocation, mKeyringName);
+            var cryptoKeyName =
+                new CryptoKeyName(mProjectName, mKeyringLocation, mKeyringName, safeId);
+
             try
             {
-                await cryptoKeys.Get(keyId).ExecuteAsync();
-            } catch (GoogleApiException e) when (e.HttpStatusCode == HttpStatusCode.NotFound && createKeyIfMissing) 
+                await mKmsService.GetCryptoKeyAsync(cryptoKeyName);
+            } catch (RpcException e) when (e.StatusCode == StatusCode.NotFound && createKeyIfMissing) 
             {
-                //todo: handle key rotation - currently set to never expired
                 var key = new CryptoKey
                 {
-                    Purpose = "ENCRYPT_DECRYPT",
+                    Purpose = CryptoKey.Types.CryptoKeyPurpose.EncryptDecrypt,
                     VersionTemplate = new CryptoKeyVersionTemplate
                     {
-                        ProtectionLevel = mProtectionLevel
+                        ProtectionLevel = ProtectionLevel.Software
                     }
                 };
 
-                var request = cryptoKeys.Create(key, keyringId);
-                request.CryptoKeyId = safeId;
-                await request.ExecuteAsync();
+                if (mRotationPeriod.HasValue)
+                {
+                    key.NextRotationTime = (DateTime.UtcNow + mRotationPeriod.Value).ToTimestamp();
+                    key.RotationPeriod = Duration.FromTimeSpan(mRotationPeriod.Value);
+                }
+
+                var request = await mKmsService.CreateCryptoKeyAsync(keyring, safeId, key);
+               
             }
 
-            var encryted = await cryptoKeys.Encrypt(new EncryptRequest
-            {
-                Plaintext = data
-            }, keyId).ExecuteAsync();
+            var cryptoKeyPathName = new CryptoKeyPathName(mProjectName, mKeyringLocation, mKeyringName, safeId);
+            var encryted = await mKmsService.EncryptAsync(cryptoKeyPathName, ByteString.FromBase64(data));
 
-            return encryted.Ciphertext;
+            return encryted.Ciphertext.ToBase64();
         }
     }
 }
