@@ -18,7 +18,10 @@ RUN dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj -c Release -o ./obj/Docker
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2.6-alpine AS release
 ARG PROJECT_NAME=decrypt-api
 ENV PROJECT_NAME_ENV=$PROJECT_NAME
-RUN addgroup dotnet && adduser -D -G dotnet -h /home/dotnet dotnet
+RUN addgroup dotnet && \
+    adduser -D -G dotnet -h /home/dotnet dotnet && \
+    apk add --update --no-cahce libc6-compat
+    
 USER dotnet
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
