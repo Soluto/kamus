@@ -60,13 +60,13 @@ metadata:
   name: my-tls-secret     //This will be the name of the secret
   namespace: default      //The secret and KamusSecret live in this namespace
 type: TlsSecret           //The type of the secret that will be created
-binaryData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data
+encodedData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data. The encrypt data has to be base64 encoded.
   key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
 serviceAccount: some-sa   //The service account used for encrypting the data
 ```
 
-You can have both `data` and `binaryData` in the same KamusSecret object, the created secret will contain both.
-Just ensure that the keys are uniques - you cannot have the same key in `data` and `binaryData`.
+You can have both `data` and `encodedData` in the same KamusSecret object, the created secret will contain both.
+Just ensure that the keys are uniques - you cannot have the same key in `data` and `encodedData`.
 
 ## Known limitation
 This is the alpha release of this feature, so not all functionality is supported. 

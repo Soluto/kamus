@@ -138,7 +138,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         @namespace);
                         
             var decryptedStrings = await DecryptItems(kamusSecret.Data, id, errorHandler, x => x);
-            var decryptedBinaries = await DecryptItems(kamusSecret.BinaryData, id, errorHandler, Convert.FromBase64String);
+            var decryptedBinaries = await DecryptItems(kamusSecret.EncodedData, id,   errorHandler, Convert.FromBase64String);
 
             mLogger.Debug("KamusSecret items decrypted successfully. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
