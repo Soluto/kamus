@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -21,8 +20,8 @@ namespace CustomResourceDescriptorController.HostedServices
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private IDisposable mSubscription;
-        private readonly ILogger mAuditLogger = Log.ForContext<V1AlphaController>().AsAudit();
-        private readonly ILogger mLogger = Log.ForContext<V1AlphaController>();
+        private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha1Controller>().AsAudit();
+        private readonly ILogger mLogger = Log.ForContext<V1Alpha1Controller>();
 
         public V1Alpha1Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
         {

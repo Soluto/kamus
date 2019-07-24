@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomResourceDescriptorController.Models.V1Alpha1;
+using CustomResourceDescriptorController.Models.V1Alpha2;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
@@ -21,8 +20,8 @@ namespace CustomResourceDescriptorController.HostedServices
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private IDisposable mSubscription;
-        private readonly ILogger mAuditLogger = Log.ForContext<V1AlphaController>().AsAudit();
-        private readonly ILogger mLogger = Log.ForContext<V1AlphaController>();
+        private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
+        private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
 
         public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
         {

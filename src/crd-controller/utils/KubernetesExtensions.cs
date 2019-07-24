@@ -33,7 +33,7 @@ namespace CustomResourceDescriptorController.utils
             })
                 .SelectMany(x => x)
                 .Select(t => (t.Item1, t.Item2 as TCRD))
-                .Where(t => t.Item2 != null)
+                .Where(t => t.Item2 != null);
         }
     }
 }
