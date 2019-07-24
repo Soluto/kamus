@@ -60,6 +60,11 @@ Kamus is shipped with 2 utilities that make it easier to use:
 * Kamus init container - a init container that interacts with the Decrypt API. Refer to the [docs](https://github.com/Soluto/kamus/blob/master/init-container/README.md) for more details.
 * CRD Controller - allowing to create native Kubernetes secrets using Kamus. Refer to the [docs](https://kamus.soluto.io/docs/user/crd/) for more details.
 
+## Users
+* [1 Giant Leap Solutions](https://1giantleap.nl/)
+
+Using Kamus? Open a PR and add your company name here!
+
 ## Security
 We take security seriously at Soluto.
 To learn more about the security aspects of Kamus refer to the Threat Modeling docs containing all the various threats and mitigations we discussed.
