@@ -47,7 +47,7 @@ namespace Kamus.KeyManagement
                     cryptoKeyName, 
                 ByteString.FromBase64(encryptedData));
 
-            return result.Plaintext.ToBase64();
+            return result.Plaintext.ToStringUtf8();
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
@@ -82,7 +82,7 @@ namespace Kamus.KeyManagement
             }
 
             var cryptoKeyPathName = new CryptoKeyPathName(mProjectName, mKeyringLocation, mKeyringName, safeId);
-            var encryted = await mKmsService.EncryptAsync(cryptoKeyPathName, ByteString.FromBase64(data));
+            var encryted = await mKmsService.EncryptAsync(cryptoKeyPathName, ByteString.CopyFromUtf8(data));
 
             return encryted.Ciphertext.ToBase64();
         }

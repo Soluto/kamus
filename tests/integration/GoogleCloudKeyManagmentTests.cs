@@ -9,11 +9,7 @@ namespace integration
 {
     public class GoogleCloudKeyManagmentTests
     {
-        private readonly string mKeyRingName;
-        private readonly string mProtectionLevel;
         private readonly GoogleCloudKeyManagment mGoogleCloudKeyManagement;
-        private readonly string mProjectName;
-        private readonly string mLocation;
         private readonly IConfiguration mConfiguration;
 
         public GoogleCloudKeyManagmentTests()
@@ -44,12 +40,11 @@ namespace integration
         public async Task TestFullFlow()
         {
             var sa = "sa:namespace";
-            var data = "data";
+            var data = "The quick brown fox jumps over the lazy dog";
             var encrypted = await mGoogleCloudKeyManagement.Encrypt(data, sa);
             var decrypted = await mGoogleCloudKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(data, decrypted);
-
         }
 
         [Fact]
@@ -57,7 +52,7 @@ namespace integration
         {
             var sa = "sa:namespace";
             var data = "data";
-            var encrypted = "CiQAk2+d4cP3NN9n6vGm1HGQxKmn0diLlThlLqYCK1d4gKdOFi8SLxItCgxEfJ8C73FrnA5mkVISC+lIUP+Q7ndlxmahGhCbWawi0v/yuOexJkeRl/b+";
+            var encrypted = "CiQAk2+d4VDCX+mbfEUBV+2yvzWbWFuWe3qVI+0IQQ6tgH+xnmESMBIuCgyzGbLErJFqtftMuhUSDAq8ngWQqfd/eTFetBoQAZty6/68gUNAU++kCbx20Q==";
             var decrypted = await mGoogleCloudKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(data, decrypted);
