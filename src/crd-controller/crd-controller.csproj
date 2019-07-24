@@ -15,6 +15,8 @@
     <Folder Include="HostedServices\" />
     <Folder Include="Models\" />
     <Folder Include="HealthChecks\" />
+    <Folder Include="Models\V1Alpha1\" />
+    <Folder Include="Models\V1Alpha2\" />
   </ItemGroup>
 
   <ItemGroup>
