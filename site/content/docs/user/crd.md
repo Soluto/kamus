@@ -14,6 +14,9 @@ Using KamusSecret allows to use Kamus with applications that requires native Kub
 
 ## Usage
 KamusSecret works very similary to regular secret encryption flow with Kamus.
+The encrypted data is represented in a format that is identical to regular [Kubernetes Secrets].
+Kamus will create an identical secret with the decrypted content.
+
 To encrypt the data, start by deciding to which namespace and which service account you're encrypting it.
 The service account does not have to exist or used by the pod consuming the secret.
 It just used for expressing who can consume this encrypted secret.
@@ -27,14 +30,16 @@ kamus-cli encrypt
 ```
 Now that you have the data encrypted, create a KamusSecret object, using the following manifest:
 ```
-apiVersion: "soluto.com/v1alpha1"
+apiVersion: "soluto.com/v1alpha2"
 kind: KamusSecret
 metadata:
   name: my-tls-secret     //This will be the name of the secret
   namespace: default      //The secret and KamusSecret live in this namespace
 type: TlsSecret           //The type of the secret that will be created
-data:                     //Put here all the encrypted data, that will be stored (decrypted) on the secret data
+stringData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data
   key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
+data:                     //Put here base64 encoded data (usually, binary data like private keys in der format)
+  key2: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg== 
 serviceAccount: some-sa   //The service account used for encrypting the data
 ```
 And finally, create the KamusSecret using:
@@ -49,27 +54,16 @@ default-token-m6whl                        kubernetes.io/service-account-token  
 my-tls-secret                              TlsSecret                             1      5s
 ```
 
-## Binary data support
-In case you need to create secret that contains binary data (e.g. private keys), you can use the same flow.
-Encrypt the data (after encoding it using base64 encoding), and create KamusSecret in the following format:
+## Migrating from previous version
+To migrate from `v1alpha1` to `v1alpha2` all you need to do is:
 
-```
-apiVersion: "soluto.com/v1alpha1"
-kind: KamusSecret
-metadata:
-  name: my-tls-secret     //This will be the name of the secret
-  namespace: default      //The secret and KamusSecret live in this namespace
-type: TlsSecret           //The type of the secret that will be created
-encodedData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data. The encrypt data has to be base64 encoded.
-  key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
-serviceAccount: some-sa   //The service account used for encrypting the data
-```
-
-You can have both `data` and `encodedData` in the same KamusSecret object, the created secret will contain both.
-Just ensure that the keys are uniques - you cannot have the same key in `data` and `encodedData`.
+* Change the key `data` to `stringData` 
+* Change the `apiVersion` to `"soluto.com/v1alpha2"`
 
 ## Known limitation
 This is the alpha release of this feature, so not all functionality is supported. 
 The current known issues:
 
 * There is no validation - so if you forgot to add mandatory keys to the KamusSecret objects, it will not be created properly.
+
+[kubernetes secrets]: (https://kubernetes.io/docs/concepts/configuration/secret/)
