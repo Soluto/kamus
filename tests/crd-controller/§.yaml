@@ -1,8 +1,0 @@
-apiVersion: "soluto.com/v1alpha1"
-kind: KamusSecret
-metadata:
-  name: my-tls-secret
-type: TlsSecret
-data:
-  key: fX+zM9o709PGkitf0f7PNg==:1iLWChg0N5+SwysTXvLSCw==
-serviceAccount: some-sa

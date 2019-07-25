@@ -15,7 +15,7 @@ spec:
     storage: true
   - name: v1alpha2
     served: true
-    storage: true
+    storage: false
   # either Namespaced or Cluster
   scope: Namespaced
   names:
