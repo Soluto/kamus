@@ -153,11 +153,12 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 
 <ul>
 <li>Status code 400? Might be because you tried to encrypt a secret for the default service account in a namespace? It&rsquo;s currently not supported by Kamus (see <a href="/docs/threatmodeling/controls/decryption/deny_default_sa">deny default sa</a> control for more details). There is open issue (<a href="https://github.com/Soluto/kamus/issues/130">#130</a>) to improve the error message.</li>
-<li>Status code 500? Check Kamus error logs using (there is an open issue <a href="https://github.com/Soluto/kamus/issues/122">#120</a> to improve the error message):</li>
-</ul>
+
+<li><p>Status code 500? Check Kamus error logs using (there is an open issue <a href="https://github.com/Soluto/kamus/issues/122">#120</a> to improve the error message):</p>
 
 <pre><code>kubectl logs -l &quot;app=kamus,component=encryptor&quot; --since 5m
-</code></pre>
+</code></pre></li>
+</ul>
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>

@@ -159,10 +159,10 @@ To deploy Kamus using AES Key:
 </code></pre>
 
 <ul>
-<li>Pass the value when deploying kamus, either using <code>values.yaml</code> or directly in the helm command:
-<code>
-helm upgrade --install kamus soluto/kamus --set keyManagement.AES.key=$key
-</code></li>
+<li><p>Pass the value when deploying kamus, either using <code>values.yaml</code> or directly in the helm command:</p>
+
+<pre><code>helm upgrade --install kamus soluto/kamus --set keyManagement.AES.key=$key
+</code></pre></li>
 </ul>
 
 <h3 id="azure-keyvault-kms">Azure KeyVault KMS<a href="#azure-keyvault-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
@@ -290,14 +290,16 @@ You can use <a href="https://github.com/technosophos/helm-template">helm templat
 <li>Download and install <a href="https://helm.sh/">helm</a> and <a href="https://github.com/technosophos/helm-template">helm template</a>.
 You can initialize Helm using <code>helm init -c</code>, which allows you to use Helm locally, without a connected cluster. Make sure to add soluto helm repository, as specified above.</li>
 <li>Create <code>values.yaml</code> according to your needs. Follow the instructions above and choose the method that fits your environment.</li>
-<li>Run the following command to generate the manifest file:
-<code>
-helm fetch soluto/kamus --untar &amp;&amp; helm template kamus -f values.yamk &gt; manifest.yaml
-</code></li>
-<li>Now use <code>kubectl</code> to install Kamus:
-<code>
-kubectl apply -f manifest.yaml
-</code></li>
+
+<li><p>Run the following command to generate the manifest file:</p>
+
+<pre><code>helm fetch soluto/kamus --untar &amp;&amp; helm template kamus -f values.yamk &gt; manifest.yaml
+</code></pre></li>
+
+<li><p>Now use <code>kubectl</code> to install Kamus:</p>
+
+<pre><code>kubectl apply -f manifest.yaml
+</code></pre></li>
 </ul>
 
 <p>And you&rsquo;re done! Kamus is now installed on your cluster.</p>
