@@ -16,7 +16,7 @@
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="3.1.0" />
-    <PackageReference Include="KubernetesClient" Version="1.5.19" />
+    <PackageReference Include="KubernetesClient" Version="1.5.25" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.0.0" />
