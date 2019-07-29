@@ -109,7 +109,7 @@ namespace crd_controller
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
 
-            RunKubectlCommand($"apply -f ${fileName}");
+            RunKubectlCommand($"apply -f {fileName}");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
@@ -132,7 +132,7 @@ namespace crd_controller
             await DeployController();
             
             RunKubectlCommand("apply -f tls-Secret.yaml");
-            RunKubectlCommand($"apply -f ${fileName}");
+            RunKubectlCommand($"apply -f {fileName}");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
@@ -148,7 +148,7 @@ namespace crd_controller
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
 
-            RunKubectlCommand($"delete -f ${fileName}");
+            RunKubectlCommand($"delete -f {fileName}");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
