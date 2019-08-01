@@ -85,7 +85,7 @@ namespace crd_controller
 
         [Theory]
         [InlineData("updated-tls-KamusSecret.yaml")]
-        [InlineData("updated-tls-KamusSecret-V1Alpha2.yaml")]
+        [InlineData("updated-tls-KamusSecretV1Alpha2.yaml")]
         public async Task UpdateKamusSecret_SecretUpdated(string fileName)
         {
             Cleanup();
