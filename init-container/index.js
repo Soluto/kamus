@@ -93,7 +93,7 @@ async function innerRun() {
         }
     }
 
-    if (program.decryptedPath == null || program.decryptedPath == "")
+    if (!program.decryptedPath)
     {
       throw "decrypted path name wasn't provided altough it's mandataroy";
     }
