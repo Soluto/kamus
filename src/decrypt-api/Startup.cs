@@ -50,7 +50,10 @@ namespace Kamus
             });
 
             services.AddSingleton<IKubernetes>(s => {
-                return new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+                var config = string.IsNullOrEmpty(Configuration["Kubernetes:ProxyUrl"])
+                ? KubernetesClientConfiguration.BuildDefaultConfig()
+                : new KubernetesClientConfiguration { Host = Configuration["Kubernetes:ProxyUrl"] };
+                return new Kubernetes(config);
                 });
 
             services.AddKeyManagement(Configuration, Log.Logger);
