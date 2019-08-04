@@ -103,7 +103,7 @@ async function innerRun() {
     const outputFormat = program.outputFormat.toLowerCase();
     let outputFile = "";
 
-    if (program.decryptedFileName == null || program.decryptedFileName == "") 
+    if (!program.decryptedFileName) 
     {
       if(outputFormat != "files"){
         throw "decrypted file name wasn't provided altough it's mandataroy";
