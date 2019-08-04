@@ -39,7 +39,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             mSubscription = mKubernetes.ObserveClusterCustomObject<KamusSecret>(
                     "soluto.com",
-                     "v2alpha1",
+                     "v1alpha2",
                      "kamussecrets",
                      token)
                 .SelectMany(x =>
