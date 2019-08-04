@@ -108,7 +108,7 @@ async function innerRun() {
       if(outputFormat != "files"){
         throw "decrypted file name wasn't provided altough it's mandataroy";
       }
-      console.log(`Writing output format using ${program.outputFormat} format to file ${program.decryptedPath}`);
+      console.log(`Writing output files to folder ${program.decryptedPath}`);
     } else {
       outputFile = path.join(program.decryptedPath, program.decryptedFileName);
       console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
