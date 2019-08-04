@@ -111,7 +111,7 @@ async function innerRun() {
       console.log(`Writing output files to folder ${program.decryptedPath}`);
     } else {
       outputFile = path.join(program.decryptedPath, program.decryptedFileName);
-      console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
+      console.log(`Writing output using ${program.outputFormat} format to file ${outputFile}`);
     }
      
 
