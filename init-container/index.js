@@ -93,10 +93,27 @@ async function innerRun() {
         }
     }
 
+    if (!program.decryptedPath)
+    {
+      throw "decrypted path wasn't provided although it's mandatory";
+    }
+
     checkDirectorySync(program.decryptedPath);
-    
-    const outputFile = path.join(program.decryptedPath, program.decryptedFileName);
-    console.log(`Writing output format using ${program.outputFormat} format to file ${outputFile}`);
+
+    const outputFormat = program.outputFormat.toLowerCase();
+    let outputFile = "";
+
+    if (!program.decryptedFileName) 
+    {
+      if(outputFormat != "files"){
+        throw "decrypted file name wasn't provided altough it's mandataroy";
+      }
+      console.log(`Writing output files to folder ${program.decryptedPath}`);
+    } else {
+      outputFile = path.join(program.decryptedPath, program.decryptedFileName);
+      console.log(`Writing output using ${program.outputFormat} format to file ${outputFile}`);
+    }
+     
 
     switch(program.outputFormat.toLowerCase()){
       case "json":
