@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
-    "commander": "^2.19.0",
+    "commander": "^3.0.0",
     "ejs": "^2.6.1",
     "ejs-lint": "^0.3.0",
     "node-readfiles": "^0.2.0",
