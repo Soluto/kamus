@@ -42,7 +42,7 @@ metadata:
 data:
   key: 4AD7lM6lc4dGvE3oF+5w8g==:WrcckiNNOAlMhuWHaM0kTw==
   template.ejs: |
-     <%= secrets["key"] %>
+     <%- secrets["key"] %>
      hello
 ```
 
@@ -51,6 +51,7 @@ This will result in the following file created by the init container:
 <decrypted value>
 hello
 ```
+__NOTE__: When you use ejs template tags you probably want the `<%-` tag to prevent ejs from escaping the value. Read more [here](https://github.com/mde/ejs#tags).
 
 Look on EJS docummentation for more details, or on one of the existing [templates](https://github.com/Soluto/kamus/tree/master/init-container/templates) for ideas on how you can use it. The template input is:
 ```
