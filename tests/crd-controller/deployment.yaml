@@ -32,10 +32,7 @@ roleRef:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kamus-controller
-  annotations:
-    prometheus.io/scrape: "true"
-    
+  name: kamus-controller 
   labels:
     app: kamus
     component: crd-controller
@@ -51,7 +48,7 @@ spec:
   selector:
     app: kamus
     component: crd-controller
---
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
