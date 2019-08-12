@@ -18,6 +18,20 @@ commands:
             tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
           no_output_timeout: 3600
 jobs:
+  test_cli:
+    docker:
+      - image: node:10-alpine
+
+    steps:
+      - checkout
+      - run:
+          name: Run unit tests
+          working_directory: "cli"
+          command: |
+            yarn
+            yarn eslint
+            yarn test
+
   build_api:
     machine: true
 
@@ -369,7 +383,11 @@ workflows:
   cli-image:
     jobs:
       - lint-scripts
+      - test_cli
       - push-cli-image:
+          requires:
+            - lint-scripts
+            - test_cli
           filters:
             branches:
               only: master
