@@ -31,6 +31,7 @@ jobs:
             yarn
             yarn eslint
             yarn test
+
   build_api:
     machine: true
 
@@ -386,7 +387,7 @@ workflows:
       - push-cli-image:
           requires:
             - lint-scripts
-            - test-cli
+            - test_cli
           filters:
             branches:
               only: master
