@@ -78,7 +78,7 @@ namespace crd_controller
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
 
             Assert.Equal("TlsSecret", v1Secret.Type);
-            Assert.True(v1Secret.StringData.ContainsKey("key"));
+            Assert.True(v1Secret.Data.ContainsKey("key"));
             Assert.True(v1Secret.Data.ContainsKey("key3"));
             Assert.Equal(File.ReadAllText("key.crt"), Encoding.UTF8.GetString(v1Secret.Data["key3"]));
         }
