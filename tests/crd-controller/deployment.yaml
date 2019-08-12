@@ -73,6 +73,13 @@ spec:
       - name: controller
         image: crd-controller
         imagePullPolicy: IfNotPresent
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:9999;https://+:8888"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+          value: "/home/dotnet/https/aspnetapp.pfx"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+          value: ""
         livenessProbe:
           httpGet:
             path: /healthz
