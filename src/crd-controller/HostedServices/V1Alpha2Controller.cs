@@ -31,7 +31,10 @@ namespace CustomResourceDescriptorController.HostedServices
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            mSubscription.Dispose();
+            if (mSubscription != null)
+            {
+                mSubscription.Dispose();
+            }
             return Task.CompletedTask;
         }
 

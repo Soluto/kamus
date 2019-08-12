@@ -29,6 +29,29 @@ roleRef:
   name: kamus-crd
   apiGroup: rbac.authorization.k8s.io
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kamus-controller
+  annotations:
+    prometheus.io/scrape: "true"
+    
+  labels:
+    app: kamus
+    component: crd-controller
+    chart: kamus-0.3.0
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: 8888
+      protocol: TCP
+      name: http-kamus-controller
+  selector:
+    app: kamus
+    component: crd-controller
+--
 apiVersion: apps/v1
 kind: Deployment
 metadata:

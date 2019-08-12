@@ -57,7 +57,7 @@ namespace CustomResourceDescriptorController
             }
             );
                 
-            services.AddHostedService<V1Alpha1Controller>();
+           // services.AddHostedService<V1Alpha1Controller>();
             services.AddHostedService<V1Alpha2Controller>();
 
             services.AddHealthChecks()
