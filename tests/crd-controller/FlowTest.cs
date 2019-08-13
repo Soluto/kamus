@@ -203,7 +203,7 @@ namespace crd_controller
                     if (minor < 15)
                     {
                         Console.WriteLine("patching");
-                        File.WriteAllText("crd.yaml", File.ReadAllText("crd.yaml").Replace("preserveUnknownFields: false", ""));
+                        File.WriteAllText("../../../crd.yaml", File.ReadAllText("crd.yaml").Replace("preserveUnknownFields: false", ""));
                     }
                 }
             }
