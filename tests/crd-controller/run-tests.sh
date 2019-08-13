@@ -43,7 +43,14 @@ create_kind_cluster() {
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
 
-    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/kind-config.yaml --image "kindest/node:$K8S_VERSION"
+    if [[ $kubernetesVersion == "v.15.0" ]]
+    then
+        kind_config="kind-config-1.15.yaml"
+    else
+        kind_config="kind-config.yaml"
+    fi
+
+    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
     kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
