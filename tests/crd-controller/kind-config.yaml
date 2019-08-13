@@ -1,5 +1,28 @@
 kind: Config
 apiVersion: kind.sigs.k8s.io/v1alpha3
+kubeadmConfigPatches:
+- |
+  apiVersion: kubeadm.k8s.io/v1beta2
+  kind: ClusterConfiguration
+  metadata:
+    name: config
+  apiServer:
+    extraArgs:
+      "feature-gates": "CustomResourceWebhookConversion=true"
+  scheduler:
+    extraArgs:
+      "feature-gates": "CustomResourceWebhookConversion=true"
+  controllerManager:
+    extraArgs:
+      "feature-gates": "CustomResourceWebhookConversion=true"
+- |
+  apiVersion: kubeadm.k8s.io/v1beta2
+  kind: InitConfiguration
+  metadata:
+    name: config
+  nodeRegistration:
+    kubeletExtraArgs:
+      "feature-gates": "CustomResourceWebhookConversion=true"
 nodes:
   - role: control-plane
   - role: worker
