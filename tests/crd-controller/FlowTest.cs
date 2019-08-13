@@ -191,6 +191,23 @@ namespace crd_controller
             Console.WriteLine("Deploying CRD");
             
             RunKubectlCommand("apply -f deployment.yaml");
+
+            Console.WriteLine("running ugly patch");
+
+            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("kubernetesVersion")))
+            {
+                var version = Environment.GetEnvironmentVariable("kubernetesVersion").Split(".");
+
+                if (version.Length == 3 && int.TryParse(version[1], out var minor))
+                {
+                    if (minor < 15)
+                    {
+                        Console.WriteLine("patching");
+                        File.WriteAllText("crd.yaml", File.ReadAllText("crd.yaml").Replace("preserveUnknownFields: false", ""));
+                    }
+                }
+            }
+
             RunKubectlCommand("apply -f crd.yaml");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
