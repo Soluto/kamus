@@ -43,7 +43,7 @@ create_kind_cluster() {
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
 
-    if [[ $kubernetesVersion == "v.15.0" ]]
+    if [[ ${kubernetesVersion:?} == "v.15.0" ]]
     then
         kind_config="kind-config-1.15.yaml"
     else
