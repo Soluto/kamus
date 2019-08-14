@@ -12,52 +12,6 @@
     
     <item>
       <title></title>
-      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</guid>
-      <description>Enable firewall protection for KMS Feature: Enable firewall protection for KMS In order to protect KMS As an engineer I want to allow traffic to KMS only from Kamus
-Scenario: A KMS encrypt/decrypt request
-Given firewall protection enabled on KMS When a request is sent not from Kamus Then the request will be denied
-Remarks  Mitigates:  Accessing KMS with leaked credentials Exposing names of namespaces and service accounts  References:  https://docs.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</guid>
-      <description>Credentials Hardening Feature: Credentials Hardening In order to protect KMS As an engineer I want to harden the credentials used by Kamus
-Scenario: Short-lived credentials When I create KMS credentials Then I will use as short as possible expiration time
-Scenario: Use machine identity for authentication Given A machine idetity support is available When Kamus authenticate using this identity Then The request succeed
-Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  Back to Threats and Controls</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</guid>
-      <description>Key names obfuscation Feature: Key names obfuscation In order to protect encryption keys As an engineer I want to obfuscate the key names
-Scenario: Using SHA256 Given a namespace and service account When Kamus access KMS to retrieve the encryption key Then an obfuscated name will be created from the namespace and service account using SHA256
-Remarks  Mitigates: Status: Partial implementation. In future version, we&amp;rsquo;ll add support to add a salt.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</guid>
-      <description>Use KMS with HSM support Feature: Use KMS with HSM support In order to protect encryption keys As an engineer I want to store them using HSM
-Scenario: Azure KeyVauls Given Azure KeyVault keys created in HSM mode When a hacker tries to extract the private key Then the request will be denied
-Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  https://docs.microsoft.com/en-us/azure/key-vault/key-vault-hsm-protected-keys   Back to Threats and Controls</description>
-    </item>
-    
-    <item>
-      <title></title>
       <link>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_default_sa/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -163,6 +117,52 @@ Remarks  Mitigates:  Kamus server disrupting Exposing names of namespaces and se
       <description>Throttling requests by source IP Feature: Throttling requests by source IP In order to protect Kamus from DoS As an engineer I want to throttle incoming requests
 Scenario: Using Nginx Ingress Given an attacker sending multiple requests When the limit of allowed request breached Then Nginx will deny these requests from hitting Kamus
 Remarks  Mitigates:  Kamus server disrupting Exposing names of namespaces and service accounts  References:  https://github.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</guid>
+      <description>Enable firewall protection for KMS Feature: Enable firewall protection for KMS In order to protect KMS As an engineer I want to allow traffic to KMS only from Kamus
+Scenario: A KMS encrypt/decrypt request
+Given firewall protection enabled on KMS When a request is sent not from Kamus Then the request will be denied
+Remarks  Mitigates:  Accessing KMS with leaked credentials Exposing names of namespaces and service accounts  References:  https://docs.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</guid>
+      <description>Credentials Hardening Feature: Credentials Hardening In order to protect KMS As an engineer I want to harden the credentials used by Kamus
+Scenario: Short-lived credentials When I create KMS credentials Then I will use as short as possible expiration time
+Scenario: Use machine identity for authentication Given A machine idetity support is available When Kamus authenticate using this identity Then The request succeed
+Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  Back to Threats and Controls</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</guid>
+      <description>Key names obfuscation Feature: Key names obfuscation In order to protect encryption keys As an engineer I want to obfuscate the key names
+Scenario: Using SHA256 Given a namespace and service account When Kamus access KMS to retrieve the encryption key Then an obfuscated name will be created from the namespace and service account using SHA256
+Remarks  Mitigates: Status: Partial implementation. In future version, we&amp;rsquo;ll add support to add a salt.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</guid>
+      <description>Use KMS with HSM support Feature: Use KMS with HSM support In order to protect encryption keys As an engineer I want to store them using HSM
+Scenario: Azure KeyVauls Given Azure KeyVault keys created in HSM mode When a hacker tries to extract the private key Then the request will be denied
+Remarks  Mitigates:  Accessing KMS with leaked credentials  References:  https://docs.microsoft.com/en-us/azure/key-vault/key-vault-hsm-protected-keys   Back to Threats and Controls</description>
     </item>
     
     <item>

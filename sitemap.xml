@@ -15,26 +15,6 @@
   </url>
   
   <url>
-    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://kamus.soluto.io/docs/threatmodeling/controls/decryption/deny_default_sa/</loc>
     <priority>0</priority>
   </url>
@@ -81,6 +61,26 @@
   
   <url>
     <loc>https://kamus.soluto.io/docs/threatmodeling/controls/encryption/ip_throttling/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/firewall_protection/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/hardening_credentials/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/obfuscate_key_names/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kamus.soluto.io/docs/threatmodeling/controls/kms/use_hsm/</loc>
     <priority>0</priority>
   </url>
   
