@@ -22,10 +22,10 @@ namespace integration
             var writer = new StreamWriter(stream);
             File.WriteAllText("creds.json", System.Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"));
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "creds.json");
-            var location = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:Location");
-            var keyRingName = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:KeyRingName");
-            var protectionLevel = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:ProtectionLevel");
-            var projectId = mConfiguration.GetValue<string>("KeyManagment:GoogleKms:ProjectId");
+            var location = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:Location");
+            var keyRingName = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:KeyRingName");
+            var protectionLevel = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:ProtectionLevel");
+            var projectId = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:ProjectId");
 
             mGoogleCloudKeyManagement = new GoogleCloudKeyManagment(
                 KeyManagementServiceClient.Create(),
