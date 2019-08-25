@@ -7,12 +7,12 @@ using Xunit;
 
 namespace integration
 {
-    public class GoogleCloudKeyManagmentTests
+    public class GoogleCloudKeyManagementTests
     {
-        private readonly GoogleCloudKeyManagment mGoogleCloudKeyManagement;
+        private readonly GoogleCloudKeyManagement mGoogleCloudKeyManagement;
         private readonly IConfiguration mConfiguration;
 
-        public GoogleCloudKeyManagmentTests()
+        public GoogleCloudKeyManagementTests()
         {
             mConfiguration = new ConfigurationBuilder()
                     .AddJsonFile("settings.json")
@@ -27,7 +27,7 @@ namespace integration
             var protectionLevel = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:ProtectionLevel");
             var projectId = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:ProjectId");
 
-            mGoogleCloudKeyManagement = new GoogleCloudKeyManagment(
+            mGoogleCloudKeyManagement = new GoogleCloudKeyManagement(
                 KeyManagementServiceClient.Create(),
                 projectId,
                 keyRingName,
