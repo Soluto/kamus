@@ -63,7 +63,7 @@ az keyvault set-policy --name <> --object-id $objectId --key-permissions get lis
 
 Now it's time to deploy Kamus! Use the following settings in your `values.yaml` file:
 ```
-keyManagment:
+keyManagement:
   provider: AzureKeyVault
   azureKeyVault:
     clientId: <>
