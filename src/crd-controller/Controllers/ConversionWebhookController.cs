@@ -1,28 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using CustomResourceDescriptorController.Models;
 using k8s.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using Serilog;
 
 namespace CustomResourceDescriptorController.Controllers
 {
     public class ConversionWebhookController : Controller
     {
+        private readonly ILogger mLogger = Log.ForContext<ConversionWebhookController>();
+
         [HttpPost]
         [Route("/api/v1/conversion-webhook")]
         public ActionResult<ConversionReview> Convert([FromBody]ConversionReview conversionReview)
         {
-            var response = new ConversionReviewResponse
+            ConversionReviewResponse response;
+
+            mLogger.Information("Received conversion request");
+            try
             {
-                UID = conversionReview.Request.UID,
-                ConvertedObjects = conversionReview.Request.Objects.Select(o => Convert(o, conversionReview.Request.DesiredAPIVersion)).ToArray(),
-                Result = new V1Status
+                response = new ConversionReviewResponse
                 {
-                    Status = "Success"
-                }
-            };
+                    UID = conversionReview.Request.UID,
+                    ConvertedObjects = conversionReview.Request.Objects.Select(o => Convert(o, conversionReview.Request.DesiredAPIVersion)).ToArray(),
+                    Result = new V1Status
+                    {
+                        Status = "Success"
+                    }
+                };
+            }
+            catch (Exception e)
+            {
+                mLogger.Error(e, "Coversation failed");
+                response = new ConversionReviewResponse
+                {
+                    UID = conversionReview.Request.UID,
+                    Result = new V1Status
+                    {
+                        Status = "Failure",
+                        Message = "Conversation failed, check logs for more details"
+                    }
+                };
+            }
 
             return new ConversionReview
             {
@@ -35,6 +56,8 @@ namespace CustomResourceDescriptorController.Controllers
         private object Convert(JObject source, string desiredApiVersion)
         {
             var apiVersion = source.Value<string>("apiVersion");
+
+            mLogger.Information("Starting to convert from {apiVersion} to {desirediVersion}", apiVersion, desiredApiVersion);
 
             switch (desiredApiVersion)
             {
@@ -54,9 +77,7 @@ namespace CustomResourceDescriptorController.Controllers
                             };
 
                         default:
-                            Console.WriteLine("Oh no!");
-                            Console.WriteLine(apiVersion);
-                            return null;
+                            throw new InvalidOperationException($"Unsupported conversation from {apiVersion} to {desiredApiVersion}");
                     }
 
 
@@ -77,16 +98,11 @@ namespace CustomResourceDescriptorController.Controllers
                             };
 
                         default:
-                            Console.WriteLine("Oh no!");
-                            Console.WriteLine(apiVersion);
-                            return null;
-
+                            throw new InvalidOperationException($"Unsupported conversation from {apiVersion} to {desiredApiVersion}");
                     }
 
                 default:
-                    Console.WriteLine("Oh no!");
-                    Console.WriteLine(apiVersion);
-                    return null;
+                    throw new InvalidOperationException($"Unsupported conversation from {apiVersion} to {desiredApiVersion}");
             }
 
         }
