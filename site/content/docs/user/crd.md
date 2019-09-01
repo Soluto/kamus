@@ -38,7 +38,7 @@ metadata:
 type: TlsSecret           //The type of the secret that will be created
 stringData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data
   key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
-data:                     //Put here base64 encoded data (usually, binary data like private keys in der format)
+data:                     //Put here base64 encoded data (usually, binary data like private keys in der format) encrypted (e.g. encrypt the value after base64 encoding it)
   key2: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg== 
 serviceAccount: some-sa   //The service account used for encrypting the data
 ```
