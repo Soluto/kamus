@@ -31,6 +31,7 @@ kamus-cli encrypt \\
     --kamus-url <Kamus URL> \\
 ```
 
+When Kamus URL is a url pointing to the encryptor pod of Kamus, exposed either via port forward (e.g. `kubectl port-forward svc/kamus-encryptor 9999:9999`) or via ingress.
 In case of non-https Kamus URL (e.g. `http://localhost:<port>`), you'll have to add the `--allow-insecure-url` flag to enable http protocol.
 
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
