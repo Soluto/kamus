@@ -190,7 +190,7 @@ Creating the required app is covered in 2 parts of the same guide. The <a href="
 
 <p>Now it&rsquo;s time to deploy Kamus! Use the following settings in your <code>values.yaml</code> file:</p>
 
-<pre><code>keyManagment:
+<pre><code>keyManagement:
   provider: AzureKeyVault
   azureKeyVault:
     clientId: &lt;&gt;
@@ -293,7 +293,7 @@ You can initialize Helm using <code>helm init -c</code>, which allows you to use
 
 <li><p>Run the following command to generate the manifest file:</p>
 
-<pre><code>helm fetch soluto/kamus --untar &amp;&amp; helm template kamus -f values.yamk &gt; manifest.yaml
+<pre><code>helm fetch soluto/kamus --untar &amp;&amp; helm template kamus -f values.yaml &gt; manifest.yaml
 </code></pre></li>
 
 <li><p>Now use <code>kubectl</code> to install Kamus:</p>
@@ -306,7 +306,7 @@ You can initialize Helm using <code>helm init -c</code>, which allows you to use
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-07-11 19:38:28 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/25e8b566e0342282fbc8f93e2cfc3ee80647f9a8">25e8b56</a></span></p>
+  <p>Last Updated on 2019-08-25 11:28:08 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/51d488f304963037465d5c3057eff85e48e86256">51d488f</a></span></p>
 </div>
 </div>
 </body>
