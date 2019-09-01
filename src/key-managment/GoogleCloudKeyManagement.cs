@@ -9,7 +9,7 @@ using Grpc.Core;
 
 namespace Kamus.KeyManagement
 {
-    public class GoogleCloudKeyManagment : IKeyManagement
+    public class GoogleCloudKeyManagement : IKeyManagement
     {
         private readonly KeyManagementServiceClient mKmsService;
         private readonly string mProjectName;
@@ -18,7 +18,7 @@ namespace Kamus.KeyManagement
         private readonly string mProtectionLevel;
         private readonly TimeSpan? mRotationPeriod;
 
-        public GoogleCloudKeyManagment(
+        public GoogleCloudKeyManagement(
                 KeyManagementServiceClient keyManagementServiceClient,
                 string projectName,
                 string keyringName,

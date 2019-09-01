@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Kamus.KeyManagement;
 using Xunit;
 
-namespace unit.KeyManagment
+namespace unit.KeyManagement
 {
     public class SymmetricKeyManagementTests
     {

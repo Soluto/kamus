@@ -63,7 +63,7 @@ az keyvault set-policy --name <> --object-id $objectId --key-permissions get lis
 
 Now it's time to deploy Kamus! Use the following settings in your `values.yaml` file:
 ```
-keyManagment:
+keyManagement:
   provider: AzureKeyVault
   azureKeyVault:
     clientId: <>
@@ -162,7 +162,7 @@ You can initialize Helm using `helm init -c`, which allows you to use Helm local
 * Create `values.yaml` according to your needs. Follow the instructions above and choose the method that fits your environment.
 * Run the following command to generate the manifest file:
 ```
-helm fetch soluto/kamus --untar && helm template kamus -f values.yamk > manifest.yaml
+helm fetch soluto/kamus --untar && helm template kamus -f values.yaml > manifest.yaml
 ```
 * Now use `kubectl` to install Kamus:
 ```

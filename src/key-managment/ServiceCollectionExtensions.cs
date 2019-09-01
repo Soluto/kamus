@@ -30,7 +30,7 @@ namespace Kamus.KeyManagement
                     case "AwsKms":
                         return GetAwsKeyManagement(logger, configuration);
                     case "GoogleKms":
-                        return GetGoogleCloudKeyManagment(configuration);
+                        return GetGoogleCloudKeyManagement(configuration);
                     case "AzureKeyVault":
                         return GetAzurKeyVaultKeyManagement(configuration);
                     case "AESKey":
@@ -70,7 +70,7 @@ namespace Kamus.KeyManagement
                             configuration.GetValue<int>("KeyManagement:KeyVault:MaximumDataLength"));
         }
 
-        private static IKeyManagement GetGoogleCloudKeyManagment(IConfiguration configuration)
+        private static IKeyManagement GetGoogleCloudKeyManagement(IConfiguration configuration)
         {
             var location = configuration.GetValue<string>("KeyManagement:GoogleKms:Location");
             var keyRingName = configuration.GetValue<string>("KeyManagement:GoogleKms:KeyRingName");
@@ -78,7 +78,7 @@ namespace Kamus.KeyManagement
             var rotationPeriod = configuration.GetValue<string>("KeyManagement:GoogleKms:RotationPeriod");
             var projectName = configuration.GetValue<string>("KeyManagement:GoogleKms:ProjectId");
 
-            return new GoogleCloudKeyManagment(
+            return new GoogleCloudKeyManagement(
                 KeyManagementServiceClient.Create(),
                 projectName,
                 keyRingName,
