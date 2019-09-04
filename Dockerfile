@@ -26,6 +26,5 @@ USER dotnet
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
 COPY --from=build-env /app/$PROJECT_NAME/obj/Docker/publish .
-COPY --chown=dotnet:dotnet certificate.pfx /home/dotnet/https/aspnetapp.pfx
 
 ENTRYPOINT dotnet $PROJECT_NAME_ENV.dll

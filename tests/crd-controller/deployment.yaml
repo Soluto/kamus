@@ -3,6 +3,14 @@ kind: ServiceAccount
 metadata:
   name: crd-controller
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-certificate
+type: Opaque
+data:
+  certificate.pfx: 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
+---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -32,7 +40,7 @@ roleRef:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kamus-decryptor
+  name: kamus-crd
   labels:
     app: kamus
     component: crd-controller
@@ -77,9 +85,9 @@ spec:
         - name: ASPNETCORE_URLS
           value: "http://+:9999;https://+:8888"
         - name: ASPNETCORE_Kestrel__Certificates__Default__Path
-          value: "/home/dotnet/https/aspnetapp.pfx"
+          value: "/home/dotnet/https/certificate.pfx"
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-          value: ""
+          value: "aaaa"
         livenessProbe:
           httpGet:
             path: /healthz
@@ -88,3 +96,11 @@ spec:
           httpGet:
             path: /healthz
             port: 9999
+        volumeMounts:
+          - name: foo
+            mountPath: "/home/dotnet/https/"
+            readOnly: true
+      volumes:
+      - name: foo
+        secret:
+          secretName: tls-certificate
