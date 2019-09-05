@@ -150,7 +150,8 @@ Now, when you know the name of the service account, and the namespace it exists 
     --kamus-url &lt;Kamus URL&gt; \\
 </code></pre>
 
-<p>In case of non-https Kamus URL (e.g. <code>http://localhost:&lt;port&gt;</code>), you&rsquo;ll have to add the <code>--allow-insecure-url</code> flag to enable http protocol.</p>
+<p>When Kamus URL is a url pointing to the encryptor pod of Kamus, exposed either via port forward (e.g. <code>kubectl port-forward svc/kamus-encryptor 9999:9999</code>) or via ingress.
+In case of non-https Kamus URL (e.g. <code>http://localhost:&lt;port&gt;</code>), you&rsquo;ll have to add the <code>--allow-insecure-url</code> flag to enable http protocol.</p>
 
 <p>Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
 The simplest way to achieve that is by using the init container.
@@ -162,7 +163,7 @@ You can deploy this app to any Kubernetes cluster that has Kamus installed, to u
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-04-15 16:15:25 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/70c61402fcf9d9aebf74577ec944e800fb4a59ed">70c6140</a></span></p>
+  <p>Last Updated on 2019-09-05 10:40:34 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/f5cb5a089931dab8c39e52334680a5cc861abdb8">f5cb5a0</a></span></p>
 </div>
 </div>
 </body>
