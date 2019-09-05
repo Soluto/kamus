@@ -44,7 +44,6 @@ metadata:
   labels:
     app: kamus
     component: crd-controller
-    chart: kamus-0.3.0
     heritage: Tiller
 spec:
   type: ClusterIP
