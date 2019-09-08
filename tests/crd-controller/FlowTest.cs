@@ -49,6 +49,7 @@ namespace crd_controller
 
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
+            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
 
         [Fact]
@@ -192,23 +193,7 @@ namespace crd_controller
             
             RunKubectlCommand("apply -f deployment.yaml");
 
-            Console.WriteLine("running ugly patch");
-
-            if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("kubernetesVersion")))
-            {
-                var version = Environment.GetEnvironmentVariable("kubernetesVersion").Split(".");
-
-                if (version.Length == 3 && int.TryParse(version[1], out var minor))
-                {
-                    if (minor < 15)
-                    {
-                        Console.WriteLine("patching");
-                        File.WriteAllText("../../../crd.yaml", File.ReadAllText("crd.yaml").Replace("preserveUnknownFields: false", ""));
-                    }
-                }
-            }
-
-            RunKubectlCommand("apply -f crd.yaml --validate=false");
+            RunKubectlCommand("apply -f crd.yaml");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 

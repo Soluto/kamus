@@ -10,7 +10,5 @@ namespace CustomResourceDescriptorController.Models.V1Alpha1
         public string Type { get; set; }
         public V1ObjectMeta Metadata { get; set; }
         public string ServiceAccount { get; set; }
-        
-        public string Status { get; set; }
     }
 }
