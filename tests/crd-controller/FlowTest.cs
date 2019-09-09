@@ -193,7 +193,7 @@ namespace crd_controller
             
             RunKubectlCommand("apply -f deployment.yaml");
 
-            RunKubectlCommand("apply -f crd.yaml");
+            RunKubectlCommand("apply -f crd.yaml --validate=false");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
