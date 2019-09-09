@@ -133,7 +133,10 @@ Using KamusSecret allows to use Kamus with applications that requires native Kub
 <h2 id="usage">Usage<a href="#usage" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>KamusSecret works very similary to regular secret encryption flow with Kamus.
-To encrypt the data, start by deciding to which namespace and which service account you&rsquo;re encrypting it.
+The encrypted data is represented in a format that is identical to regular <a href="(https://kubernetes.io/docs/concepts/configuration/secret/)">Kubernetes Secrets</a>.
+Kamus will create an identical secret with the decrypted content.</p>
+
+<p>To encrypt the data, start by deciding to which namespace and which service account you&rsquo;re encrypting it.
 The service account does not have to exist or used by the pod consuming the secret.
 It just used for expressing who can consume this encrypted secret.
 Use the <a href="https://github.com/Soluto/kamus/blob/master/cli/README.md">CLI</a> to encrypt the data:</p>
@@ -147,14 +150,16 @@ Use the <a href="https://github.com/Soluto/kamus/blob/master/cli/README.md">CLI<
 
 <p>Now that you have the data encrypted, create a KamusSecret object, using the following manifest:</p>
 
-<pre><code>apiVersion: &quot;soluto.com/v1alpha1&quot;
+<pre><code>apiVersion: &quot;soluto.com/v1alpha2&quot;
 kind: KamusSecret
 metadata:
   name: my-tls-secret     //This will be the name of the secret
   namespace: default      //The secret and KamusSecret live in this namespace
 type: TlsSecret           //The type of the secret that will be created
-data:                     //Put here all the encrypted data, that will be stored (decrypted) on the secret data
+stringData:               //Put here all the encrypted data, that will be stored (decrypted) on the secret data
   key: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg==
+data:                     //Put here base64 encoded data (usually, binary data like private keys in der format) encrypted (e.g. encrypt the value after base64 encoding it)
+  key2: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg== 
 serviceAccount: some-sa   //The service account used for encrypting the data
 </code></pre>
 
@@ -171,6 +176,15 @@ default-token-m6whl                        kubernetes.io/service-account-token  
 my-tls-secret                              TlsSecret                             1      5s
 </code></pre>
 
+<h2 id="migrating-from-previous-version">Migrating from previous version<a href="#migrating-from-previous-version" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+
+<p>To migrate from <code>v1alpha1</code> to <code>v1alpha2</code> all you need to do is:</p>
+
+<ul>
+<li>Change the key <code>data</code> to <code>stringData</code></li>
+<li>Change the <code>apiVersion</code> to <code>&quot;soluto.com/v1alpha2&quot;</code></li>
+</ul>
+
 <h2 id="known-limitation">Known limitation<a href="#known-limitation" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 
 <p>This is the alpha release of this feature, so not all functionality is supported.
@@ -182,7 +196,7 @@ The current known issues:</p>
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-06-23 17:47:10 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/a15842afa968fd779752ffa5d51bc585c15c1af1">a15842a</a></span></p>
+  <p>Last Updated on 2019-09-09 14:45:35 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/5c7be1cfe8343b8084b9a8a6d49c9e84e6efc8df">5c7be1c</a></span></p>
 </div>
 </div>
 </body>

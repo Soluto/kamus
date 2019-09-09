@@ -277,7 +277,7 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
       
       <guid>https://kamus.soluto.io/docs/user/crd/</guid>
       <description>Custom Resource Descriptor Support Kamus supports also creating native Kubernetes secrets from an object called KamusSecret. KamusSecret is very similar to Secret, with one small difference - all the items in it are encrypted. Using KamusSecret allows to use Kamus with applications that requires native Kubernetes secrets - for example, TLS secrets.
-Usage KamusSecret works very similary to regular secret encryption flow with Kamus. To encrypt the data, start by deciding to which namespace and which service account you&amp;rsquo;re encrypting it.</description>
+Usage KamusSecret works very similary to regular secret encryption flow with Kamus. The encrypted data is represented in a format that is identical to regular Kubernetes Secrets.</description>
     </item>
     
     <item>
