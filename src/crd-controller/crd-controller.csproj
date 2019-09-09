@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.4.5.0</Version>
+    <Version>0.5.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +15,8 @@
     <Folder Include="HostedServices\" />
     <Folder Include="Models\" />
     <Folder Include="HealthChecks\" />
+    <Folder Include="Models\V1Alpha1\" />
+    <Folder Include="Models\V1Alpha2\" />
   </ItemGroup>
 
   <ItemGroup>

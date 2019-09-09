@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -21,7 +22,7 @@ namespace crd_controller
         }
 
         [Fact]
-        public async Task CreateKamusSecret_SecretCreated()
+        public async Task CreateKamusSecretV1Alpha1_SecretCreated()
         {
             Cleanup();
             await DeployController();
@@ -50,9 +51,43 @@ namespace crd_controller
             Assert.True(v1Secret.Data.ContainsKey("key"));
             Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
-        
+
         [Fact]
-        public async Task UpdateKamusSecret_SecretUpdated()
+        public async Task CreateKamusSecretV1Alpha2_SecretCreated()
+        {
+            Cleanup();
+            await DeployController();
+            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+
+            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+
+            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                onError: e => subject.OnError(e),
+                onClosed: () => subject.OnCompleted());
+
+            RunKubectlCommand("apply -f tls-KamusSecretV1Alpha2.yaml");
+
+            mTestOutputHelper.WriteLine("Waiting for secret creation");
+
+            var (_, v1Secret) = await subject
+                .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+
+            Assert.Equal("TlsSecret", v1Secret.Type);
+            Assert.True(v1Secret.Data.ContainsKey("key"));
+            Assert.True(v1Secret.Data.ContainsKey("key3"));
+            Assert.Equal(File.ReadAllText("key.crt"), Encoding.UTF8.GetString(v1Secret.Data["key3"]));
+        }
+
+        [Theory]
+        [InlineData("updated-tls-KamusSecret.yaml")]
+        [InlineData("updated-tls-KamusSecretV1Alpha2.yaml")]
+        public async Task UpdateKamusSecret_SecretUpdated(string fileName)
         {
             Cleanup();
             
@@ -75,7 +110,7 @@ namespace crd_controller
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
 
-            RunKubectlCommand("apply -f updated-tls-KamusSecret.yaml");
+            RunKubectlCommand($"apply -f {fileName}");
 
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
@@ -88,15 +123,17 @@ namespace crd_controller
             Assert.Equal("modified_hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
 
-        [Fact]
-        public async Task DeleteKamusSecret_SecretDeleted()
+        [Theory]
+        [InlineData("tls-KamusSecret.yaml")]
+        [InlineData("tls-KamusSecretV1Alpha2.yaml")]
+        public async Task DeleteKamusSecret_SecretDeleted(string fileName)
         {
             Cleanup();
 
             await DeployController();
             
             RunKubectlCommand("apply -f tls-Secret.yaml");
-            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+            RunKubectlCommand($"apply -f {fileName}");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
@@ -112,7 +149,7 @@ namespace crd_controller
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
 
-            RunKubectlCommand("delete -f tls-KamusSecret.yaml");
+            RunKubectlCommand($"delete -f {fileName}");
 
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
 
@@ -155,7 +192,9 @@ namespace crd_controller
             Console.WriteLine("Deploying CRD");
             
             RunKubectlCommand("apply -f deployment.yaml");
-            RunKubectlCommand("apply -f crd.yaml");
+
+            //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
+            RunKubectlCommand("apply -f crd.yaml --validate=false");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 

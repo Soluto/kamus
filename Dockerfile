@@ -21,9 +21,10 @@ ENV PROJECT_NAME_ENV=$PROJECT_NAME
 RUN addgroup dotnet && \
     adduser -D -G dotnet -h /home/dotnet dotnet && \
     apk add --update --no-cahce libc6-compat
-    
+
 USER dotnet
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
 COPY --from=build-env /app/$PROJECT_NAME/obj/Docker/publish .
+
 ENTRYPOINT dotnet $PROJECT_NAME_ENV.dll

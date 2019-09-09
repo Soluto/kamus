@@ -1,29 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomResourceDescriptorController.Models;
+using CustomResourceDescriptorController.Models.V1Alpha1;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using CustomResourceDescriptorController.utils;
 
 namespace CustomResourceDescriptorController.HostedServices
 {
-    public class V1AlphaController : IHostedService
+    public class V1Alpha1Controller : IHostedService
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private IDisposable mSubscription;
-        private readonly ILogger mAuditLogger = Log.ForContext<V1AlphaController>().AsAudit();
-        private readonly ILogger mLogger = Log.ForContext<V1AlphaController>();
+        private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha1Controller>().AsAudit();
+        private readonly ILogger mLogger = Log.ForContext<V1Alpha1Controller>();
 
-        public V1AlphaController(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public V1Alpha1Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
         {
             this.mKubernetes = kubernetes;
             this.mKeyManagement = keyManagement;
@@ -31,31 +31,21 @@ namespace CustomResourceDescriptorController.HostedServices
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            mSubscription.Dispose();
+            if (mSubscription != null)
+            {
+                mSubscription.Dispose();
+            }
             return Task.CompletedTask;
         }
 
         public Task StartAsync(CancellationToken token)
         {
-            mSubscription = Observable.FromAsync(async () =>
-                {
-                    var result = await mKubernetes.ListClusterCustomObjectWithHttpMessagesAsync(
-                        "soluto.com",
-                        "v1alpha1",
-                        "kamussecrets",
-                        watch: true,
-                        timeoutSeconds: (int) TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: token);
-                    var subject = new System.Reactive.Subjects.Subject<(WatchEventType, KamusSecret)>();
-
-                    var watcher = result.Watch<KamusSecret>(
-                        onEvent: (@type, @event) => subject.OnNext((@type, @event)),
-                        onError: e => subject.OnError(e),
-                        onClosed: () => subject.OnCompleted());
-                    return subject;
-                })
-                .SelectMany(x => x)
-                .Select(t => (t.Item1, t.Item2 as KamusSecret))
-                .Where(t => t.Item2 != null)
+            mSubscription =
+                mKubernetes.ObserveClusterCustomObject<KamusSecret>(
+                    "soluto.com",
+                     "v1alpha1",
+                     "kamussecrets", 
+                     token)
                 .SelectMany(x =>
                     Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
                 )
@@ -72,7 +62,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         Environment.Exit(0);
                     });
 
-            mLogger.Information("Starting watch for KamusSecret V1Alpha events");
+            mLogger.Information("Starting watch for KamusSecret V1Alpha1 events");
 
             return Task.CompletedTask;
         }
@@ -125,34 +115,21 @@ namespace CustomResourceDescriptorController.HostedServices
             var serviceAccount = kamusSecret.ServiceAccount;
             var id = $"{@namespace}:{serviceAccount}";
 
-            var decryptedItems = new Dictionary<string, string>();
-
             mLogger.Debug("Starting decrypting KamusSecret items. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
 
-            foreach (var (key, value) in kamusSecret.Data)
-            {
-                try
-                {
-                    var decrypted = await mKeyManagement.Decrypt(value, id);
-
-                    decryptedItems.Add(key, decrypted);
-                }
-                catch (Exception e)
-                {
-                    mLogger.Error(e,
+            Action<Exception, string> errorHandler = (e, key) => mLogger.Error(e,
                         "Failed to decrypt KamusSecret key {key}. KamusSecret {name} in namespace {namespace}",
                         key,
                         kamusSecret.Metadata.Name,
                         @namespace);
-                }
-            }
+                        
+            var decryptedStrings = await mKeyManagement.DecryptItems(kamusSecret.Data, id, errorHandler, x => x);
 
             mLogger.Debug("KamusSecret items decrypted successfully. KamusSecret {name} in namespace {namespace}",
                 kamusSecret.Metadata.Name,
                 @namespace);
-
 
             return new V1Secret
             {
@@ -162,7 +139,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     NamespaceProperty = @namespace
                 },
                 Type = kamusSecret.Type,
-                StringData = decryptedItems
+                StringData = decryptedStrings
             };
         }
 

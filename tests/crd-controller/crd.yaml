@@ -4,10 +4,44 @@ metadata:
   # name must match the spec fields below, and be in the form: <plural>.<group>
   name: kamussecrets.soluto.com
 spec:
+  preserveUnknownFields: false
   # group name to use for REST API: /apis/<group>/<version>
   group: soluto.com
   # version name to use for REST API: /apis/<group>/<version>
-  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    # Each version can be enabled/disabled by Served flag.
+    served: true
+    # One and only one version must be marked as the storage version.
+    storage: false
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          data:
+            type: object
+            additionalProperties: true
+          serviceAccount: 
+            type: string
+          type:
+            type: string
+  - name: v1alpha2
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          data:
+            type: object
+            additionalProperties: true
+          stringData:
+            type: object
+            additionalProperties: true
+          serviceAccount: 
+            type: string
+          type:
+            type: string
   # either Namespaced or Cluster
   scope: Namespaced
   names:
@@ -20,4 +54,12 @@ spec:
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
      - ks
+  conversion:
+    strategy: Webhook
+    webhookClientConfig:
+      service:
+        namespace: default
+        name: kamus-crd
+        path: /api/v1/conversion-webhook
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN2RENDQWFRQ0NRRHpHN3U1em45Wk5qQU5CZ2txaGtpRzl3MEJBUXNGQURBZ01SNHdIQVlEVlFRRERCVnIKWVcxMWN5MWpjbVF1WkdWbVlYVnNkQzV6ZG1Nd0hoY05NVGt3T1RBME1UZ3hORE16V2hjTk1qQXdPVEF6TVRneApORE16V2pBZ01SNHdIQVlEVlFRRERCVnJZVzExY3kxamNtUXVaR1ZtWVhWc2RDNXpkbU13Z2dFaU1BMEdDU3FHClNJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURBRzMrZFpncXdscGNDZm04dWJVZUd6WWU5UmhGUngwUlkKODZYTlc2d1Y1Mkc4WnlWYXNpU0FJTW54ZXpQekdIZ2M1SVpZVFBzcGFvQTVPcVUrZExSK2NMcEZ2YlloWm84OApYNHQrcnpSVXdXNjg1bytTNkdPcTNCdnZjZjVsYkFYeGU5aURYOWJsUU4reGtTaU9UZkpwR0JITWZPdGcxbjhwCmp1OWJ5Z0laSW9LdUtMMzByUjJLN1VBdWtWOGlwZjltcUFtTlBPc3Q3VjVmWDB3UXpwR2lUdUNVN29NNmpKRUIKajhjMGg2WkxvYnBVQ01KOHJvNTVkQmM5bURkTzgydzJoWHAzTEtHRUFSV2FYVjllSlErZVVSWkdnQXJpbDVrdwpERkhRbVJwSmk3L2FmRTl4cWlKaEIvbGY5YkxsQ0dmL1hsRjlQK0VtckcvU245RUw5U2x0QWdNQkFBRXdEUVlKCktvWklodmNOQVFFTEJRQURnZ0VCQUc3SjhNVmNMMXlyVC9JZVcweEhseDJIRmUrdldIZVBrc3ZTK0Z1NnRBMGEKQ21vaGt2bnI2U3NTaVhZNWl6TmhsTXNSRzNzUmVjQklxaWJlTUo4WWU0SmdzSzJ3YWlkdE9pLytsT0VyaXJicwpuZ2tncDBZdFdrUVJaUWFBc002YUwzMWtVek5YOGNUcXZZc3pEZ2FDeHZYU25LY3dRVFRQbDRPVEZDUmUreWtRCmJuU3VvaHZsNzY0STFQemJibUVpNWVrYXFMUG9jMGhwY0RIOWpMZ0ZheUpkRXVPSklLREo1c3d0dDBxOGxrNXEKYlJmWjJURzZoM2JkUFc5TjFjbUxYTDBSd2FVYUh6cWZwU3FJSGNEWWY3Vk92WjVlc0owWDMyTDlUVXZHV1hnSAo4eGZNMmtZRnl4azlkTmRyRk5qMmdpK3dwclhIRUxaNmVDMXBmeDRKa3VFPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
             
