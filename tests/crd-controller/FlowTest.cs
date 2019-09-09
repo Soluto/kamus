@@ -193,6 +193,7 @@ namespace crd_controller
             
             RunKubectlCommand("apply -f deployment.yaml");
 
+            //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
             RunKubectlCommand("apply -f crd.yaml --validate=false");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
