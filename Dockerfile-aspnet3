@@ -25,6 +25,6 @@ RUN addgroup dotnet && \
 USER dotnet
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
-COPY --from=build-env /app/$PROJECT_NAME/obj/Docker/publish .
+COPY --from=build-env /app/obj/Docker/publish .
 
 ENTRYPOINT dotnet $PROJECT_NAME_ENV.dll
