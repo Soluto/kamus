@@ -47,12 +47,12 @@ namespace CustomResourceDescriptorController
                         o.ServerCertificate = cert;
                     });
 
-                    options.Listen(IPAddress.Loopback, 8888, listenOptions =>
+                    options.Listen(IPAddress.Any, 8888, listenOptions =>
                     {
                         listenOptions.UseHttps(cert);
                     });
 
-                    options.Listen(IPAddress.Loopback, 9999, listenOptions =>
+                    options.Listen(IPAddress.Any, 9999, listenOptions =>
                     {
                     });
 
