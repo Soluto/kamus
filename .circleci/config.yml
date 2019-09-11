@@ -47,7 +47,7 @@ jobs:
           command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
       - run:
           name: Build CRD controller docker image
-          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller
+          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller -f Dockerfile-aspnet3
       - run:
           name: Save docker image
           command: |
