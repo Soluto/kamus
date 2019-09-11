@@ -705,10 +705,10 @@ colorette@1.0.1:
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.0.1.tgz#434bad4bd70969c075162fec86ca55da36bf837c"
   integrity sha512-40MnlppkzHhFjRhtXunbpqKUT+eJn0gyVGi8aQlNSG8T2CCy31NdD7yktcS0aizH1VP2OhhQCyGMeTp0a/fvaw==
 
-colorful-chalk-logger@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/colorful-chalk-logger/-/colorful-chalk-logger-0.3.2.tgz#fef251cbfab6af30f1bec192f0a84c1eade6b112"
-  integrity sha512-L2uTB4vH0Po7wmI7Sz78muN9EqPVmexp4NxGW6Ekmq/Aw+CA6zEHq4ED2elKqnltVkDkVI6JvCB0anIEHW3y2Q==
+colorful-chalk-logger@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/colorful-chalk-logger/-/colorful-chalk-logger-0.4.0.tgz#ee853c6f4f9c10a08e2ea0d6ebce7bacb47a07c2"
+  integrity sha512-u/3YGn1qzwdJ70u4DtS27e7VCv+nk4KFkG+9oPGeYluq1GkQpuAowomzW9OXxfgdNICxDpxmftEi9Yu3tPIu6A==
   dependencies:
     "@types/fs-extra" "^5.0.4"
     "@types/node" "^10.12.18"
