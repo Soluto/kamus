@@ -31,11 +31,11 @@ namespace CustomResourceDescriptorController
                 .UseSerilog()
                 .ConfigureKestrel((context, options) =>
                 {
-                    var tlsCertRootFolder = Environment.GetEnvironmentVariable("TLS_CERT_FOLDER")
+                    var tlsCertRootFolder = Environment.GetEnvironmentVariable("TLS_CERT_FOLDER");
 
                     var cert = new X509Certificate2($"{tlsCertRootFolder}/certificate.crt");
 
-                    using var rsa = RSA.Create();
+                    var rsa = RSA.Create();
                     var content = File.ReadAllText($"{tlsCertRootFolder}/privateKey.key").Replace("-----BEGIN PRIVATE KEY-----", "").Replace("-----END PRIVATE KEY-----", "").Replace("\n", "");
                     rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(content), out int bytesRead);
 
