@@ -36,16 +36,14 @@ namespace CustomResourceDescriptorController
                     var cert = new X509Certificate2($"{tlsCertRootFolder}/certificate.crt");
 
                     var rsa = RSA.Create();
-                    var content = File.ReadAllText($"{tlsCertRootFolder}/privateKey.key").Replace("-----BEGIN PRIVATE KEY-----", "").Replace("-----END PRIVATE KEY-----", "").Replace("\n", "");
-                    rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(content), out int bytesRead);
+                    var content = File
+                        .ReadAllText($"{tlsCertRootFolder}/privateKey.key")
+                        .Replace("-----BEGIN RSA PRIVATE KEY-----", "")
+                        .Replace("-----END RSA PRIVATE KEY-----", "")
+                        .Replace("\n", "");
+                    rsa.ImportRSAPrivateKey(Convert.FromBase64String(content), out int bytesRead);
 
                     cert = cert.CopyWithPrivateKey(rsa);
-
-                    options.ConfigureHttpsDefaults(o =>
-                    {
-                        // certificate is an X509Certificate2
-                        o.ServerCertificate = cert;
-                    });
 
                     options.Listen(IPAddress.Any, 8888, listenOptions =>
                     {
@@ -55,8 +53,6 @@ namespace CustomResourceDescriptorController
                     options.Listen(IPAddress.Any, 9999, listenOptions =>
                     {
                     });
-
-                    
                 });
     }
 }
