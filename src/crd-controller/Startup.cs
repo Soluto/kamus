@@ -42,12 +42,10 @@ namespace CustomResourceDescriptorController
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddSingleton(Configuration);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddMetrics();
 
             services.AddKeyManagement(Configuration, Log.Logger);
-
-
 
             services.AddSingleton<IKubernetes>(s =>
             {
