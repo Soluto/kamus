@@ -12,12 +12,13 @@ using Serilog;
 using System.Net.Http;
 using Microsoft.Rest;
 using System;
+using Microsoft.Extensions.Hosting;
 
 namespace CustomResourceDescriptorController
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IConfiguration config)
+        public Startup(IWebHostEnvironment env, IConfiguration config)
         {
             string appsettingsPath = "appsettings.json";
 
@@ -41,12 +42,10 @@ namespace CustomResourceDescriptorController
         public void ConfigureServices (IServiceCollection services) {
 
             services.AddSingleton(Configuration);
-            services.AddMvc ();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddMetrics();
 
             services.AddKeyManagement(Configuration, Log.Logger);
-
-
 
             services.AddSingleton<IKubernetes>(s =>
             {
@@ -65,17 +64,22 @@ namespace CustomResourceDescriptorController
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
             Log.Logger = new LoggerConfiguration ()
                 .ReadFrom.Configuration (Configuration)
                 .CreateLogger ();
 
+            app.UseRouting();
+
+
             app.UseLoggingMiddleware();
 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             app.UseAuthentication ();
-
-            app.UseMvc ();
-
             app.UseHealthChecks("/healthz");
         }
 

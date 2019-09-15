@@ -95,14 +95,28 @@ You can check if NodeJS is in your system with the following command:
 kubectl version
 ```
 
-Kamus support all the versions supported by Kubernetes - currently it.s 1.12.\*, 1.13.\* or 1.14.\*.
+Kamus support all the versions supported by Kubernetes - currently it.s 1.13.\*, 1.14.\* or 1.15.\*.
 
 ## 2. Read The Docs 
 
 The [roadmap], [architecture], and [threat modeling]
 may be helpful to review before contributing.
 
-## 3. Reaching Out
+## 3. Running the CRD controller locally
+In order to run the CRD controller locally, you need to a TLS certificate that will be used by the controller.
+There are 2 options to achieve that:
+
+* Use the [test deployment files](https://github.com/Soluto/kamus/blob/master/tests/crd-controller/deployment.yaml) to deploy the CRD controller to a cluster. The file contain all the is required for running it. Don't forget also to deploy the [CRD definition](https://github.com/Soluto/kamus/blob/master/tests/crd-controller/crd.yaml) to the same cluster.
+
+* Running locally by generating a certificate and private key using:
+```
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+     -keyout privateKey.key -out certificate.crt \
+    -subj "/CN=kamus-crd.default.svc"
+```
+After doing that, don't forget to set `TLS_CERT_FOLDER` to the folder where the files exist. 
+
+## 4. Reaching Out
 
 Issues are tracked on GitHub. Please check [the issue tracker][issues] to see
 if there is any existing dicussion or work related to your interests.
@@ -114,6 +128,8 @@ The maintainers of this project are reachable via:
 
 - reach out and ask for help on the [kamus slack][kamus slack] (use the [slack invite] link)
 - [filing an issue][file an issue]
+
+
 
 Current maintainers are [@omerlh] and [@shaikatz] - feel free to
 reach out if you have any questions!
