@@ -267,7 +267,7 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://kamus.soluto.io/docs/user/changelog/</guid>
-      <description>Changelog kamus-0.5 (30/06/2019) Enhancements:  [enhancement] Drop testing against Kubernetes 1.12 and start testing against Kubernetes 1.15 #223 [enhancement] Add CRD to create secrets wrapper #13 [enhancement] Add support for modifying KamusSecret #225 [documentation] document method of installing kamus without Helm #215 [documentation] Document decryption flow #207 [enhancement][good first issue][help wanted] Ability to encrypt only values that are actually secret #202 [documentation] The documentation has incorrect reference of &amp;ldquo;KeyManager&amp;rdquo; #197 [documentation] encryptor can&amp;rsquo;t work with kms provider via kiam role #158 [chart][documentation] Document POD annotations #151 [enhancement][good first issue][help wanted] init container should accept multiple encrypted directories #139  Bug Fixes:  [bug] type=KamusSecret is NOT working.</description>
+      <description>Changelog kamus-6 (19/09/2019) Enhancements:  [enhancement] Unable to add binary file to KamusSecret #246 [enhancement] Support Key Rolling #23  Bug Fixes:  [bug] BUG: init container -n flag required when outputting files format #270 [bug] GCP KMS support is broken since version 0.4.4.0 #251  The released can be used using the latest chart version - 0.4.0 kamus-0.5 (30/06/2019) Enhancements:  [enhancement] Drop testing against Kubernetes 1.12 and start testing against Kubernetes 1.</description>
     </item>
     
     <item>
