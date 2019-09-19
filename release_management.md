@@ -11,7 +11,7 @@ We also maintain "artificial releases" - releases that exists on the release pag
 * Install [gren]
 * Create a new release:
 ```
-gren release prerelease
+gren release --prerelease
 ```
 * Update changelog file:
 ```

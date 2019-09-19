@@ -8,6 +8,21 @@ menu:
 ---
 # Changelog
 
+## kamus-6 (19/09/2019)
+
+#### Enhancements:
+
+- [**enhancement**] Unable to add binary file to KamusSecret [#246](https://github.com/Soluto/kamus/issues/246)
+- [**enhancement**] Support Key Rolling [#23](https://github.com/Soluto/kamus/issues/23)
+
+#### Bug Fixes:
+
+- [**bug**] BUG: init container -n flag required when outputting files format [#270](https://github.com/Soluto/kamus/issues/270)
+- [**bug**] GCP KMS support is broken since version 0.4.4.0 [#251](https://github.com/Soluto/kamus/issues/251)
+
+The released can be used using the latest chart version - 0.4.0
+---
+
 ## kamus-0.5 (30/06/2019)
 
 #### Enhancements:
