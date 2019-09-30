@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="KubernetesClient" Version="1.5.26" />
+    <PackageReference Include="KubernetesClient" Version="1.5.28" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-rc1.19457.4" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.1.0" />
