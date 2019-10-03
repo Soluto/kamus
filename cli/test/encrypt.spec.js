@@ -53,6 +53,10 @@ describe('Encrypt', () => {
     kamusApiScope = nock(kamusUrl)
       .post('/api/v1/encrypt', { data: secret, ['service-account']: serviceAccount, namespace })
       .reply(200, encryptedSecret);
+
+    kamusApiWithPrefix = nock(kamusUrl)
+      .post('/prefix/api/v1/encrypt', { data: secret, ['service-account']: serviceAccount, namespace })
+      .reply(200, encryptedSecret);
   });
 
   afterEach(() => {
@@ -71,6 +75,15 @@ describe('Encrypt', () => {
     let kamusUrlWithSlash = kamusUrl + '/';
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: kamusUrlWithSlash }, logger);
     expect(kamusApiScope.isDone()).to.be.true;
+    expect(process.exit.called).to.be.true;
+    expect(process.exit.calledWith(0)).to.be.true;
+    expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
+  });
+
+  it('should support path in kamus url', async () => {
+    let url = "https://kamus.com/prefix";
+    await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: url }, logger);
+    expect(kamusApiWithPrefix.isDone()).to.be.true;
     expect(process.exit.called).to.be.true;
     expect(process.exit.calledWith(0)).to.be.true;
     expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
