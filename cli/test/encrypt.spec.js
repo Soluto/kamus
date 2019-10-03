@@ -25,6 +25,7 @@ const namespace = 'team-a';
 describe('Encrypt', () => {
 
   let kamusApiScope;
+  let kamusApiWithPrefix;
   const inputPath = 'path/to/inputFile';
   const outputPath = 'path/to/outputDir';
   const newOutputFile = 'new.txt';
@@ -81,7 +82,7 @@ describe('Encrypt', () => {
   });
 
   it('should support path in kamus url', async () => {
-    let url = "https://kamus.com/prefix";
+    let url = 'https://kamus.com/prefix';
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: url }, logger);
     expect(kamusApiWithPrefix.isDone()).to.be.true;
     expect(process.exit.called).to.be.true;
