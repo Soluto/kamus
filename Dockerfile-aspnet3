@@ -20,9 +20,14 @@ ARG PROJECT_NAME=decrypt-api
 ENV PROJECT_NAME_ENV=$PROJECT_NAME
 RUN addgroup dotnet && \
     adduser -D -G dotnet -h /home/dotnet dotnet && \
-    apk add --update --no-cahce libc6-compat
+    apk --no-cache add ca-certificates wget && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk && \
+    apk add glibc-2.30-r0.apk && \
+    apk del wget
 
 USER dotnet
+
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
 COPY --from=build-env /app/obj/Docker/publish .
