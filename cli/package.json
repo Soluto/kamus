@@ -37,7 +37,7 @@
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
     "request": "^2.88.0",
-    "snyk": "^1.198.0"
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "chai": "4.2.0",
