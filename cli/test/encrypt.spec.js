@@ -61,7 +61,7 @@ describe('Encrypt', () => {
   });
 
   afterEach(() => {
-    nock.cleanAll()
+    nock.cleanAll();
     process.exit.restore();
   });
   
