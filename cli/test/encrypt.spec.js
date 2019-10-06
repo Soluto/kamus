@@ -61,8 +61,10 @@ describe('Encrypt', () => {
   });
 
   afterEach(() => {
+    nock.cleanAll()
     process.exit.restore();
   });
+  
 
   it('Should return encrypted data', async () => {
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl }, logger);
@@ -71,7 +73,7 @@ describe('Encrypt', () => {
     expect(process.exit.calledWith(0)).to.be.true;
     expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
   });
-
+  
   it('Should return encrypted data with / in the end of the url', async () => {
     let kamusUrlWithSlash = kamusUrl + '/';
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: kamusUrlWithSlash }, logger);
