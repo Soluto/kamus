@@ -25,6 +25,7 @@ const namespace = 'team-a';
 describe('Encrypt', () => {
 
   let kamusApiScope;
+  let kamusApiWithPrefix;
   const inputPath = 'path/to/inputFile';
   const outputPath = 'path/to/outputDir';
   const newOutputFile = 'new.txt';
@@ -53,11 +54,17 @@ describe('Encrypt', () => {
     kamusApiScope = nock(kamusUrl)
       .post('/api/v1/encrypt', { data: secret, ['service-account']: serviceAccount, namespace })
       .reply(200, encryptedSecret);
+
+    kamusApiWithPrefix = nock(kamusUrl)
+      .post('/prefix/api/v1/encrypt', { data: secret, ['service-account']: serviceAccount, namespace })
+      .reply(200, encryptedSecret);
   });
 
   afterEach(() => {
+    nock.cleanAll();
     process.exit.restore();
   });
+  
 
   it('Should return encrypted data', async () => {
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl }, logger);
@@ -66,11 +73,20 @@ describe('Encrypt', () => {
     expect(process.exit.calledWith(0)).to.be.true;
     expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
   });
-
+  
   it('Should return encrypted data with / in the end of the url', async () => {
     let kamusUrlWithSlash = kamusUrl + '/';
     await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: kamusUrlWithSlash }, logger);
     expect(kamusApiScope.isDone()).to.be.true;
+    expect(process.exit.called).to.be.true;
+    expect(process.exit.calledWith(0)).to.be.true;
+    expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);
+  });
+
+  it('should support path in kamus url', async () => {
+    let url = 'https://kamus.com/prefix';
+    await encrypt(null, { secret, serviceAccount, namespace, kamusUrl: url }, logger);
+    expect(kamusApiWithPrefix.isDone()).to.be.true;
     expect(process.exit.called).to.be.true;
     expect(process.exit.calledWith(0)).to.be.true;
     expect(logger.info.lastCall.lastArg).to.equal(`Encrypted data:\n${encryptedSecret}`);

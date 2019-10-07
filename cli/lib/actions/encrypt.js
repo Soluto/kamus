@@ -10,6 +10,7 @@ const { AuthenticationContext } = require('adal-node');
 const activeDirectoryEndpoint = 'https://login.microsoftonline.com/';
 const isDocker = require('../is-docker');
 const pjson = require('../../package.json');
+const urljoin = require('url-join');
 
 const DEFAULT_ENCODING = 'utf8';
 
@@ -145,7 +146,7 @@ const performEncryptRequest = (data, serviceAccount, namespace, kamusUrl, certif
     const headers = { ...headersBase, ...authHeaders };
 
     const options = {
-        url: url.resolve(kamusUrl, '/api/v1/encrypt'),
+        url: urljoin(kamusUrl, '/api/v1/encrypt'),
         headers,
         // Certificate validation
         strictSSL: true,
