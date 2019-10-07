@@ -43,7 +43,6 @@ namespace CustomResourceDescriptorController
 
             services.AddSingleton(Configuration);
             services.AddControllers().AddNewtonsoftJson();
-            services.AddMetrics();
 
             services.AddKeyManagement(Configuration, Log.Logger);
 
