@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0.5-2.1.4 as source
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 as source
 
 WORKDIR /app
 
