@@ -8,6 +8,6 @@
   },
   "scripts": {
     "build": "hugo",
-    "serve": "hugo server -ws"
+    "serve": "hugo server -w"
   }
 }
