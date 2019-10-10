@@ -220,17 +220,17 @@ To create a key ring, run the following command:</p>
 <p>If you plan to use HSM protection, choose a region that is supported - you can find the full list <a href="https://cloud.google.com/kms/docs/locations#hsm_regions">here</a>.</p>
 
 <p>To create a service account, run the following commands:
-* Start by creating a service account: <code>gcloud iam service-accounts create kamus</code>
+* Start by creating a service account: <code>gcloud iam service-accounts create kamus-sa</code>
 * Assing the service account the required permissions:</p>
 
-<pre><code>gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.cryptoKeyEncrypterDecrypter&quot;
-gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.admin&quot;
+<pre><code>gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus-sa@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.cryptoKeyEncrypterDecrypter&quot;
+gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;serviceAccount:kamus-sa@&lt;project id&gt;.iam.gserviceaccount.com&quot; --role &quot;roles/cloudkms.admin&quot;
 </code></pre>
 
 <p>Please note: There is no exact role with all the required permissions for Kamus. It is recommended to create a custom role with the following permissions: <code>cloudkms.cryptoKeys.get</code>, <code>cloudkms.cryptoKeys.create</code>, <code>cloudkms.cryptoKeyVersions.useToEncrypt</code>, <code>cloudkms.cryptoKeyVersions.useToDecrypt</code>.
 * Generate keys for the service:</p>
 
-<pre><code>gcloud iam service-accounts keys create credentials.json --iam-account kamus@[PROJECT_ID].iam.gserviceaccount.com
+<pre><code>gcloud iam service-accounts keys create credentials.json --iam-account kamus-sa@[PROJECT_ID].iam.gserviceaccount.com
 </code></pre>
 
 <p>Now add the following to your <code>values.yaml</code> file:</p>
@@ -306,7 +306,7 @@ You can initialize Helm using <code>helm init -c</code>, which allows you to use
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-08-25 11:28:08 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/51d488f304963037465d5c3057eff85e48e86256">51d488f</a></span></p>
+  <p>Last Updated on 2019-10-10 18:05:17 &#43;0200 &#43;0200 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/a424e17d031a256e1f3fbebd4f243e7061228979">a424e17</a></span></p>
 </div>
 </div>
 </body>
