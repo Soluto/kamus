@@ -90,16 +90,16 @@ gcloud kms keyrings create <key ring name> --location <location>
 If you plan to use HSM protection, choose a region that is supported - you can find the full list [here](https://cloud.google.com/kms/docs/locations#hsm_regions).
 
 To create a service account, run the following commands:
-* Start by creating a service account: `gcloud iam service-accounts create kamus`
+* Start by creating a service account: `gcloud iam service-accounts create kamus-sa`
 * Assing the service account the required permissions:
 ```
-gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.admin"
+gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus-sa@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+gcloud projects add-iam-policy-binding <project id> --member "serviceAccount:kamus-sa@<project id>.iam.gserviceaccount.com" --role "roles/cloudkms.admin"
 ```
 Please note: There is no exact role with all the required permissions for Kamus. It is recommended to create a custom role with the following permissions: `cloudkms.cryptoKeys.get`, `cloudkms.cryptoKeys.create`, `cloudkms.cryptoKeyVersions.useToEncrypt`, `cloudkms.cryptoKeyVersions.useToDecrypt`.
 * Generate keys for the service:
 ```
-gcloud iam service-accounts keys create credentials.json --iam-account kamus@[PROJECT_ID].iam.gserviceaccount.com
+gcloud iam service-accounts keys create credentials.json --iam-account kamus-sa@[PROJECT_ID].iam.gserviceaccount.com
 ```
 
 Now add the following to your `values.yaml` file:
