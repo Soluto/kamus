@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.2" />
     <PackageReference Include="Optional" Version="4.0.0" />
-    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
   </ItemGroup>
 
 </Project>
