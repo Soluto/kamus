@@ -115,7 +115,7 @@ keyManagement:
 ```
 And use the following command to deploy kamus:
 ```
- helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials="$(cat credentials.json | base64)"
+ helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials="$(base64 credentials.json | tr -d \\n)"
 ```
 
 Automatic credentials rotation is supported by Google Cloud KMS (see the docs [here][gcp kms key rotation]). To enable it, just set `keyManagement.googleKms.rotationPeriod` to the desired period. The value is using [C# Time Span Format][timespan], which is simply the number of days you want. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.
