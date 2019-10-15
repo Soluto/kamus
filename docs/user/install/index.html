@@ -244,7 +244,7 @@ gcloud projects add-iam-policy-binding &lt;project id&gt; --member &quot;service
 </span><span style="color:#f8f8f8;text-decoration:underline">    </span>rotationPeriod<span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span>&lt;optional<span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span>the<span style="color:#f8f8f8;text-decoration:underline"> </span>period<span style="color:#f8f8f8;text-decoration:underline"> </span>for<span style="color:#f8f8f8;text-decoration:underline"> </span>automatic<span style="color:#f8f8f8;text-decoration:underline"> </span>key<span style="color:#f8f8f8;text-decoration:underline"> </span>rotation&gt;</code></pre></div>
 <p>And use the following command to deploy kamus:</p>
 
-<pre><code> helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials=&quot;$(cat credentials.json | base64)&quot;
+<pre><code> helm upgrade --install kamus soluto/kamus -f values.yaml --set-string keyManagement.googleKms.credentials=&quot;$(base64 credentials.json | tr -d \\n)&quot;
 </code></pre>
 
 <p>Automatic credentials rotation is supported by Google Cloud KMS (see the docs <a href="https://cloud.google.com/kms/docs/key-rotation">here</a>). To enable it, just set <code>keyManagement.googleKms.rotationPeriod</code> to the desired period. The value is using <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings">C# Time Span Format</a>, which is simply the number of days you want. According to the docs, rotating the keys does not affect existing encrypted values - while the old version exist, decryption should work as expected.</p>
@@ -306,7 +306,7 @@ You can initialize Helm using <code>helm init -c</code>, which allows you to use
 </div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-10-10 18:05:17 &#43;0200 &#43;0200 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/a424e17d031a256e1f3fbebd4f243e7061228979">a424e17</a></span></p>
+  <p>Last Updated on 2019-10-15 11:34:31 &#43;0200 &#43;0200 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/0b94c3a8ad5a7759860854b0e085a08be5c91558">0b94c3a</a></span></p>
 </div>
 </div>
 </body>
