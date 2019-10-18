@@ -2575,10 +2575,10 @@ mocha@6.2.1:
     yargs-parser "13.1.1"
     yargs-unparser "1.6.0"
 
-mock-fs@4.10.1:
-  version "4.10.1"
-  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.10.1.tgz#50a07a20114a6cdb119f35762f61f46266a1e323"
-  integrity sha512-w22rOL5ZYu6HbUehB5deurghGM0hS/xBVyHMGKOuQctkk93J9z9VEOhDsiWrXOprVNQpP9uzGKdl8v9mFspKuw==
+mock-fs@4.10.2:
+  version "4.10.2"
+  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.10.2.tgz#ee11e5a3288b0235fb345efe8b25610f7dd397b8"
+  integrity sha512-ewPQ83O4U8/Gd8I15WoB6vgTTmq5khxBskUWCRvswUqjCfOOTREmxllztQOm+PXMWUxATry+VBWXQJloAyxtbQ==
 
 moment@^2.23.0:
   version "2.23.0"
