@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "hugo-bin": "^0.46.0"
+    "hugo-bin": "^0.47.0"
   },
   "scripts": {
     "build": "hugo",
