@@ -99,6 +99,7 @@ namespace Kamus
             app.UseMetricsErrorTrackingMiddleware();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
