@@ -98,13 +98,12 @@ namespace Kamus
 
             app.UseMetricsErrorTrackingMiddleware();
 
+            app.UseAuthentication();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            app.UseAuthentication();
-
         }
     }
 }
