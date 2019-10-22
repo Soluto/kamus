@@ -1,5 +1,4 @@
-﻿using App.Metrics.AspNetCore;
-using App.Metrics.Formatters.Prometheus;
+﻿using App.Metrics.Formatters.Prometheus;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
@@ -15,14 +14,15 @@ namespace Kamus
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseMetrics(options => { 
-                    options.EndpointOptions = endpointsOptions => {
-                        endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
-                    };
-                })
-                
-                .UseStartup<Startup>()
-                .UseSerilog()
-                .Build();
+                                 .UseMetricsEndpoints(options => {
+                                     options.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+                                     options.MetricsTextEndpointEnabled = false;
+                                     options.EnvironmentInfoEndpointEnabled = false;
+                                 })
+                                .UseStartup<Startup>()
+                                .UseSerilog()
+                                //see https://github.com/AppMetrics/AppMetrics/issues/396#issue-425344649
+                                .UseKestrel(o => o.AllowSynchronousIO = true)
+                                .Build();
     }
 }

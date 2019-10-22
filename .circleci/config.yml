@@ -47,7 +47,7 @@ jobs:
           command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
       - run:
           name: Build CRD controller docker image
-          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller -f Dockerfile-aspnet3
+          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller
       - run:
           name: Save docker image
           command: |
@@ -107,7 +107,7 @@ jobs:
 
   run_tests:
     docker:
-      - image: microsoft/dotnet:2.2-sdk
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.0
 
     steps:
       - checkout

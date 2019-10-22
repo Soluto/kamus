@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
-using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.Prometheus;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -20,12 +19,10 @@ namespace CustomResourceDescriptorController
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseMetrics(options =>
-                {
-                    options.EndpointOptions = endpointsOptions =>
-                    {
-                        endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
-                    };
+                .UseMetricsEndpoints(options => {
+                    options.MetricsEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+                    options.MetricsTextEndpointEnabled = false;
+                    options.EnvironmentInfoEndpointEnabled = false;
                 })
                 .UseStartup<Startup>()
                 .UseSerilog()

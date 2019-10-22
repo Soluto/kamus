@@ -11,12 +11,14 @@ using System.Linq;
 using Kamus.KeyManagement;
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Kamus
 {
     public class Startup {
         
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             string appsettingsPath = "appsettings.json";
 
@@ -43,10 +45,10 @@ namespace Kamus
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
 
-            services.AddMvc().AddMetrics();
+            services.AddControllers().AddNewtonsoftJson();
 
-            services.AddSwaggerGen (swagger => {
-                swagger.SwaggerDoc ("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "Kamus Swagger" });
+            services.AddSwaggerGen(swagger => {
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "Kamus Encryptor API", Version = "v1" });
             });
 
             services.AddSingleton<IKubernetes>(s => {
@@ -72,7 +74,7 @@ namespace Kamus
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
 
             if (env.IsDevelopment())
             {
@@ -87,15 +89,22 @@ namespace Kamus
                 .ReadFrom.Configuration (Configuration)
                 .CreateLogger ();
 
+            app.UseRouting();
+            app.UseSwagger();
 
-            app.UseSwagger ();
-            app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Kamus Swagger");
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kamus Decryptor API");
             });
 
-            app.UseAuthentication();
+            app.UseMetricsErrorTrackingMiddleware();
 
-            app.UseMvc ();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
