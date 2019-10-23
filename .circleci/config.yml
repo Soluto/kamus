@@ -86,12 +86,6 @@ jobs:
       - store_artifacts:
           path: tests/blackbox/compose/reports/
           destination: zap-reports
-  
-  test_crd_1_13:
-    machine: true
-    steps:
-      - test_crd_command:
-          kubernetesVersion: "v1.13.7"
 
   test_crd_1_14:
     machine: true
@@ -104,6 +98,12 @@ jobs:
     steps:
       - test_crd_command:
           kubernetesVersion: "v1.15.0"
+
+  test_crd_1_16:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.16.2"
 
   run_tests:
     docker:
@@ -375,9 +375,9 @@ workflows:
             - build_api
             - run_tests
             - test_blackbox
-            - test_crd_1_13
             - test_crd_1_14
             - test_crd_1_15
+            - test_crd_1_16
           filters:
             branches:
               only: master
