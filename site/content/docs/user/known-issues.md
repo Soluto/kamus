@@ -37,7 +37,7 @@ kubectl logs -l "app=kamus,component=encryptor" --since 5m
 [issue tracker]: https://github.com/Soluto/Kamus/issues
 [file an issue]: https://github.com/Soluto/Kamus/issues/new
 [kamus slack]: http://k8s-kamus.slack.io/
-[slack invite]: https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE
+[slack invite]: https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E
 [deny default sa]: /docs/threatmodeling/controls/decryption/deny_default_sa
 [#130]: https://github.com/Soluto/kamus/issues/130
 [#120]: https://github.com/Soluto/kamus/issues/122
