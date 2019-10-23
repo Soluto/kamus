@@ -24,7 +24,7 @@ The first argument (`-e`) point to the folder with the encrypted files, the seco
 And you should see a file name `output.json` created under `decrypted` folder with the decrypted content.
 Now you can run the init continer locally, debug it and add features. 
 
-Having more questions? Something unclear? Reach out to us via [Slack](https://join.slack.com/t/k8s-kamus/shared_invite/enQtNTQwMjc2MzIxMTM3LTgyYTcwMTUxZjJhN2JiMTljMjNmOTBmYjEyNWNmZTRiNjVhNTUyYjMwZDQ0YWQ3Y2FmMTBlODA5MzFlYjYyNWE) or [file an issue](https://github.com/Soluto/kamus/issues/new)
+Having more questions? Something unclear? Reach out to us via [Slack](https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E) or [file an issue](https://github.com/Soluto/kamus/issues/new)
 
 ## Tests
 The tests are using [WireMock](http://wiremock.org/) to mock the decryptor api (you can find ore about it [here](https://www.omerlh.info/2019/02/06/wiremock-for-fun-and-mocking/)).
