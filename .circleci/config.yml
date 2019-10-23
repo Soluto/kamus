@@ -357,15 +357,15 @@ workflows:
           requires:
             - build_api
             - lint-scripts
-      - test_crd_1_13:
-          requires:
-            - build_api
-            - lint-scripts
       - test_crd_1_14:
           requires:
             - build_api
             - lint-scripts
       - test_crd_1_15:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1_16:
           requires:
             - build_api
             - lint-scripts
