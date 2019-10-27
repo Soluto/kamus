@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="System.Net.Security" Version="4.3.2" />
     <PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="3.1.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.2.0" />
     <PackageReference Include="App.Metrics.Formatters.Prometheus" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0" />
     <PackageReference Include="KubernetesClient" Version="1.6.1" />
