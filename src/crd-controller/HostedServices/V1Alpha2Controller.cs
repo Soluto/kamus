@@ -159,6 +159,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             var secret = await CreateSecret(kamusSecret);
             var secretPatch = new JsonPatchDocument<V1Secret>();
+            secretPatch.Replace(e => e.Data, secret.Data);
             secretPatch.Replace(e => e.StringData, secret.StringData);
             var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(
                 new V1Patch(secretPatch),
