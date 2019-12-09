@@ -1,5 +1,5 @@
 { 
-    "key.json":{"secret_key":"secret_value"} ,
-    "key1":"super-secret-from-value" ,
+    "key.json":{"secret_key":"secret_value"},
+    "key1":"super-secret-from-value",
     "key2":"super-secret"
 }
