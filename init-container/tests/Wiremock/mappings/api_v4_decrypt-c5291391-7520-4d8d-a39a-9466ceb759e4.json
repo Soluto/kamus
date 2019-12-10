@@ -10,7 +10,7 @@
       }
     },
     "bodyPatterns" : [ {
-      "equalToJson" : "{\"data\":\"{\\\"key-newlines\\\":\\\"value\\nvalue\\\"}\"}\n",
+      "equalToJson" : "{\"data\":\"{\\\"key-newlines\\\":\\\"value\\\\nvalue\\\"}\"}\n",
       "ignoreArrayOrder" : true,
       "ignoreExtraElements" : true
     } ]
