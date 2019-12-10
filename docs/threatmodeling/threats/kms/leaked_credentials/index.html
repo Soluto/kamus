@@ -122,20 +122,15 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="accessing-kms-with-leaked-credentials">Accessing KMS with leaked credentials<a href="#accessing-kms-with-leaked-credentials" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="accessing-kms-with-leaked-credentials">Accessing KMS with leaked credentials<a href="#accessing-kms-with-leaked-credentials" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Accessing KMS with leaked credentials
-  In order to decrypt pod&rsquo;s secrets
-  As an attacker
-  I can access KMS directly</p>
-
+In order to decrypt pod's secrets
+As an attacker
+I can access KMS directly</p>
 <p>Scenario Outline: Used leaked credentials
-    Given KMS compromised
-    When the attacker call KMS with these credentials
-    Then the attacker can decrypt any pod secrets, until the credentials expired</p>
-
+Given KMS compromised
+When the attacker call KMS with these credentials
+Then the attacker can decrypt any pod secrets, until the credentials expired</p>
 <pre><code>Examples: Data types
   | data-type         |
   | password          |
@@ -143,20 +138,14 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
   | X.509 private key |
   | SSH private key   |
 </code></pre>
-
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Controls:
-
-<ul>
+<li>Controls:</li>
 <li><a href="/docs/threatmodeling/controls/kms/firewall_protection">Enable firewall protection for KMS</a></li>
 <li><a href="/docs/threatmodeling/controls/kms/hardening_credentials">Credentials Hardening</a></li>
 <li><a href="/docs/threatmodeling/controls/kms/use_hsm">Use KMS with HSM support</a></li>
-</ul></li>
 <li>References:</li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

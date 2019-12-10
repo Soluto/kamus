@@ -122,20 +122,15 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="impersonating-pod-to-decrypt-it-s-secrets">Impersonating pod to decrypt it&rsquo;s secrets<a href="#impersonating-pod-to-decrypt-it-s-secrets" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
-<p>Feature: Impersonating pod to decrypt it&rsquo;s secrets
-  In order to decrypt pod&rsquo;s secrets
-  As an attacker
-  I want to impersonate this pod</p>
-
+<div id="content"><h1 id="impersonating-pod-to-decrypt-its-secrets">Impersonating pod to decrypt it's secrets<a href="#impersonating-pod-to-decrypt-its-secrets" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
+<p>Feature: Impersonating pod to decrypt it's secrets
+In order to decrypt pod's secrets
+As an attacker
+I want to impersonate this pod</p>
 <p>Scenario Outline: Impersonation via leaked token
-    Given a service account token was compromised
-    When the attacker use this token for authentication
-    Then the attacker can decrypt this pod&rsquo;s secrets forever</p>
-
+Given a service account token was compromised
+When the attacker use this token for authentication
+Then the attacker can decrypt this pod's secrets forever</p>
 <pre><code>Examples: Data types
   | data-type         |
   | password          |
@@ -143,38 +138,27 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
   | X.509 private key |
   | SSH private key   |
 </code></pre>
-
 <p>Scenario: Service accounts mount
-    Given a permission to create a pod
-    When the attacker launch a pod with anther pod&rsquo;s service account
-    Then the attacker can use the token for authentication and decrypt the secrets</p>
-
+Given a permission to create a pod
+When the attacker launch a pod with anther pod's service account
+Then the attacker can use the token for authentication and decrypt the secrets</p>
 <p>Scenario: Impersonate Kubernetes API
-    Given a compromised Kubernetes node
-    And the attacker can spoof requests to Kubernetes API
-    When Kamus use the API to review tokens
-    Then the attacker can approve all requests</p>
-
+Given a compromised Kubernetes node
+And the attacker can spoof requests to Kubernetes API
+When Kamus use the API to review tokens
+Then the attacker can approve all requests</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Controls:
-
-<ul>
+<li>Controls:</li>
 <li><a href="/docs/threatmodeling/controls/decryption/deny_default_sa">Deny request for default SA</a></li>
 <li><a href="/docs/threatmodeling/controls/decryption/deny_secret_view">Deny Kuberentes secrets view permissions</a></li>
 <li><a href="/docs/threatmodeling/controls/decryption/k8s_api_tls">Use TLS when accessing Kuberentes API</a></li>
-<li><a href="/docs/threatmodeling/controls/decryption/opa_pods_secrets">Use a policy to control pod&rsquo;s service account</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li><a href="/docs/threatmodeling/controls/decryption/opa_pods_secrets">Use a policy to control pod's service account</a></li>
+<li>References:</li>
 <li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/</a></li>
 <li><a href="https://kubernetes.io/docs/concepts/configuration/secret#service-accounts-automatically-create-and-attach-secrets-with-api-credentials">https://kubernetes.io/docs/concepts/configuration/secret#service-accounts-automatically-create-and-attach-secrets-with-api-credentials</a></li>
 <li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#tokenreview-v1-authentication-k8s-io">https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#tokenreview-v1-authentication-k8s-io</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

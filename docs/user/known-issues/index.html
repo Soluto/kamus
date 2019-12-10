@@ -122,44 +122,28 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="known-issues">Known Issues<a href="#known-issues" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="known-issues">Known Issues<a href="#known-issues" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Having problems with Kamus? This guide is covers some known problems and solutions / workarounds.</p>
-
 <p>It may additionally be helpful to:</p>
-
 <ul>
 <li>check our <a href="https://github.com/Soluto/Kamus/issues">issue tracker</a></li>
-<li><a href="https://github.com/Soluto/Kamus/issues/new">file an issue</a> (if there isn&rsquo;t one already)</li>
+<li><a href="https://github.com/Soluto/Kamus/issues/new">file an issue</a> (if there isn't one already)</li>
 <li>reach out and ask for help on the <a href="http://k8s-kamus.slack.io/">kamus slack</a> (use the <a href="https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E">slack invite</a> link)</li>
 </ul>
-
 <h2 id="contents">Contents<a href="#contents" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
 <li><a href="#encryption-failure">Encryption failure</a></li>
 </ul>
-
 <h2 id="encryption-failure">Encryption failure<a href="#encryption-failure" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>You might experience an issue when trying to encrypt with the CLI, similar to the following:</p>
-
 <pre><code>[error kamus-cli]: Error while trying to encrypt with kamus: Encrypt request failed due to unexpected error. Status code: &lt;&gt;
-</code></pre>
-
-<p>When this happens, try to check the following:</p>
-
+</code></pre><p>When this happens, try to check the following:</p>
 <ul>
-<li>Status code 400? Might be because you tried to encrypt a secret for the default service account in a namespace? It&rsquo;s currently not supported by Kamus (see <a href="/docs/threatmodeling/controls/decryption/deny_default_sa">deny default sa</a> control for more details). There is open issue (<a href="https://github.com/Soluto/kamus/issues/130">#130</a>) to improve the error message.</li>
-
-<li><p>Status code 500? Check Kamus error logs using (there is an open issue <a href="https://github.com/Soluto/kamus/issues/122">#120</a> to improve the error message):</p>
-
-<pre><code>kubectl logs -l &quot;app=kamus,component=encryptor&quot; --since 5m
-</code></pre></li>
+<li>Status code 400? Might be because you tried to encrypt a secret for the default service account in a namespace? It's currently not supported by Kamus (see <a href="/docs/threatmodeling/controls/decryption/deny_default_sa">deny default sa</a> control for more details). There is open issue (<a href="https://github.com/Soluto/kamus/issues/130">#130</a>) to improve the error message.</li>
+<li>Status code 500? Check Kamus error logs using (there is an open issue <a href="https://github.com/Soluto/kamus/issues/122">#120</a> to improve the error message):</li>
 </ul>
-</div>
+<pre><code>kubectl logs -l &quot;app=kamus,component=encryptor&quot; --since 5m
+</code></pre></div>
 <div class="footer">
   <p class="copyright">© 2019 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
   <p>Last Updated on 2019-10-23 18:39:50 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/d13e55b804c586ce648308feb41b7ae171a9280b">d13e55b</a></span></p>

@@ -122,35 +122,22 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="deny-request-for-default-sa">Deny request for default SA<a href="#deny-request-for-default-sa" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="deny-request-for-default-sa">Deny request for default SA<a href="#deny-request-for-default-sa" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Deny request for default SA
-  In order to protect pods from impersonation
-  As an engineer
-  I want to deny all requests with default service accounts</p>
-
+In order to protect pods from impersonation
+As an engineer
+I want to deny all requests with default service accounts</p>
 <p>Scenario: A decrypt request with token for default SA
-    Given a pod that is mounted with default service account
-    When the pod try to decrypt secrets using the token
-    Then the operation denied</p>
-
+Given a pod that is mounted with default service account
+When the pod try to decrypt secrets using the token
+Then the operation denied</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Mitigates:
-
-<ul>
-<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it&rsquo;s secrets</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>Mitigates:</li>
+<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it's secrets</a></li>
+<li>References:</li>
 <li><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">https://kubernetes.io/docs/reference/access-authn-authz/rbac/</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

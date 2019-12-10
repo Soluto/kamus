@@ -122,43 +122,29 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="quick-start">Quick Start<a href="#quick-start" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="quick-start">Quick Start<a href="#quick-start" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>The simple way to run Kamus is by using the Helm chart:</p>
-
 <pre><code>helm repo add soluto https://charts.soluto.io
 helm upgrade --install kamus soluto/kamus
-</code></pre>
-
-<p>Refer to the <a href="/docs/user/install">installation guide</a> to learn about production grade deployment.
+</code></pre><p>Refer to the <a href="/docs/user/install">installation guide</a> to learn about production grade deployment.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account">Kubernetes Service Account</a>.
 Create a service account for your application, and mount it on the pods running your application.
 Now, when you know the name of the service account, and the namespace it exists in, install Kamus CLI:</p>
-
 <pre><code>npm install -g @soluto-asurion/kamus-cli
-</code></pre>
-
-<p>Use Kamus CLI to encrypt the secret:</p>
-
+</code></pre><p>Use Kamus CLI to encrypt the secret:</p>
 <pre><code>kamus-cli encrypt \\
     --secret super-secret \\
     --service-account kamus-example-sa \\
     --namespace default \\
     --kamus-url &lt;Kamus URL&gt; \\
-</code></pre>
-
-<p>When Kamus URL is a url pointing to the encryptor pod of Kamus, exposed either via port forward (e.g. <code>kubectl port-forward svc/kamus-encryptor 9999:9999</code>) or via ingress.
-In case of non-https Kamus URL (e.g. <code>http://localhost:&lt;port&gt;</code>), you&rsquo;ll have to add the <code>--allow-insecure-url</code> flag to enable http protocol.</p>
-
+</code></pre><p>When Kamus URL is a url pointing to the encryptor pod of Kamus, exposed either via port forward (e.g. <code>kubectl port-forward svc/kamus-encryptor 9999:9999</code>) or via ingress.
+In case of non-https Kamus URL (e.g. <code>http://localhost:&lt;port&gt;</code>), you'll have to add the <code>--allow-insecure-url</code> flag to enable http protocol.</p>
 <p>Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
 The simplest way to achieve that is by using the init container.
 An alternative is to use Kamus decrypt API directly in the application code.
 To make it clearer, take a look on a working <a href="example/README.md">example app</a>.
 You can deploy this app to any Kubernetes cluster that has Kamus installed, to understand how it works.</p>
-
 <p>Have a question? Something is not clear? Reach out to us on <a href="https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E">Kamus Slack</a>!</p>
 </div>
 <div class="footer">

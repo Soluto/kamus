@@ -122,36 +122,23 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="serve-kamus-api-over-tls">Serve Kamus API over TLS<a href="#serve-kamus-api-over-tls" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="serve-kamus-api-over-tls">Serve Kamus API over TLS<a href="#serve-kamus-api-over-tls" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Serve Kamus API over TLS
-  In order to protect Kamus from spoffing
-  As an engineer
-  I want to use TLS to encrypt traffic to and from Kamus</p>
-
+In order to protect Kamus from spoffing
+As an engineer
+I want to use TLS to encrypt traffic to and from Kamus</p>
 <p>Scenario: Using Kubernetes CA
-    Given A certifcate from Kubernetes CA
-    When Kamus serve a request
-    Then The request will be encrypted using TLS</p>
-
+Given A certifcate from Kubernetes CA
+When Kamus serve a request
+Then The request will be encrypted using TLS</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Mitigates:
-
-<ul>
+<li>Mitigates:</li>
 <li><a href="/docs/threatmodeling/threats/decryption/sniffing_tampering">Sniff requests and responses to Kamus</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>References:</li>
 <li><a href="https://stackoverflow.com/questions/50893535/securing-kubernetes-service-with-tls">https://stackoverflow.com/questions/50893535/securing-kubernetes-service-with-tls</a></li>
 <li><a href="https://istio.io/docs/tasks/security/https-overlay/">https://istio.io/docs/tasks/security/https-overlay/</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

@@ -122,44 +122,30 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="use-a-policy-to-control-pod-s-service-account">Use a policy to control pod&rsquo;s service account<a href="#use-a-policy-to-control-pod-s-service-account" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
-<p>Feature: Use a policy to control pod&rsquo;s service account
-  In order to protect pods from impersonation
-  As a cluster admin
-  I want to use a policy to define which pods can use which service account</p>
-
+<div id="content"><h1 id="use-a-policy-to-control-pods-service-account">Use a policy to control pod's service account<a href="#use-a-policy-to-control-pods-service-account" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
+<p>Feature: Use a policy to control pod's service account
+In order to protect pods from impersonation
+As a cluster admin
+I want to use a policy to define which pods can use which service account</p>
 <p>Scenario: Using Azure OPA
-    Given a pod A
-    And a service account B is used by another pod B
-    When the user try mount service account B to pod A
-    Then the operation denied</p>
-
+Given a pod A
+And a service account B is used by another pod B
+When the user try mount service account B to pod A
+Then the operation denied</p>
 <p>Scenario: Using Kubernetes addmission controller
-    Given a pod A
-    And a service account B is used by another pod B
-    When the user try mount service account B to pod A
-    Then the operation denied</p>
-
+Given a pod A
+And a service account B is used by another pod B
+When the user try mount service account B to pod A
+Then the operation denied</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Mitigates:
-
-<ul>
-<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it&rsquo;s secrets</a></li>
+<li>Mitigates:</li>
+<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it's secrets</a></li>
 <li><a href="/docs/threatmodeling/threats/decryption/sniffing_tampering">Sniff requests and responses to Kamus</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>References:</li>
 <li><a href="https://stackoverflow.com/questions/50893535/securing-kubernetes-service-with-tls">https://stackoverflow.com/questions/50893535/securing-kubernetes-service-with-tls</a></li>
 <li><a href="https://istio.io/docs/tasks/security/https-overlay/">https://istio.io/docs/tasks/security/https-overlay/</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

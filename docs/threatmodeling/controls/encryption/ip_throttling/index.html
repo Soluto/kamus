@@ -122,36 +122,23 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="throttling-requests-by-source-ip">Throttling requests by source IP<a href="#throttling-requests-by-source-ip" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="throttling-requests-by-source-ip">Throttling requests by source IP<a href="#throttling-requests-by-source-ip" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Throttling requests by source IP
-  In order to protect Kamus from DoS
-  As an engineer
-  I want to throttle incoming requests</p>
-
+In order to protect Kamus from DoS
+As an engineer
+I want to throttle incoming requests</p>
 <p>Scenario: Using Nginx Ingress
-    Given an attacker sending multiple requests
-    When the limit of allowed request breached
-    Then Nginx will deny these requests from hitting Kamus</p>
-
+Given an attacker sending multiple requests
+When the limit of allowed request breached
+Then Nginx will deny these requests from hitting Kamus</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Mitigates:
-
-<ul>
+<li>Mitigates:</li>
 <li><a href="/docs/threatmodeling/threats/encryption/denial_of_service">Kamus server disrupting</a></li>
 <li><a href="/docs/threatmodeling/threats/encryption/namespace_enumeration">Exposing names of namespaces and service accounts</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>References:</li>
 <li><a href="https://github.com/Shopify/ingress/blob/master/docs/user-guide/nginx-configuration/annotations.md#rate-limiting">https://github.com/Shopify/ingress/blob/master/docs/user-guide/nginx-configuration/annotations.md#rate-limiting</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

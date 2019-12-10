@@ -122,21 +122,16 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="exposing-names-of-namespaces-and-service-accounts">Exposing names of namespaces and service accounts<a href="#exposing-names-of-namespaces-and-service-accounts" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="exposing-names-of-namespaces-and-service-accounts">Exposing names of namespaces and service accounts<a href="#exposing-names-of-namespaces-and-service-accounts" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Exposing names of namespaces and service accounts
-  In order to find information
-  As an attacker
-  I want to enumarate all possible combinations of namespaces and service accounts</p>
-
+In order to find information
+As an attacker
+I want to enumarate all possible combinations of namespaces and service accounts</p>
 <p>Scenario Outline: Enumeration of all possible combinations
-    Given a list of all possible combinations
-    And the attacker send encrypt request for each combination
-    When the attacker receive sucess response
-    Then the attacker know the combination exists on the cluster</p>
-
+Given a list of all possible combinations
+And the attacker send encrypt request for each combination
+When the attacker receive sucess response
+Then the attacker know the combination exists on the cluster</p>
 <pre><code>Examples: Data types
   | Namespace                |
   | Service account          |
@@ -144,25 +139,16 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
   | Partners                 |
   | Bussiness information    |
 </code></pre>
-
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Controls:
-
-<ul>
+<li>Controls:</li>
 <li><a href="/docs/threatmodeling/controls/encryption/block_internet_access">Block anonymous internet access to Kamus</a></li>
 <li><a href="/docs/threatmodeling/controls/encryption/deny_default_sa">Deny request for default SA</a></li>
 <li><a href="/docs/threatmodeling/controls/kms/firewall_protection">Enable firewall protection for KMS</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>References:</li>
 <li><a href="https://en.wikipedia.org/wiki/Denial-of-service_attack">https://en.wikipedia.org/wiki/Denial-of-service_attack</a></li>
 <li><a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-service-limits">https://docs.microsoft.com/en-us/azure/key-vault/key-vault-service-limits</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

@@ -122,36 +122,23 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="enable-firewall-protection-for-kms">Enable firewall protection for KMS<a href="#enable-firewall-protection-for-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="enable-firewall-protection-for-kms">Enable firewall protection for KMS<a href="#enable-firewall-protection-for-kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Feature: Enable firewall protection for KMS
-  In order to protect KMS
-  As an engineer
-  I want to allow traffic to KMS only from Kamus</p>
-
-<p>Scenario: A KMS encrypt/decrypt request<br />
-    Given firewall protection enabled on KMS
-    When a request is sent not from Kamus
-    Then the request will be denied</p>
-
+In order to protect KMS
+As an engineer
+I want to allow traffic to KMS only from Kamus</p>
+<p>Scenario: A KMS encrypt/decrypt request<br>
+Given firewall protection enabled on KMS
+When a request is sent not from Kamus
+Then the request will be denied</p>
 <h2 id="remarks">Remarks<a href="#remarks" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <ul>
-<li>Mitigates:
-
-<ul>
+<li>Mitigates:</li>
 <li><a href="/docs/threatmodeling/threats/kms/leaked_credentials">Accessing KMS with leaked credentials</a></li>
 <li><a href="/docs/threatmodeling/threats/encryption/namespace_enumeration">Exposing names of namespaces and service accounts</a></li>
-</ul></li>
-<li>References:
-
-<ul>
+<li>References:</li>
 <li><a href="https://docs.microsoft.com/en-us/azure/key-vault/key-vault-network-securit">https://docs.microsoft.com/en-us/azure/key-vault/key-vault-network-securit</a></li>
-</ul></li>
 </ul>
-
 <p>Back to <a href="/docs/threatmodeling/threats_controls">Threats and Controls</a></p>
 </div>
 <div class="footer">

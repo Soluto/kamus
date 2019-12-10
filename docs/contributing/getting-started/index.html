@@ -122,132 +122,79 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="getting-started">Getting Started<a href="#getting-started" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="getting-started">Getting Started<a href="#getting-started" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>Welcome! This guide covers how to get started contributing to Kamus.</p>
-
 <h2 id="1-install-tools">1. Install Tools<a href="#1-install-tools" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <h3 id="install-git">Install git<a href="#install-git" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <p>Our source code is managed with <a href="https://git-scm.com/"><code>git</code></a>, to develop locally you
 will need to install <code>git</code>.</p>
-
 <p>You can check if <code>git</code> is already on your system and properly installed with
 the following command:</p>
-
 <pre><code>git --version
-</code></pre>
-
-<h3 id="install-hugo">Install Hugo<a href="#install-hugo" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
+</code></pre><h3 id="install-hugo">Install Hugo<a href="#install-hugo" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <p>If you wish to contribute to the documentation, it is recommended but not
 required to install <a href="https://gohugo.io">hugo</a>, which we use to develop this site.</p>
-
 <p>Please see: <a href="https://gohugo.io/getting-started/installing/">https://gohugo.io/getting-started/installing/</a></p>
-
 <h3 id="install-net-core">Install .NET core<a href="#install-net-core" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
-<p>To work on Kamus&rsquo;s API codebase you will need <a href="https://dotnet.microsoft.com/download">.NET core</a>.</p>
-
+<p>To work on Kamus's API codebase you will need <a href="https://dotnet.microsoft.com/download">.NET core</a>.</p>
 <p>Install or upgrade <a href="https://dotnet.microsoft.com/download">.NET core using the instructions for your operating system</a>.
 You can check if .NET is in your system with the following command:</p>
-
 <pre><code>dotnet --version
-</code></pre>
-
-<p>Required .NET <code>2.2.103</code> or greater should be installed.</p>
-
+</code></pre><p>Required .NET <code>2.2.103</code> or greater should be installed.</p>
 <h3 id="install-nodejs">Install NodeJS<a href="#install-nodejs" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
-<p>To work on Kamus&rsquo;s CLI or init container you will need <a href="https://nodejs.org/en/download/">NodeJS</a></p>
-
+<p>To work on Kamus's CLI or init container you will need <a href="https://nodejs.org/en/download/">NodeJS</a></p>
 <p>Install or upgrade <a href="https://nodejs.org/en/download/">NodeJS using the instructions for your operating system</a>.
 You can check if NodeJS is in your system with the following command:</p>
-
 <pre><code>node --version
-</code></pre>
-
-<p>Required NodeJS <code>v10.0.0</code> or greater should be installed.</p>
-
+</code></pre><p>Required NodeJS <code>v10.0.0</code> or greater should be installed.</p>
 <p>It is recommended to use <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> instead of NPM.
 You can check if Yarn is in your system using the following command:</p>
-
 <pre><code>yarn --version
-</code></pre>
-
-<p>Recommended Yarn <code>1.12.1</code> or greater should be installed.</p>
-
+</code></pre><p>Recommended Yarn <code>1.12.1</code> or greater should be installed.</p>
 <h3 id="install-docker">Install Docker<a href="#install-docker" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <p>To develop Kamus you will need to install <a href="https://www.docker.com/">Docker</a>.</p>
-
-<p>If you haven&rsquo;t already, <a href="https://docs.docker.com/install/#supported-platforms">install Docker</a>, following the
+<p>If you haven't already, <a href="https://docs.docker.com/install/#supported-platforms">install Docker</a>, following the
 <a href="https://docs.docker.com/install/#supported-platforms">official instructions</a>.
 If you have an existing installation, check your version and make sure you have
 the latest Docker.</p>
-
 <p>To check if <code>docker</code> is has been installed:</p>
-
 <pre><code>docker --version
-</code></pre>
-
-<p>Recommend usin Docker version 18.09.2 or greater.</p>
-
+</code></pre><p>Recommend usin Docker version 18.09.2 or greater.</p>
 <h3 id="install-kubernetes">Install Kubernetes<a href="#install-kubernetes" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
-<p>You&rsquo;ll also need <a href="https://kubernetes.io">Kubernetes</a> to develop Kamus.</p>
-
-<p>To install Kubernetes locally, you can use either <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">minikube</a>, <a href="https://docs.docker.com/docker-for-mac/#kubernetes">docker for desktop</a> or <a href="which is also required for running the black box tests">kind</a>.
-To interact with the cluster you&rsquo;ll also have to install <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">kubectl</a></p>
-
+<p>You'll also need <a href="https://kubernetes.io">Kubernetes</a> to develop Kamus.</p>
+<p>To install Kubernetes locally, you can use either <a href="https://kubernetes.io/docs/tasks/tools/install-minikube/">minikube</a>, <a href="https://docs.docker.com/docker-for-mac/#kubernetes">docker for desktop</a> or [kind] (which is also required for running the black box tests).
+To interact with the cluster you'll also have to install <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">kubectl</a></p>
 <p>You can check if NodeJS is in your system with the following command:</p>
-
 <pre><code>kubectl version
-</code></pre>
-
-<p>Kamus support all the versions supported by Kubernetes - currently it.s 1.13.*, 1.14.* or 1.15.*.</p>
-
+</code></pre><p>Kamus support all the versions supported by Kubernetes - currently it.s 1.13.*, 1.14.* or 1.15.*.</p>
 <h2 id="2-read-the-docs">2. Read The Docs<a href="#2-read-the-docs" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>The <a href="/docs/contributing/roadmap">roadmap</a>, <a href="/docs/threatmodeling/architecture">architecture</a>, and <a href="/docs/threatmodeling/threats_controls">threat modeling</a>
 may be helpful to review before contributing.</p>
-
 <h2 id="3-running-the-crd-controller-locally">3. Running the CRD controller locally<a href="#3-running-the-crd-controller-locally" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>In order to run the CRD controller locally, you need to a TLS certificate that will be used by the controller.
 There are 2 options to achieve that:</p>
-
 <ul>
-<li><p>Use the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/deployment.yaml">test deployment files</a> to deploy the CRD controller to a cluster. The file contain all the is required for running it. Don&rsquo;t forget also to deploy the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/crd.yaml">CRD definition</a> to the same cluster.</p></li>
-
-<li><p>Running locally by generating a certificate and private key using:</p>
-
-<pre><code>openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
- -keyout privateKey.key -out certificate.crt \
--subj &quot;/CN=kamus-crd.default.svc&quot;
-</code></pre>
-
-<p>After doing that, don&rsquo;t forget to set <code>TLS_CERT_FOLDER</code> to the folder where the files exist.</p></li>
+<li>
+<p>Use the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/deployment.yaml">test deployment files</a> to deploy the CRD controller to a cluster. The file contain all the is required for running it. Don't forget also to deploy the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/crd.yaml">CRD definition</a> to the same cluster.</p>
+</li>
+<li>
+<p>Running locally by generating a certificate and private key using:</p>
+</li>
 </ul>
-
+<pre><code>openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
+     -keyout privateKey.key -out certificate.crt \
+    -subj &quot;/CN=kamus-crd.default.svc&quot;
+</code></pre><p>After doing that, don't forget to set <code>TLS_CERT_FOLDER</code> to the folder where the files exist.</p>
 <h2 id="4-reaching-out">4. Reaching Out<a href="#4-reaching-out" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <p>Issues are tracked on GitHub. Please check <a href="https://github.com/Soluto/Kamus/issues">the issue tracker</a> to see
 if there is any existing dicussion or work related to your interests.</p>
-
 <p>If you do not see anything, please <a href="https://github.com/Soluto/Kamus/issues/new">file a new issue</a>.</p>
-
-<p>Please reach out for bugs, feature requests, and other issues!<br />
+<p>Please reach out for bugs, feature requests, and other issues!<br>
 The maintainers of this project are reachable via:</p>
-
 <ul>
 <li>reach out and ask for help on the <a href="http://k8s-kamus.slack.io/">kamus slack</a> (use the <a href="https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E">slack invite</a> link)</li>
 <li><a href="https://github.com/Soluto/Kamus/issues/new">filing an issue</a></li>
 </ul>
-
 <p>Current maintainers are <a href="https://github.com/omerlh">@omerlh</a> and <a href="https://github.com/shaikatz">@shaikatz</a> - feel free to
 reach out if you have any questions!</p>
 </div>

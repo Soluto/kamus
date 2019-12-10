@@ -122,51 +122,36 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 
 
-<div id="content">
-
-<h1 id="threats-and-controls">Threats and Controls<a href="#threats-and-controls" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
-
+<div id="content"><h1 id="threats-and-controls">Threats and Controls<a href="#threats-and-controls" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
 <p>This page document the output of Kamus threat model, by listing all the different threats and mitigations that we discussed.</p>
-
 <h2 id="threats">Threats<a href="#threats" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
 <h3 id="decryption">Decryption<a href="#decryption" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <ul>
-<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it&rsquo;s secrets</a></li>
+<li><a href="/docs/threatmodeling/threats/decryption/pod_impersonation">Impersonating pod to decrypt it's secrets</a></li>
 <li><a href="/docs/threatmodeling/threats/decryption/sniffing_tampering">Sniff requests and responses to Kamus</a></li>
 <li><a href="/docs/threatmodeling/threats/decryption/leveraging_crd">Using KamusSecret to decrypt secrets</a></li>
 </ul>
-
 <h3 id="encryption">Encryption<a href="#encryption" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <ul>
 <li><a href="/docs/threatmodeling/threats/encryption/denial_of_service">Kamus server disrupting</a></li>
 <li><a href="/docs/threatmodeling/threats/encryption/namespace_enumeration">Exposing names of namespaces and service accounts</a></li>
-<li><a href="/docs/threatmodeling/threats/encryption/sniffing_user_traffic">Sniffing user&rsquo;s traffic</a></li>
+<li><a href="/docs/threatmodeling/threats/encryption/sniffing_user_traffic">Sniffing user's traffic</a></li>
 </ul>
-
 <h3 id="kms">KMS<a href="#kms" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <ul>
 <li><a href="/docs/threatmodeling/threats/kms/leaked_credentials">Accessing KMS with leaked credentials</a></li>
 <li><a href="/docs/threatmodeling/threats/kms/quantom_computing">Breaking encryption key</a></li>
 </ul>
-
 <h2 id="controls">Controls<a href="#controls" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-
-<h3 id="decryption-1">Decryption<a href="#decryption-1" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
+<h3 id="decryption1">Decryption<a href="#decryption1" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <ul>
 <li><a href="/docs/threatmodeling/controls/decryption/deny_default_sa">Deny default service account</a></li>
 <li><a href="/docs/threatmodeling/controls/decryption/deny_secret_view">Deny Kuberentes secrets view permissions</a></li>
 <li><a href="/docs/threatmodeling/controls/decryption/k8s_api_tls">Use TLS when accessing Kuberentes API</a></li>
 <li><a href="/docs/threatmodeling/controls/decryption/kamus_in_cluster_tls">Serve Kamus API over TLS</a></li>
-<li><a href="/docs/threatmodeling/controls/decryption/opa_pods_secrets">Use a policy to control pod&rsquo;s service account</a></li>
+<li><a href="/docs/threatmodeling/controls/decryption/opa_pods_secrets">Use a policy to control pod's service account</a></li>
 </ul>
-
-<h3 id="encryption-1">Encryption<a href="#encryption-1" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
+<h3 id="encryption1">Encryption<a href="#encryption1" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
 <ul>
 <li><a href="/docs/threatmodeling/controls/encryption/block_internet_access">Block anonymous internet access to Kamus</a></li>
 <li><a href="/docs/threatmodeling/controls/encryption/certificate_pinning">Certificate pinning</a></li>
@@ -174,9 +159,7 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 <li><a href="/docs/threatmodeling/controls/encryption/deny_default_sa">Deny request for default SA</a></li>
 <li><a href="/docs/threatmodeling/controls/encryption/ip_throttling">Throttling requests by source IP</a></li>
 </ul>
-
 <h3 id="key-management-system">Key Management System<a href="#key-management-system" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h3>
-
 <ul>
 <li><a href="/docs/threatmodeling/controls/kms/firewall_protection">Enable firewall protection for KMS</a></li>
 <li><a href="/docs/threatmodeling/controls/kms/hardening_credentials">Credentials Hardening</a></li>
