@@ -1,5 +1,6 @@
 { 
     "key.json":{"secret_key":"secret_value"},
+    "key-newlines":{"secret_key":"secret_value\nsecret_value"},
     "key1":"super-secret-from-value",
     "key2":"super-secret"
 }
