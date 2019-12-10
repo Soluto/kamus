@@ -1,9 +1,5 @@
 { 
 <%_ Object.keys(secrets).forEach(function(key, index){ -%>
-<%_ if(typeof(secrets[key]) === "object") { -%>
-    "<%= key %>":<%- JSON.stringify(secrets[key]) -%> <%_ if(Object.keys(secrets).length - 1 > index) { -%> , <%_ } %>
-<%_ } else { -%>
-    "<%= key %>":"<%- secrets[key] -%>" <%_ if(Object.keys(secrets).length - 1 > index) { -%> , <%_ } %>
-<%_ } -%>
+    "<%= key %>":<%- JSON.stringify(secrets[key]) -%> <%_ if(Object.keys(secrets).length - 1 > index) { -%>,<%_ } %>
 <%_ }); -%>
 }

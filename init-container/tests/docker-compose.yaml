@@ -16,4 +16,5 @@ services:
   wiremock:
     build:
       context: Wiremock
-  
+    ports:
+      - 8080:8080
