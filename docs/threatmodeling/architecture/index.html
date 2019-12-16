@@ -130,7 +130,7 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 <li>KMS - Handling the encryption using various providers.</li>
 <li>Controller - Responsible for interavtion with Kubernetes API, currently only for CRUD operations on KamusSecrets objects.</li>
 </ul>
-<h2 id="first-flow--using-the-init-container">First flow - using the Init Container<a href="#first-flow--using-the-init-container" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="first-flow---using-the-init-container">First flow - using the Init Container<a href="#first-flow---using-the-init-container" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>High-level overview of encryption/decryption flow:
 <!-- raw HTML omitted --></p>
 <p>Let's take a deeper look of what's inside a pod:
@@ -145,7 +145,7 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 The application consume the configuration file with the decrypted secrets from the shared volume.</li>
 <li>A <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">service account</a>, used by the init container to authenticate to Kamus decryptor.</li>
 </ul>
-<h2 id="second-flow--using-kamussecret">Second flow - using KamusSecret<a href="#second-flow--using-kamussecret" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="second-flow---using-kamussecret">Second flow - using KamusSecret<a href="#second-flow---using-kamussecret" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>High-level overview of encryption/decryption flow:
 <!-- raw HTML omitted --></p>
 <p>Kubernetes Icons created by <a href="https://github.com/kubernetes/community">Kubernetes Community</a></p>
