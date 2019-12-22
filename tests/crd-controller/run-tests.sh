@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.4.0
+readonly KIND_VERSION=0.6.1
 readonly CLUSTER_NAME=e2e-test
 readonly KUBECTL_VERSION=v1.13.0
 
@@ -50,7 +50,7 @@ create_kind_cluster() {
         kind_config="kind-config.yaml"
     fi
 
-    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION" --loglevel trace
+    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:v$K8S_VERSION" --loglevel trace
 
     kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube

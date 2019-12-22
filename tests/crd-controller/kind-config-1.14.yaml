@@ -1,8 +1,8 @@
 kind: Config
-apiVersion: kind.sigs.k8s.io/v1alpha3
+apiVersion: kind.sigs.k8s.io/v1alpha4
 kubeadmConfigPatches:
 - |
-  apiVersion: kubeadm.k8s.io/v1beta1
+  apiVersion: kubeadm.k8s.io/v1beta2
   kind: ClusterConfiguration
   metadata:
     name: config
@@ -16,7 +16,17 @@ kubeadmConfigPatches:
     extraArgs:
       "feature-gates": "CustomResourceWebhookConversion=true"
 - |
-  apiVersion: kubeadm.k8s.io/v1beta1
+  apiVersion: kubelet.config.k8s.io/v1beta1
+  kind: KubeletConfiguration
+  featureGates:
+    CustomResourceWebhookConversion: true
+- |
+  apiVersion: kubeproxy.config.k8s.io/v1alpha1
+  kind: KubeProxyConfiguration
+  featureGates:
+    CustomResourceWebhookConversion: true
+- |
+  apiVersion: kubeadm.k8s.io/v1beta2
   kind: InitConfiguration
   metadata:
     name: config
@@ -30,7 +40,7 @@ nodes:
 
 # this config file contains all config fields with comments
 kind: Cluster
-apiVersion: kind.sigs.k8s.io/v1alpha3
+apiVersion: kind.sigs.k8s.io/v1alpha4
 nodes:
 # the control plane node config
 - role: control-plane
