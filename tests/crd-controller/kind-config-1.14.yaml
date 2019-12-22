@@ -1,5 +1,11 @@
-kind: Config
-apiVersion: kind.sigs.k8s.io/v1alpha4
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+# the control plane node config
+- role: control-plane
+# the worker
+- role: worker
+kubeadmConfigPatches:
 kubeadmConfigPatches:
 - |
   apiVersion: kubeadm.k8s.io/v1beta2
@@ -33,12 +39,3 @@ kubeadmConfigPatches:
   nodeRegistration:
     kubeletExtraArgs:
       "feature-gates": "CustomResourceWebhookConversion=true"
-
-# this config file contains all config fields with comments
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-nodes:
-# the control plane node config
-- role: control-plane
-# the worker
-- role: worker
