@@ -7,7 +7,7 @@
     "test": "node_modules/.bin/mocha ./test/*.spec.js --exit",
     "eslint": "eslint . --ignore-pattern node_modules/",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "yarn run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
     "request": "^2.88.0",
-    "snyk": "1.258.1",
+    "snyk": "^1.265.0",
     "url-join": "^4.0.1"
   },
   "devDependencies": {
