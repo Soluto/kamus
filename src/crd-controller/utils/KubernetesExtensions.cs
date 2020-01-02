@@ -12,7 +12,7 @@ namespace CustomResourceDescriptorController.utils
             string group,
             string version,
             string plural,
-            CancellationToken cancelationToken
+            CancellationToken cancellationToken
             ) where TCRD : class
         {
             return Observable.FromAsync(async () =>
@@ -22,10 +22,10 @@ namespace CustomResourceDescriptorController.utils
                     version,
                     plural,
                     watch: true,
-                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: cancelationToken);
+                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: cancellationToken);
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, TCRD)>();
 
-                var watcher = result.Watch<TCRD>(
+                var watcher = result.Watch<TCRD, object>(
                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                     onError: e => subject.OnError(e),
                     onClosed: () => subject.OnCompleted());
