@@ -19,7 +19,7 @@
     "ejs": "^3.0.0",
     "ejs-lint": "^0.3.0",
     "node-readfiles": "^0.2.0",
-    "snyk": "1.266.0"
+    "snyk": "1.278.1"
   },
   "snyk": true
 }
