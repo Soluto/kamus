@@ -570,14 +570,14 @@ http-cache-semantics@3.8.1:
   resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-3.8.1.tgz#39b0e16add9b605bf0a9ef3d9daaf4843b4cacd2"
   integrity sha512-5ai2iksyV8ZXmnZhHH4rWPoxxistEexSi5936zIQ1bnNTW5VnA85B6P/VpXiRM017IgRvb2kKo1a//y+0wSp3w==
 
-hugo-bin@^0.51.0:
-  version "0.51.0"
-  resolved "https://registry.yarnpkg.com/hugo-bin/-/hugo-bin-0.51.0.tgz#74a72669ae9bb3ab345a04c856a39036bb00a5bc"
-  integrity sha512-B4Ma7gTYzk7XmfAlwXveWU08RUKVvE+uGT+Dtty9CSeQM8SeK3yqEc/gG6dXKdXJ8DcgmacY5tQujKgHjqybZQ==
+hugo-bin@^0.52.0:
+  version "0.52.0"
+  resolved "https://registry.yarnpkg.com/hugo-bin/-/hugo-bin-0.52.0.tgz#0bb910d2ab539f9b7878fb890dd9fde57796a7b2"
+  integrity sha512-HM3j7wQwYs9S05wdUDoB74YIeXhTiJMieyEwe2biGO531sMgHn930aIE1lQarHuXMLysKxQY7dEbqOk9ehMTiw==
   dependencies:
     bin-wrapper "^4.1.0"
     pkg-conf "^3.1.0"
-    rimraf "^3.0.0"
+    rimraf "^3.0.1"
     signale "^1.4.0"
 
 ieee754@^1.1.4:
@@ -1003,10 +1003,10 @@ responselike@1.0.2:
   dependencies:
     lowercase-keys "^1.0.0"
 
-rimraf@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.0.tgz#614176d4b3010b75e5c390eb0ee96f6dc0cebb9b"
-  integrity sha512-NDGVxTsjqfunkds7CqsOiEnxln4Bo7Nddl3XhS4pXg5OzwkLqJ971ZVAAnB+DDLnF76N+VnDEiBHaVV8I06SUg==
+rimraf@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.1.tgz#48d3d4cb46c80d388ab26cd61b1b466ae9ae225a"
+  integrity sha512-IQ4ikL8SjBiEDZfk+DFVwqRK8md24RWMEJkdSlgNLkyyAImcjf8SWvU1qFMDOb4igBClbTQ/ugPqXcRwdFTxZw==
   dependencies:
     glob "^7.1.3"
 
