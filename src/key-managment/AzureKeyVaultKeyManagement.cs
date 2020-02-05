@@ -50,7 +50,7 @@ namespace Kamus.KeyManagement
             }
             catch (FormatException e)
             {
-                throw new DecryptionFailureException("Encrypted data bad format", e);
+                throw new DecryptionFailureException("Invalid encrypted data format - probably an issue with the encrytion", e);
             }
         }
 
