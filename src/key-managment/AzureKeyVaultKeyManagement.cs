@@ -48,6 +48,10 @@ namespace Kamus.KeyManagement
             {
                 throw new DecryptionFailureException("KeyVault decryption failed", e);
             }
+            catch (FormatException e)
+            {
+                throw new DecryptionFailureException("Invalid encrypted data format - probably an issue with the encrytion", e);
+            }
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
