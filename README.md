@@ -62,6 +62,7 @@ Kamus is shipped with 2 utilities that make it easier to use:
 
 ## Users
 * [1 Giant Leap Solutions](https://1giantleap.nl/)
+* [UK Hydrographic Office](https://www.ukho.gov.uk/)
 
 Using Kamus? Open a PR and add your company name here!
 
