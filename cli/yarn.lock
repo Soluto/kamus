@@ -2708,10 +2708,10 @@ nise@^4.0.1:
     just-extend "^4.0.2"
     path-to-regexp "^1.7.0"
 
-nock@11.9.0:
-  version "11.9.0"
-  resolved "https://registry.yarnpkg.com/nock/-/nock-11.9.0.tgz#012adc21e534a95a127808c5addd696695db293a"
-  integrity sha512-2ml3A1pqTLapa4US4sv5n5XtIuaTNMd0hQNDG4EtTUY38TQroIf3EIEl8aA6mvY9Dtt8gofCtJZElRLfhW7/Hg==
+nock@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-12.0.1.tgz#6d497d01f23cb52c733545c97e09e8318f6af801"
+  integrity sha512-f5u5k7O5D2YXH2WEFQVLLPa36D5C0dxU9Lrg6KOuaFCMDt7yd1W4S3hbZClCMczxc4EZ0k1bEhPeMWSewrxYNw==
   dependencies:
     debug "^4.1.0"
     json-stringify-safe "^5.0.1"
