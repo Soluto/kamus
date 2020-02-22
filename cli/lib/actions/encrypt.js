@@ -64,7 +64,7 @@ const checkForNewlines = async (secret, logger) => {
     }
 };
 
-const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding }, logger, token = null) => {
+const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl, certFingerprint, fileEncoding, ignoreNewLine}, logger, token = null) => {
     let data;
     if (secretFile) {
         logger.debug(`Reading secret file ${secretFile}`);
@@ -74,7 +74,10 @@ const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl
         data = secret;
     }
 
-    await checkForNewlines(data, logger);
+    if (!ignoreNewLine)
+    {
+        await checkForNewlines(data, logger);
+    }
     
     logger.debug(`starting request to encrypt api at ${kamusUrl}`);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
