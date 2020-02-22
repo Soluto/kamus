@@ -35,13 +35,14 @@ namespace Kamus.KeyManagement
                         return GetAzurKeyVaultKeyManagement(configuration);
                     case "AESKey":
                         var key = configuration.GetValue<string>("KeyManagement:AES:Key");
+                        var useKeyDeriviation = configuration.GetValue<bool>("KeyManagement:AES:UseKeyDeriviation", false);
                         if (string.IsNullOrEmpty(key))
                         {
                             logger.Warning("Random key was created for SymmetricKeyManagement, it might break distributed deployments");
 
-                            return new SymmetricKeyManagement(RijndaelUtils.GenerateKey(256));
+                            return new SymmetricKeyManagement(RijndaelUtils.GenerateKey(256), useKeyDeriviation);
                         }
-                        return new SymmetricKeyManagement(Convert.FromBase64String(key));
+                        return new SymmetricKeyManagement(Convert.FromBase64String(key), useKeyDeriviation);
                     default:
                         throw new InvalidOperationException($"Unsupported provider type: {provider}");
                 }
