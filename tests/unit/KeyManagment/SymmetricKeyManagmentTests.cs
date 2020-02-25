@@ -68,12 +68,15 @@ namespace unit.KeyManagement
             Assert.Equal(expected, decrypted);
         }
 
-        private static byte[] GetRandomData(int size)
+        [Fact]
+        public async Task RegressionTestWithDeriviation()
         {
-            var provider = new RNGCryptoServiceProvider();
-            var byteArray = new byte[size];
-            provider.GetBytes(byteArray);
-            return byteArray;
+            var kms = new SymmetricKeyManagement(Key, true);
+            var expected = "hello";
+            var encrypted = "VnZkifeNdxI7NWMbjr/MZg==:qskLf4Z57DC9HBTe6+IEkA==";
+            var decrypted = await kms.Decrypt(encrypted, "sa");
+
+            Assert.Equal(expected, decrypted);
         }
 
     }
