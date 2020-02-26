@@ -37,6 +37,8 @@ prog
   .option('-O, --overwrite', 'Overwrites file if it already exists', prog.BOOL)
   .option('--log-flag <date|inline|colorful|no-date|no-inline|no-colorful>', 'log format', prog.STRING)
   .option('--log-output <filepath>', 'output log to file', prog.STRING)
-  .option('--log-encoding <encoding>', 'log file encoding');
+  .option('--log-encoding <encoding>', 'log file encoding')
+  .option('-i, --ignore-new-line', 'ignore new line in provided file', prog.BOOL);
+
 
 prog.parse(process.argv);
