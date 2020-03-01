@@ -22,6 +22,7 @@ namespace CustomResourceDescriptorController.HostedServices
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
+        private const string ApiVersion = "v1alpha2";
 
         public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
         {
@@ -42,7 +43,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             mSubscription = mKubernetes.ObserveClusterCustomObject<KamusSecret>(
                     "soluto.com",
-                     "v1alpha2",
+                     ApiVersion,
                      "kamussecrets",
                      token)
                 .SelectMany(x =>
@@ -82,7 +83,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         return;
 
                     case WatchEventType.Deleted:
-                        await HandleDelete(kamusSecret);
+                        //await HandleDelete(kamusSecret);
                         return;
 
                     case WatchEventType.Modified:
@@ -136,7 +137,19 @@ namespace CustomResourceDescriptorController.HostedServices
                 Metadata = new V1ObjectMeta
                 {
                     Name = kamusSecret.Metadata.Name,
-                    NamespaceProperty = @namespace
+                    NamespaceProperty = @namespace,
+                    OwnerReferences = new[]
+                    {
+                        new V1OwnerReference
+                        {
+                            ApiVersion = kamusSecret.ApiVersion,
+                            Kind = kamusSecret.Kind,
+                            Name = kamusSecret.Metadata.Name,
+                            Uid = kamusSecret.Metadata.Uid,
+                            Controller = true,
+                            BlockOwnerDeletion = true,
+                        }
+                    }
                 },
                 Type = kamusSecret.Type,
                 StringData = decryptedStringData,
