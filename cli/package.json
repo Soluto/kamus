@@ -46,7 +46,7 @@
     "eslint-plugin-security": "1.4.0",
     "husky": "4.2.3",
     "lint-staged": "10.0.8",
-    "mocha": "7.0.1",
+    "mocha": "7.1.0",
     "mock-fs": "4.11.0",
     "nock": "12.0.2",
     "sinon": "9.0.0"
