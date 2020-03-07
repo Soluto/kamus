@@ -132,7 +132,6 @@ namespace crd_controller
 
             await DeployController();
             
-            RunKubectlCommand("apply -f tls-Secret.yaml");
             RunKubectlCommand($"apply -f {fileName}");
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
