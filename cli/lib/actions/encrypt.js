@@ -82,7 +82,7 @@ const encrypt = async ({ secret, secretFile, serviceAccount, namespace, kamusUrl
     logger.debug(`starting request to encrypt api at ${kamusUrl}`);
     const response = await performEncryptRequestAsync(data, serviceAccount, namespace, kamusUrl, certFingerprint, token);
     if (response && response.statusCode >= 300) {
-        throw new Error(`Encrypt request failed due to unexpected error. Status code: ${response.statusCode}`);
+        throw new Error(`Encrypt request failed due to unexpected error (${response.body}). Status code: ${response.statusCode}`);
     }
     logger.debug('Request to encrypt api finished successfully');
     return response.body;
