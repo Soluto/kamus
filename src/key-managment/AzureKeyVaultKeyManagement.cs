@@ -9,7 +9,7 @@ using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace Kamus.KeyManagement 
+namespace Kamus.KeyManagement
 {
     public class AzureKeyVaultKeyManagement : IKeyManagement
     {
@@ -27,13 +27,18 @@ namespace Kamus.KeyManagement
             mKeyVaultName = configuration["KeyManagement:KeyVault:Name"];
             mKeyType = configuration["KeyManagement:KeyVault:KeyType"];
 
-            if (!short.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength)){
+            if (!short.TryParse(configuration["KeyManagement:KeyVault:KeyLength"], out mKeyLength))
+            {
                 throw new Exception($"Expected key length int, got {configuration["KeyManagement:KeyVault:KeyLength"]}");
             }
         }
 
         public async Task<string> Decrypt(string encryptedData, string serviceAccountId)
         {
+            if (string.IsNullOrEmpty(encryptedData))
+            {
+                return encryptedData;
+            }
             var hash = KeyIdCreator.Create(serviceAccountId);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
@@ -69,7 +74,7 @@ namespace Kamus.KeyManagement
                 mLogger.Information(
                     "KeyVault key was not found for service account id {serviceAccount}, creating new one.",
                     serviceAccountId);
-                
+
                 await mKeyVaultClient.CreateKeyAsync($"https://{mKeyVaultName}.vault.azure.net", hash, mKeyType, mKeyLength);
             }
 

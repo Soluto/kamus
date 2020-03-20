@@ -58,5 +58,16 @@ namespace integration
             Assert.Equal(data, decrypted);
 
         }
+
+        [Fact]
+        public async Task TestEmptyString()
+        {
+            var sa = "sa:namespace";
+            var encrypted = "";
+            var decrypted = await mGoogleCloudKeyManagement.Decrypt(encrypted, sa);
+
+            Assert.Equal(encrypted, decrypted);
+
+        }
     }
 }
