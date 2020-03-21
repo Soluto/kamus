@@ -41,9 +41,9 @@ namespace Kamus.KeyManagement
         {
             if (string.IsNullOrEmpty(encryptedData))
             {
-                return encryptedData;
+                return "";
             }
-            
+
             var safeId = KeyIdCreator.Create(serviceAccountId);
             var cryptoKeyName =
                 new CryptoKeyName(mProjectName, mKeyringLocation, mKeyringName, safeId);

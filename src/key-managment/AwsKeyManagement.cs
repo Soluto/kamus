@@ -42,9 +42,9 @@ namespace Kamus.KeyManagement
         {
             if (string.IsNullOrEmpty(encryptedData))
             {
-                return encryptedData;
+                return "";
             }
-            
+
             var tuple = EnvelopeEncryptionUtils.Unwrap(encryptedData).ValueOrFailure("Invalid encrypted data format");
 
             var (encryptedDataKey, iv, actualEncryptedData) = tuple;

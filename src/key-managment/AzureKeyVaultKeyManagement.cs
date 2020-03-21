@@ -36,9 +36,9 @@ namespace Kamus.KeyManagement
         {
             if (string.IsNullOrEmpty(encryptedData))
             {
-                return encryptedData;
+                return "";
             }
-            
+
             var hash = KeyIdCreator.Create(serviceAccountId);
 
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{hash}";
