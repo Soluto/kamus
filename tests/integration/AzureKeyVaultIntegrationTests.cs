@@ -31,19 +31,19 @@ namespace integration
         {
             var clientId = mConfiguration.GetValue<string>("ActiveDirectory:ClientId");
             var clientSecret = mConfiguration.GetValue<string>("ActiveDirectory:ClientSecret");
-            mKeyVaultClient = new KeyVaultClient((authority, resource, scope) =>
+            mKeyVaultClient = new KeyVaultClient((authority, resource, scope) => 
                 Utils.AuthenticationCallback(clientId, clientSecret, authority, resource, scope));
             mAzureKeyManagement = new AzureKeyVaultKeyManagement(mKeyVaultClient, mConfiguration);
         }
-
+        
         [Fact]
         public async Task Encrypt_KeyDoesNotExist_CreateIt()
         {
             var data = "test";
             var serviceAccountId = "default:" + Guid.NewGuid();
-
+            
             await mAzureKeyManagement.Encrypt(data, serviceAccountId);
-
+            
             var keyId = $"https://{mKeyVaultName}.vault.azure.net/keys/{ComputeKeyId(serviceAccountId)}";
 
             try
@@ -68,7 +68,7 @@ namespace integration
             var serviceAccountId = "default:default:";
 
             var encryptedData = await mAzureKeyManagement.Encrypt(data, serviceAccountId);
-
+            
             var decryptedData = await mAzureKeyManagement.Decrypt(encryptedData, serviceAccountId);
 
             Assert.Equal(data, decryptedData);
@@ -89,7 +89,7 @@ namespace integration
 
         private string ComputeKeyId(string serviceUserName)
         {
-            return
+            return 
                 WebEncoders.Base64UrlEncode(
                         SHA256.Create().ComputeHash(
                             Encoding.UTF8.GetBytes(serviceUserName)))

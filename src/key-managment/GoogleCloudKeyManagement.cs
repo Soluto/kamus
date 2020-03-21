@@ -31,8 +31,8 @@ namespace Kamus.KeyManagement
             mKeyringName = keyringName;
             mKeyringLocation = keyringLocation;
             mProtectionLevel = protectionLevel;
-            mRotationPeriod = string.IsNullOrEmpty(rotationPeriod) ?
-                (TimeSpan?)null :
+            mRotationPeriod = string.IsNullOrEmpty(rotationPeriod) ? 
+                (TimeSpan?)null : 
                 TimeSpan.Parse(rotationPeriod);
         }
 
@@ -43,12 +43,13 @@ namespace Kamus.KeyManagement
             {
                 return encryptedData;
             }
+            
             var safeId = KeyIdCreator.Create(serviceAccountId);
             var cryptoKeyName =
                 new CryptoKeyName(mProjectName, mKeyringLocation, mKeyringName, safeId);
-            var result =
+            var result = 
                 await mKmsService.DecryptAsync(
-                    cryptoKeyName,
+                    cryptoKeyName, 
                 ByteString.FromBase64(encryptedData));
 
             return result.Plaintext.ToStringUtf8();
@@ -64,8 +65,7 @@ namespace Kamus.KeyManagement
             try
             {
                 await mKmsService.GetCryptoKeyAsync(cryptoKeyName);
-            }
-            catch (RpcException e) when (e.StatusCode == StatusCode.NotFound && createKeyIfMissing)
+            } catch (RpcException e) when (e.StatusCode == StatusCode.NotFound && createKeyIfMissing) 
             {
                 var key = new CryptoKey
                 {
@@ -83,7 +83,7 @@ namespace Kamus.KeyManagement
                 }
 
                 var request = await mKmsService.CreateCryptoKeyAsync(keyring, safeId, key);
-
+               
             }
 
             var cryptoKeyPathName = new CryptoKeyPathName(mProjectName, mKeyringLocation, mKeyringName, safeId);

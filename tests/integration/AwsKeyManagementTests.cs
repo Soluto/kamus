@@ -26,7 +26,7 @@ namespace integration
 
             var kmsService = new AmazonKeyManagementServiceClient(awsKey, awsSecret, RegionEndpoint.USEast1);
 
-            mAwsKeyManagement = new AwsKeyManagement(kmsService, "", true);
+            mAwsKeyManagement = new AwsKeyManagement(kmsService,"", true);
         }
 
         [Fact]
@@ -59,7 +59,6 @@ namespace integration
             var decrypted = await mAwsKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(encrypted, decrypted);
-
         }
     }
 

@@ -67,7 +67,6 @@ namespace integration
             var decrypted = await mGoogleCloudKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(encrypted, decrypted);
-
         }
     }
 }

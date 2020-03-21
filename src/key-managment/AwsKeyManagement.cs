@@ -17,7 +17,7 @@ namespace Kamus.KeyManagement
         private readonly bool mEnableAutomaticKeyRotation;
 
         public AwsKeyManagement(
-            IAmazonKeyManagementService amazonKeyManagementService,
+            IAmazonKeyManagementService amazonKeyManagementService, 
             string cmkPrefix,
             bool enableAutomaticKeyRotation)
         {
@@ -28,7 +28,7 @@ namespace Kamus.KeyManagement
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-";
+            var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
             var masterKeyAlias = $"alias/{cmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
             var (dataKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
 
@@ -44,6 +44,7 @@ namespace Kamus.KeyManagement
             {
                 return encryptedData;
             }
+            
             var tuple = EnvelopeEncryptionUtils.Unwrap(encryptedData).ValueOrFailure("Invalid encrypted data format");
 
             var (encryptedDataKey, iv, actualEncryptedData) = tuple;
@@ -63,13 +64,13 @@ namespace Kamus.KeyManagement
             GenerateDataKeyResponse generateKeyResponse = null;
             try
             {
-                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256" });
+                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
 
             }
             catch (NotFoundException)
             {
                 await GenerateMasterKey(keyAlias);
-                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256" });
+                generateKeyResponse = await mAmazonKeyManagementService.GenerateDataKeyAsync(new GenerateDataKeyRequest { KeyId = keyAlias, KeySpec = "AES_256"});
             }
 
             if (generateKeyResponse.HttpStatusCode != HttpStatusCode.OK)
@@ -88,8 +89,7 @@ namespace Kamus.KeyManagement
         private async Task GenerateMasterKey(string keyAlias)
         {
             var createKeyResponse = await mAmazonKeyManagementService.CreateKeyAsync(new CreateKeyRequest { });
-            if (mEnableAutomaticKeyRotation)
-            {
+            if (mEnableAutomaticKeyRotation) {
                 await mAmazonKeyManagementService.EnableKeyRotationAsync(
                     new EnableKeyRotationRequest
                     {
