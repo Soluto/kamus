@@ -17,15 +17,9 @@ namespace CustomResourceDescriptorController.utils
         {
             return Observable.FromAsync(async () =>
             {
-                var result = await kubernetes.ListClusterCustomObjectWithHttpMessagesAsync(
-                    group,
-                    version,
-                    plural,
-                    watch: true,
-                    timeoutSeconds: (int)TimeSpan.FromMinutes(60).TotalSeconds, cancellationToken: cancelationToken);
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, TCRD)>();
-
-                var watcher = result.Watch<TCRD>(
+                var path = $"apis/{group}/{version}/{plural}";
+                var watcher = await kubernetes.WatchObjectAsync<TCRD>(path,
                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                     onError: e => subject.OnError(e),
                     onClosed: () => subject.OnCompleted());
