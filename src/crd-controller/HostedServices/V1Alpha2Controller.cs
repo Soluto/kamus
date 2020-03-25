@@ -19,15 +19,17 @@ namespace CustomResourceDescriptorController.HostedServices
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
+        private readonly bool mSetOwnerReference;
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
         private const string ApiVersion = "v1alpha2";
 
-        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference)
         {
             this.mKubernetes = kubernetes;
             this.mKeyManagement = keyManagement;
+            this.mSetOwnerReference = setOwnerReference;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -132,14 +134,8 @@ namespace CustomResourceDescriptorController.HostedServices
                 kamusSecret.Metadata.Name,
                 @namespace);
 
-            return new V1Secret
-            {
-                Metadata = new V1ObjectMeta
-                {
-                    Name = kamusSecret.Metadata.Name,
-                    NamespaceProperty = @namespace,
-                    OwnerReferences = new[]
-                    {
+            var ownerReference = !this.mSetOwnerReference ? new V1OwnerReference[0] : new[]
+                  {
                         new V1OwnerReference
                         {
                             ApiVersion = kamusSecret.ApiVersion,
@@ -149,7 +145,15 @@ namespace CustomResourceDescriptorController.HostedServices
                             Controller = true,
                             BlockOwnerDeletion = true,
                         }
-                    }
+                    };
+
+            return new V1Secret
+            {
+                Metadata = new V1ObjectMeta
+                {
+                    Name = kamusSecret.Metadata.Name,
+                    NamespaceProperty = @namespace,
+                    OwnerReferences = ownerReference
                 },
                 Type = kamusSecret.Type,
                 StringData = decryptedStringData,
