@@ -51,7 +51,7 @@ create_kind_cluster() {
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
-    docker cp /root/.kube/config ct:/root/.kube/config
+    docker cp ~/.kube/config ct:/root/.kube/config
 
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
