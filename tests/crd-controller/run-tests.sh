@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.4.0
+readonly KIND_VERSION=0.7.0
 readonly CLUSTER_NAME=e2e-test
 readonly KUBECTL_VERSION=v1.13.0
 
@@ -43,25 +43,15 @@ create_kind_cluster() {
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
 
-    if [[ $K8S_VERSION == "v1.15.0" ]]
-    then
-        kind_config="kind-config-1.15.yaml"
-    else
-        kind_config="kind-config.yaml"
-    fi
+    kind_config="kind-config.yaml"
 
-    kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
+    TMPDIR=$HOME kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
     kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
-    local kubeconfig
-    kubeconfig="$(kind get kubeconfig-path --name "$CLUSTER_NAME")"
-    docker cp "$kubeconfig" e2e:/root/.kube/config
-
-    docker_exec kubectl cluster-info
-    echo
+    docker cp ~/.kube/config e2e:/root/.kube/config
 
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
