@@ -52,7 +52,7 @@ create_kind_cluster() {
 
     echo 'Copying kubeconfig to container...'
     kind export kubeconfig --name "$CLUSTER_NAME"
-    docker cp $KUBECONFIG e2e:/root/.kube/config
+    docker cp "$KUBECONFIG" e2e:/root/.kube/config
 
     docker_exec kubectl cluster-info
     echo
