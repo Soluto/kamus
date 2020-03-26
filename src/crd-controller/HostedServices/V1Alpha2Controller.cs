@@ -85,7 +85,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         return;
 
                     case WatchEventType.Deleted:
-                        //await HandleDelete(kamusSecret);
+                        //Ignore delete event - it's handled by k8s GC;
                         return;
 
                     case WatchEventType.Modified:
@@ -187,13 +187,6 @@ namespace CustomResourceDescriptorController.HostedServices
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
-        }
-
-        private async Task HandleDelete(KamusSecret kamusSecret)
-        {
-            var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
-
-            await mKubernetes.DeleteNamespacedSecretAsync(kamusSecret.Metadata.Name, @namespace);
         }
     }
 }
