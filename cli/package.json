@@ -55,19 +55,5 @@
     "/lib",
     "yarn.lock"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn test --reporter min"
-    }
-  },
-  "lint-staged": {
-    "linters": {
-      "*.js": [
-        "eslint",
-        "git add"
-      ]
-    }
-  },
   "snyk": true
 }
