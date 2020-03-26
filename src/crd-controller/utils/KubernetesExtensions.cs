@@ -18,7 +18,7 @@ namespace CustomResourceDescriptorController.utils
             return Observable.FromAsync(async () =>
             {
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, TCRD)>();
-                var path = $"apis/{group}/{version}/{plural}";
+                var path = $"apis/{group}/{version}/watch/{plural}";
                 var watcher = await kubernetes.WatchObjectAsync<TCRD>(path,
                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                     onError: e => subject.OnError(e),
