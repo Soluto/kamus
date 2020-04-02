@@ -19,14 +19,17 @@ namespace CustomResourceDescriptorController.HostedServices
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
+        private readonly bool mSetOwnerReference;
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
+        private const string ApiVersion = "v1alpha2";
 
-        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference)
         {
             this.mKubernetes = kubernetes;
             this.mKeyManagement = keyManagement;
+            this.mSetOwnerReference = setOwnerReference;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -42,7 +45,7 @@ namespace CustomResourceDescriptorController.HostedServices
         {
             mSubscription = mKubernetes.ObserveClusterCustomObject<KamusSecret>(
                     "soluto.com",
-                     "v1alpha2",
+                     ApiVersion,
                      "kamussecrets",
                      token)
                 .SelectMany(x =>
@@ -82,7 +85,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         return;
 
                     case WatchEventType.Deleted:
-                        await HandleDelete(kamusSecret);
+                        //Ignore delete event - it's handled by k8s GC;
                         return;
 
                     case WatchEventType.Modified:
@@ -131,12 +134,26 @@ namespace CustomResourceDescriptorController.HostedServices
                 kamusSecret.Metadata.Name,
                 @namespace);
 
+            var ownerReference = !this.mSetOwnerReference ? new V1OwnerReference[0] : new[]
+                  {
+                        new V1OwnerReference
+                        {
+                            ApiVersion = kamusSecret.ApiVersion,
+                            Kind = kamusSecret.Kind,
+                            Name = kamusSecret.Metadata.Name,
+                            Uid = kamusSecret.Metadata.Uid,
+                            Controller = true,
+                            BlockOwnerDeletion = true,
+                        }
+                    };
+
             return new V1Secret
             {
                 Metadata = new V1ObjectMeta
                 {
                     Name = kamusSecret.Metadata.Name,
-                    NamespaceProperty = @namespace
+                    NamespaceProperty = @namespace,
+                    OwnerReferences = ownerReference
                 },
                 Type = kamusSecret.Type,
                 StringData = decryptedStringData,
@@ -170,13 +187,6 @@ namespace CustomResourceDescriptorController.HostedServices
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
                 secret.Metadata.NamespaceProperty);
-        }
-
-        private async Task HandleDelete(KamusSecret kamusSecret)
-        {
-            var @namespace = kamusSecret.Metadata.NamespaceProperty ?? "default";
-
-            await mKubernetes.DeleteNamespacedSecretAsync(kamusSecret.Metadata.Name, @namespace);
         }
     }
 }

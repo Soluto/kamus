@@ -54,8 +54,14 @@ namespace CustomResourceDescriptorController
                 return k;
             }
             );
-                
-            services.AddHostedService<V1Alpha2Controller>();
+
+            services.AddHostedService(serviceProvider =>
+            {
+                var setOwnerReference = Configuration.GetValue<bool>("Controller:SetOwnerReference", true);
+                var kubernetes = serviceProvider.GetService<IKubernetes>();
+                var kms = serviceProvider.GetService<IKeyManagement>();
+                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference);
+            });
 
             services.AddHealthChecks()
                 .AddCheck<KubernetesPermissionsHelthCheck>("permisssions check");
