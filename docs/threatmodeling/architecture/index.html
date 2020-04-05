@@ -132,9 +132,9 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </ul>
 <h2 id="first-flow---using-the-init-container">First flow - using the Init Container<a href="#first-flow---using-the-init-container" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>High-level overview of encryption/decryption flow:
-<!-- raw HTML omitted --></p>
+<img src="/docs/threatmodeling/images/diagram.png"/></p>
 <p>Let&rsquo;s take a deeper look of what&rsquo;s inside a pod:
-<!-- raw HTML omitted --></p>
+<img src="/docs/threatmodeling/images/kamus-pod.png" height=600px style="display: block; margin-left: auto; margin-right: auto;"/></p>
 <p>We have multiple objects here:</p>
 <ul>
 <li>We have the pods, which run (at least) 2 containers, the application container and the init container.</li>
@@ -147,7 +147,7 @@ The application consume the configuration file with the decrypted secrets from t
 </ul>
 <h2 id="second-flow---using-kamussecret">Second flow - using KamusSecret<a href="#second-flow---using-kamussecret" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>High-level overview of encryption/decryption flow:
-<!-- raw HTML omitted --></p>
+<img src="/docs/threatmodeling/images/diagram-crd.png"/></p>
 <p>Kubernetes Icons created by <a href="https://github.com/kubernetes/community">Kubernetes Community</a></p>
 </div>
 <div class="footer">
