@@ -47,3 +47,6 @@ baseName = "_redirects"
 
 [outputs]
 home = ["HTML", "REDIRECTS"]
+
+[markup.goldmark.renderer]
+unsafe= true
