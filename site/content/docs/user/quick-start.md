@@ -14,7 +14,7 @@ The simple way to run Kamus is by using the Helm chart:
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install kamus soluto/kamus
 ```
-Refer to the [installation guide](/docs/user/install) to learn about production grade deployment.
+Refer to the [installation guide](./install.md) to learn about production grade deployment.
 After installing Kamus, you can start using it to encrypt secrets.
 Kamus encrypt secrets for a specific application, represent by a [Kubernetes Service Account](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account).
 Create a service account for your application, and mount it on the pods running your application.
