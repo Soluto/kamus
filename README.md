@@ -52,7 +52,7 @@ The KMS is a wrapper for various cryptographic solutions. Currently supported:
 We look forward to add support for other cloud encryption backends.
 
 
-Consult the [installation guide](docs/install.md) for more details on how to deploy Kamus using the relevant KMS.
+Consult the [installation guide](https://kamus.soluto.io/docs/user/install) for more details on how to deploy Kamus using the relevant KMS.
 
 ### Utilities
 Kamus is shipped with 2 utilities that make it easier to use:
