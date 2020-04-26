@@ -91,7 +91,25 @@ namespace Kamus.KeyManagement
                         KeyId = createKeyResponse.KeyMetadata.KeyId
                     });
             }
+
+            await WaitForKeyCreation(createKeyResponse.KeyMetadata.KeyId);
             await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId);
+        }
+        
+        private async Task WaitForKeyCreation(string keyAlias) 
+        {
+            KeyState keyState = null;
+            while (keyState != KeyState.Enabled)
+            {
+                try
+                {
+                    keyState = (await mAmazonKeyManagementService.DescribeKeyAsync(keyAlias)).KeyMetadata.KeyState;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
     }
 }
