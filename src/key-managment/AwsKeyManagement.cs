@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Amazon.KeyManagementService;
 using Amazon.KeyManagementService.Model;
 using Optional.Unsafe;
+using Polly;
 
 
 namespace Kamus.KeyManagement
@@ -92,24 +93,12 @@ namespace Kamus.KeyManagement
                     });
             }
 
-            await WaitForKeyCreation(createKeyResponse.KeyMetadata.KeyId);
-            await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId);
-        }
-        
-        private async Task WaitForKeyCreation(string keyAlias) 
-        {
-            KeyState keyState = null;
-            while (keyState != KeyState.Enabled)
-            {
-                try
-                {
-                    keyState = (await mAmazonKeyManagementService.DescribeKeyAsync(keyAlias)).KeyMetadata.KeyState;
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
+            await Policy
+                .Handle<NotFoundException>()
+                .WaitAndRetry(3, attempt => TimeSpan.FromSeconds(0.5 * attempt))
+                .Execute(async () =>
+                    await mAmazonKeyManagementService.CreateAliasAsync(keyAlias, createKeyResponse.KeyMetadata.KeyId));
+
         }
     }
 }
