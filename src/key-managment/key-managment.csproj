@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.100.4" />
-    <PackageReference Include="Google.Cloud.Kms.V1" Version="1.1.0" />
+    <PackageReference Include="Google.Cloud.Kms.V1" Version="2.0.0" />
     <PackageReference Include="BouncyCastle" Version="1.8.5" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
