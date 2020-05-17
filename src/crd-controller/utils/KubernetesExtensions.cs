@@ -12,17 +12,18 @@ namespace CustomResourceDescriptorController.utils
             string group,
             string version,
             string plural,
-            CancellationToken cancelationToken
+            CancellationToken cancellationToken
             ) where TCRD : class
         {
             return Observable.FromAsync(async () =>
             {
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, TCRD)>();
                 var path = $"apis/{group}/{version}/watch/{plural}";
-                var watcher = await kubernetes.WatchObjectAsync<TCRD>(path,
+                await kubernetes.WatchObjectAsync<TCRD>(path,
+                    timeoutSeconds: (int) TimeSpan.FromMinutes(60).TotalSeconds,
                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                     onError: e => subject.OnError(e),
-                    onClosed: () => subject.OnCompleted());
+                    onClosed: () => subject.OnCompleted(), cancellationToken: cancellationToken);
                 return subject;
             })
                 .SelectMany(x => x)
