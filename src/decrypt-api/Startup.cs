@@ -18,23 +18,9 @@ namespace Kamus
 {
     public class Startup {
         
-        public Startup(IWebHostEnvironment env)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
-            string appsettingsPath = "appsettings.json";
-
-            if (env.IsDevelopment())
-            {
-                appsettingsPath = "appsettings.Development.json";
-            }
-
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile(appsettingsPath, optional: true, reloadOnChange: true)
-                .AddJsonFile("secrets/appsettings.secrets.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
-
+            Configuration = configuration;
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Console.WriteLine($"Kamus Decryptor API {version} starting");
         }
