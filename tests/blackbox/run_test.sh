@@ -28,9 +28,6 @@ else
   # Add the URLs you wish to ignore on this line, after the regex query param - regex supported.
   # curl -s --fail $PROXY_URL/JSON/core/action/excludeFromProxy/?regex=
 
-  ./wait-for-it.sh $ENCRYPTOR -t 300
-  ./wait-for-it.sh $DECRYPTOR -t 300
-
   run_tests
 
   echo "waiting for ZAP to finish scanning"
