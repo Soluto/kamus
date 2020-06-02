@@ -63,11 +63,11 @@ namespace Kamus.KeyManagement
             } catch (RpcException e) when (e.StatusCode == StatusCode.NotFound && createKeyIfMissing) 
             {
                 var key = new CryptoKey
-                {
+                { 
                     Purpose = CryptoKey.Types.CryptoKeyPurpose.EncryptDecrypt,
                     VersionTemplate = new CryptoKeyVersionTemplate
                     {
-                        ProtectionLevel = ProtectionLevel.Software
+                        ProtectionLevel = mProtectionLevel == "HSM" ? ProtectionLevel.Hsm : ProtectionLevel.Software
                     }
                 };
 
