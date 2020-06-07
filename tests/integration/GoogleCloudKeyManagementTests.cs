@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Google.Cloud.Kms.V1;
 using Kamus.KeyManagement;
@@ -59,6 +60,7 @@ namespace integration
 
         }
         
+        [Fact]
         public async Task DecryptWithDifferentSAFails()
         {
             var sa = "sa:namespace";
