@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Google.Cloud.Kms.V1;
+using Grpc.Core;
 using Kamus.KeyManagement;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -67,7 +68,7 @@ namespace integration
             var data = "data";
             var encrypted = await mGoogleCloudKeyManagement.Encrypt(data, sa);
 
-            await Assert.ThrowsAsync<Exception>(async () => await mGoogleCloudKeyManagement.Decrypt(encrypted, "SA2:namespace"));
+            await Assert.ThrowsAsync<RpcException>(async () => await mGoogleCloudKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
     }
 }
