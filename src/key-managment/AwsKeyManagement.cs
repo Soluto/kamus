@@ -23,14 +23,13 @@ namespace Kamus.KeyManagement
             bool enableAutomaticKeyRotation)
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
-            mCmkPrefix = cmkPrefix;
+            mCmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
             mEnableAutomaticKeyRotation = enableAutomaticKeyRotation;
         }
 
         public async Task<string> Encrypt(string data, string serviceAccountId, bool createKeyIfMissing = true)
         {
-            var cmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
-            var masterKeyAlias = $"alias/{cmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
+            var masterKeyAlias = $"alias/{mCmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
             var (dataKey, encryptedDataKey) = await GenerateEncryptionKey(masterKeyAlias);
 
             var (encryptedData, iv) = RijndaelUtils.Encrypt(dataKey.ToArray(), Encoding.UTF8.GetBytes(data));
@@ -45,9 +44,12 @@ namespace Kamus.KeyManagement
 
             var (encryptedDataKey, iv, actualEncryptedData) = tuple;
 
+            var masterKeyAlias = $"alias/{mCmkPrefix}kamus/{KeyIdCreator.Create(serviceAccountId)}";
             var decryptionResult = await mAmazonKeyManagementService.DecryptAsync(new DecryptRequest
             {
                 CiphertextBlob = new MemoryStream(Convert.FromBase64String(encryptedDataKey)),
+                KeyId = masterKeyAlias
+                
             });
 
             var decrypted = RijndaelUtils.Decrypt(decryptionResult.Plaintext.ToArray(), iv, actualEncryptedData);

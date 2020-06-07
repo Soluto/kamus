@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.KeyManagementService;
+using Amazon.KeyManagementService.Model;
 using Kamus.KeyManagement;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -49,6 +50,16 @@ namespace integration
             var decrypted = await mAwsKeyManagement.Decrypt(encrypted, sa);
 
             Assert.Equal(data, decrypted);
+        }
+        
+        [Fact]
+        public async Task DecryptWithDifferentSAFails()
+        {
+            var sa = "sa:namespace";
+            var data = "data";
+            var encrypted = await mAwsKeyManagement.Encrypt(data, sa);
+
+            await Assert.ThrowsAsync<IncorrectKeyException>(async () => await mAwsKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
     }
 
