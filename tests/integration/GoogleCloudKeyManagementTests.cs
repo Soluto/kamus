@@ -58,5 +58,14 @@ namespace integration
             Assert.Equal(data, decrypted);
 
         }
+        
+        public async Task DecryptWithDifferentSAFails()
+        {
+            var sa = "sa:namespace";
+            var data = "data";
+            var encrypted = await mGoogleCloudKeyManagement.Encrypt(data, sa);
+
+            await Assert.ThrowsAsync<Exception>(async () => await mGoogleCloudKeyManagement.Decrypt(encrypted, "SA2:namespace"));
+        }
     }
 }
