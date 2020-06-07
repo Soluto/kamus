@@ -8,7 +8,14 @@ menu:
 ---
 # Changelog
 
-## kamus-6 (19/09/2019)
+## kamus-0.7 (07/06/2020)
+
+#### Bug Fixes:
+
+- [**bug**] Decryption doesn't fail when doing from unauthorized service account [#526](https://github.com/Soluto/kamus/issues/526)
+
+
+## kamus-0.6 (19/09/2019)
 
 #### Enhancements:
 
