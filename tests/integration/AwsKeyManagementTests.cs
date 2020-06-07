@@ -41,6 +41,17 @@ namespace integration
         }
 
         [Fact]
+        public async Task TestInvalidSA()
+        {
+            var sa = "sa:namespace";
+            var data = "data";
+            var encrypted = await mAwsKeyManagement.Encrypt(data, sa);
+            var decrypted = await mAwsKeyManagement.Decrypt(encrypted, "SA2:namespace");
+
+            Assert.Equal(data, decrypted);
+        }
+
+        [Fact]
         public async Task RegressionTest()
         {
             var sa = "sa:namespace";
