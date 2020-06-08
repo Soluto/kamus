@@ -56,9 +56,13 @@ namespace integration
         public async Task DecryptWithDifferentSAFails()
         {
             var sa = "sa:namespace";
+            var sa2 = "sa2:namespace";
             var data = "data";
             var encrypted = await mAwsKeyManagement.Encrypt(data, sa);
-
+            
+            // To make sure the key does exist
+            await mAwsKeyManagement.Encrypt(data, sa2);
+            // ===============================
             await Assert.ThrowsAsync<IncorrectKeyException>(async () => await mAwsKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
     }
