@@ -91,9 +91,14 @@ namespace integration
         public async Task DecryptWithDifferentSAFails()
         {
             var sa = "sa:namespace";
+            var sa2 = "sa2:namespace";
             var data = "data";
             var encrypted = await mAzureKeyManagement.Encrypt(data, sa);
-
+            
+            // To make sure the key does exist
+            await mAzureKeyManagement.Encrypt(data, sa2);
+            
+            // ===============================
             await Assert.ThrowsAsync<DecryptionFailureException>(async () => await mAzureKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
         private string ComputeKeyId(string serviceUserName)

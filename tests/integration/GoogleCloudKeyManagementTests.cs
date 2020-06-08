@@ -65,9 +65,14 @@ namespace integration
         public async Task DecryptWithDifferentSAFails()
         {
             var sa = "sa:namespace";
+            var sa2 = "sa2:namespace";
             var data = "data";
             var encrypted = await mGoogleCloudKeyManagement.Encrypt(data, sa);
-
+            
+            // To make sure the key does exist
+            await mGoogleCloudKeyManagement.Encrypt(data, sa2);
+            // ===============================
+            
             await Assert.ThrowsAsync<RpcException>(async () => await mGoogleCloudKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
     }
