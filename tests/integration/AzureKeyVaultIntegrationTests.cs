@@ -97,7 +97,6 @@ namespace integration
             
             // To make sure the key does exist
             await mAzureKeyManagement.Encrypt(data, sa2);
-            
             // ===============================
             await Assert.ThrowsAsync<DecryptionFailureException>(async () => await mAzureKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }

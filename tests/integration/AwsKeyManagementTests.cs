@@ -62,7 +62,6 @@ namespace integration
             
             // To make sure the key does exist
             await mAwsKeyManagement.Encrypt(data, sa2);
-            
             // ===============================
             await Assert.ThrowsAsync<IncorrectKeyException>(async () => await mAwsKeyManagement.Decrypt(encrypted, "SA2:namespace"));
         }
