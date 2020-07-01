@@ -14,8 +14,6 @@ RUN yarn --prod
 # Bundle app source
 COPY . .
 
-RUN yarn run snyk-protect
-
 USER node
 
 ENTRYPOINT [ "node", "index.js" ]
