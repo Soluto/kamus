@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.3.106.4" />
+    <PackageReference Include="AWSSDK.KeyManagementService" Version="3.5.0.2" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.5.0.2" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
     <PackageReference Include="Google.Cloud.Kms.V1" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
