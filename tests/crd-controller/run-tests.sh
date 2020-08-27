@@ -14,7 +14,7 @@ elif [ "$(uname)" == "*Linux*" ]; then
 fi
 
 backup_current_kubeconfig() {
-    mv "$HOME/.kube/config" "$HOME/.kube/config.bkp"
+    mv "$HOME/.kube/config" "$HOME/.kube/config.bkp" 2>/dev/null
 }
 
 run_e2e_container() {
