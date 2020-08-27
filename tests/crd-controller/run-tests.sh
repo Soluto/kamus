@@ -3,13 +3,13 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-
+set -x
 readonly KIND_VERSION=0.8.1
 readonly CLUSTER_NAME=e2e-test
 
 if [ "$(uname)" == "Darwin" ]; then
     machine=darwin
-elif [ "$(( substr $(uname -s) 1 5))" == "Linux" ]; then
+elif [ "$(($(uname -s):1:5))" == "Linux" ]; then
     machine=linux
 fi
 
