@@ -43,3 +43,6 @@ node_modules/
 **/vendor/
 init-container/token.txt
 init-container/decrypted/**
+
+kubectl
+kind

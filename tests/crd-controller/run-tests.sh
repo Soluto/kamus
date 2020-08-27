@@ -6,7 +6,6 @@ set -o pipefail
 
 readonly KIND_VERSION=0.8.1
 readonly CLUSTER_NAME=e2e-test
-readonly KUBECTL_VERSION=v1.13.0
 
 if [ "$(uname)" == "Darwin" ]; then
     machine=darwin
@@ -15,7 +14,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 backup_current_kubeconfig() {
-    mv $HOME/.kube/config $HOME/.kube/config.bkp
+    mv "$HOME/.kube/config" "$HOME/.kube/config.bkp"
 }
 
 run_e2e_container() {
@@ -31,10 +30,10 @@ run_e2e_container() {
 cleanup() {
     echo 'Removing e2e container...'
     docker kill e2e > /dev/null 2>&1
-    # echo 'Removing kind e2e-test cluster'
-    # kind delete clusters e2e-test
+    echo 'Removing kind e2e-test cluster'
+    kind delete clusters e2e-test
     echo 'Restoring kubeconfig'
-    mv $HOME/.kube/config.bkp $HOME/.kube/config
+    mv "$HOME/.kube/config.bkp" "$HOME/.kube/config"
     echo 'Done!'
 }
 
@@ -67,12 +66,10 @@ create_kind_cluster() {
     kubeconfig_path="$HOME/.kube/config"
     if [ "$machine" == "darwin" ]; then
         kubectl config set-cluster kind-e2e-test --insecure-skip-tls-verify=true
-        cp $HOME/.kube/config $HOME/.kube/config.edited
-        kubeconfig_path="$HOME/.kube/config.edited"
-        sed -i "" 's/127.0.0.1/host.docker.internal/g' $kubeconfig_path
+        sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
     fi
-    docker cp $kubeconfig_path e2e:/root/.kube/config
 
+    docker cp "$kubeconfig_path" e2e:/root/.kube/config
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
         printf '.'
