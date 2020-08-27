@@ -3,10 +3,20 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-
+set -x
 readonly KIND_VERSION=0.8.1
 readonly CLUSTER_NAME=e2e-test
 readonly KUBECTL_VERSION=v1.13.0
+
+if [ "$(uname)" == "Darwin" ]; then
+    machine=darwin
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    machine=linux
+fi
+
+backup_current_kubeconfig() {
+    mv $HOME/.kube/config $HOME/.kube/config.bkp
+}
 
 run_e2e_container() {
     echo 'Running e2e container...'
@@ -19,9 +29,12 @@ run_e2e_container() {
 }
 
 cleanup() {
-    echo 'Removing ct container...'
+    echo 'Removing e2e container...'
     docker kill e2e > /dev/null 2>&1
-
+    # echo 'Removing kind e2e-test cluster'
+    # kind delete clusters e2e-test
+    echo 'Restoring kubeconfig'
+    mv $HOME/.kube/config.bkp $HOME/.kube/config
     echo 'Done!'
 }
 
@@ -34,11 +47,11 @@ create_kind_cluster() {
     echo 'Installing kind...'
     echo 'kubernetes version' "$K8S_VERSION"
 
-    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-linux-amd64"
+    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-$machine-amd64"
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
-    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl
+    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
     chmod +x kubectl
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
@@ -51,7 +64,14 @@ create_kind_cluster() {
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
-    docker cp ~/.kube/config e2e:/root/.kube/config
+    kubeconfig_path="$HOME/.kube/config"
+    if [ "$machine" == "darwin" ]; then
+        kubectl config set-cluster kind-e2e-test --insecure-skip-tls-verify=true
+        cp $HOME/.kube/config $HOME/.kube/config.edited
+        kubeconfig_path="$HOME/.kube/config.edited"
+        sed -i "" 's/127.0.0.1/host.docker.internal/g' $kubeconfig_path
+    fi
+    docker cp $kubeconfig_path e2e:/root/.kube/config
 
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
@@ -75,6 +95,7 @@ run_test() {
 }
 
 main() {
+    backup_current_kubeconfig
     run_e2e_container
     trap cleanup EXIT
 
