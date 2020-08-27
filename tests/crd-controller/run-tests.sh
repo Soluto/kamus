@@ -33,7 +33,7 @@ cleanup() {
     echo 'Removing kind e2e-test cluster'
     kind delete clusters e2e-test
     echo 'Restoring kubeconfig'
-    mv "$HOME/.kube/config.bkp" "$HOME/.kube/config"
+    mv "$HOME/.kube/config.bkp" "$HOME/.kube/config"  || echo "No original kubeconfig to backup was found."
     echo 'Done!'
 }
 
