@@ -50,7 +50,7 @@ create_kind_cluster() {
     chmod +x kind
     sudo mv kind /usr/local/bin/kind
 
-    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
+    curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/"$K8S_VERSION"/bin/linux/amd64/kubectl
     chmod +x kubectl
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
