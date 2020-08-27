@@ -9,7 +9,7 @@ readonly CLUSTER_NAME=e2e-test
 
 if [ "$(uname)" == "Darwin" ]; then
     machine=darwin
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(( substr $(uname -s) 1 5))" == "Linux" ]; then
     machine=linux
 fi
 
