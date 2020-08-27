@@ -14,7 +14,7 @@ else
 fi
 
 backup_current_kubeconfig() {
-    mv "$HOME/.kube/config" "$HOME/.kube/config.bkp" 2>/dev/null
+    mv "$HOME/.kube/config" "$HOME/.kube/config.bkp" || echo "No original kubeconfig to backup was found."
 }
 
 run_e2e_container() {
