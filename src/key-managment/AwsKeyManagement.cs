@@ -23,7 +23,7 @@ namespace Kamus.KeyManagement
             bool enableAutomaticKeyRotation)
         {
             mAmazonKeyManagementService = amazonKeyManagementService;
-            mCmkPrefix = string.IsNullOrEmpty(mCmkPrefix) ? "" : $"{mCmkPrefix}-"; 
+            mCmkPrefix = string.IsNullOrEmpty(cmkPrefix) ? "" : $"{mCmkPrefix}-"; 
             mEnableAutomaticKeyRotation = enableAutomaticKeyRotation;
         }
 

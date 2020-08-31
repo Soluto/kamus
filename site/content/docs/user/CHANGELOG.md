@@ -8,6 +8,15 @@ menu:
 ---
 # Changelog
 
+## kamus-0.8 (31/08/2020)
+
+#### Breaking Bug Fixes:
+
+- AwsKeyManagement didn't use `cmkPrefix` parameter.
+
+  If you were using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.8.0.0 that now uses the cmkPrefix correctly.
+
+
 ## kamus-0.7 (07/06/2020)
 
 #### Bug Fixes:
