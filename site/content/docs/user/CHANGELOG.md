@@ -12,7 +12,7 @@ menu:
 
 #### Breaking Bug Fixes:
 
-- AwsKeyManagement didn't use `cmkPrefix` parameter.
+- AwsKeyManagement didn't use `cmkPrefix` parameter which failed decryption requests of previous versions (< 0.7.0.0) encrypted secrets.
 
   If you've encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.8.0.0 that now uses the cmkPrefix correctly.
 
