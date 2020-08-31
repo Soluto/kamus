@@ -1,6 +1,6 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
