@@ -123,6 +123,14 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 
 
 <div id="content"><h1 id="changelog">Changelog<a href="#changelog" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h1>
+<h2 id="kamus-08-31082020">kamus-0.8 (31/08/2020)<a href="#kamus-08-31082020" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h4 id="breaking-bug-fixes">Breaking Bug Fixes:<a href="#breaking-bug-fixes" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h4>
+<ul>
+<li>
+<p>AwsKeyManagement didn&rsquo;t use <code>cmkPrefix</code> parameter which failed decryption requests of previous versions (&lt; 0.7.0.0) encrypted secrets.</p>
+<p>If you&rsquo;ve encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.8.0.0 that now uses the cmkPrefix correctly.</p>
+</li>
+</ul>
 <h2 id="kamus-07-07062020">kamus-0.7 (07/06/2020)<a href="#kamus-07-07062020" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <h4 id="bug-fixes">Bug Fixes:<a href="#bug-fixes" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h4>
 <ul>
@@ -208,7 +216,7 @@ oldWidth=width;if(width<=900){hideSideBar();}else{var manualCollapsed=window.loc
 </div>
 <div class="footer">
   <p class="copyright">© 2020 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2020-06-07 13:09:56 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/5d652b631b8a4863affae6e9fad638fb2519d776">5d652b6</a></span></p>
+  <p>Last Updated on 2020-08-31 15:39:42 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/66b960d125820d403e650e63328b896be15889d4">66b960d</a></span></p>
 </div>
 </div>
 </body>
