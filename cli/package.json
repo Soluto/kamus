@@ -1,6 +1,6 @@
 {
   "name": "@soluto-asurion/kamus-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI Tool to encrypt secrets for kamus",
   "main": "index.js",
   "scripts": {
@@ -29,15 +29,15 @@
   },
   "homepage": "https://github.com/soluto/kamus#readme",
   "dependencies": {
-    "adal-node": "^0.2.0",
+    "adal-node": "0.2.1",
     "bluebird": "^3.5.3",
     "caporal": "^1.1.0",
     "colorful-chalk-logger": "^0.4.0",
     "enquirer": "^2.3.0",
     "node-fetch": "^2.3.0",
     "opn": "^5.4.0",
-    "request": "^2.88.0",
-    "snyk": "^1.316.1",
+    "request": "2.88.2",
+    "snyk": "1.386.0",
     "url-join": "^4.0.1"
   },
   "devDependencies": {
