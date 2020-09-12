@@ -34,7 +34,7 @@
     "caporal": "^1.1.0",
     "colorful-chalk-logger": "^0.4.0",
     "enquirer": "^2.3.0",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "opn": "^5.4.0",
     "request": "2.88.2",
     "snyk": "1.386.0",
