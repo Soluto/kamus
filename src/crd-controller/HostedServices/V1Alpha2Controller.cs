@@ -164,8 +164,23 @@ namespace CustomResourceDescriptorController.HostedServices
         private async Task HandleAdd(KamusSecret kamusSecret, bool isUpdate = false)
         {
             var secret = await CreateSecret(kamusSecret);
-            var createdSecret =
-                await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
+
+            try
+            {
+                var createdSecret =
+                    await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
+
+            }
+            catch (Microsoft.Rest.HttpOperationException httpOperationException)
+            {
+                var phase = httpOperationException.Response.ReasonPhrase;
+                var content = httpOperationException.Response.Content;
+
+                mLogger.Warning(
+                    "Apicall failed, reason {reason}, error {error}",
+                    phase,
+                    content);
+            }
 
             mAuditLogger.Information("Created a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
@@ -178,11 +193,25 @@ namespace CustomResourceDescriptorController.HostedServices
             var secretPatch = new JsonPatchDocument<V1Secret>();
             secretPatch.Replace(e => e.Data, secret.Data);
             secretPatch.Replace(e => e.StringData, secret.StringData);
-            var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(
-                new V1Patch(secretPatch),
-                kamusSecret.Metadata.Name,
-                secret.Metadata.NamespaceProperty
-            );
+
+            try
+            {
+                var createdSecret = await mKubernetes.PatchNamespacedSecretAsync(
+                    new V1Patch(secretPatch),
+                    kamusSecret.Metadata.Name,
+                    secret.Metadata.NamespaceProperty
+                );
+            }
+            catch (Microsoft.Rest.HttpOperationException httpOperationException)
+            {
+                var phase = httpOperationException.Response.ReasonPhrase;
+                var content = httpOperationException.Response.Content;
+
+                mLogger.Warning(
+                    "Apicall failed, reason {reason}, error {error}",
+                    phase,
+                    content);
+            }
 
             mAuditLogger.Information("Updated a secret from KamusSecret {name} in namespace {namespace} successfully.",
                 kamusSecret.Metadata.Name,
