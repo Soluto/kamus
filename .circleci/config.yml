@@ -18,11 +18,11 @@ commands:
             kubernetesVersion: parameters.kubernetesVersion
           command: |
             tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
-          no_output_timeout: 3600
+          no_output_timeout: 1h
 jobs:
   test_cli:
     docker:
-      - image: node:10-alpine
+      - image: timbru31/node-alpine-git:14
 
     steps:
       - checkout
@@ -122,12 +122,14 @@ jobs:
 
   lint-scripts:
     docker:
-      - image: koalaman/shellcheck-alpine
+      - image: ubuntu:bionuc
     steps:
       - checkout
       - run:
           name: lint
           command: |
+            apt-get update -y
+            apt-get install -y shellcheck
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
             shellcheck -x ci/version_to_deploy_cli_docker.sh
