@@ -177,7 +177,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 var content = httpOperationException.Response.Content;
 
                 mLogger.Warning(
-                    "Apicall failed, reason {reason}, error {error}",
+                    "CreateNamespacedSecretAsync failed, reason {reason}, error {error}",
                     phase,
                     content);
             }
