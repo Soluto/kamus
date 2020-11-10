@@ -128,8 +128,10 @@ jobs:
       - run:
           name: lint
           command: |
-            apt-get update -y
-            apt-get install -y shellcheck
+            wget -P tmp_install_folder/ https://storage.googleapis.com/shellcheck/shellcheck-v0.7.1.linux.x86_64.tar.xz
+            tar xvf tmp_install_folder/shellcheck-latest.linux.x86_64.tar.xz -C tmp_install_folder
+            cp tmp_install_folder/shellcheck-latest/shellcheck /usr/bin/shellcheck
+            rm -r tmp_install_folder
             shellcheck -x ci/version_to_deploy.sh
             shellcheck -x ci/version_to_deploy_init.sh
             shellcheck -x ci/version_to_deploy_cli_docker.sh
