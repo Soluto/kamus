@@ -122,7 +122,7 @@ jobs:
 
   lint-scripts:
     docker:
-      - image: ubuntu:bionuc
+      - image: ubuntu:bionic
     steps:
       - checkout
       - run:
