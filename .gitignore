@@ -46,3 +46,7 @@ init-container/decrypted/**
 
 kubectl
 kind
+
+docker-cache-api
+src/crd-controller/*.key
+src/crd-controller/*.crt
