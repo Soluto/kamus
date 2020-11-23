@@ -42,7 +42,7 @@ spec:
             type: string
           type:
             type: string
-          copyAnnotations:
+          propagateAnnotations:
             type: boolean
             default: false
   # either Namespaced or Cluster
