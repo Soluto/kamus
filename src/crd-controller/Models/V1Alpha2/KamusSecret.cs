@@ -11,6 +11,6 @@ namespace CustomResourceDescriptorController.Models.V1Alpha2
         public string Type { get; set; }
         public V1ObjectMeta Metadata { get; set; }
         public string ServiceAccount { get; set; }
-        
+        public bool CopyAnnotations { get; set; }
     }
 }
