@@ -153,6 +153,8 @@ namespace CustomResourceDescriptorController.HostedServices
                 {
                     Name = kamusSecret.Metadata.Name,
                     NamespaceProperty = @namespace,
+                    Labels = kamusSecret.Metadata.Labels,
+                    Annotations = kamusSecret.CopyAnnotations ? kamusSecret.Metadata.Annotations : null,
                     OwnerReferences = ownerReference
                 },
                 Type = kamusSecret.Type,
