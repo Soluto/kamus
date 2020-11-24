@@ -112,7 +112,7 @@ namespace crd_controller
             Assert.Equal(1, v1Secret.Metadata.Labels.Count);
             Assert.Equal("key", v1Secret.Metadata.Labels.Keys.First());
             Assert.Equal("value", v1Secret.Metadata.Labels.Values.First());
-            Assert.Equal(0, v1Secret.Metadata.Annotations.Count);
+            Assert.Null(v1Secret.Metadata.Annotations);
         }
         
         [Fact]
