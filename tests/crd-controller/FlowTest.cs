@@ -110,8 +110,8 @@ namespace crd_controller
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
             
             Assert.Equal(1, v1Secret.Metadata.Labels.Count);
-            Assert.Equal("key", v1Secret.Metadata.Labels.Keys.First());
-            Assert.Equal("value", v1Secret.Metadata.Labels.Values.First());
+            Assert.True(v1Secret.Metadata.Labels.Keys.Contains("key"));
+            Assert.Equal("value", v1Secret.Metadata.Labels.First(x => x.Key == "key").Value);
             Assert.Null(v1Secret.Metadata.Annotations);
         }
         
@@ -140,11 +140,11 @@ namespace crd_controller
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
             
             Assert.Equal(1, v1Secret.Metadata.Labels.Count);
-            Assert.Equal("key", v1Secret.Metadata.Labels.Keys.First());
-            Assert.Equal("value", v1Secret.Metadata.Labels.Values.First());
+            Assert.True(v1Secret.Metadata.Labels.Keys.Contains("key"));
+            Assert.Equal("value", v1Secret.Metadata.Labels.First(x => x.Key == "key").Value);
             Assert.Equal(1, v1Secret.Metadata.Annotations.Count);
-            Assert.Equal("key", v1Secret.Metadata.Annotations.Keys.First());
-            Assert.Equal("value", v1Secret.Metadata.Annotations.Values.First());
+            Assert.True(v1Secret.Metadata.Annotations.Keys.Contains("key"));
+            Assert.Equal("value", v1Secret.Metadata.Annotations.First(x => x.Key == "key").Value);
         }
 
         [Theory]
