@@ -151,7 +151,7 @@ stringData:                 //Put here all the encrypted data, that will be stor
 data:                       //Put here base64 encoded data (usually, binary data like private keys in der format) encrypted (e.g. encrypt the value after base64 encoding it)
   key2: J9NYLzTC/O44DvlCEZ+LfQ==:Cc9O5zQzFOyxwTD5ZHseqg== 
 serviceAccount: some-sa     //The service account used for encrypting the data
-propagateAnnotations: true  //Opt-in for propagating Labels and Annotations from KamusSecret to Secret (default is false)
+propagateAnnotations: true  //Opt-in for propagating Annotations from KamusSecret to Secret (default is false)
 </code></pre><p>And finally, create the KamusSecret using:</p>
 <pre><code>kubectl apply -f kamussecret.yaml
 </code></pre><p>And after a few seconds you&rsquo;ll see the new secret created:</p>
