@@ -42,6 +42,8 @@ spec:
             type: string
           type:
             type: string
+          propagateAnnotations:
+            type: boolean
   # either Namespaced or Cluster
   scope: Namespaced
   names:

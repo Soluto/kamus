@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -147,12 +147,21 @@ namespace CustomResourceDescriptorController.HostedServices
                         }
                     };
 
+            IDictionary<string, string> annotations = null;
+            if (kamusSecret.PropagateAnnotations)
+            {
+                annotations = kamusSecret.Metadata.Annotations;
+                annotations.Remove("kubectl.kubernetes.io/last-applied-configuration");
+            }
+
             return new V1Secret
             {
                 Metadata = new V1ObjectMeta
                 {
                     Name = kamusSecret.Metadata.Name,
                     NamespaceProperty = @namespace,
+                    Labels = kamusSecret.Metadata.Labels,
+                    Annotations = annotations,
                     OwnerReferences = ownerReference
                 },
                 Type = kamusSecret.Type,

@@ -31,9 +31,12 @@ cleanup() {
     echo 'Removing e2e container...'
     docker kill e2e > /dev/null 2>&1
     echo 'Removing kind e2e-test cluster'
-    kind delete clusters e2e-test
+    ./kind delete clusters e2e-test
     echo 'Restoring kubeconfig'
     mv "$HOME/.kube/config.bkp" "$HOME/.kube/config"  || echo "No original kubeconfig to backup was found."
+    echo 'Removing kubectl and kind binaries'
+    rm kubectl
+    rm kind
     echo 'Done!'
 }
 
@@ -48,7 +51,6 @@ create_kind_cluster() {
 
     curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-$machine-amd64"
     chmod +x kind
-    sudo mv kind /usr/local/bin/kind
 
     curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/"$K8S_VERSION"/bin/linux/amd64/kubectl
     chmod +x kubectl
@@ -57,9 +59,9 @@ create_kind_cluster() {
 
     kind_config="kind-config.yaml"
 
-    TMPDIR=$HOME kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
+    TMPDIR=$HOME ./kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
-    kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
+    ./kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
