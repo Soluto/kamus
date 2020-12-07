@@ -20,7 +20,7 @@ namespace CustomResourceDescriptorController.utils
                 var subject = new System.Reactive.Subjects.Subject<(WatchEventType, TCRD)>();
                 var path = $"apis/{group}/{version}/watch/{plural}";
                 await kubernetes.WatchObjectAsync<TCRD>(path,
-                    timeoutSeconds: (int) TimeSpan.FromMinutes(60).TotalSeconds,
+                    timeoutSeconds: Timeout.InfiniteTimeSpan.Seconds,
                     onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                     onError: e => subject.OnError(e),
                     onClosed: () => subject.OnCompleted(), cancellationToken: cancellationToken);

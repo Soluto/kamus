@@ -12,6 +12,7 @@ using Serilog;
 using System.Net.Http;
 using Microsoft.Rest;
 using System;
+using System.Threading;
 using Microsoft.Extensions.Hosting;
 
 namespace CustomResourceDescriptorController
@@ -49,7 +50,7 @@ namespace CustomResourceDescriptorController
             services.AddSingleton<IKubernetes>(s =>
             {
                 var k = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-                k.HttpClient.Timeout = TimeSpan.FromMinutes(60);
+                k.HttpClient.Timeout = Timeout.InfiniteTimeSpan;
 
                 return k;
             }
