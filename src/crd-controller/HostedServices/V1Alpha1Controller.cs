@@ -3,11 +3,13 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
 using CustomResourceDescriptorController.Models.V1Alpha1;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.Extensions;
+using CustomResourceDescriptorController.metrics;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -19,22 +21,21 @@ namespace CustomResourceDescriptorController.HostedServices
     {
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
+        private readonly IMetrics mMetrics;
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha1Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha1Controller>();
 
-        public V1Alpha1Controller(IKubernetes kubernetes, IKeyManagement keyManagement)
+        public V1Alpha1Controller(IKubernetes kubernetes, IKeyManagement keyManagement, IMetrics metrics)
         {
-            this.mKubernetes = kubernetes;
-            this.mKeyManagement = keyManagement;
+            mKubernetes = kubernetes;
+            mKeyManagement = keyManagement;
+            mMetrics = metrics;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            if (mSubscription != null)
-            {
-                mSubscription.Dispose();
-            }
+            mSubscription?.Dispose();
             return Task.CompletedTask;
         }
 
@@ -75,7 +76,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
-
+                mMetrics.Measure.Counter.Increment(Counters.EventReceived, new MetricTags("event_type", @event.ToString()));
                 switch (@event)
                 {
                     case WatchEventType.Added:

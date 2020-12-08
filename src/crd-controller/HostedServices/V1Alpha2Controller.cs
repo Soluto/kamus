@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
 using CustomResourceDescriptorController.Models.V1Alpha2;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
 using CustomResourceDescriptorController.Extensions;
+using CustomResourceDescriptorController.metrics;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -20,16 +22,18 @@ namespace CustomResourceDescriptorController.HostedServices
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private readonly bool mSetOwnerReference;
+        private readonly IMetrics mMetrics;
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
         private const string ApiVersion = "v1alpha2";
 
-        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference)
+        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference, IMetrics metrics)
         {
             this.mKubernetes = kubernetes;
             this.mKeyManagement = keyManagement;
             this.mSetOwnerReference = setOwnerReference;
+            mMetrics = metrics;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -77,7 +81,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
-
+                mMetrics.Measure.Counter.Increment(Counters.EventReceived, new MetricTags("event_type", @event.ToString()));
                 switch (@event)
                 {
                     case WatchEventType.Added:
