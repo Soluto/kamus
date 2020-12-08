@@ -76,7 +76,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
-                mMetrics.Measure.Counter.Increment(Counters.EventReceived, new MetricTags("event_type", @event.ToString()));
+                mMetrics.Measure.Counter.Increment(Counters.EventReceived, new MetricTags(new[]{"event_type","controller"}, new[]{@event.ToString(),"V1Alpha1"}));
                 switch (@event)
                 {
                     case WatchEventType.Added:
