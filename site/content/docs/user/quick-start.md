@@ -37,7 +37,7 @@ In case of non-https Kamus URL (e.g. `http://localhost:<port>`), you'll have to 
 Pass the value returned by the CLI to your pod, and use Kamus Decrypt API to decrypt the value.
 The simplest way to achieve that is by using the init container.
 An alternative is to use Kamus decrypt API directly in the application code.
-To make it clearer, take a look on a working [example app](example/README.md).
+To make it clearer, take a look on a working [example app](https://github.com/Soluto/kamus/tree/master/example).
 You can deploy this app to any Kubernetes cluster that has Kamus installed, to understand how it works.
 
 Have a question? Something is not clear? Reach out to us on [Kamus Slack](https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E)!
