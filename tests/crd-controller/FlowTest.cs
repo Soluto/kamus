@@ -21,38 +21,7 @@ namespace crd_controller
         {
             mTestOutputHelper = testOutputHelper;
         }
-
-        [Fact]
-        public async Task CreateKamusSecretV1Alpha1_SecretCreated()
-        {
-            Cleanup();
-            await DeployController();
-            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-            
-            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
-                "default",
-                watch: true
-            );
-            
-            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
-            result.Watch<V1Secret>(
-                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
-                onError: e => subject.OnError(e),
-                onClosed: () => subject.OnCompleted());
-
-            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
-
-            mTestOutputHelper.WriteLine("Waiting for secret creation");
-
-            var (_, v1Secret) = await subject
-                .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
-
-            Assert.Equal("TlsSecret", v1Secret.Type);
-            Assert.True(v1Secret.Data.ContainsKey("key"));
-            Assert.Equal("hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
-        }
-
+        
         [Fact]
         public async Task CreateKamusSecretV1Alpha2_SecretCreated()
         {
@@ -148,7 +117,6 @@ namespace crd_controller
         }
 
         [Theory]
-        [InlineData("updated-tls-KamusSecret.yaml")]
         [InlineData("updated-tls-KamusSecretV1Alpha2.yaml")]
         public async Task UpdateKamusSecret_SecretUpdated(string fileName)
         {
@@ -157,7 +125,7 @@ namespace crd_controller
             await DeployController();
             
             RunKubectlCommand("apply -f tls-Secret.yaml");
-            RunKubectlCommand("apply -f tls-KamusSecret.yaml");
+            RunKubectlCommand("apply -f tls-KamusSecretV1Alpha2.yaml");
             
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
@@ -187,7 +155,6 @@ namespace crd_controller
         }
 
         [Theory]
-        [InlineData("tls-KamusSecret.yaml")]
         [InlineData("tls-KamusSecretV1Alpha2.yaml")]
         public async Task DeleteKamusSecret_SecretDeleted(string fileName)
         {
@@ -224,10 +191,8 @@ namespace crd_controller
         {
             try
             {
-                RunKubectlCommand("delete -f tls-KamusSecret.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-KamusSecretV1Alpha2.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-KamusSecretV1Alpha2-with-annotations.yaml --ignore-not-found");
-                RunKubectlCommand("delete -f updated-tls-KamusSecret.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f updated-tls-KamusSecretV1Alpha2.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-Secret.yaml --ignore-not-found");
             }
