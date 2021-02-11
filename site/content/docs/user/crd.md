@@ -54,12 +54,6 @@ default-token-m6whl                        kubernetes.io/service-account-token  
 my-tls-secret                              TlsSecret                             1      5s
 ```
 
-## Migrating from previous version
-To migrate from `v1alpha1` to `v1alpha2` all you need to do is:
-
-* Change the key `data` to `stringData` 
-* Change the `apiVersion` to `"soluto.com/v1alpha2"`
-
 ## Known limitation
 This is the alpha release of this feature, so not all functionality is supported. 
 The current known issues:
