@@ -40,7 +40,6 @@ namespace Kamus.KeyManagement
                 some: async t =>
                 {
                     (string encryptedDataKey, byte[] iv, byte[] actualEncryptedData) = t;
-                    mLogger.Information("Encrypted data mactched envelope encryption pattern");
 
                     var key = await mMasterKeyManagement.Decrypt(encryptedDataKey, serviceAccountId);
 

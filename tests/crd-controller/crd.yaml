@@ -9,22 +9,6 @@ spec:
   group: soluto.com
   # version name to use for REST API: /apis/<group>/<version>
   versions:
-  - name: v1alpha1
-    # Each version can be enabled/disabled by Served flag.
-    served: true
-    # One and only one version must be marked as the storage version.
-    storage: false
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          data:
-            type: object
-            additionalProperties: true
-          serviceAccount: 
-            type: string
-          type:
-            type: string
   - name: v1alpha2
     served: true
     storage: true
