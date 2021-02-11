@@ -8,6 +8,16 @@ menu:
 ---
 # Changelog
 
+
+## kamus-0.9 (11/02/2021)
+
+#### Breaking :
+
+- v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
+
+  Migration instructions: move your keys from `data` field in `v1alpha1` to stringData in `v1alpha2`
+    
+  
 ## kamus-0.8 (31/08/2020)
 
 #### Breaking Bug Fixes:
