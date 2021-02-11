@@ -86,24 +86,24 @@ jobs:
       - store_artifacts:
           path: tests/blackbox/compose/reports/
           destination: zap-reports
-  
-  test_crd_1_16:
-    machine: true
-    steps:
-      - test_crd_command:
-          kubernetesVersion: "v1.16.9"
-
-  test_crd_1_17:
-    machine: true
-    steps:
-      - test_crd_command:
-          kubernetesVersion: "v1.17.5"
 
   test_crd_1_18:
     machine: true
     steps:
       - test_crd_command:
-          kubernetesVersion: "v1.18.2"
+          kubernetesVersion: "v1.18.15"
+
+  test_crd_1_19:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.19.7"
+
+  test_crd_1_20:
+    machine: true
+    steps:
+      - test_crd_command:
+          kubernetesVersion: "v1.20.2"
 
   run_tests:
     docker:
@@ -361,15 +361,15 @@ workflows:
           requires:
             - build_api
             - lint-scripts
-      - test_crd_1_16:
-          requires:
-            - build_api
-            - lint-scripts
-      - test_crd_1_17:
-          requires:
-            - build_api
-            - lint-scripts
       - test_crd_1_18:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1_19:
+          requires:
+            - build_api
+            - lint-scripts
+      - test_crd_1_20:
           requires:
             - build_api
             - lint-scripts
@@ -379,9 +379,9 @@ workflows:
             - build_api
             - run_tests
             - test_blackbox
-            - test_crd_1_16
-            - test_crd_1_17
             - test_crd_1_18
+            - test_crd_1_19
+            - test_crd_1_20
           filters:
             branches:
               only: master
