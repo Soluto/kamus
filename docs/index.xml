@@ -269,9 +269,9 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
       
       <guid>https://kamus.soluto.io/docs/user/changelog/</guid>
       <description>Changelog kamus-0.9 (11/02/2021) Breaking :   v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
-Migration instructions: move your keys from data field in v1alpha1 to stringData in v1alpha2
-  kamus-0.8 (31/08/2020) Breaking Bug Fixes:   AwsKeyManagement didn&amp;rsquo;t use cmkPrefix parameter which failed decryption requests of previous versions (&amp;lt; 0.7.0.0) encrypted secrets.
-If you&amp;rsquo;ve encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.</description>
+To migrate from v1alpha1 to v1alpha2 all you need to do is:
+ Change the key data to stringData Change the apiVersion to &amp;ldquo;soluto.com/v1alpha2&amp;rdquo;    kamus-0.8 (31/08/2020) Breaking Bug Fixes:   AwsKeyManagement didn&amp;rsquo;t use cmkPrefix parameter which failed decryption requests of previous versions (&amp;lt; 0.7.0.0) encrypted secrets.
+If you&amp;rsquo;ve encrypted secrets using kamus 0.</description>
     </item>
     
     <item>
