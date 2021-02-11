@@ -15,7 +15,11 @@ menu:
 
 - v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
 
-  Migration instructions: move your keys from `data` field in `v1alpha1` to stringData in `v1alpha2`
+  To migrate from v1alpha1 to v1alpha2 all you need to do is:
+
+  * Change the key data to stringData
+  * Change the apiVersion to "soluto.com/v1alpha2"
+
     
   
 ## kamus-0.8 (31/08/2020)
