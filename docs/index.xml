@@ -268,9 +268,10 @@ Examples: Data types | data-type | | password | | API key | | X.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://kamus.soluto.io/docs/user/changelog/</guid>
-      <description>Changelog kamus-0.8 (31/08/2020) Breaking Bug Fixes:   AwsKeyManagement didn&amp;rsquo;t use cmkPrefix parameter which failed decryption requests of previous versions (&amp;lt; 0.7.0.0) encrypted secrets.
-If you&amp;rsquo;ve encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.8.0.0 that now uses the cmkPrefix correctly.
-  kamus-0.7 (07/06/2020) Bug Fixes:  [bug] Decryption doesn&amp;rsquo;t fail when doing from unauthorized service account #526  kamus-0.</description>
+      <description>Changelog kamus-0.9 (11/02/2021) Breaking :   v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
+Migration instructions: move your keys from data field in v1alpha1 to stringData in v1alpha2
+  kamus-0.8 (31/08/2020) Breaking Bug Fixes:   AwsKeyManagement didn&amp;rsquo;t use cmkPrefix parameter which failed decryption requests of previous versions (&amp;lt; 0.7.0.0) encrypted secrets.
+If you&amp;rsquo;ve encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.</description>
     </item>
     
     <item>
