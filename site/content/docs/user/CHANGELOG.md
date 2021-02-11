@@ -12,7 +12,7 @@ menu:
 ## kamus-0.9 (11/02/2021)
 
 #### Breaking :
-
+- Kubernetes 1.16 is the minimum required version since KamusSecret CRD moved to `apiextensions.k8s.io/v1`
 - v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
 
   To migrate from v1alpha1 to v1alpha2 all you need to do is:
