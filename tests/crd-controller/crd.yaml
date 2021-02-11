@@ -1,10 +1,9 @@
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   # name must match the spec fields below, and be in the form: <plural>.<group>
   name: kamussecrets.soluto.com
 spec:
-  preserveUnknownFields: false
   # group name to use for REST API: /apis/<group>/<version>
   group: soluto.com
   # version name to use for REST API: /apis/<group>/<version>
@@ -40,12 +39,4 @@ spec:
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
      - ks
-  conversion:
-    strategy: Webhook
-    webhookClientConfig:
-      service:
-        namespace: default
-        name: kamus-controller
-        path: /api/v1/conversion-webhook
-      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM4akNDQWRxZ0F3SUJBZ0lRZnNYZURGWWwrakJSbCt0L2xPRGNFekFOQmdrcWhraUc5dzBCQVFzRkFEQVQKTVJFd0R3WURWUVFERXdocllXMTFjeTFqWVRBZUZ3MHlNREE1TVRReE1EUXlOVFJhRncwek1EQTVNVEl4TURReQpOVFJhTUJNeEVUQVBCZ05WQkFNVENHdGhiWFZ6TFdOaE1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBCk1JSUJDZ0tDQVFFQXk5TVRLRlZ4RHU3V242ZUlCNHhVdG14YTdTNEhKcEh1SUhuMyt6QzN4eEJTeCtJVUlNN1cKRXVkdFZEQnYyNFEwck9BQ2Q5cGJraUJ6Q1ZGNUhTQzZoYy9zRUJJQUVoZkx0SUNHdSsrem9FMS8xSnJYalFRTgpCeWZxR3haVTA1TnJ5Q21nZkUybU5mN0lzeGx2ZytpeFRuYmh4ODNNTURNOVQzbjZGQjYyNGlsSWkyZGdXTU1xCk1zWVVMZDM0SytxeXBPcEk1dWhaeDRKTlJFY2QrMzBEQVREakNuN0s4UkN2ZjF3Q0hyWlNRcFp1UUJIRnB3akoKQkFiQ2NLbk1XVkNtRmJlWDdRdURlZWQ1dGVrL2ZKb3ZNOER4VTM2YVgzODhUbWx6ZXNKRkNRUlVGZ2lLT0Ewbwo2ak83S0d0YTU5RmpkL3RVUEpuS0l2UXhJcXgzWFBpeVd3SURBUUFCbzBJd1FEQU9CZ05WSFE4QkFmOEVCQU1DCkFxUXdIUVlEVlIwbEJCWXdGQVlJS3dZQkJRVUhBd0VHQ0NzR0FRVUZCd01DTUE4R0ExVWRFd0VCL3dRRk1BTUIKQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFGUi9oMkR2QkhSWnp5cmZtYUN2L0V0WFo3S0pKVnh2dGtpTwplU3owWnU5dmZnY1BybHhGOFNhcEJJK3ZNS2ZKM084d05PSTlpdlZ3VEo4ZDExd1J5aHZKc3lPTDRwRWtYekRNCnZXUTh0eHVVUkJJc1hnVGxUdFNLV2NkQzFvTXhSOGpCU1VId29TNDhncHZFYXN5c1BBQ0lQWWtXQzU2aDc5VU8KWDZoVVltRWZjOE9HTmVYOG5DTkl4dU9FZy85MXFySmRQSE5Dbm9RcWlJNUtRTGV1VU90M0JoaSt4a2twZldKWgpCamxXNUNoNk5PSVdsOFNZbTBVT0NaR2NlbHNzZ2krTFFNcTRqTCtxajY2Uk92SmpDemFkSlZRbmgyZFNmdHNjCnRkTnVpRTM2OU9nOGd3YTk4QkhYMEo0cDVGN1pYOTRFenh6VTFmZndhcGNzd09VeDVxYz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
             

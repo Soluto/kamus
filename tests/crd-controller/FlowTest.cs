@@ -191,10 +191,8 @@ namespace crd_controller
         {
             try
             {
-                RunKubectlCommand("delete -f tls-KamusSecret.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-KamusSecretV1Alpha2.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-KamusSecretV1Alpha2-with-annotations.yaml --ignore-not-found");
-                RunKubectlCommand("delete -f updated-tls-KamusSecret.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f updated-tls-KamusSecretV1Alpha2.yaml --ignore-not-found");
                 RunKubectlCommand("delete -f tls-Secret.yaml --ignore-not-found");
             }
