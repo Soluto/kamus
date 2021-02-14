@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using CustomResourceDescriptorController.utils;
-using Google.Api;
 
 namespace CustomResourceDescriptorController.HostedServices
 {
@@ -179,7 +178,7 @@ namespace CustomResourceDescriptorController.HostedServices
             try
             {
                 var createdSecret =
-                    await mKubernetes.PatchNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
+                    await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
 
             }
             catch (Microsoft.Rest.HttpOperationException httpOperationException)
