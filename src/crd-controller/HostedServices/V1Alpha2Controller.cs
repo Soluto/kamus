@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using CustomResourceDescriptorController.utils;
+using Google.Api;
 
 namespace CustomResourceDescriptorController.HostedServices
 {
@@ -177,14 +179,20 @@ namespace CustomResourceDescriptorController.HostedServices
             try
             {
                 var createdSecret =
-                    await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
+                    await mKubernetes.PatchNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
 
             }
             catch (Microsoft.Rest.HttpOperationException httpOperationException)
             {
+                // Usually happens on controller start when enumerating all existing KamusSecret and validating their secret existence
+                if (httpOperationException.Response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    mLogger.Debug("Cannot CreateNamespacedSecretAsync, secret already exists");
+                    return;
+                }
                 var phase = httpOperationException.Response.ReasonPhrase;
                 var content = httpOperationException.Response.Content;
-
+                
                 mLogger.Warning(
                     "CreateNamespacedSecretAsync failed, reason {reason}, error {error}",
                     phase,
