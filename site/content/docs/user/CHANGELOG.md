@@ -9,7 +9,7 @@ menu:
 # Changelog
 
 
-## kamus-0.9.1 (14/02/2021)
+## kamus-0.9.0.1 (14/02/2021)
 
 #### chore :
 - Remove SSL endpoint since we don't have conversion webhook anymore
