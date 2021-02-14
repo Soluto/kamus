@@ -8,6 +8,10 @@ menu:
 ---
 # Changelog
 
+## kamus-0.9.0.2 (14/02/2021)
+
+#### bug :
+- Fix crd controller logging
 
 ## kamus-0.9.0.1 (14/02/2021)
 
