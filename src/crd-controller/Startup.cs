@@ -53,7 +53,7 @@ namespace CustomResourceDescriptorController
             services.AddSingleton<IKubernetes>(s =>
             {
                 var k = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-                k.HttpClient.Timeout = TimeSpan.FromMinutes(60);
+                k.HttpClient.Timeout = TimeSpan.FromMilliseconds(int.MaxValue);
 
                 return k;
             }
