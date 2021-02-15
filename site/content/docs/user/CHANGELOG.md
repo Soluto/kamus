@@ -8,6 +8,11 @@ menu:
 ---
 # Changelog
 
+## kamus-0.9.0.5 (15/02/2021)
+
+#### bug :
+- Prevent controller restarts every 60 minutes
+
 ## kamus-0.9.0.2 (14/02/2021)
 
 #### bug :
