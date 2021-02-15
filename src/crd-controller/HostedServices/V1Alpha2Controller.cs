@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics;
 using CustomResourceDescriptorController.Extensions;
+using CustomResourceDescriptorController.metrics;
 using CustomResourceDescriptorController.Models.V1Alpha2;
 using CustomResourceDescriptorController.utils;
 using k8s;
