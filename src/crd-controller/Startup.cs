@@ -12,6 +12,7 @@ using Serilog;
 using System.Net.Http;
 using Microsoft.Rest;
 using System;
+using App.Metrics;
 using Microsoft.Extensions.Hosting;
 
 namespace CustomResourceDescriptorController
@@ -64,7 +65,8 @@ namespace CustomResourceDescriptorController
                 var setOwnerReference = Configuration.GetValue<bool>("Controller:SetOwnerReference", true);
                 var kubernetes = serviceProvider.GetService<IKubernetes>();
                 var kms = serviceProvider.GetService<IKeyManagement>();
-                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference);
+                var metrics = serviceProvider.GetService<IMetrics>();
+                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference, metrics);
             });
 
             services.AddHealthChecks()
