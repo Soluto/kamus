@@ -68,7 +68,7 @@ namespace CustomResourceDescriptorController
             });
 
             services.AddHealthChecks()
-                .AddCheck<KubernetesPermissionsHelthCheck>("permisssions check");
+                .AddCheck<KubernetesPermissionsHelthCheck>("permissions check");
 
         }
 
