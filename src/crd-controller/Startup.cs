@@ -12,6 +12,7 @@ using Serilog;
 using System.Net.Http;
 using Microsoft.Rest;
 using System;
+using App.Metrics;
 using Microsoft.Extensions.Hosting;
 
 namespace CustomResourceDescriptorController
@@ -53,7 +54,7 @@ namespace CustomResourceDescriptorController
             services.AddSingleton<IKubernetes>(s =>
             {
                 var k = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-                k.HttpClient.Timeout = TimeSpan.FromMinutes(60);
+                k.HttpClient.Timeout = TimeSpan.FromMilliseconds(int.MaxValue);
 
                 return k;
             }
@@ -64,11 +65,12 @@ namespace CustomResourceDescriptorController
                 var setOwnerReference = Configuration.GetValue<bool>("Controller:SetOwnerReference", true);
                 var kubernetes = serviceProvider.GetService<IKubernetes>();
                 var kms = serviceProvider.GetService<IKeyManagement>();
-                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference);
+                var metrics = serviceProvider.GetService<IMetrics>();
+                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference, metrics);
             });
 
             services.AddHealthChecks()
-                .AddCheck<KubernetesPermissionsHelthCheck>("permisssions check");
+                .AddCheck<KubernetesPermissionsHelthCheck>("permissions check");
 
         }
 

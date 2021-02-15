@@ -4,15 +4,18 @@ using System.Net;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Metrics;
+using CustomResourceDescriptorController.Extensions;
+using CustomResourceDescriptorController.metrics;
 using CustomResourceDescriptorController.Models.V1Alpha2;
+using CustomResourceDescriptorController.utils;
 using k8s;
 using k8s.Models;
 using Kamus.KeyManagement;
-using CustomResourceDescriptorController.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Rest;
 using Serilog;
-using CustomResourceDescriptorController.utils;
 
 namespace CustomResourceDescriptorController.HostedServices
 {
@@ -24,21 +27,20 @@ namespace CustomResourceDescriptorController.HostedServices
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
+        private readonly IMetrics mMetrics;
         private const string ApiVersion = "v1alpha2";
 
-        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference)
+        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference, IMetrics metrics)
         {
-            this.mKubernetes = kubernetes;
-            this.mKeyManagement = keyManagement;
-            this.mSetOwnerReference = setOwnerReference;
+            mKubernetes = kubernetes;
+            mKeyManagement = keyManagement;
+            mSetOwnerReference = setOwnerReference;
+            mMetrics = metrics;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            if (mSubscription != null)
-            {
-                mSubscription.Dispose();
-            }
+            mSubscription?.Dispose();
             return Task.CompletedTask;
         }
 
@@ -78,7 +80,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     @event.ToString(),
                     kamusSecret.Metadata.Name,
                     kamusSecret.Metadata.NamespaceProperty ?? "default");
-
+                mMetrics.Measure.Counter.Increment(Counters.EventReceived, new MetricTags(new[]{"event_type","controller"}, new[]{@event.ToString(),"V1Alpha2"}));
                 switch (@event)
                 {
                     case WatchEventType.Added:
@@ -135,7 +137,7 @@ namespace CustomResourceDescriptorController.HostedServices
                 kamusSecret.Metadata.Name,
                 @namespace);
 
-            var ownerReference = !this.mSetOwnerReference ? new V1OwnerReference[0] : new[]
+            var ownerReference = !mSetOwnerReference ? new V1OwnerReference[0] : new[]
                   {
                         new V1OwnerReference
                         {
@@ -181,7 +183,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     await mKubernetes.CreateNamespacedSecretAsync(secret, secret.Metadata.NamespaceProperty);
 
             }
-            catch (Microsoft.Rest.HttpOperationException httpOperationException)
+            catch (HttpOperationException httpOperationException)
             {
                 // Usually happens on controller start when enumerating all existing KamusSecret and validating their secret existence
                 if (httpOperationException.Response.StatusCode == HttpStatusCode.Conflict)
@@ -218,7 +220,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     secret.Metadata.NamespaceProperty
                 );
             }
-            catch (Microsoft.Rest.HttpOperationException httpOperationException)
+            catch (HttpOperationException httpOperationException)
             {
                 var phase = httpOperationException.Response.ReasonPhrase;
                 var content = httpOperationException.Response.Content;
