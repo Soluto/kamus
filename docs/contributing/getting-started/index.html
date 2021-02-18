@@ -170,22 +170,7 @@ To interact with the cluster you&rsquo;ll also have to install <a href="https://
 <h2 id="2-read-the-docs">2. Read The Docs<a href="#2-read-the-docs" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>The <a href="/docs/contributing/roadmap">roadmap</a>, <a href="/docs/threatmodeling/architecture">architecture</a>, and <a href="/docs/threatmodeling/threats_controls">threat modeling</a>
 may be helpful to review before contributing.</p>
-<h2 id="3-running-the-crd-controller-locally">3. Running the CRD controller locally<a href="#3-running-the-crd-controller-locally" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
-<p>In order to run the CRD controller locally, you need to a TLS certificate that will be used by the controller.
-There are 2 options to achieve that:</p>
-<ul>
-<li>
-<p>Use the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/deployment.yaml">test deployment files</a> to deploy the CRD controller to a cluster. The file contain all the is required for running it. Don&rsquo;t forget also to deploy the <a href="https://github.com/Soluto/kamus/blob/master/tests/crd-controller/crd.yaml">CRD definition</a> to the same cluster.</p>
-</li>
-<li>
-<p>Running locally by generating a certificate and private key using:</p>
-</li>
-</ul>
-<pre><code>openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
-     -keyout privateKey.key -out certificate.crt \
-    -subj &quot;/CN=kamus-crd.default.svc&quot;
-</code></pre><p>After doing that, don&rsquo;t forget to set <code>TLS_CERT_FOLDER</code> to the folder where the files exist.</p>
-<h2 id="4-reaching-out">4. Reaching Out<a href="#4-reaching-out" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
+<h2 id="3-reaching-out">3. Reaching Out<a href="#3-reaching-out" class="hanchor" ariaLabel="Anchor"> 🔗&#xFE0E;</a> </h2>
 <p>Issues are tracked on GitHub. Please check <a href="https://github.com/Soluto/Kamus/issues">the issue tracker</a> to see
 if there is any existing dicussion or work related to your interests.</p>
 <p>If you do not see anything, please <a href="https://github.com/Soluto/Kamus/issues/new">file a new issue</a>.</p>
@@ -200,7 +185,7 @@ reach out if you have any questions!</p>
 </div>
 <div class="footer">
   <p class="copyright">© 2021 Soluto by Asurion | Documentation Distributed under <a class="nowrap" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
-  <p>Last Updated on 2019-10-23 18:39:50 &#43;0300 &#43;0300 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/d13e55b804c586ce648308feb41b7ae171a9280b">d13e55b</a></span></p>
+  <p>Last Updated on 2021-02-18 12:27:25 &#43;0200 &#43;0200 in <span id="commit"><a href="https://github.com/Soluto/Kamus/commit/c077c84a3e7b93036b595b25a9b727c9626b9894">c077c84</a></span></p>
 </div>
 </div>
 </body>
