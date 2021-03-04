@@ -14,7 +14,7 @@ spec:
       automountServiceAccountToken: true
       initContainers:
         - name: "kamus-init"
-          image: "soluto/kamus-init-container:latest"
+          image: "ghcr.io/soluto/kamus-init-container:latest"
           imagePullPolicy: IfNotPresent
           env:
             - name: KAMUS_URL

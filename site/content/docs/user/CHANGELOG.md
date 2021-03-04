@@ -10,6 +10,11 @@ menu:
 
 ## kamus-0.9.0.5 (15/02/2021)
 
+#### feature :
+- Container images moved to ghcr
+
+## kamus-0.9.0.5 (15/02/2021)
+
 #### bug :
 - Prevent controller restarts every 60 minutes
 
