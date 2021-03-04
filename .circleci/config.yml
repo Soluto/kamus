@@ -165,29 +165,29 @@ jobs:
             docker load < docker-cache-api/kamus-decryptor.tar
             docker load < docker-cache-api/kamus-encryptor.tar
             docker load < docker-cache-api/crd-controller.tar
-            docker tag kamus-decryptor soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
-            docker tag kamus-encryptor soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
-            docker tag crd-controller soluto/kamus:$CONTROLLER_API_DOCKER_TAG
+            docker tag kamus-decryptor ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+            docker tag kamus-encryptor ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker tag crd-controller ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push version
           working_directory: "init-container/tests"
           command: |
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD 
-            docker push soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
-            docker push soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
-            docker push soluto/kamus:$CONTROLLER_API_DOCKER_TAG
+            docker push ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+            docker push ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+            docker push ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
-            docker tag soluto/kamus:$DECRYPTOR_API_DOCKER_TAG soluto/kamus:decryptor-latest
-            docker tag soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG soluto/kamus:encryptor-latest
-            docker tag soluto/kamus:$CONTROLLER_API_DOCKER_TAG soluto/kamus:contoller-latest
+            docker tag ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:decryptor-latest
+            docker tag ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:encryptor-latest
+            docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:contoller-latest
 
-            docker push soluto/kamus:decryptor-latest
-            docker push soluto/kamus:encryptor-latest
-            docker push soluto/kamus:contoller-latest
+            docker push ghcr.io/soluto/kamus:decryptor-latest
+            docker push ghcr.io/soluto/kamus:encryptor-latest
+            docker push ghcr.io/soluto/kamus:contoller-latest
       - run:
           name: push tags
           command: |
@@ -242,13 +242,13 @@ jobs:
           name: Restore image
           command: |
             docker load < docker-cache/kamus-init-container.tar
-            docker tag kamus-init-container soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
+            docker tag kamus-init-container ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push
           working_directory: "init-container/tests"
           command: |
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
-            docker push soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
+            docker push ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
