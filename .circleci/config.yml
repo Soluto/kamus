@@ -282,7 +282,7 @@ jobs:
       - run:
           name: Build docker image
           working_directory: "cli"
-          command: docker build . -t soluto/kamus-cli:$CLI_DOCKER_TAG
+          command: docker build . -t ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
       - run:
           name: Docker push
           command: |

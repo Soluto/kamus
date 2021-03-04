@@ -13,7 +13,7 @@ npm install -g @soluto-asurion/kamus-cli
 ```
 Alternatively, you can use docker to run the CLI (for example, to run it inside the cluster when the encryptor is deployed without ingress):
 ```
-docker run -it --rm soluto/kamus-cli encrypt <arguments>
+docker run -it --rm ghcr.io/soluto/kamus-cli encrypt <arguments>
 ```
 Or, using kubectl:
 ```
