@@ -291,7 +291,7 @@ jobs:
       - run:
           name: Docker push latest
           command: |
-            docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
+            docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG ghcr.io/soluto/kamus-cli:latest
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
             docker push ghcr.io/soluto/kamus-cli:latest
       - run:
