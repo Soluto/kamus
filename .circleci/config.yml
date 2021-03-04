@@ -180,7 +180,7 @@ jobs:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
-            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
+            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD 
             docker tag ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:decryptor-latest
             docker tag ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:encryptor-latest
             docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:contoller-latest
@@ -247,13 +247,13 @@ jobs:
           name: Docker push
           working_directory: "init-container/tests"
           command: |
-            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
+            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
             docker push ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - run:
           name: Docker push latest
           working_directory: "init-container/tests"
           command: |
-            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME  
+            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD 
             docker tag ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG ghcr.io/soluto/kamus-init-container:latest
             docker push ghcr.io/soluto/kamus-init-container:latest
       - run:
@@ -286,13 +286,13 @@ jobs:
       - run:
           name: Docker push
           command: |
-            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
+            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
             docker push ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
       - run:
           name: Docker push latest
           command: |
             docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
-            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
+            docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
             docker push ghcr.io/soluto/kamus-cli:latest
       - run:
           name: push tags
