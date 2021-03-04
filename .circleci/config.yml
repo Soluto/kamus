@@ -254,8 +254,8 @@ jobs:
           working_directory: "init-container/tests"
           command: |
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME  
-            docker tag soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG soluto/kamus-init-container:latest
-            docker push soluto/kamus-init-container:latest
+            docker tag ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG ghcr.io/soluto/kamus-init-container:latest
+            docker push ghcr.io/soluto/kamus-init-container:latest
       - run:
           name: push tags
           command: |
@@ -287,13 +287,13 @@ jobs:
           name: Docker push
           command: |
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
-            docker push soluto/kamus-cli:$CLI_DOCKER_TAG
+            docker push ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
       - run:
           name: Docker push latest
           command: |
-            docker tag soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
+            docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG soluto/kamus-cli:latest
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_USERNAME 
-            docker push soluto/kamus-cli:latest
+            docker push ghcr.io/soluto/kamus-cli:latest
       - run:
           name: push tags
           command: |
