@@ -41,13 +41,13 @@ jobs:
       - checkout
       - run:
           name: Build decryptor docker image
-          command: docker build . -t kamus-decryptor
+          command: docker build . -t kamus-decryptor --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
       - run:
           name: Build encryptor docker image
-          command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api
+          command: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
       - run:
           name: Build CRD controller docker image
-          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller
+          command: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
       - run:
           name: Save docker image
           command: |
@@ -202,7 +202,7 @@ jobs:
       - run:
           name: Build docker image
           working_directory: "init-container"
-          command: docker build . -t kamus-init-container
+          command: docker build . -t kamus-init-container --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
       
       - run:
           name: Run black box tests
@@ -282,7 +282,7 @@ jobs:
       - run:
           name: Build docker image
           working_directory: "cli"
-          command: docker build . -t ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
+          command: docker build . -t ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
       - run:
           name: Docker push
           command: |
