@@ -183,11 +183,11 @@ jobs:
             docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD 
             docker tag ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:decryptor-latest
             docker tag ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:encryptor-latest
-            docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:contoller-latest
+            docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:controller-latest
 
             docker push ghcr.io/soluto/kamus:decryptor-latest
             docker push ghcr.io/soluto/kamus:encryptor-latest
-            docker push ghcr.io/soluto/kamus:contoller-latest
+            docker push ghcr.io/soluto/kamus:controller-latest
       - run:
           name: push tags
           command: |
