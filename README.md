@@ -10,7 +10,7 @@ The encryption is done using strong encryption providers (currently supported: A
 To learn more about Kamus, check out the [blog post](https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github) and [slides](https://www.slideshare.net/SolutoTLV/can-kubernetes-keep-a-secret).
 ## Getting Started
 
-The simple way to run Kamus is by using the Helm chart:
+The simple way to run Kamus is by using the Helm chart:b
 ```
 helm repo add soluto https://charts.soluto.io
 helm upgrade --install kamus soluto/kamus
