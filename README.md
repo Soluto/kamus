@@ -38,7 +38,7 @@ You can deploy this app to any Kubernetes cluster that has Kamus installed, to u
 Have a question? Something is not clear? Reach out to us on [Kamus Slack](https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E)!
 
 ## Architecture
-Kamus has 3 components:
+Kamus has 3 components:a
 * Encrypt API
 * Decrypt API
 * Key Management System (KMS)
