@@ -8,7 +8,7 @@ menu:
 ---
 # Changelog
 
-## kamus-0.9.0.5 (15/02/2021)
+## kamus-0.9.0.6 (15/02/2021)
 
 #### feature :
 - Container images moved to ghcr
