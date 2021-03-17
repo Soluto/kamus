@@ -63,10 +63,11 @@ namespace CustomResourceDescriptorController
             services.AddHostedService(serviceProvider =>
             {
                 var setOwnerReference = Configuration.GetValue<bool>("Controller:SetOwnerReference", true);
+                var reconciliationIntervalInSeconds = Configuration.GetValue<double>("Controller:ReconciliationIntervalInSeconds", 60);
                 var kubernetes = serviceProvider.GetService<IKubernetes>();
                 var kms = serviceProvider.GetService<IKeyManagement>();
                 var metrics = serviceProvider.GetService<IMetrics>();
-                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference, metrics);
+                return new V1Alpha2Controller(kubernetes, kms, setOwnerReference, reconciliationIntervalInSeconds, metrics);
             });
 
             services.AddHealthChecks()

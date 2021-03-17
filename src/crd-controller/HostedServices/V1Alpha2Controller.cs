@@ -24,17 +24,19 @@ namespace CustomResourceDescriptorController.HostedServices
         private readonly IKubernetes mKubernetes;
         private readonly IKeyManagement mKeyManagement;
         private readonly bool mSetOwnerReference;
+        private readonly double mReconciliationIntervalInSeconds;
         private IDisposable mSubscription;
         private readonly ILogger mAuditLogger = Log.ForContext<V1Alpha2Controller>().AsAudit();
         private readonly ILogger mLogger = Log.ForContext<V1Alpha2Controller>();
         private readonly IMetrics mMetrics;
         private const string ApiVersion = "v1alpha2";
 
-        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference, IMetrics metrics)
+        public V1Alpha2Controller(IKubernetes kubernetes, IKeyManagement keyManagement, bool setOwnerReference, double reconciliationIntervalInSeconds, IMetrics metrics)
         {
             mKubernetes = kubernetes;
             mKeyManagement = keyManagement;
             mSetOwnerReference = setOwnerReference;
+            mReconciliationIntervalInSeconds = reconciliationIntervalInSeconds;
             mMetrics = metrics;
         }
 
@@ -44,13 +46,13 @@ namespace CustomResourceDescriptorController.HostedServices
             return Task.CompletedTask;
         }
 
-        public Task StartAsync(CancellationToken token)
+        private IDisposable ObserveKamusSecret(CancellationToken token)
         {
-            mSubscription = mKubernetes.ObserveClusterCustomObject<KamusSecret>(
+            return mKubernetes.ObserveClusterCustomObject<KamusSecret>(
                     "soluto.com",
-                     ApiVersion,
-                     "kamussecrets",
-                     token)
+                    ApiVersion,
+                    "kamussecrets",
+                    token)
                 .SelectMany(x =>
                     Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
                 )
@@ -66,7 +68,16 @@ namespace CustomResourceDescriptorController.HostedServices
                         mLogger.Information("Watching KamusSecret events completed, terminating process");
                         Environment.Exit(0);
                     });
-
+        }
+        public Task StartAsync(CancellationToken token)
+        {
+            mSubscription = ObserveKamusSecret(token);
+            Observable.Interval(TimeSpan.FromSeconds(mReconciliationIntervalInSeconds)).Subscribe((s) =>
+            {
+                mSubscription.Dispose();
+                mSubscription = ObserveKamusSecret(token);
+            });
+            
             mLogger.Information("Starting watch for KamusSecret V1Alpha2 events");
 
             return Task.CompletedTask;

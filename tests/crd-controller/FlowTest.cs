@@ -116,6 +116,50 @@ namespace crd_controller
             Assert.Equal("value", v1Secret.Metadata.Annotations.First(x => x.Key == "key").Value);
         }
 
+        [Fact]
+        public async Task CreateKamusSecret_DeleteSecret_ReconciliationRecreateIt()
+        {
+            Cleanup();
+            await DeployController();
+            var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
+            
+            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+
+            var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => subject.OnNext((@type, @event)),
+                onError: e => subject.OnError(e),
+                onClosed: () => subject.OnCompleted());
+            
+            RunKubectlCommand("apply -f tls-KamusSecretV1Alpha2-with-annotations.yaml");
+            mTestOutputHelper.WriteLine("Waiting for secret creation");
+            var (_, v1Secret) = await subject
+                .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            
+            Assert.Equal(1, v1Secret.Metadata.Labels.Count);
+            Assert.True(v1Secret.Metadata.Labels.Keys.Contains("key"));
+            Assert.Equal("value", v1Secret.Metadata.Labels.First(x => x.Key == "key").Value);
+            Assert.Equal(1, v1Secret.Metadata.Annotations.Count);
+            Assert.True(v1Secret.Metadata.Annotations.Keys.Contains("key"));
+            Assert.Equal("value", v1Secret.Metadata.Annotations.First(x => x.Key == "key").Value);
+            
+            RunKubectlCommand($"delete secret {v1Secret.Metadata.Name}");
+            
+            var (_, v1SecretRecreation) = await subject
+                .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(15)).FirstAsync();
+
+            Assert.Equal(1, v1SecretRecreation.Metadata.Labels.Count);
+            Assert.True(v1SecretRecreation.Metadata.Labels.Keys.Contains("key"));
+            Assert.Equal("value", v1SecretRecreation.Metadata.Labels.First(x => x.Key == "key").Value);
+            Assert.Equal(1, v1SecretRecreation.Metadata.Annotations.Count);
+            Assert.True(v1SecretRecreation.Metadata.Annotations.Keys.Contains("key"));
+            Assert.Equal("value", v1SecretRecreation.Metadata.Annotations.First(x => x.Key == "key").Value);
+        }
+        
         [Theory]
         [InlineData("updated-tls-KamusSecretV1Alpha2.yaml")]
         public async Task UpdateKamusSecret_SecretUpdated(string fileName)

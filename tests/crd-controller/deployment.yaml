@@ -73,6 +73,7 @@ spec:
         image: crd-controller
         imagePullPolicy: IfNotPresent
         env:
+          Controller__ReconciliationIntervalInSeconds: 10
         livenessProbe:
           httpGet:
             path: /healthz
