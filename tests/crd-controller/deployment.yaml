@@ -74,7 +74,7 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: Controller__ReconciliationIntervalInSeconds 
-          value: 10
+          value: "10"
         livenessProbe:
           httpGet:
             path: /healthz
