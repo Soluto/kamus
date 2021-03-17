@@ -149,7 +149,14 @@ namespace crd_controller
             
             RunKubectlCommand($"delete secret {v1Secret.Metadata.Name}");
             
-            var (_, v1SecretRecreation) = await subject
+            var newSubject = new ReplaySubject<(WatchEventType, V1Secret)>();
+
+            result.Watch<V1Secret>(
+                onEvent: (@type, @event) => newSubject.OnNext((@type, @event)),
+                onError: e => newSubject.OnError(e),
+                onClosed: () => newSubject.OnCompleted());
+            
+            var (_, v1SecretRecreation) = await newSubject
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(15)).FirstAsync();
 
             Assert.Equal(1, v1SecretRecreation.Metadata.Labels.Count);
