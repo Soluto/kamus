@@ -149,8 +149,6 @@ namespace crd_controller
             Assert.True(v1Secret.Metadata.Annotations.Keys.Contains("key"));
             Assert.Equal("value", v1Secret.Metadata.Annotations.First(x => x.Key == "key").Value);
             
-            RunKubectlCommand($"delete secret {v1Secret.Metadata.Name}");
-            
             var newWatcher = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
                 "default",
                 watch: true
@@ -162,6 +160,8 @@ namespace crd_controller
                 onEvent: (@type, @event) => newSubject.OnNext((@type, @event)),
                 onError: e => newSubject.OnError(e),
                 onClosed: () => newSubject.OnCompleted());
+            
+            RunKubectlCommand($"delete secret {v1Secret.Metadata.Name}");
             
             var (_, v1SecretRecreation) = await newSubject
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(15)).FirstAsync();
