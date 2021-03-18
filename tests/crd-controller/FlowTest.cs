@@ -123,14 +123,14 @@ namespace crd_controller
             await DeployController();
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
             
-            var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+            var watcher = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
                 "default",
                 watch: true
             );
 
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
 
-            result.Watch<V1Secret>(
+            watcher.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
@@ -139,6 +139,8 @@ namespace crd_controller
             mTestOutputHelper.WriteLine("Waiting for secret creation");
             var (_, v1Secret) = await subject
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
+            
+            watcher.Dispose();
             
             Assert.Equal(1, v1Secret.Metadata.Labels.Count);
             Assert.True(v1Secret.Metadata.Labels.Keys.Contains("key"));
@@ -149,9 +151,14 @@ namespace crd_controller
             
             RunKubectlCommand($"delete secret {v1Secret.Metadata.Name}");
             
+            var newWatcher = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
+                "default",
+                watch: true
+            );
+            
             var newSubject = new ReplaySubject<(WatchEventType, V1Secret)>();
 
-            result.Watch<V1Secret>(
+            newWatcher.Watch<V1Secret>(
                 onEvent: (@type, @event) => newSubject.OnNext((@type, @event)),
                 onError: e => newSubject.OnError(e),
                 onClosed: () => newSubject.OnCompleted());
