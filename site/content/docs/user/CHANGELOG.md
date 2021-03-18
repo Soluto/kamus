@@ -8,6 +8,11 @@ menu:
 ---
 # Changelog
 
+## kamus-0.9.0.7 (18/03/2021)
+
+#### feature :
+- The controller now reconcile all KamusSecrets every 60 seconds (make sure to recreate if any secret is missing)
+
 ## kamus-0.9.0.6 (15/02/2021)
 
 #### feature :
