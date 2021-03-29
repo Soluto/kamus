@@ -53,6 +53,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     ApiVersion,
                     "kamussecrets",
                     token)
+                .Take(1)
                 .SelectMany(x =>
                     Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
                 )
