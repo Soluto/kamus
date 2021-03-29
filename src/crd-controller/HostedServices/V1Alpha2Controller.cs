@@ -76,8 +76,9 @@ namespace CustomResourceDescriptorController.HostedServices
             mSubscription = ObserveKamusSecret(token);
             Observable.Interval(TimeSpan.FromSeconds(mReconciliationIntervalInSeconds)).Subscribe((s) =>
             {
-                mSubscription.Dispose();
+                var oldSubscription = mSubscription;
                 mSubscription = ObserveKamusSecret(token);
+                oldSubscription.Dispose();
             });
             
             mLogger.Information("Starting watch for KamusSecret V1Alpha2 events");
