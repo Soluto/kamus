@@ -2,7 +2,6 @@
 using System.Reactive.Linq;
 using System.Threading;
 using k8s;
-using Microsoft.VisualBasic;
 
 namespace CustomResourceDescriptorController.utils
 {

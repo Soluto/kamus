@@ -70,6 +70,7 @@ namespace CustomResourceDescriptorController.HostedServices
                         Environment.Exit(0);
                     });
         }
+
         public Task StartAsync(CancellationToken token)
         {
             mSubscription = ObserveKamusSecret(token);
