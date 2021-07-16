@@ -15,7 +15,7 @@
     "axios": "^0.21.1",
     "commander": "^5.0.0",
     "ejs": "^3.0.0",
-    "ejs-lint": "1.1.0",
+    "ejs-lint": "1.2.1",
     "node-readfiles": "^0.2.0"
   }
 }
