@@ -1,0 +1,295 @@
+name: Publish Kamus
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test_cli:
+    name: Test Kamus cli
+    runs-on: ubuntu-latest
+    container:
+      image: timbru31/node-alpine-git:14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        working-directory: "cli"
+        run: yarn
+      - name: Check link
+        working-directory: "cli"
+        run: yarn eslint
+      - name: Run tests
+        working-directory: "cli"
+        run: yarn test
+
+  build_api:
+    name: Build Kamus api components
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build decryptor docker image
+        run: docker build . -t kamus-decryptor --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
+      - name: Build encryptor docker image
+        run: docker build . -t kamus-encryptor --build-arg PROJECT_NAME=encrypt-api --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
+      - name: Build CRD controller docker image
+        run: docker build . -t crd-controller --build-arg PROJECT_NAME=crd-controller --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
+      - name: Save docker image
+        run: |
+          mkdir -p docker-cache-api
+          docker save -o docker-cache-api/kamus-decryptor.tar kamus-decryptor
+          docker save -o docker-cache-api/kamus-encryptor.tar kamus-encryptor
+          docker save -o docker-cache-api/crd-controller.tar crd-controller
+      - name: Cache docker images
+        uses: actions/cache@v2
+        with:
+          key: docker_api_cache_key-{{ .Revision }}
+          path: docker-cache-api
+
+  test_blackbox:
+    name: Run black box tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore docker images cache
+        uses: actions/cache@v2
+        with:
+          restore-keys: docker_api_cache_key-{{ .Revision }}
+      - name: Restore images
+        run: |
+          docker load < docker-cache-api/kamus-decryptor.tar
+          docker load < docker-cache-api/kamus-encryptor.tar
+      - name: Run black box tests
+        env:
+          ENCRYPTOR_IMAGE: kamus-encryptor
+          DECRYPTOR_IMAGE: kamus-decryptor
+        run: docker-compose -f tests/blackbox/compose/docker-compose.yaml up --build --exit-code-from black-box --abort-on-container-exit
+      - name: Parse Zap's Report
+        run: |
+          docker run --rm -v $(pwd)/tests/blackbox/compose/reports/:/input -v $(pwd)/glue/:/config soluto/glue-ci:1551818801630 sh -x /app/run_glue.sh /config/glue.json /input/report.json
+
+  test_crd:
+    name: Test KamusSecret CRD
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        kubernetesVersion: ["v1.18.15", "v1.19.7", "v1.20.2"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Restore docker images cache
+        uses: actions/cache@v2
+        with:
+          restore-keys: docker_api_cache_key-{{ .Revision }}
+      - name: Install
+        env:
+          kubernetesVersion: ${{ matrix.kubernetesVersion }}
+        run: |
+          tests/crd-controller/run-tests.sh << parameters.kubernetesVersion >>
+
+  run_tests:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Runs unit tests
+        working-directory: 'tests/unit'
+        run: dotnet test
+      - name: Runs integration tests
+        working-directory: 'tests/integration'
+        run: dotnet test
+
+  lint-scripts:
+    name: Lint the code
+    runs-on: ubuntu-latest
+    container:
+      image: node:14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run lint
+        run: |
+          wget -P tmp_install_folder/ https://github.com/koalaman/shellcheck/releases/download/v0.7.1/shellcheck-v0.7.1.linux.x86_64.tar.xz
+          tar xvf tmp_install_folder/shellcheck-v0.7.1.linux.x86_64.tar.xz -C tmp_install_folder
+          cp tmp_install_folder/shellcheck-v0.7.1/shellcheck /usr/bin/shellcheck
+          rm -r tmp_install_folder
+          shellcheck -x ci/version_to_deploy.sh
+          shellcheck -x ci/version_to_deploy_init.sh
+          shellcheck -x ci/version_to_deploy_cli_docker.sh
+          shellcheck -x tests/crd-controller/run-tests.sh
+
+  push-api-images:
+    name: Push kamus api component docker images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install and configure dependencies
+        run: |
+          git config user.email "ci-build@soluto.com"
+          git config user.name "ci-build"
+      - name: Tag branch
+        run: ./ci/version_to_deploy.sh
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - name: Restore docker images cache
+        uses: actions/cache@v2
+        with:
+          restore-keys: docker_api_cache_key-{{ .Revision }}
+      - name: Restore images
+        run: |
+          docker load < docker-cache-api/kamus-decryptor.tar
+          docker load < docker-cache-api/kamus-encryptor.tar
+          docker load < docker-cache-api/crd-controller.tar
+          docker tag kamus-decryptor ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+          docker tag kamus-encryptor ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+          docker tag crd-controller ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG
+      - name: Docker push version
+        working-directory: 'init-container/tests'
+        run: |
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker push ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
+          docker push ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
+          docker push ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG
+      - name: Docker push latest
+        working-directory: 'init-container/tests'
+        run: |
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker tag ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:decryptor-latest
+          docker tag ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:encryptor-latest
+          docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:controller-latest
+
+          docker push ghcr.io/soluto/kamus:decryptor-latest
+          docker push ghcr.io/soluto/kamus:encryptor-latest
+          docker push ghcr.io/soluto/kamus:controller-latest
+      - name: Push tags
+        run: |
+          git pull
+          git push --set-upstream origin $CIRCLE_BRANCH --tags
+
+  build-init-container:
+    name: Build the init container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build docker image
+        working-directory: 'init-container'
+        run: docker build . -t kamus-init-container --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
+      - name: Run black box tests
+        working-directory: 'init-container/tests'
+        run: sudo INIT_CONTAINER_IMAGE=kamus-init-container ./run_test.sh
+      - name: Save docker image
+        run: |
+          mkdir -p docker-cache
+          docker save -o docker-cache/kamus-init-container.tar kamus-init-container
+      - name: Cache docker image
+        uses: actions/cache@v2
+        with:
+          key: docker_cache_key-{{ .Revision }}
+          path: docker-cache
+
+  push-init-container:
+    name: Pushed the init-container docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Config git
+        run: |
+          git config user.email "ci-build@soluto.com"
+          git config user.name "ci-build"
+      - name: Restore docker images cache
+        uses: actions/cache@v2
+        with:
+          restore-keys: docker_cache_key-{{ .Revision }}
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - name: Tag branch
+        run: ./ci/version_to_deploy_init.sh
+      - name: Restore image
+        run: |
+          docker load < docker-cache/kamus-init-container.tar
+          docker tag kamus-init-container ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
+      - name: Docker push
+        working-directory: 'init-container/tests'
+        run: |
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker push ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
+      - name: Docker push latest
+        working-directory: 'init-container/tests'
+        run: |
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker tag ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG ghcr.io/soluto/kamus-init-container:latest
+          docker push ghcr.io/soluto/kamus-init-container:latest
+      - name: Push tags
+        run: |
+          git pull
+          git push --set-upstream origin $CIRCLE_BRANCH	 --tags
+
+  push-cli-image:
+    name: Push kamus cli docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Config git
+        run: |
+          git config user.email "ci-build@soluto.com"
+          git config user.name "ci-build"
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - name: Tag branch
+        run: ./ci/version_to_deploy_cli_docker.sh
+      - name: Build docker image
+        working-directory: 'cli'
+        run: docker build . -t ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG --label org.opencontainers.image.source=$CIRCLE_REPOSITORY_URL
+      - name: Docker push
+        run: |
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker push ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
+      - name: Docker push latest
+        run: |
+          docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG ghcr.io/soluto/kamus-cli:latest
+          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker push ghcr.io/soluto/kamus-cli:latest
+      - name: Push tags
+        run: |
+          git pull
+          git push --set-upstream origin $CIRCLE_BRANCH	 --tags
+
+  build-website:
+    name: Build kamus website
+    runs-on: ubuntu-latest
+    container:
+      image: node:8.16.0
+      volumes:
+        - .:publish
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install and configure dependencies
+        run: |
+          npm install -g --silent gh-pages@2.0.1
+          git config user.email "ci-build@soluto.com"
+          git config user.name "ci-build"
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: "f1:c6:0c:fd:87:74:65:84:2f:6e:49:97:ec:6f:20:a5"
+      - name: Deploy docs to gh-pages branch
+        run: gh-pages --message "[skip ci] Updates" --dist publish/public/
