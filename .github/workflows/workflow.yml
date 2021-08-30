@@ -61,6 +61,7 @@ jobs:
       - name: Restore docker images cache
         uses: actions/cache@v2
         with:
+          key: docker_api_cache_key-{{ .Revision }}
           restore-keys: docker_api_cache_key-{{ .Revision }}
       - name: Restore images
         run: |
@@ -88,6 +89,7 @@ jobs:
       - name: Restore docker images cache
         uses: actions/cache@v2
         with:
+          key: docker_api_cache_key-{{ .Revision }}
           restore-keys: docker_api_cache_key-{{ .Revision }}
       - name: Install
         env:
