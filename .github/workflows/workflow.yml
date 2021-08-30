@@ -62,7 +62,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: docker_api_cache_key-{{ .Revision }}
-          restore-keys: docker_api_cache_key-{{ .Revision }}
+          path: docker-cache-api
       - name: Restore images
         run: |
           docker load < docker-cache-api/kamus-decryptor.tar
@@ -90,7 +90,7 @@ jobs:
         uses: actions/cache@v2
         with:
           key: docker_api_cache_key-{{ .Revision }}
-          restore-keys: docker_api_cache_key-{{ .Revision }}
+          path: docker-cache-api
       - name: Install
         env:
           kubernetesVersion: ${{ matrix.kubernetesVersion }}
