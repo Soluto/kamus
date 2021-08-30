@@ -93,8 +93,10 @@ jobs:
           path: docker-cache-api
       - name: Install
         env:
-          kubernetesVersion: ${{ matrix.kubernetesVersion }}
-        run: sh ./tests/crd-controller/run-tests.sh $kubernetesVersion
+          KUBERNETES_VERSION: ${{ matrix.kubernetesVersion }}
+        run: |
+          ./tests/crd-controller/run-tests.sh $KUBERNETES_VERSION
+        shell: sh
 
   run_tests:
     runs-on: ubuntu-latest
