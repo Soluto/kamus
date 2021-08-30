@@ -94,8 +94,7 @@ jobs:
       - name: Install
         env:
           kubernetesVersion: ${{ matrix.kubernetesVersion }}
-        run: sh ./tests/crd-controller/run-tests.sh ${{ matrix.kubernetesVersion }}
-        shell: sh
+        run: sh ./tests/crd-controller/run-tests.sh $kubernetesVersion
 
   run_tests:
     runs-on: ubuntu-latest
