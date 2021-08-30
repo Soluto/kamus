@@ -97,6 +97,7 @@ jobs:
         run: |
           ./tests/crd-controller/run-tests.sh $KUBERNETES_VERSION
         shell: sh
+        timeout-minutes: 60
 
   run_tests:
     runs-on: ubuntu-latest
