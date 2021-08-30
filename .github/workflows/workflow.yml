@@ -54,6 +54,7 @@ jobs:
   test_blackbox:
     name: Run black box tests
     runs-on: ubuntu-latest
+    needs: build_api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -77,6 +78,7 @@ jobs:
   test_crd:
     name: Test KamusSecret CRD
     runs-on: ubuntu-latest
+    needs: build_api
     strategy:
       matrix:
         kubernetesVersion: ["v1.18.15", "v1.19.7", "v1.20.2"]
