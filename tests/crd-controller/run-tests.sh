@@ -41,6 +41,7 @@ cleanup() {
 }
 
 docker_exec() {
+  echo 'I arrived here'
     docker exec --interactive e2e "$@"
 }
 

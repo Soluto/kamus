@@ -96,7 +96,7 @@ jobs:
           KUBERNETES_VERSION: ${{ matrix.kubernetesVersion }}
         run: |
           ./tests/crd-controller/run-tests.sh $KUBERNETES_VERSION
-        shell: sh
+        shell: bash
         timeout-minutes: 60
 
   run_tests:
