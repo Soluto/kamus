@@ -71,7 +71,7 @@ create_kind_cluster() {
         sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
     fi
 
-    docker cp "$kubeconfig_path" e2e:/root/.kube/config
+    docker cp $kubeconfig_path e2e:/root/.kube/config
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
         printf '.'
