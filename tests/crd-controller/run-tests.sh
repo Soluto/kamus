@@ -73,7 +73,7 @@ create_kind_cluster() {
 
     echo "$kubeconfig_path"
     echo $(ls)
-    echo $(ls $kubeconfig_path)
+    echo $(ls /home/runner/.kube/config)
     docker cp "$kubeconfig_path" e2e:/root/.kube/config
     echo -n 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
