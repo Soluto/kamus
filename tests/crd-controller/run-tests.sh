@@ -41,7 +41,6 @@ cleanup() {
 }
 
 docker_exec() {
-  echo 'I arrived here'
     docker exec --interactive e2e "$@"
 }
 
@@ -74,7 +73,6 @@ create_kind_cluster() {
 
     echo "$kubeconfig_path"
     docker cp "$kubeconfig_path" e2e:/root/.kube/config
-    echo $(ls -l /home/runner/.kube)
     echo 'Waiting for cluster to be ready...'
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
         printf '.'
