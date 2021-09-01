@@ -95,7 +95,7 @@ jobs:
       - name: Test
         run: |
           docker run --rm --interactive --detach --network host --name e2e \
-                  --volume .:/workdir \
+                  --volume myVolume:/workdir \
                   --workdir /workdir/tests/crd-controller \
                   mcr.microsoft.com/dotnet/core/sdk:3.0 \
                   cat
