@@ -91,7 +91,10 @@ jobs:
       - uses: engineerd/setup-kind@v0.5.0
       - name: Test
         run: |
+          kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
           kubectl get nodes --all-namespaces
+          docker exec --interactive e2e kubectl get nodes --no-headers
+          docker exec --interactive e2e dotnet test
 #      - name: Install
 #        run: ./tests/crd-controller/run-tests.sh v1.18.15
 #        shell: bash
