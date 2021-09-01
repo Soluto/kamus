@@ -89,8 +89,7 @@ jobs:
           key: docker_api_cache_key-{{ .Revision }}
           path: docker-cache-api
       - name: Install
-        run: |
-          ./tests/crd-controller/run-tests.sh v1.18.15
+        run: ./tests/crd-controller/run-tests.sh v1.18.15
         shell: bash
         timeout-minutes: 60
 

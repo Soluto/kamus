@@ -86,6 +86,10 @@ create_kind_cluster() {
     echo
 
     echo 'Waiting for cluster to be ready...'
+    echo
+    echo $(docker_exec kubectl get nodes --no-headers)
+    docker_exec kubectl get nodes --no-headers
+
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
         printf '.'
         sleep 1
