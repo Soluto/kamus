@@ -88,8 +88,8 @@ jobs:
         with:
           key: docker_api_cache_key-{{ .Revision }}
           path: docker-cache-api
+      - uses: engineerd/setup-kind@v0.5.0
       - name: Test
-        uses: engineerd/setup-kind@v0.5.0
         run: |
           kubectl get nodes --all-namespaces
 #      - name: Install
