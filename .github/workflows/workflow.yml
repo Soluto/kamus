@@ -100,7 +100,6 @@ jobs:
                   mcr.microsoft.com/dotnet/core/sdk:3.0 \
                   cat
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
-          kubectl get nodes --all-namespaces
           docker exec --interactive e2e kubectl get nodes --no-headers
           docker exec --interactive e2e dotnet test
 #      - name: Install
