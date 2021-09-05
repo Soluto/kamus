@@ -95,11 +95,6 @@ jobs:
       - name: Test
         uses: docker://mcr.microsoft.com/dotnet/core/sdk:3.0
         run: |
-#          docker run --rm --interactive --detach --network host --name e2e \
-#                  --volume $(pwd):/workdir \
-#                  --workdir /workdir/tests/crd-controller \
-#                  mcr.microsoft.com/dotnet/core/sdk:3.0 \
-#                  cat
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
 #          dotnet publish ./tests/crd-controller -c Release
           kubectl get nodes --all-namespaces
