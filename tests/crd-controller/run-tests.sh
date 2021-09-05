@@ -31,7 +31,7 @@ cleanup() {
     echo 'Removing e2e container...'
     docker kill e2e > /dev/null 2>&1
     echo 'Removing kind e2e-test cluster'
-    ./kind delete clusters e2e-test
+    kind delete clusters e2e-test
     echo 'Restoring kubeconfig'
     mv "$HOME/.kube/config.bkp" "$HOME/.kube/config"  || echo "No original kubeconfig to backup was found."
     echo 'Removing kubectl and kind binaries'
@@ -61,7 +61,7 @@ create_kind_cluster() {
 
 #    TMPDIR=$HOME ./kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
-    ./kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
+    kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
