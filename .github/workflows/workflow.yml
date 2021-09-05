@@ -93,11 +93,16 @@ jobs:
           version: "v0.10.0"
           name: e2e-test
       - name: Test
-        uses: docker://mcr.microsoft.com/dotnet/core/sdk:3.0
         run: |
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
+          docker build ./tests/crd-controller -t tester
+          docker run --rm --interactive --detach --network host --name e2e \
+                  --volume $(pwd):/workdir \
+                  --workdir /workdir/tests/crd-controller \
+                  tester \
+                  cat
           kubectl get nodes --all-namespaces
-          dotnet test ./tests/crd-controller
+          docker exec --interactive e2e dotnet test
 #      - name: Install
 #        run: ./tests/crd-controller/run-tests.sh v1.18.15
 #        shell: bash
