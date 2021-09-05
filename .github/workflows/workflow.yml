@@ -96,14 +96,8 @@ jobs:
         uses: docker://mcr.microsoft.com/dotnet/core/sdk:3.0
         run: |
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
-#          dotnet publish ./tests/crd-controller -c Release
           kubectl get nodes --all-namespaces
           dotnet test ./tests/crd-controller
-#          docker exec --interactive e2e \
-#                  curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/v1.18.15/bin/linux/amd64/kubectl \
-#                  chmod +x kubectl \
-#                  docker cp kubectl e2e:/usr/local/bin/kubectl
-#          docker exec --interactive e2e dotnet test
 #      - name: Install
 #        run: ./tests/crd-controller/run-tests.sh v1.18.15
 #        shell: bash
