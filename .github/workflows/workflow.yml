@@ -102,6 +102,7 @@ jobs:
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
           kubectl get nodes --all-namespaces
           kubectl get nodes --no-headers
+          docker cp kubectl e2e:/usr/local/bin/kubectl
           docker exec --interactive e2e dotnet test
 #      - name: Install
 #        run: ./tests/crd-controller/run-tests.sh v1.18.15
