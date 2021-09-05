@@ -49,17 +49,17 @@ create_kind_cluster() {
     echo 'Installing kind...'
     echo 'kubernetes version' "$K8S_VERSION"
 
-    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-$machine-amd64"
-    chmod +x kind
+#    curl -sfSLo kind "https://github.com/kubernetes-sigs/kind/releases/download/v$KIND_VERSION/kind-$machine-amd64"
+#    chmod +x kind
 
     curl -sfSLO https://storage.googleapis.com/kubernetes-release/release/"$K8S_VERSION"/bin/linux/amd64/kubectl
     chmod +x kubectl
 
     docker cp kubectl e2e:/usr/local/bin/kubectl
 
-    kind_config="kind-config.yaml"
+#    kind_config="kind-config.yaml"
 
-    TMPDIR=$HOME ./kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
+#    TMPDIR=$HOME ./kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
     ./kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
@@ -76,7 +76,7 @@ create_kind_cluster() {
 
     echo 'Waiting for cluster to be ready...'
     echo
-    sleep 5m
+    sleep 2m
     docker_exec kubectl get nodes --no-headers
 
     until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do
