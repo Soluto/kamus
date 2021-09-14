@@ -101,7 +101,7 @@ jobs:
         working-directory: tests/crd-controller
         run: dotnet restore
       - name: Build
-        working-directory: tests/crd-controller`
+        working-directory: tests/crd-controller
         run: dotnet build --configuration Release --no-restore
       - name: Test
         working-directory: tests/crd-controller
