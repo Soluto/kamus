@@ -97,12 +97,6 @@ jobs:
         run: |
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
           kubectl get nodes --no-headers
-          until ! grep --quiet 'NotReady' <(docker_exec kubectl get nodes --no-headers); do \
-              printf '.' \
-              sleep 1 \
-            done
-          echo '✔︎'
-        shell: bash
       - name: Setup .NET Core SDK 3.0
         uses: actions/setup-dotnet@v1.7.2
         with:

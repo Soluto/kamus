@@ -268,6 +268,8 @@ namespace crd_controller
             //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
             RunKubectlCommand("apply -f crd.yaml --validate=false");
 
+            RunKubectlCommand("describe deployment kamus-crd-controller");
+
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
             Console.WriteLine("Waiting for deployment to complete");
