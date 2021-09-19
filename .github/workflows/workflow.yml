@@ -96,14 +96,6 @@ jobs:
       - name: Load CRD controller
         run: |
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
-          kubectl describe deployment kamus-crd-controller
-      - name: Sleep for 10s
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 300s
-      - name: Load CRD controller
-        run: |
-          kubectl describe deployment kamus-crd-controller
       - name: Setup .NET Core SDK 3.0
         uses: actions/setup-dotnet@v1.7.2
         with:
