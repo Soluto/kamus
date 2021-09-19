@@ -263,10 +263,10 @@ namespace crd_controller
         {
             Console.WriteLine("Deploying CRD");
             
-            RunKubectlCommand("apply -f deployment.yaml");
+            RunKubectlCommand("apply -f deployment.yaml", true);
 
             //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
-            RunKubectlCommand("apply -f crd.yaml --validate=false");
+            RunKubectlCommand("apply -f crd.yaml --validate=false", true);
 
             await Task.Delay(5000);
 
