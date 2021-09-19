@@ -269,8 +269,9 @@ namespace crd_controller
             RunKubectlCommand("apply -f crd.yaml --validate=false", true);
 
             await Task.Delay(5000);
-
-            RunKubectlCommand("describe deployment kamus-crd-controller");
+            RunKubectlCommand("desribe kamussecret", true);
+            RunKubectlCommand("desribe kamussecrets", true);
+            RunKubectlCommand("describe deployment kamus-crd-controller", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
@@ -306,7 +307,6 @@ namespace crd_controller
                 WorkingDirectory = Environment.CurrentDirectory
             });
 
-            
             process.WaitForExit();
 
             if (process.ExitCode != 0)
