@@ -269,8 +269,8 @@ namespace crd_controller
             RunKubectlCommand("apply -f crd.yaml --validate=false", true);
 
             await Task.Delay(5000);
-            RunKubectlCommand("desribe kamussecret", true);
-            RunKubectlCommand("desribe kamussecrets", true);
+            RunKubectlCommand("describe kamussecret", true);
+            RunKubectlCommand("describe kamussecrets", true);
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
