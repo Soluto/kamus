@@ -281,7 +281,7 @@ namespace crd_controller
             Console.WriteLine($"output is {output}");
             var podId = output.Split(" ")[0];
             Console.WriteLine($"pod id is {podId}");
-            RunKubectlCommand($"logs {podId} --previous");
+            RunKubectlCommand($"logs {podId} --previous", true);
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
