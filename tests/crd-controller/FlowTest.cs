@@ -268,7 +268,7 @@ namespace crd_controller
             //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
             RunKubectlCommand("apply -f crd.yaml --validate=false", true);
 
-            RunKubectlCommand("logs $(kubectl get pods --no-headers | head -n1 | cut -d ' ' -f1) --previous");
+            //RunKubectlCommand("logs $(kubectl get pods --no-headers | head -n1 | cut -d ' ' -f1) --previous");
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
