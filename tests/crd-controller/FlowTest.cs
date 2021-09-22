@@ -278,7 +278,10 @@ namespace crd_controller
             });
             process.WaitForExit();
             var output = process.StandardOutput.ReadToEnd();
-            RunKubectlCommand($"logs $({output} | head -n1 | cut -d ' ' -f1) --previous");
+            Console.WriteLine($"output is {output}");
+            var podId = output.Split(" ")[0];
+            Console.WriteLine($"pod id is {podId}");
+            RunKubectlCommand($"logs {podId} --previous");
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
