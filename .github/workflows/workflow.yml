@@ -98,6 +98,7 @@ jobs:
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
           kubectl apply -f tests/crd-controller/deployment.yaml
           kubectl apply -f tests/crd-controller/crd.yaml --validate=false
+          kubectl patch node e2e-test-control-plane -p '{"spec":{"taints":[]}}'
       - name: Setup .NET Core SDK 3.0
         uses: actions/setup-dotnet@v1.7.2
         with:
