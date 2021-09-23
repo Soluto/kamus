@@ -281,11 +281,11 @@ namespace crd_controller
             Console.WriteLine($"output is {output}");
             var podId = output.Split(" ")[0];
             Console.WriteLine($"pod id is {podId}");
-            RunKubectlCommand($"logs {podId} --previous", true);
+            RunKubectlCommand($"logs {podId}", true);
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
-            RunKubectlCommand($"describe {podId}");
+            RunKubectlCommand($"describe {podId}", true);
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
