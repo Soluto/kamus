@@ -285,7 +285,7 @@ namespace crd_controller
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
-            RunKubectlCommand($"describe {podId}", true);
+            RunKubectlCommand($"describe pod {podId}", true);
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
             
             var process1 = Process.Start(new ProcessStartInfo
