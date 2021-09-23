@@ -287,6 +287,20 @@ namespace crd_controller
             RunKubectlCommand("describe kamussecrets", true);
             RunKubectlCommand($"describe {podId}", true);
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
+            
+            var process1 = Process.Start(new ProcessStartInfo
+            {
+                FileName = "kubectl",
+                Arguments = "get nodes --no-headers",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                WorkingDirectory = Environment.CurrentDirectory
+            });
+            process1.WaitForExit();
+            var output1 = process.StandardOutput.ReadToEnd();
+            Console.WriteLine(output1);
+            var nodeId = output1.Split(" ")[0];
+            RunKubectlCommand($"describe node {nodeId}", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
 
