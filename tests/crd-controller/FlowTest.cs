@@ -285,6 +285,7 @@ namespace crd_controller
             RunKubectlCommand("get pods", true);
             RunKubectlCommand("describe kamussecret", true);
             RunKubectlCommand("describe kamussecrets", true);
+            RunKubectlCommand($"describe {podId}");
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
