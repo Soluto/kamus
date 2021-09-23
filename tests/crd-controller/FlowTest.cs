@@ -327,6 +327,8 @@ namespace crd_controller
 
         private void RunKubectlCommand(string command, bool printOutput = false)
         {
+            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine($"Running command {command}");
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "kubectl",
