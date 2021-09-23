@@ -263,6 +263,8 @@ namespace crd_controller
         {
             Console.WriteLine("Deploying CRD");
             
+            RunKubectlCommand("patch node e2e-test-control-plane -p '{\"spec\":{\"taints\":[]}}'", true);
+            
             RunKubectlCommand("apply -f deployment.yaml", true);
 
             //The `--validate=false` is required because of `preserveUnknownFields` which is not support on k8s bellow 1.15
