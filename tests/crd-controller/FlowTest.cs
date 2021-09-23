@@ -298,8 +298,10 @@ namespace crd_controller
             });
             process1.WaitForExit();
             var output1 = process.StandardOutput.ReadToEnd();
+            Console.WriteLine("------------------------------------");
             Console.WriteLine(output1);
             var nodeId = output1.Split(" ")[0];
+            Console.WriteLine($"node id {nodeId}");
             RunKubectlCommand($"describe node {nodeId}", true);
 
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
