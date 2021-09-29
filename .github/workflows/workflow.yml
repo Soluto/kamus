@@ -80,6 +80,9 @@ jobs:
     name: Test KamusSecret CRD
     runs-on: ubuntu-latest
     needs: build_api
+    strategy:
+      matrix:
+        k8s_version: ["v1.18.15", "v1.19.7", "v1.20.2"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -92,12 +95,11 @@ jobs:
         with:
           version: "v0.11.1"
           config: tests/crd-controller/kind-config.yaml
+          image: kindest/node:${{ matrix.k8s_version }}
           name: e2e-test
       - name: Load CRD controller
         run: |
           kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
-          kubectl apply -f tests/crd-controller/deployment.yaml
-          kubectl apply -f tests/crd-controller/crd.yaml --validate=false
       - name: Setup .NET Core SDK 3.0
         uses: actions/setup-dotnet@v1.7.2
         with:
@@ -111,21 +113,6 @@ jobs:
       - name: Test
         working-directory: tests/crd-controller
         run: dotnet test
-      #      - name: Test
-      #        run: |
-      #          kind load image-archive docker-cache-api/crd-controller.tar --name e2e-test
-      #          docker build ./tests/crd-controller -t tester
-      #          docker run --rm --interactive --detach --network host --name e2e \
-      #                  --volume $(pwd):/workdir \
-      #                  --workdir /workdir/tests/crd-controller \
-      #                  tester \
-      #                  cat
-      #          kubectl get nodes --all-namespaces
-      #          docker exec --interactive e2e dotnet test
-#      - name: Install
-#        run: ./tests/crd-controller/run-tests.sh v1.18.15
-#        shell: bash
-#        timeout-minutes: 60
 
   run_tests:
     runs-on: ubuntu-latest
