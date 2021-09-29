@@ -290,6 +290,10 @@ namespace crd_controller
             RunKubectlCommand($"describe pod {podId}", true);
             RunKubectlCommand("describe deployment kamus-crd-controller", true);
             
+            RunKubectlCommand("get ds kindnet -n kube-system", true);
+            RunKubectlCommand("describe ds kindnet -n kube-system", true);
+            RunKubectlCommand("describe pods -l app=kindnet -n kube-system", true);
+            
             Console.WriteLine("---------- get nodes -----------");
             var process1 = Process.Start(new ProcessStartInfo
             {
