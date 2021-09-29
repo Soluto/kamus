@@ -263,7 +263,7 @@ namespace crd_controller
         {
             Console.WriteLine("Deploying CRD");
             
-            RunKubectlCommand("patch node e2e-test-control-plane -p '{\"spec\":{\"taints\":[]}}'", true);
+            // RunKubectlCommand("patch node e2e-test-control-plane -p '{\"spec\":{\"taints\":[]}}'", true);
             
             RunKubectlCommand("apply -f deployment.yaml", true);
 
@@ -300,7 +300,7 @@ namespace crd_controller
                 WorkingDirectory = Environment.CurrentDirectory
             });
             process1.WaitForExit();
-            var output1 = process.StandardOutput.ReadToEnd();
+            var output1 = process1.StandardOutput.ReadToEnd();
             Console.WriteLine("------------------------------------");
             Console.WriteLine(output1);
             var nodeId = output1.Split(" ")[0];
