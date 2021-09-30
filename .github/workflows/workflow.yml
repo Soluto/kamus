@@ -145,7 +145,6 @@ jobs:
           shellcheck -x ci/version_to_deploy.sh
           shellcheck -x ci/version_to_deploy_init.sh
           shellcheck -x ci/version_to_deploy_cli_docker.sh
-          shellcheck -x tests/crd-controller/run-tests.sh
 
 #  push-api-images:
 #    name: Push kamus api component docker images
