@@ -118,8 +118,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/dotnet/core/sdk:3.1
-    env:
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -128,6 +126,8 @@ jobs:
         run: dotnet test
       - name: Runs integration tests
         working-directory: 'tests/integration'
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         run: dotnet test
 
   lint-scripts:
