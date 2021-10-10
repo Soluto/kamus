@@ -128,6 +128,7 @@ jobs:
         working-directory: 'tests/integration'
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          ActiveDirectory__ClientSecret: ${{ secrets.ActiveDirectory__ClientSecret }}
         run: dotnet test
 
   lint-scripts:

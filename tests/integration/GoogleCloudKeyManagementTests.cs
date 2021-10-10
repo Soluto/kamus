@@ -22,8 +22,8 @@ namespace integration
 
             const string fileName = "creds.json";    
             var fi = new FileInfo(fileName);
-            using (var sw = fi.CreateText())    
-            {    
+            using (var sw = fi.CreateText())
+            {
                 sw.WriteLine(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"));
             }
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", fi.FullName);
