@@ -124,13 +124,6 @@ jobs:
       - name: Runs unit tests
         working-directory: 'tests/unit'
         run: dotnet test
-      - name: testing secrets
-        env:
-          foo1: ${{ secrets.foo }}
-          foo2: ${{ secrets.FOO }}
-        run: |
-          echo "foo1 $foo1"
-          echo "foo2 $foo2"
       - name: Runs integration tests
         working-directory: 'tests/integration'
         env:

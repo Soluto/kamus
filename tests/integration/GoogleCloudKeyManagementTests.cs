@@ -26,10 +26,6 @@ namespace integration
             {
                 sw.WriteLine(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"));
             }
-
-            Console.WriteLine($"Check if {fi.FullName} exists? {File.Exists(fi.FullName)}");
-            Console.WriteLine($"Begining of env var is {Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS").Substring(0, 10)}");
-            
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", fi.FullName);
             var location = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:Location");
             var keyRingName = mConfiguration.GetValue<string>("KeyManagement:GoogleKms:KeyRingName");
