@@ -129,6 +129,8 @@ jobs:
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           ActiveDirectory__ClientSecret: ${{ secrets.ActiveDirectory__ClientSecret }}
+          KeyManagement__AwsKms__Key: ${{ secrets.KeyManagement__AwsKms__Key }}
+          KeyManagement__AwsKms__Secret: ${{ secrets.KeyManagement__AwsKms__Secret }}
         run: dotnet test
 
   lint-scripts:
