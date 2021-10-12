@@ -10,7 +10,10 @@
       "KeyLength": "2048"
     },
     "GoogleKms": {
-      "ProjectId": "gke-playground-220909"
+      "ProjectId": "gke-playground-220909",
+      "Location": "europe-west2",
+      "KeyRingName": "kamus-tests",
+      "ProtectionLevel": "HSM"
     }
   },
   "ActiveDirectory": {
