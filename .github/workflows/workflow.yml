@@ -185,14 +185,14 @@ jobs:
       - name: Docker push version
         working-directory: 'init-container/tests'
         run: |
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker push ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG
           docker push ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG
           docker push ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG
       - name: Docker push latest
         working-directory: 'init-container/tests'
         run: |
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker tag ghcr.io/soluto/kamus:$DECRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:decryptor-latest
           docker tag ghcr.io/soluto/kamus:$ENCRYPTOR_API_DOCKER_TAG ghcr.io/soluto/kamus:encryptor-latest
           docker tag ghcr.io/soluto/kamus:$CONTROLLER_API_DOCKER_TAG ghcr.io/soluto/kamus:controller-latest
@@ -256,12 +256,12 @@ jobs:
       - name: Docker push
         working-directory: 'init-container/tests'
         run: |
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker push ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG
       - name: Docker push latest
         working-directory: 'init-container/tests'
         run: |
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker tag ghcr.io/soluto/kamus-init-container:$INIT_CONTAINER_DOCKER_TAG ghcr.io/soluto/kamus-init-container:latest
           docker push ghcr.io/soluto/kamus-init-container:latest
       - name: Push tags
@@ -292,12 +292,12 @@ jobs:
         run: docker build . -t ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG --label org.opencontainers.image.source=https://github.com/${{github.repository}}
       - name: Docker push
         run: |
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker push ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG
       - name: Docker push latest
         run: |
           docker tag ghcr.io/soluto/kamus-cli:$CLI_DOCKER_TAG ghcr.io/soluto/kamus-cli:latest
-          docker login ghcr.io -u $GHCR_USERNAME -p $GHCR_PASSWORD
+          docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} -p ${{ secrets.GHCR_PASSWORD }}
           docker push ghcr.io/soluto/kamus-cli:latest
       - name: Push tags
         run: |
