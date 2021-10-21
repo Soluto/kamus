@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         working-directory: "cli"
         run: yarn
-      - name: Check link
+      - name: Run linter
         working-directory: "cli"
         run: yarn eslint
       - name: Run tests

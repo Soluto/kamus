@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus)
 [![Known Vulnerabilities](https://snyk.io/test/github/soluto/kamus/badge.svg?targetFile=init-container/package.json)](https://snyk.io/test/github/soluto/kamus)
 [![Dockerhub](https://images.microbadger.com/badges/image/soluto/kamus-init-container.svg)](https://microbadger.com/images/soluto/kamus-init-container "Get your own image badge on microbadger.com")
 # Kamus Init Container
