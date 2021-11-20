@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.10.0
+readonly KIND_VERSION=0.11.1
 readonly CLUSTER_NAME=e2e-test
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -76,7 +76,7 @@ create_kind_cluster() {
     kubeconfig_path="$HOME/.kube/config"
     if [ "$machine" == "darwin" ]; then
         kubectl config set-cluster kind-e2e-test --insecure-skip-tls-verify=true
-        sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
+        #sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
     fi
 
     docker cp "$kubeconfig_path" e2e:/root/.kube/config
