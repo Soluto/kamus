@@ -1,6 +1,6 @@
 [![Helm Package](https://img.shields.io/badge/helm-latest-blue.svg)](https://hub.helm.sh/charts/soluto/kamus) 
 [![Slack](https://img.shields.io/badge/slack-kamus-orange.svg)](https://join.slack.com/t/k8s-kamus/shared_invite/enQtODA2MjI3MjAzMjA1LThlODkxNTg3ZGVmMjVkOTBhY2RmMmRjOWFiOGU2NzQ1ODU4ODNiMDJiZTE5ZTY4YmRiOTM3MjI0MDc0OGFkN2E)
-[![Twitter](https://img.shields.io/twitter/follow/solutoeng.svg?label=Follow&style=popout)](https://twitter.com/intent/tweet?text=Checkout%20Kamus%20secret%20encryption%20for%20Kubernetes&url=https://github.com/Soluto/kamus&via=SolutoEng&hashtags=kubernetes,devops,devsecops) [![CircleCI](https://circleci.com/gh/Soluto/kamus.svg?style=svg)](https://circleci.com/gh/Soluto/kamus)
+[![Twitter](https://img.shields.io/twitter/follow/solutoeng.svg?label=Follow&style=popout)](https://twitter.com/intent/tweet?text=Checkout%20Kamus%20secret%20encryption%20for%20Kubernetes&url=https://github.com/Soluto/kamus&via=SolutoEng&hashtags=kubernetes,devops,devsecops)
 
 ![logo](images/logo.png)  
 # Kamus

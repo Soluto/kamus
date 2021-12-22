@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly KIND_VERSION=0.10.0
+readonly KIND_VERSION=0.11.1
 readonly CLUSTER_NAME=e2e-test
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -44,6 +44,14 @@ docker_exec() {
     docker exec --interactive e2e "$@"
 }
 
+build_docker_image() {
+  echo 'Building CRD controller docker image...'
+
+  docker build -t crd-controller --build-arg PROJECT_NAME=crd-controller .
+
+  echo 'Built CRD controller image successfully'
+}
+
 create_kind_cluster() {
     K8S_VERSION=$1
     echo 'Installing kind...'
@@ -61,14 +69,14 @@ create_kind_cluster() {
 
     TMPDIR=$HOME ./kind create cluster --name "$CLUSTER_NAME" --config tests/crd-controller/$kind_config --image "kindest/node:$K8S_VERSION"
 
-    ./kind load image-archive docker-cache-api/crd-controller.tar --name "$CLUSTER_NAME"
+    ./kind load docker-image crd-controller --name "$CLUSTER_NAME"
     docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
     kubeconfig_path="$HOME/.kube/config"
     if [ "$machine" == "darwin" ]; then
         kubectl config set-cluster kind-e2e-test --insecure-skip-tls-verify=true
-        sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
+        #sed -i "" 's/127.0.0.1/host.docker.internal/g' "$kubeconfig_path"
     fi
 
     docker cp "$kubeconfig_path" e2e:/root/.kube/config
@@ -89,7 +97,7 @@ create_kind_cluster() {
 }
 
 run_test() {
-    docker_exec dotnet test 
+    docker_exec dotnet test
     echo
 }
 
@@ -98,6 +106,7 @@ main() {
     run_e2e_container
     trap cleanup EXIT
 
+    build_docker_image
     create_kind_cluster "$1"
 
     run_test

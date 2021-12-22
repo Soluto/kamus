@@ -5,8 +5,18 @@
       "Key": "rWnWbaFutavdoeqUiVYMNJGvmjQh31qaIej/vAxJ9G0="
     },
     "KeyVault": {
+      "Name": "kamustest",
       "KeyType": "RSA",
       "KeyLength": "2048"
+    },
+    "GoogleKms": {
+      "ProjectId": "gke-playground-220909",
+      "Location": "europe-west2",
+      "KeyRingName": "kamus-tests",
+      "ProtectionLevel": "HSM"
     }
+  },
+  "ActiveDirectory": {
+    "ClientId": "f08c5640-6423-40af-aa2f-51cb0eb41436"
   }
 }

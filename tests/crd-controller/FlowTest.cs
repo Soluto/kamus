@@ -65,9 +65,9 @@ namespace crd_controller
                 "default",
                 watch: true
             );
-
+        
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
@@ -95,9 +95,9 @@ namespace crd_controller
                 "default",
                 watch: true
             );
-
+        
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
@@ -115,7 +115,7 @@ namespace crd_controller
             Assert.True(v1Secret.Metadata.Annotations.Keys.Contains("key"));
             Assert.Equal("value", v1Secret.Metadata.Annotations.First(x => x.Key == "key").Value);
         }
-
+        
         [Fact]
         public async Task CreateKamusSecret_DeleteSecret_ReconciliationRecreateIt()
         {
@@ -127,9 +127,9 @@ namespace crd_controller
                 "default",
                 watch: true
             );
-
+        
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             watcher.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
@@ -155,7 +155,7 @@ namespace crd_controller
             );
             
             var newSubject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             newWatcher.Watch<V1Secret>(
                 onEvent: (@type, @event) => newSubject.OnNext((@type, @event)),
                 onError: e => newSubject.OnError(e),
@@ -165,7 +165,7 @@ namespace crd_controller
             
             var (_, v1SecretRecreation) = await newSubject
                 .Where(t => t.Item1 == WatchEventType.Added && t.Item2.Metadata.Name == "my-tls-secret").Timeout(TimeSpan.FromSeconds(15)).FirstAsync();
-
+        
             Assert.Equal(1, v1SecretRecreation.Metadata.Labels.Count);
             Assert.True(v1SecretRecreation.Metadata.Labels.Keys.Contains("key"));
             Assert.Equal("value", v1SecretRecreation.Metadata.Labels.First(x => x.Key == "key").Value);
@@ -186,64 +186,63 @@ namespace crd_controller
             RunKubectlCommand("apply -f tls-KamusSecretV1Alpha2.yaml");
             
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-
+        
             var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
                 "default",
                 watch: true
             );
             
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
-
+        
             RunKubectlCommand($"apply -f {fileName}");
-
+        
             mTestOutputHelper.WriteLine("Waiting for secret update");
             
             var (_, v1Secret) = await subject
                 .Where(t => t.Item1 == WatchEventType.Modified && t.Item2.Metadata.Name == "my-tls-secret")
                 .Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
-
+        
             Assert.Equal("TlsSecret", v1Secret.Type);
             Assert.True(v1Secret.Data.ContainsKey("key"));
             Assert.Equal("modified_hello", Encoding.UTF8.GetString(v1Secret.Data["key"]));
         }
-
+        
         [Theory]
         [InlineData("tls-KamusSecretV1Alpha2.yaml")]
         public async Task DeleteKamusSecret_SecretDeleted(string fileName)
         {
             Cleanup();
-
+        
             await DeployController();
             
             RunKubectlCommand($"apply -f {fileName}");
-
+        
             var kubernetes = new Kubernetes(KubernetesClientConfiguration.BuildDefaultConfig());
-
+        
             var result = await kubernetes.ListNamespacedSecretWithHttpMessagesAsync(
                 "default",
                 watch: true
             );
             
             var subject = new ReplaySubject<(WatchEventType, V1Secret)>();
-
+        
             result.Watch<V1Secret>(
                 onEvent: (@type, @event) => subject.OnNext((@type, @event)),
                 onError: e => subject.OnError(e),
                 onClosed: () => subject.OnCompleted());
-
+        
             RunKubectlCommand($"delete -f {fileName}");
-
+        
             mTestOutputHelper.WriteLine("Waiting for secret deletion");
-
+        
             var (_, v1Secret) = await subject.Where(t => t.Item1 == WatchEventType.Deleted && t.Item2.Metadata.Name == "my-tls-secret")
                 .Timeout(TimeSpan.FromSeconds(30)).FirstAsync();
         }
-
 
         private void Cleanup()
         {
@@ -291,18 +290,17 @@ namespace crd_controller
             Console.WriteLine("Controller deployed successfully");
         }
 
-        private void RunKubectlCommand(string commnad, bool printOutput = false)
+        private void RunKubectlCommand(string command, bool printOutput = false)
         {
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "kubectl",
-                Arguments = commnad,
+                Arguments = command,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 WorkingDirectory = Environment.CurrentDirectory
             });
 
-            
             process.WaitForExit();
 
             if (process.ExitCode != 0)
