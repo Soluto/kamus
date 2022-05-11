@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "0.21.3",
     "commander": "^5.0.0",
-    "ejs": "^3.0.0",
+    "ejs": "^3.1.7",
     "ejs-lint": "^1.2.1",
     "node-readfiles": "^0.2.0"
   }
