@@ -142,8 +142,7 @@ jobs:
       - image: circleci/buildpack-deps:trusty
     steps:
       - checkout 
-      - setup_remote_docker:
-          version: 19.03.13
+      - setup_remote_docker
       - run:
           name: Install and configure dependencies
           command: |
