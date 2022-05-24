@@ -53,6 +53,7 @@ namespace CustomResourceDescriptorController.HostedServices
                     ApiVersion,
                     "kamussecrets",
                     token)
+                .Take(1)
                 .SelectMany(x =>
                     Observable.FromAsync(async () => await HandleEvent(x.Item1, x.Item2))
                 )
@@ -69,13 +70,15 @@ namespace CustomResourceDescriptorController.HostedServices
                         Environment.Exit(0);
                     });
         }
+
         public Task StartAsync(CancellationToken token)
         {
             mSubscription = ObserveKamusSecret(token);
             Observable.Interval(TimeSpan.FromSeconds(mReconciliationIntervalInSeconds)).Subscribe((s) =>
             {
-                mSubscription.Dispose();
+                var oldSubscription = mSubscription;
                 mSubscription = ObserveKamusSecret(token);
+                oldSubscription.Dispose();
             });
             
             mLogger.Information("Starting watch for KamusSecret V1Alpha2 events");
