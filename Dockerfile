@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
 
 ARG PROJECT_NAME=decrypt-api
 
@@ -15,16 +15,16 @@ COPY  ./src/key-managment ./key-managment
 RUN dotnet publish $PROJECT_NAME/$PROJECT_NAME.csproj -c Release -o ./obj/Docker/publish
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS release
+FROM mcr.microsoft.com/dotnet/aspnet:3.1-focal AS release
 ARG PROJECT_NAME=decrypt-api
 ENV PROJECT_NAME_ENV=$PROJECT_NAME
-RUN groupadd dotnet && \
-    useradd dotnet -g dotnet --home /home/dotnet
+RUN groupadd -g 1000 dotnet && \
+    useradd -u 1000 dotnet -g dotnet --home /home/dotnet
 
 USER dotnet
 
 WORKDIR /home/dotnet/app
 ENV ASPNETCORE_URLS=http://+:9999
-COPY --from=build-env /app/obj/Docker/publish .
+COPY --from=build-env --chown=dotnet:dotnet /app/obj/Docker/publish .
 
 ENTRYPOINT dotnet $PROJECT_NAME_ENV.dll

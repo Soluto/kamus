@@ -6,46 +6,57 @@ menu:
     identifier: "changelog"
     weight: 6
 ---
+
 # Changelog
+
+## kamus-0.9.0.8 (18/03/2022)
+
+#### chore :
+
+- Upgrade base images to address security vulnerabilities
 
 ## kamus-0.9.0.7 (18/03/2021)
 
 #### feature :
+
 - The controller now reconcile all KamusSecrets every 60 seconds (make sure to recreate if any secret is missing)
 
 ## kamus-0.9.0.6 (15/02/2021)
 
 #### feature :
+
 - Container images moved to ghcr
 
 ## kamus-0.9.0.5 (15/02/2021)
 
 #### bug :
+
 - Prevent controller restarts every 60 minutes
 
 ## kamus-0.9.0.2 (14/02/2021)
 
 #### bug :
+
 - Fix crd controller logging
 
 ## kamus-0.9.0.1 (14/02/2021)
 
 #### chore :
+
 - Remove SSL endpoint since we don't have conversion webhook anymore
 
 ## kamus-0.9 (11/02/2021)
 
 #### Breaking :
+
 - Kubernetes 1.16 is the minimum required version since KamusSecret CRD moved to `apiextensions.k8s.io/v1`
 - v1alpha1 KamusSecret was removed. Please migrate to v1alpha2.
 
   To migrate from v1alpha1 to v1alpha2 all you need to do is:
 
-  * Change the key data to stringData
-  * Change the apiVersion to "soluto.com/v1alpha2"
+  - Change the key data to stringData
+  - Change the apiVersion to "soluto.com/v1alpha2"
 
-    
-  
 ## kamus-0.8 (31/08/2020)
 
 #### Breaking Bug Fixes:
@@ -54,13 +65,11 @@ menu:
 
   If you've encrypted secrets using kamus 0.7.0.0 and above, your AWS key aliases were created without prefix, so you have to re-encrypt them in order to use kamus 0.8.0.0 that now uses the cmkPrefix correctly.
 
-
 ## kamus-0.7 (07/06/2020)
 
 #### Bug Fixes:
 
 - [**bug**] Decryption doesn't fail when doing from unauthorized service account [#526](https://github.com/Soluto/kamus/issues/526)
-
 
 ## kamus-0.6 (19/09/2019)
 
@@ -74,8 +83,7 @@ menu:
 - [**bug**] BUG: init container -n flag required when outputting files format [#270](https://github.com/Soluto/kamus/issues/270)
 - [**bug**] GCP KMS support is broken since version 0.4.4.0 [#251](https://github.com/Soluto/kamus/issues/251)
 
-The released can be used using the latest chart version - 0.4.0
----
+## The released can be used using the latest chart version - 0.4.0
 
 ## kamus-0.5 (30/06/2019)
 
@@ -94,7 +102,7 @@ The released can be used using the latest chart version - 0.4.0
 
 #### Bug Fixes:
 
-- [**bug**] type=KamusSecret  is NOT working. [#196](https://github.com/Soluto/kamus/issues/196)
+- [**bug**] type=KamusSecret is NOT working. [#196](https://github.com/Soluto/kamus/issues/196)
 - [**bug**] CRD Controller fails to decrypt [#163](https://github.com/Soluto/kamus/issues/163)
 - [**bug**] getting error when trying to encrypt with awskms [#142](https://github.com/Soluto/kamus/issues/142)
 - [**bug**] Failed to run the example when Kamus is not running in the default namespace [#132](https://github.com/Soluto/kamus/issues/132)
@@ -137,6 +145,7 @@ Available on chart version 0.1.7
 ---
 
 ## kamus-0.1 (17/01/2019)
+
 - [**enhancement**][**good first issue**][**help wanted**] Make CLI arguments order invariant [#77](https://github.com/Soluto/kamus/issues/77)
 - [**enhancement**] Move to versioned docker images [#74](https://github.com/Soluto/kamus/issues/74)
 - [**enhancement**][**help wanted**] Add support for GCP KMS [#61](https://github.com/Soluto/kamus/issues/61)
