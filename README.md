@@ -73,6 +73,7 @@ In case you find a security issue or have something you would like to discuss re
 
 ## Contributing
 Found a bug? Have a missing feature? Please open an issue and let us know.
+please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) policy for more information
 We would like to help you use Kamus!
 Please notice: Do not report security issues on GitHub.
 We will immediately delete such issues.
