@@ -95,6 +95,14 @@ run_test() {
 
 main() {
     backup_current_kubeconfig
+
+    echo "------- GIORA TESTING -----------"
+
+    echo "docker info"
+    docker info
+
+    echo "------- GIORA TESTING -----------"
+
     run_e2e_container
     trap cleanup EXIT
 
