@@ -12,6 +12,8 @@ docker-compose up -d --build wiremock
 
 docker-compose build decryptor
 
+docker-compose logs wiremock
+
 echo "running decryptor - json format"
 
 OUTPUT_FORMAT=json docker-compose run decryptor
