@@ -18,3 +18,8 @@ services:
       context: Wiremock
     ports:
       - 8080:8080
+    healthcheck:
+      test: curl -f http://localhost:8080/__admin/mappings
+      interval: 3s
+      timeout: 2s
+      retries: 5

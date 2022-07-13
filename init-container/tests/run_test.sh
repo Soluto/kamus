@@ -12,7 +12,7 @@ docker-compose up -d --build wiremock
 
 docker-compose build decryptor
 
-docker-compose logs wiremock
+timeout 10s bash -c 'until docker-compose ps wiremock | grep \(healthy\); do sleep 1; done'
 
 echo "running decryptor - json format"
 
