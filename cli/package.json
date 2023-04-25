@@ -37,7 +37,7 @@
     "node-fetch": "^2.6.1",
     "opn": "^5.4.0",
     "request": "2.88.2",
-    "snyk": "1.685.0",
+    "snyk": "1.1064.0",
     "url-join": "^4.0.1"
   },
   "devDependencies": {
