@@ -4,7 +4,7 @@
 
 ![logo](images/logo.png)  
 # Kamus
-An open source, GitOps, zero-trust secrets encryption and decryption solution for Kubernetes applications.
+An open source, GitOps, [zero-trust](https://techster.wiki/zero-trust-security-model) secrets encryption and decryption solution for Kubernetes applications.
 Kamus enable users to easily encrypt secrets than can be decrypted only by the application running on Kubernetes.
 The encryption is done using strong encryption providers (currently supported: Azure KeyVault, Google Cloud KMS and AES).
 To learn more about Kamus, check out the [blog post](https://blog.solutotlv.com/can-kubernetes-keep-a-secret?utm_source=github) and [slides](https://www.slideshare.net/SolutoTLV/can-kubernetes-keep-a-secret).
